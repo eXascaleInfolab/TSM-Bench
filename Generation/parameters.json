@@ -1,0 +1,47 @@
+{
+  "window": 3072 ,
+  "sampling_size" : 0,
+  "nb_fragments" : 3072,
+  "batch_size_train": 32,
+  "input_data_path": [
+    "/home/temp/ABench-IoT/Generation/datasets/full_bafu.txt"
+  ],
+  "input_data_name" : "full_bafu/",
+  "model_path": "/home/temp/ABench-IoT/Generation/gan/dcgan/",
+  "winShift": [ 10, 10, 1 ],
+  "train_ep": 1,
+  "gen_ts_length" : 1000,
+  "gen_ts_dim" : 1,
+  "train":  1,
+  "generate": 1 ,
+  "lsh_conca" : 0,
+  "bool_metrics" : 0,
+  "top_n" : 10,
+  "hash_size_percentage" : 2,
+  "conca_plot" : 0,
+  "num_hashtables" : 100,
+  "autocorr_lag": 48,
+  "update_percentage" : 0.9,
+  "_comment": [
+    "/Users/abdel/PycharmProjects/understanding-infogan/Ano-GEN_light/datasets/sine-wave.csv",
+    "/Users/abdel/PycharmProjects/understanding-infogan/Ano-GEN_light/datasets/sine-growing-wave.csv",
+    "/Users/abdel/PycharmProjects/understanding-infogan/Ano-GEN_light/datasets/vowels1ts.csv",
+    "/Users/abdel/PycharmProjects/understanding-infogan/Ano-GEN_light/datasets/bafu2k1ts.csv",
+    "datasets/augmented-datasets/air_quality/airq_normal.txt",
+    "datasets/augmented-datasets/chlorine/chlorine_normal.txt",
+    "datasets/augmented-datasets/climate/climate_normal.txt",
+    "datasets/augmented-datasets/meteo/meteo_normal.txt",
+    "datasets/augmented-datasets/climate/climate_normal.txt",
+    "datasets/augmented-datasets/chlorine/chlorine_normal.txt",
+    "datasets/augmented-datasets/meteo/meteo_normal.txt",
+    "datasets/alabama_weather.txt",
+    "datasets/ts_bench/GoldwindSensor.csv",
+    "datasets/ts_bench/UCR_StarLightCurves.csv"
+  ],
+  "_MP": 1,
+  "_num_cont": 2,
+  "_num_dim": 30,
+  "_batch_size_generation": 500
+}
+
+
