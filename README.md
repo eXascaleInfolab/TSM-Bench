@@ -10,6 +10,13 @@ ___
 ___
 ## Build
 
+- Install all dependencies (~ 3 mins)
+
+```bash
+cd Databases
+sh install_dependencies.sh
+```
+
 - Build all databases using the installation script located in the root folder
 
 ```bash
