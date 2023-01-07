@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker pull apache/druid
+sudo docker pull apache/druid

@@ -1,4 +1,4 @@
 #!/bin/sh
 
 
-docker pull clickhouse/clickhouse-server
+sudo docker pull clickhouse/clickhouse-server
