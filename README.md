@@ -30,17 +30,6 @@ sh install.sh
 cd ../Datasets/
 sh install.sh
 ```
-___
-## Datasets
-
-___
-## Execution Configuration
-
-## Run all systems on a query
-
-___
-## Reproducibility of experiments
-
 
 ___
 ## Running eval
