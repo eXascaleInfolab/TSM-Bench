@@ -1,1 +1,2 @@
-tar -cvzf - *.txt | split -b 50m - "splits/datasets_splits."
+mkdir -p splits
+tar -cvzf - *.csv | split -b 50m - "splits/datasets_splits."
