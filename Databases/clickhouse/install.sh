@@ -1,5 +1,6 @@
 #!/bin/sh
 
+sudo pip3 install clickhouse-driver
 
 sudo docker pull clickhouse/clickhouse-server
 

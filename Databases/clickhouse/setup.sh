@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr//bin/bash
 
 
 sudo docker exec -it clickhouse-container clickhouse-client --query "CREATE TABLE IF NOT EXISTS d1_wide (  \
@@ -6,4 +6,16 @@ sudo docker exec -it clickhouse-container clickhouse-client --query "CREATE TABL
         ) ENGINE = MergeTree() PARTITION BY toYYYYMMDD(time) ORDER BY (id_station, time) Primary key (id_station, time);" 
 
 
-cat '../../Datasets/d1.csv' | time sudo docker exec -i clickhouse-container clickhouse-client --format_csv_delimiter="," --query="INSERT INTO d1_wide FORMAT CSVWithNames"
+# loading 
+# time ( cat '../../Datasets/d1.csv' | sudo docker exec -i clickhouse-container clickhouse-client --format_csv_delimiter="," --query="INSERT INTO d1_wide FORMAT CSVWithNames" ) 
+
+cat '../../Datasets/d1.csv' | sudo docker exec -i clickhouse-container clickhouse-client --format_csv_delimiter="," --query="INSERT INTO d1_wide FORMAT CSVWithNames" 
+
+
+
+# compression
+sudo docker exec -it clickhouse-container clickhouse-client --query "SELECT table,
+                    formatReadableSize(sum(bytes)) as size
+                    FROM system.parts
+                    WHERE active AND table='d1_wide'
+                GROUP BY table;"
