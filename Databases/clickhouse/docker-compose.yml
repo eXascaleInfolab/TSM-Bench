@@ -1,0 +1,9 @@
+
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    container_name: clickhouse-container
+    volumes:
+      - ./clickhouse-config.xml:/etc/clickhouse-server/config.xml
