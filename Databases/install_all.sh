@@ -39,7 +39,7 @@ cd ..
 
 # ExtremeDB
 cd extremedb
-sh ./install.sh
+source ./install.sh
 cd ..
 
 # Influx
