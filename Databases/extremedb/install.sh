@@ -11,7 +11,8 @@ cd target/python/
 python3 setup.py install --user
 
 cd ../../..
-cp 
+cp xsql.cfg eXtremeDB/target/bin
+cp create.sql eXtremeDB/target/bin
 
 sudo apt-get update -y
 sudo apt-get install -y libreadline-dev
