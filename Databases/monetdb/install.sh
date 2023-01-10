@@ -22,6 +22,7 @@ sudo make
 sudo make install
 echo "installing monetdb client..."
 sudo apt install -y monetdb-client
+sudo rm install 
 
 filename=~/.monetdb
 if [ ! -f $filename ]
