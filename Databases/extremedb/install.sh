@@ -17,6 +17,8 @@ cp create.sql eXtremeDB/target/bin
 sudo apt-get update -y
 sudo apt-get install -y libreadline-dev
 
+pip3 install --force-reinstall eXtremeDB/target/python/dist/exdb_mcobject-0.1.1-cp36-cp36m-linux_x86_64.whl 
+
 current="$(pwd)"
 
 export MCO_ROOT="$current"
