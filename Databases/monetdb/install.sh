@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-
+pip3 install pymonetdb
 sudo touch /etc/apt/sources.list.d/monetdb.list
 sudo chmod 777 /etc/apt/sources.list.d/monetdb.list
 echo "deb https://dev.monetdb.org/downloads/deb/ $(lsb_release -cs) monetdb" >> /etc/apt/sources.list.d/monetdb.list

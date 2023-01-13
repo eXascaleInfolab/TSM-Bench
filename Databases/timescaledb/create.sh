@@ -13,10 +13,10 @@ sudo docker exec -it timescaledb-container psql -U postgres -c \
 
 
 current="$(pwd)"
-sudo docker exec -it timescaledb-container psql -U postgres -c "COPY d1 FROM '/var/lib/postgresql/data/producibility/XTS-Bench/Datasets/d1.csv' DELIMITER ',' CSV HEADER;";
+sudo docker exec -it timescaledb-container psql -U postgres -c "COPY d1 FROM '/var/lib/postgresql/data/XTS-Bench/Datasets/d1.csv' DELIMITER ',' CSV HEADER;";
 
 sudo docker exec -it timescaledb-container psql -U postgres -c "ALTER TABLE d1 SET (timescaledb.compress, timescaledb.compress_segmentby='id_station');
 SELECT compress_chunk(i) FROM show_chunks('d1') i ORDER BY i DESC OFFSET 1;"
 
-sudo docker exec -it timescaledb-container psql -U postgres -c "SELECT hypertable_size('d1_narrow') ;"
+sudo docker exec -it timescaledb-container psql -U postgres -c "SELECT hypertable_size('d1') ;"
 
