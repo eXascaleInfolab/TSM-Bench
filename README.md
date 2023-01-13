@@ -17,6 +17,14 @@ cd Databases
 sh install_dependencies.sh
 ```
 
+- Build dataset D1 (~ 11 mins)
+
+```bash
+cd ../Datasets/
+sh install.sh
+```
+
+
 - Build all databases using the installation script located in the root folder
 
 ```bash
@@ -31,12 +39,6 @@ cd Databases/influx
 sh install.sh
 ```
 
-- Load all datasets
-
-```bash
-cd ../Datasets/
-sh install.sh
-```
 
 
 ___
