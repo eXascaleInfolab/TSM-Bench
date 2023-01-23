@@ -25,7 +25,7 @@ sh install.sh
 ```
 
 
-- Build all databases using the installation script located in the root folder
+- Download and install all systems
 
 ```bash
 cd Databases
