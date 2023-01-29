@@ -11,6 +11,7 @@ sudo pip3 install pydruid
 sudo pip3 install pandas
 sudo pip3 install protobuf==3.13.0
 sudo pip3 install tqdm
+sudo pip3 install gdown
 
 # Java
 sudo apt-get install -y openjdk-8-jdk

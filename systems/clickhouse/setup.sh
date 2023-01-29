@@ -9,7 +9,7 @@ sudo docker exec -it clickhouse-container clickhouse-client --query "CREATE TABL
 # loading 
 # time ( cat '../../Datasets/d1.csv' | sudo docker exec -i clickhouse-container clickhouse-client --format_csv_delimiter="," --query="INSERT INTO d1_wide FORMAT CSVWithNames" ) 
 
-cat '../../Datasets/d1.csv' | sudo docker exec -i clickhouse-container clickhouse-client --format_csv_delimiter="," --query="INSERT INTO d1_wide FORMAT CSVWithNames" 
+cat '../../datasets/d1.csv' | sudo docker exec -i clickhouse-container clickhouse-client --format_csv_delimiter="," --query="INSERT INTO d1_wide FORMAT CSVWithNames" 
 
 
 

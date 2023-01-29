@@ -10,6 +10,7 @@ sudo pip3 install numpy
 sudo pip3 install pandas
 sudo pip3 install protobuf==3.13.0
 sudo pip3 install tqdm
+sudo pip3 install gdown
 
 
 # Java
