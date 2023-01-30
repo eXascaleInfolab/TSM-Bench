@@ -7,6 +7,7 @@ import statistics as stats
 import numpy as np
 import random
 import sys
+
 # setting path
 sys.path.append('../')
 from library import *
@@ -39,12 +40,13 @@ parser.add_argument('--range', nargs = '?', type = int, help = 'Query range', de
 parser.add_argument('--rangeUnit', nargs = '?', type = str, help = 'Query range unit', default = 'day')
 parser.add_argument('--max_ts', nargs = '?', type = str, help = 'Maximum query timestamp', default = "2019-04-30T00:00:00")
 parser.add_argument('--min_ts', nargs = '?', type = str, help = 'Minimum query timestamp', default = "2019-04-01T00:00:00")
+parser.add_argument('--n_it', nargs = '?', type = int, help = 'Minimum number of iterations', default = 100)
 parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
 args = parser.parse_args()
 
 
 
-def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = 100):
+def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
 	# Connect to the system
 	conn = connect_ClickHouse("clickhouse://localhost")
 	cursor = conn.cursor()
@@ -104,5 +106,8 @@ runtimes = []
 # Execute queries
 for dataset in args.datasets: 
 	for query in queries: 
-		run_query(query)
+		query = query.replace("<db>", dataset)
+		# print(query)
+		runtimes.append(run_query(query))
+
 

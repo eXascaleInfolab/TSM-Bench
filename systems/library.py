@@ -41,5 +41,4 @@ def get_list(elm, n_elm, max_r = 10, prefix = '', suffix = '', apostrophe = True
 	
 def to_pm(v):
 		return str(int(v[0][0])) + "$" + '\\' + "pm$" + str(int(v[1][0]))
-	#     return str(round(v[0][0],2)) + "$" + '\\' + "pm$" + str(round(v[1][0],2))
-	
+
