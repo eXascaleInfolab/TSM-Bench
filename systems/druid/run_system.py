@@ -15,10 +15,12 @@ from library import *
 import os
 print('launching system')
 os.popen('sh launch.sh')
+print()
 
-from clickhouse_driver import Client
-from clickhouse_driver import connect as connect_ClickHouse
-
+from pydruid.client import *
+from pydruid.db import connect
+from pydruid.utils.aggregators import *
+from pydruid.utils.filters import *
 
 # Generate Random Values
 random.seed(1)
@@ -29,31 +31,29 @@ set_date = [random.random() for i in range(500)]
 
 # Parse Arguments
 parser = argparse.ArgumentParser(description = 'Script for running any eval')
-parser.add_argument('--system', nargs = '*', type = str, help = 'System name', default = 'clickhouse')
-parser.add_argument('--datasets', nargs = '*', type = str, help = 'Dataset name', default = 'D-LONG')
-parser.add_argument('--queries', nargs = '*', type = str, help = 'List of queries to run (Q1-Q7)', default = ['q' + str(i) for i in range(1,8)])
+parser.add_argument('--datasets', nargs = '*', type = str, help = 'Dataset name', default = 'd1')
+parser.add_argument('--queries', nargs = '?', type = str, help = 'List of queries to run (Q1-Q7)', default = "q1 q2 q3 q4 q5 q6 q7")
 parser.add_argument('--nb_st', nargs = '?', type = int, help = 'Number of stations in the dataset', default = 10)
 parser.add_argument('--nb_s', nargs = '?', type = int, help = 'Number of sensors in the dataset', default = 100)
 parser.add_argument('--def_st', nargs = '?', type = int, help = 'Default number of queried stations', default = 1)
 parser.add_argument('--def_s', nargs = '?', type = int, help = 'Default number of queried sensors', default = 3)
 parser.add_argument('--range', nargs = '?', type = int, help = 'Query range', default = 1)
 parser.add_argument('--rangeUnit', nargs = '?', type = str, help = 'Query range unit', default = 'day')
-parser.add_argument('--max_ts', nargs = '?', type = str, help = 'Maximum query timestamp', default = "2019-04-30T00:00:00")
-parser.add_argument('--min_ts', nargs = '?', type = str, help = 'Minimum query timestamp', default = "2019-04-01T00:00:00")
+parser.add_argument('--max_ts', nargs = '?', type = str, help = 'Maximum query timestamp', default = "2019-04-30 00:00:00")
+parser.add_argument('--min_ts', nargs = '?', type = str, help = 'Minimum query timestamp', default = "2019-04-01 00:00:00")
 parser.add_argument('--n_it', nargs = '?', type = int, help = 'Minimum number of iterations', default = 100)
 parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
 args = parser.parse_args()
 
 
-
 def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
 	# Connect to the system
-	conn = connect_ClickHouse("clickhouse://localhost")
+	conn = connect(host='localhost', port=8082, path='/druid/v2/sql/', scheme='http')	
 	cursor = conn.cursor()
 	runtimes = []
 	full_time = time.time()
 	for it in tqdm(range(n_it)):
-		date = random_date(args.min_ts, args.max_ts, set_date[(int(rangeL)*it)%500], dform = '%Y-%m-%dT%H:%M:%S')
+		date = random_date(args.min_ts, args.max_ts, set_date[(int(rangeL)*it)%500], dform = '%Y-%m-%d %H:%M:%S')
 		temp = query.replace("<timestamp>", date)
 		temp = temp.replace("<range>", str(rangeL))
 		temp = temp.replace("<rangesUnit>", rangeUnit)
@@ -96,7 +96,7 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 	conn.close()
 	return stats.mean(runtimes), stats.stdev(runtimes)
 
-
+# print(args.queries)
 # Read Queries
 with open('queries.sql') as file:
 	queries = [line.rstrip() for line in file]
@@ -113,7 +113,4 @@ for dataset in args.datasets:
 			print('Query not supported.')
 			runtimes.append((-1,-1))
 print(runtimes)	
-
-
-
 

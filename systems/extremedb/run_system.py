@@ -16,9 +16,7 @@ import os
 print('launching system')
 os.popen('sh launch.sh')
 
-from clickhouse_driver import Client
-from clickhouse_driver import connect as connect_ClickHouse
-
+import exdb 
 
 # Generate Random Values
 random.seed(1)
@@ -47,16 +45,26 @@ args = parser.parse_args()
 
 
 def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
+	options = {"day" : 60 * 60* 24,
+			   "week" : 60 * 60* 24 * 7,
+			   "minute" : 60,
+			   "hour" : 60 * 60,
+			   "second" : 1,
+			   "month" : 60 * 60 * 24 * 30,
+			   "year" :  60 * 60 * 24 * 30 * 12
+	}	
 	# Connect to the system
-	conn = connect_ClickHouse("clickhouse://localhost")
+	exdb.init_runtime(debug = False, shm = False, disk = False, tmgr = 'mursiw')
+	conn = exdb.connect('diufrm118', 5001)
 	cursor = conn.cursor()
 	runtimes = []
 	full_time = time.time()
 	for it in tqdm(range(n_it)):
 		date = random_date(args.min_ts, args.max_ts, set_date[(int(rangeL)*it)%500], dform = '%Y-%m-%dT%H:%M:%S')
-		temp = query.replace("<timestamp>", date)
+		date = int(time.mktime(datetime.strptime(date, '%Y-%m-%dT%H:%M:%S').timetuple()))
+		temp = query.replace("<timestamp>", str(date))
 		temp = temp.replace("<range>", str(rangeL))
-		temp = temp.replace("<rangesUnit>", rangeUnit)
+		temp = temp.replace("<rangesUnit>", str(options[rangeUnit]))
 		
 		# stations
 		li = ['st' + str(z) for z in random.sample(range(args.nb_st), n_st)]
@@ -67,20 +75,41 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		temp = temp.replace("<stid>", q)
 	
 		# sensors
-		li = ['s' + str(z) for z in random.sample(range(args.nb_s), n_s)]
+		rand = [str(z) for z in random.sample(range(args.nb_st), n_s)]
+		sidlist = 's' + rand[0]
+		for j in rand[1:]:
+			sidlist += ',' + 's' +  j
+		li = ['s' + str(z) + "@tt" for z in rand]
+		li_filtered = ['s' + str(z) + "@fe as s" + str(z) for z in rand]
+		
 		q = li[0]
-		q_filter = '(' + li[0] + ' > 0.95'
-		q_avg = 'avg(' + li[0] + ')'
+		q_filtered = li_filtered[0] 
+		q_seq_group_agg_avg = "seq_group_agg_avg(" + li[0] + " , t@tt/3600) as " + li[0].split('@')[0]
+		q_seq_avg = "seq_avg(" + li[0] + ")" 
+		q_seq_stretch = "seq_stretch(ts5,t," + li[0].split('@')[0] + ")" 
+		q_filter = "!seq_filter_search(" +li[0] + "> 0.95"
+		q_filterAND = "!seq_filter_search(" +li[0] + "> 0.95"
+		
+		for j in range(1,len(li_filtered)):
+			q_filtered += ', ' + li_filtered[j] 
+
 		for j in li[1:]:
 			q += ', ' + j
-			# q_filter += ' OR ' + j + ' > 0.95'
-			q_avg += ', ' + 'avg(' + j + ')'
+			q_seq_avg += ", seq_avg(" + j + ")" 
+			q_seq_group_agg_avg += ", seq_group_agg_avg(" + j + " , t@tt/3600)" + " as " +  j.split('@')[0] #        li[0] + ' > 0.95'
+			q_seq_stretch += ", seq_stretch(ts5,t," + j.split('@')[0] + ")" 
 		temp = temp.replace("<sid>", q)
 		temp = temp.replace("<sid1>", str(set_s[(rangeL*it)%500]))
 		temp = temp.replace("<sid2>", str(set_s[(rangeL*(it+1))%500]))
 		temp = temp.replace("<sid3>", str(set_s[(rangeL*(it+2))%500]))
-		temp = temp.replace("<sfilter>", q_filter + ')')
-		temp = temp.replace("<avg_s>", q_avg)
+		temp = temp.replace("<sidlist>", sidlist)
+		temp = temp.replace("<seq_avg>", q_seq_avg)
+		temp = temp.replace("<sid_filtered>", q_filtered)
+		temp = temp.replace("<seq_group_agg_avg>", q_seq_group_agg_avg)
+		temp = temp.replace("<sfilter>", q_filter + ", tt)")
+		temp = temp.replace("<sfilterAND>", q_filterAND + ", tt)")
+		temp = temp.replace("<seq_stretch>", q_seq_stretch)    
+	
 		
 		start = time.time()
 		# print(temp)

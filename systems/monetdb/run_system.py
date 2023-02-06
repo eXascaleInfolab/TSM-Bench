@@ -12,13 +12,11 @@ import sys
 sys.path.append('../')
 from library import *
 
-import os
-print('launching system')
-os.popen('sh launch.sh')
+# import os
+# print('launching system')
+# os.popen('sh launch.sh')
 
-from clickhouse_driver import Client
-from clickhouse_driver import connect as connect_ClickHouse
-
+import pymonetdb
 
 # Generate Random Values
 random.seed(1)
@@ -48,7 +46,7 @@ args = parser.parse_args()
 
 def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
 	# Connect to the system
-	conn = connect_ClickHouse("clickhouse://localhost")
+	conn = pymonetdb.connect(username="monetdb", port=54320, password="monetdb", hostname="localhost", database="mydb")
 	cursor = conn.cursor()
 	runtimes = []
 	full_time = time.time()
@@ -113,7 +111,5 @@ for dataset in args.datasets:
 			print('Query not supported.')
 			runtimes.append((-1,-1))
 print(runtimes)	
-
-
 
 

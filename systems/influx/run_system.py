@@ -16,9 +16,7 @@ import os
 print('launching system')
 os.popen('sh launch.sh')
 
-from clickhouse_driver import Client
-from clickhouse_driver import connect as connect_ClickHouse
-
+from influxdb import InfluxDBClient
 
 # Generate Random Values
 random.seed(1)
@@ -48,52 +46,58 @@ args = parser.parse_args()
 
 def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
 	# Connect to the system
-	conn = connect_ClickHouse("clickhouse://localhost")
-	cursor = conn.cursor()
+	client = InfluxDBClient(host="localhost", port=8086, username='abdel')
+	
 	runtimes = []
 	full_time = time.time()
 	for it in tqdm(range(n_it)):
 		date = random_date(args.min_ts, args.max_ts, set_date[(int(rangeL)*it)%500], dform = '%Y-%m-%dT%H:%M:%S')
 		temp = query.replace("<timestamp>", date)
 		temp = temp.replace("<range>", str(rangeL))
-		temp = temp.replace("<rangesUnit>", rangeUnit)
+		temp = temp.replace("<rangesUnit>", str(args.rangeUnit[0]))
 		
 		# stations
 		li = ['st' + str(z) for z in random.sample(range(args.nb_st), n_st)]
-		q = "(" + "'" + li[0] + "'"
+		#  print(li)
+		q = '(id_station =' + "'" + li[0] + "'"
 		for j in li[1:]:
-			q += ', ' + "'" + j + "'"
+			q += ' OR '  + 'id_station =' + "'" + j + "'"
 		q += ")"
 		temp = temp.replace("<stid>", q)
 	
 		# sensors
 		li = ['s' + str(z) for z in random.sample(range(args.nb_s), n_s)]
 		q = li[0]
-		q_filter = '(' + li[0] + ' > 0.95'
-		q_avg = 'avg(' + li[0] + ')'
+		q_filter = "( " + li[0] + ' > 0.95'
+		q_avg = 'mean(' + li[0] + ')'
+		q_avg_ = 'mean_' + li[0]
+		q_avg_as = 'mean(' + li[0] + ')' + ' as mean_' + li[0]
 		for j in li[1:]:
 			q += ', ' + j
-			# q_filter += ' OR ' + j + ' > 0.95'
-			q_avg += ', ' + 'avg(' + j + ')'
+#                 q_filter += ' OR ' + j + ' > 0.95'
+			q_avg +=  ', ' + 'mean(' + j + ')'
+			q_avg_ += ', ' + 'mean_' + j
+			q_avg_as += ', ' + 'mean(' + j + ')' + ' as mean_' + j
 		temp = temp.replace("<sid>", q)
-		temp = temp.replace("<sid1>", str(set_s[(rangeL*it)%500]))
-		temp = temp.replace("<sid2>", str(set_s[(rangeL*(it+1))%500]))
-		temp = temp.replace("<sid3>", str(set_s[(rangeL*(it+2))%500]))
-		temp = temp.replace("<sfilter>", q_filter + ')')
-		temp = temp.replace("<avg_s>", q_avg)
+		temp = temp.replace("<sid1>", str(set_s[(args.range*it)%500]))
+		temp = temp.replace("<sid2>", str(set_s[(args.range*(it+1))%500]))
+		temp = temp.replace("<sid>", q)
+		temp = temp.replace("<sfilter>", q_filter + ")")
+		temp = temp.replace("<avg_s>", q_avg)                
+		temp = temp.replace("<avg_s_>", q_avg_)                
+		temp = temp.replace("<avg_s_as>", q_avg_as)
 		
 		start = time.time()
 		# print(temp)
 		
-		cursor.execute(temp)
-		cursor.fetchall()
+		client.query(temp)
 		diff = (time.time()-start)*1000
 		#  print(temp, diff)
 		runtimes.append(diff)
 		if time.time() - full_time > 20 and it > 5: 
 			break  
 			
-	conn.close()
+	client.close()
 	return stats.mean(runtimes), stats.stdev(runtimes)
 
 

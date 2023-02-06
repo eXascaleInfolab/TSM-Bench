@@ -1,5 +1,7 @@
 #!/bin/sh
 
 
-pip3 install gdown
-gdown 10XdfC8y8VCGXUwThu_9R349Gx1szbLwf
+wget https://zenodo.org/record/7585512/files/D1_part1.zip
+wget https://zenodo.org/record/7586294/files/D2_part2.zip
+
+

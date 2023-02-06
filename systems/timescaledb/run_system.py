@@ -16,9 +16,7 @@ import os
 print('launching system')
 os.popen('sh launch.sh')
 
-from clickhouse_driver import Client
-from clickhouse_driver import connect as connect_ClickHouse
-
+import psycopg2
 
 # Generate Random Values
 random.seed(1)
@@ -48,8 +46,10 @@ args = parser.parse_args()
 
 def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
 	# Connect to the system
-	conn = connect_ClickHouse("clickhouse://localhost")
+	CONNECTION = "postgres://postgres:postgres@localhost:5432/postgres"
+	conn = psycopg2.connect(CONNECTION)
 	cursor = conn.cursor()
+	
 	runtimes = []
 	full_time = time.time()
 	for it in tqdm(range(n_it)):
@@ -71,14 +71,17 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		q = li[0]
 		q_filter = '(' + li[0] + ' > 0.95'
 		q_avg = 'avg(' + li[0] + ')'
+		q_interpolate_avg = 'interpolate(avg(' + li[0] + '))'
 		for j in li[1:]:
 			q += ', ' + j
 			# q_filter += ' OR ' + j + ' > 0.95'
 			q_avg += ', ' + 'avg(' + j + ')'
+			q_interpolate_avg += ', interpolate(avg(' + j + '))'
 		temp = temp.replace("<sid>", q)
 		temp = temp.replace("<sid1>", str(set_s[(rangeL*it)%500]))
 		temp = temp.replace("<sid2>", str(set_s[(rangeL*(it+1))%500]))
 		temp = temp.replace("<sid3>", str(set_s[(rangeL*(it+2))%500]))
+		temp = temp.replace("<interpolate_avg>", q_interpolate_avg)
 		temp = temp.replace("<sfilter>", q_filter + ')')
 		temp = temp.replace("<avg_s>", q_avg)
 		
