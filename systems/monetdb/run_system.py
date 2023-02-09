@@ -7,14 +7,23 @@ import statistics as stats
 import numpy as np
 import random
 import sys
+import pandas as pd
 
 # setting path
 sys.path.append('../')
 from library import *
 
-# import os
-# print('launching system')
-# os.popen('sh launch.sh')
+print('launching system')
+
+import os
+import subprocess
+from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
+
+process = Popen(['sh', 'launch.sh', '&'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+stdout, stderr = process.communicate()
+
+process = Popen(['sleep', '2'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+stdout, stderr = process.communicate()
 
 import pymonetdb
 
@@ -28,7 +37,7 @@ set_date = [random.random() for i in range(500)]
 # Parse Arguments
 parser = argparse.ArgumentParser(description = 'Script for running any eval')
 parser.add_argument('--system', nargs = '*', type = str, help = 'System name', default = 'clickhouse')
-parser.add_argument('--datasets', nargs = '*', type = str, help = 'Dataset name', default = 'D-LONG')
+parser.add_argument('--datasets', nargs = '?', type = str, help = 'Dataset name', default = 'd1')
 parser.add_argument('--queries', nargs = '*', type = str, help = 'List of queries to run (Q1-Q7)', default = ['q' + str(i) for i in range(1,8)])
 parser.add_argument('--nb_st', nargs = '?', type = int, help = 'Number of stations in the dataset', default = 10)
 parser.add_argument('--nb_s', nargs = '?', type = int, help = 'Number of sensors in the dataset', default = 100)
@@ -101,8 +110,10 @@ with open('queries.sql') as file:
 
 
 runtimes = []
+datasets = args.datasets.split()
 	# Execute queries
-for dataset in args.datasets: 
+for dataset in datasets: 
+	print(dataset)
 	for query in queries: 
 		if 'SELECT' in query.upper():
 			query = query.replace("<db>", dataset)
@@ -110,6 +121,7 @@ for dataset in args.datasets:
 		else: 
 			print('Query not supported.')
 			runtimes.append((-1,-1))
+runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=['q' + str(i+1) for i in range(len(runtimes))]).astype(int)
 print(runtimes)	
 
 

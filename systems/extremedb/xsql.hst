@@ -1,0 +1,6 @@
+select count(*) from d1_v;
+select count(*) from d1_v;
+select count(*) from d1_v;
+select count(*) from d1;
+select count(*) from d1_v;
+select count(*) from d1_v;
