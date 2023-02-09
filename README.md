@@ -1,7 +1,7 @@
 # TSM-Bench: Benchmarking Time Series Database Systems for Monitoring Applications
 
 
-[**Prerequisites and dependencies**](#prerequisites) | [**Build**](#build) | [**Query Execution**](#Query_Execution) | [**Arguments**](#arguments) | [**Examples**](#examples)
+[**Prerequisites and dependencies**](#prerequisites) | [**Build**](#build) | [**Query Execution**](#Query-Execution) | [**Arguments**](#arguments) | [**Examples**](#examples)
 
 ___
 ## Prerequisites and dependencies
