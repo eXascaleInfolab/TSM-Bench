@@ -20,14 +20,14 @@ cd systems
 sh install_dependencies.sh
 ```
 
-- Build dataset D1 (~ 11 mins)
+- Build Dataset 1 (~ 11 mins)
 
 ```bash
 cd ../datasets/
 sh install_d1.sh
 ```
 
-- Build dataset D2 (~ 2 hours on a 1GBps network)
+- Build Dataset 2 (~ 2 hours on a 1GBps network)
 
 ```bash
 cd ../datasets/
