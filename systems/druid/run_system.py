@@ -51,6 +51,7 @@ parser.add_argument('--range', nargs = '?', type = int, help = 'Query range', de
 parser.add_argument('--rangeUnit', nargs = '?', type = str, help = 'Query range unit', default = 'day')
 parser.add_argument('--max_ts', nargs = '?', type = str, help = 'Maximum query timestamp', default = "2019-04-30 00:00:00")
 parser.add_argument('--min_ts', nargs = '?', type = str, help = 'Minimum query timestamp', default = "2019-04-01 00:00:00")
+parser.add_argument('--timeout', nargs = '?', type = str, help = 'Query execution timeout in seconds', default = 20)
 parser.add_argument('--n_it', nargs = '?', type = int, help = 'Minimum number of iterations', default = 100)
 parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
 args = parser.parse_args()
@@ -100,7 +101,7 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		diff = (time.time()-start)*1000
 		#  print(temp, diff)
 		runtimes.append(diff)
-		if time.time() - full_time > 20 and it > 5: 
+		if time.time() - full_time > args.timeout and it > 5: 
 			break  
 			
 	conn.close()
