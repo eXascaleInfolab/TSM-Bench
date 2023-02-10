@@ -1,7 +1,7 @@
 # TSM-Bench: Benchmarking Time Series Database Systems for Monitoring Applications
 
 
-[**Prerequisites and dependencies**](#prerequisites) | [**Build**](#build) | [**Query Execution**](#Query-Execution) | [**Arguments**](#arguments) | [**Examples**](#examples)
+[**Prerequisites and dependencies**](#prerequisites) | [**Build**](#build) | [**Query Execution**](#Query-Execution) | [**Compression Performance**](#Compression-Performance) | [**Arguments**](#arguments) | [**Examples**](#examples)
 
 ___
 ## Prerequisites and dependencies
@@ -49,7 +49,15 @@ cd database/clickhouse
 sh install.sh
 ```
 
+___
+## Compression Performance
 
+The storage performance of a system is given as follows: 
+
+```bash
+    $ cd systems/{system}
+    $ sh compression.sh
+```
 
 ___
 ## Query Execution
@@ -80,7 +88,9 @@ ___
  | --def_st   |   Number of queried stations | 1
  | --def_s   |   Number of queried sensors | 3
  | --rangeUnit   |  Query range unit | day
- | --min_ts   |   Minimum query timestamp | "2019-04-01T00:00:00" | --max_ts   |   Maximum query timestamp | "2019-04-30T00:00:00"
+ | --min_ts   |   Minimum query timestamp | "2019-04-01T00:00:00" |
+ | --max_ts   |   Maximum query timestamp | "2019-04-30T00:00:00"
+ | --timeout   |   Maximum query time after 5 runs (s) | 20
 
 
 The dimensions of the datasets are the following:
