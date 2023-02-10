@@ -51,9 +51,10 @@ parser.add_argument('--rangeUnit', nargs = '?', type = str, help = 'Query range 
 parser.add_argument('--max_ts', nargs = '?', type = str, help = 'Maximum query timestamp', default = "2019-04-30T00:00:00")
 parser.add_argument('--min_ts', nargs = '?', type = str, help = 'Minimum query timestamp', default = "2019-04-01T00:00:00")
 parser.add_argument('--n_it', nargs = '?', type = int, help = 'Minimum number of iterations', default = 100)
-parser.add_argument('--timeout', nargs = '?', type = str, help = 'Query execution timeout in seconds', default = 20)
+parser.add_argument('--timeout', nargs = '?', type = float, help = 'Query execution timeout in seconds', default = 20)
 parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
 args = parser.parse_args()
+
 
 
 
@@ -118,13 +119,11 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 with open('queries.sql') as file:
 	queries = [line.rstrip() for line in file]
 
-
 runtimes = []
 
 datasets = args.datasets.split()
 	# Execute queries
 for dataset in datasets: 
-	print(dataset)
 	for query in queries: 
 		if 'SELECT' in query.upper():
 			query = query.replace("<db>", dataset)

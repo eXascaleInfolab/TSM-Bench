@@ -1,7 +1,7 @@
 #!/bin/sh
 
 mkdir -p splits 
-cat splits/datasets_splits.* > datasets.tar.gz
+cat d1_splits/datasets_splits.* > datasets.tar.gz
 tar -zxvf datasets.tar.gz
 mv datasets/* ./
 rm datasets -r

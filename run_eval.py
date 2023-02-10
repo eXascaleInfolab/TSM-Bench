@@ -15,6 +15,7 @@ parser.add_argument('--range', nargs = '?', type = int, help = 'Query range', de
 parser.add_argument('--rangeUnit', nargs = '?', type = str, help = 'Query range unit', default = 'day')
 parser.add_argument('--max_ts', nargs = '?', type = str, help = 'Maximum query timestamp', default = "2019-04-30T00:00:00")
 parser.add_argument('--min_ts', nargs = '?', type = str, help = 'Minimum query timestamp', default = "2019-04-01T00:00:00")
+parser.add_argument('--timeout', nargs = '?', type = str, help = 'Query execution timeout in seconds', default = 20)
 parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
 args = parser.parse_args()
 
@@ -25,9 +26,10 @@ try:
 	systems = args.systems.split()
 except: 
 	systems = args.systems
-	
-if args.datasets not in datasets:
-	sys.exit("Invalid dataset name: " + args.dataset)
+
+for d in args.datasets: 	
+	if d not in datasets:
+		sys.exit("Invalid dataset name: " + args.dataset)
 
 for system in systems:
 	systemPath = os.path.join(os.getcwd(), "systems", system)
@@ -36,9 +38,9 @@ for system in systems:
 		
 	os.chdir(systemPath)
 	
-	toRun = ['python3', 'run_system.py', '--datasets', str(args.datasets)
+	toRun = ['python3', 'run_system.py', '--datasets', ' '.join(args.datasets)
 		, '--queries', str(args.queries), '--nb_st', str(args.nb_st)
-		, '--nb_s', str(args.nb_s), '--range', str(args.range)]
+		, '--nb_s', str(args.nb_s), '--range', str(args.range), '--timeout', str(args.timeout)]
 		
 	if len(args.additional_arguments) > 0:
 		toRun = toRun + args.additional_arguments.split(" ")
