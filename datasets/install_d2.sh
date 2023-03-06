@@ -1,21 +1,13 @@
 #!/bin/sh
 
-mkdir d2_splits
-cd d2_splits 
+mkdir d2
+cd d2
 
-wget https://zenodo.org/record/7591120/files/D2_part1.zip
-wget https://zenodo.org/record/7586294/files/D2_part2.zip
+wget https://zenodo.org/record/7701240/files/d2_p1.tar.gz
+wget https://zenodo.org/record/7701425/files/d2_p2.tar.gz
 
-unzip D2_part1.zip
-unzip D2_part2.zip
+tar -xf d2_p*.tar.gz
+rm d2_p*.tar.gz
 
-rm D2_part*
-
-cat datasets_splits.* > d2.tar.gz
-tar -zxvf d2.tar.gz
-mv d2/* ./
-rm -r d2 
-rm d2.tar.gz
-mv d2.txt ../
-cd ..
-rm -r d2
+cat d1.csv d2.csv d3.csv > d2_full.csv
+rm d1.csv d2.csv d3.csv 
