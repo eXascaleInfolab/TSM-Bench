@@ -1,0 +1,35 @@
+
+This is the README file for the original JAVA implementation of the 
+DSTree algorithm [1].
+
+
+[1] Y. Wang, P. Wang, J. Pei, W. Wang, and S. Huang. A data-adaptive 
+    and dynamic segmentation index for whole matching on time series. 
+    PVLDB, 6(10):793–804, 2013.
+
+
+-----------------------------COMPILE-------------------------------
+cd lernaean-hydra/code/dstree/dstree-orig/src/main
+./compile
+
+------------------------------RUN----------------------------------
+cd lernaean-hydra/code/dstree/dstree-orig/src/main
+modify the script run_tests with the correct dataset and queries paths.
+./run_tests
+
+----------------------------SAMPLE COMMAND-------------------------
+--Build the index
+
+      java -classpath ".:../lib/*" cn.edu.fudan.cs.dstree.Main dataset_path  
+      	   dataset_size index_path/index_prefix maxleafsize 
+
+-Run queries:
+	  java -classpath ".:../lib/*" cn.edu.fudan.cs.dstree.Main 
+           index_path/index_prefix.idx_dyn_leafsize_1_datasize query_filename
+
+------------------------------CLEAN--------------------------------
+
+rm -rf out
+rm -rf bin
+
+

@@ -1,0 +1,20 @@
+start at: Mon Oct 05 14:34:58 CEST 2020
+indexPath: ../out/index_1M.idx_dyn_2_1_2 exists! cleaning...
+fileName = /home/gabi/Algorithms/dstree_python/data.in
+tsLength = 3
+threshold = 2
+indexPath = ../out/index_1M.idx_dyn_2_1_2
+segmentSize = 1
+writing idx fileName...../out/index_1M.idx_dyn_2_1_2\root.idx
+reading idx fileName...../out/index_1M.idx_dyn_2_1_2\root.idx
+IndexFile Size = 0M
+TotalNodeCount = 3
+TotalTimeSeriesCount = 2
+EmptyTerminalNodeCount = 0
+noneEmptyTerminalNodeCount = 2
+avgPerNode = 1.0
+avgLevel = 1.0
+FileBufferManager.getInstance().ioRead = 0
+FileBufferManager.getInstance().ioWrite = 2
+FileBufferManager.getInstance().ioDelete = 0
+Build the index successfully!!! at:Mon Oct 05 14:34:58 CEST 2020

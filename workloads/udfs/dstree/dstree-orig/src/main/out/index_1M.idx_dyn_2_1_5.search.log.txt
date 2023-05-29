@@ -1,0 +1,29 @@
+indexPath = ../out/index_1M.idx_dyn_2_1_5
+reading idx fileName...../out/index_1M.idx_dyn_2_1_5\root.idx
+tsLength = 3
+threshold = 0
+totalTsCount = 5
+---------------Exact search-----------------Mon Oct 05 17:29:15 CEST 2020
+searchCount = 4
+************   1   ******************Mon Oct 05 17:29:15 CEST 2020
+leafCount = 0
+calcDistCount = 0
+proneRatios[c-1] = 1.0
+************   2   ******************Mon Oct 05 17:29:15 CEST 2020
+leafCount = 0
+calcDistCount = 0
+proneRatios[c-1] = 1.0
+************   3   ******************Mon Oct 05 17:29:15 CEST 2020
+leafCount = 0
+calcDistCount = 0
+proneRatios[c-1] = 1.0
+************   4   ******************Mon Oct 05 17:29:15 CEST 2020
+leafCount = 0
+calcDistCount = 0
+proneRatios[c-1] = 1.0
+avg(leafCounts) = 0.0
+avg(proneRatios) = 1.0
+ExactSearch TotalTime = 0s
+ExactSearch ApproximateSearchTime = 0s
+ExactSearch IOTime = 0s
+ExactSearch LocationTime = 0s

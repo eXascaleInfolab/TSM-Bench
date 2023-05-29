@@ -1,0 +1,15 @@
+./compile
+mkdir out
+cd bin
+
+#Build the index
+#java -classpath ".:../lib/*" cn.edu.fudan.cs.dstree.Main dataset_path  dataset_size index_path/index_prefix maxleafsize 
+
+
+#Query the index
+#java -classpath ".:../lib/*" cn.edu.fudan.cs.dstree.Main index_path/index_prefix.idx_dyn_leafsize_1_datasize query_filename
+ 
+#Sample commands
+java -classpath ".:../lib/*" cn.edu.fudan.cs.dstree.Main "/home/gabi/Algorithms/dstree_python/data.in" 5 "../out/index_1M" 2
+java -classpath ".:../lib/*" cn.edu.fudan.cs.dstree.Main ../out/index_1M.idx_dyn_2_1_5  "/home/gabi/Algorithms/dstree_python/queries.in"
+

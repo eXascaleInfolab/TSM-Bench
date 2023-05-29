@@ -1,0 +1,6 @@
+mkdir bin
+javac -d bin -g  -nowarn -classpath bin:lib/\* java/cn/fudan/cs/dstree/util/system/*.java
+javac -d bin -g -nowarn -classpath bin:lib/\* java/cn/fudan/cs/dstree/util/*.java
+javac -d bin -g -nowarn -classpath bin:lib/\* java/cn/fudan/cs/dstree/dynamicsplit/*.java
+javac -d bin -g -nowarn -classpath bin:lib/\* java/cn/fudan/cs/dstree/*.java
+
