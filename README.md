@@ -1,6 +1,15 @@
 # TSM-Bench: Benchmarking Time Series Database Systems for Monitoring Applications
 
+TSM-Bench implements seven Time Series Database Systems (TSDBs) for a mixture set of worklods. The benchmark can be easily extended with new systems, queries, datasets, and workloads. The benchmark proposes a novel data generation method that augments seed real-world time series datasets enabling realistic and scalable benchmarking. 
 
+- The benchmark implements the following TSDBs: [ClickHouse](https://clickhouse.com/), [Druid](https://druid.apache.org/), [eXtremeDB](https://www.mcobject.com/), [InfluxDB](https://docs.influxdata.com/influxdb/v1.7/), [MonetDB](https://www.monetdb.org/easy-setup/), [QuestDB](https://questdb.io/), [TimescaleDB](https://www.timescale.com/).
+- This benchmark evaluates bulk-loading, query performance in both offline and online, and storage performance of TSDBs. 
+- The full list of evaluated **datasets** can be found [here](). The datasets include the two datasets *D-LONG, D-MULTI*, in addition to additional generation scripts that are used during the online workloads. 
+- The **results** of our benchmark can be found [here]().
+- **Additional experiments** and their results can be found [here]().
+- User-Defined Functions (**UDFs**) codes, experiments and results can be found [here]().
+
+___
 [**Prerequisites and dependencies**](#prerequisites) | [**Datasets**](#datasets) | [**Build**](#build) | [**Query Execution**](#Query-Execution) | [**Storage Performance**](#Storage-Performance) | [**Arguments**](#arguments) | [**Examples**](#examples)
 
 ___
