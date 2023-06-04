@@ -5,7 +5,6 @@ TSM-Bench implements seven Time Series Database Systems (TSDBs) for a mixture se
 - The benchmark implements the following TSDBs: [ClickHouse](https://clickhouse.com/), [Druid](https://druid.apache.org/), [eXtremeDB](https://www.mcobject.com/), [InfluxDB](https://docs.influxdata.com/influxdb/v1.7/), [MonetDB](https://www.monetdb.org/easy-setup/), [QuestDB](https://questdb.io/), [TimescaleDB](https://www.timescale.com/).
 - This benchmark evaluates bulk-loading, query performance in both offline and online, and storage performance of TSDBs. 
 - The evaluated **datasets** can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/datasets). The datasets include the two datasets *D-LONG, D-MULTI*, in addition to additional generation scripts that are used during the online workloads. 
-- The **results** of our benchmark can be found [here]().
 - **Additional experiments and results**  can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Bench%5BAdditional_results%5D.pdf).
 - **User-Defined Functions (UDFs)** codes and examples to run can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/udfs). Results could be found [here](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Bench%5BAdditional_results%5D.pdf).
 
