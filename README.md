@@ -121,6 +121,8 @@ Each of the systems has a dedicated subfolder under `systems` folder. Queries fo
 	$ python3 run_eval.py [args]
 ```
 
+The scripts would connect to the systems, run all the queries varying the parameters, obtain the results and plot them.
+
 ### Arguments 
 | --system | --queries | --datasets |
 | ------ | ------ | ------ |
