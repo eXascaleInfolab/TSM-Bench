@@ -10,7 +10,7 @@ TSM-Bench implements seven Time Series Database Systems (TSDBs) for a mixture se
 - **User-Defined Functions (UDFs)** codes and examples to run can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/udfs). Results could be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/additional_experiments).
 
 ___
-[**Prerequisites and dependencies**](#prerequisites) | [**Datasets**](#datasets) | [**Build**](#build) | [**Query Execution**](#Query-Execution) | [**Storage Performance**](#Storage-Performance) | [**Arguments**](#arguments) | [**Examples**](#examples)
+[**Prerequisites and dependencies**](#prerequisites) | [**Datasets**](#datasets) | [**Build**](#build) | [**Storage Performance**](#Storage-Performance) | [**Query Execution**](#Query-Execution) |  [**Arguments**](#arguments) | [**Examples**](#examples)
 
 ___
 ## Prerequisites
