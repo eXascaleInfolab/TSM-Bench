@@ -6,20 +6,20 @@ TSM-Bench implements seven Time Series Database Systems (TSDBs) for a mixture se
 - This benchmark evaluates bulk-loading, query performance in both offline and online, and storage performance of TSDBs. 
 - The full list of evaluated **datasets** can be found [here](). The datasets include the two datasets *D-LONG, D-MULTI*, in addition to additional generation scripts that are used during the online workloads. 
 - The **results** of our benchmark can be found [here]().
-- **Additional experiments** and their results can be found [here]().
-- User-Defined Functions (**UDFs**) codes, experiments and results can be found [here]().
+- **Additional experiments and results**  can be found [here]().
+- **User-Defined Functions (UDFs)** codes, experiments and results can be found [here]().
 
 ___
 [**Prerequisites and dependencies**](#prerequisites) | [**Datasets**](#datasets) | [**Build**](#build) | [**Query Execution**](#Query-Execution) | [**Storage Performance**](#Storage-Performance) | [**Arguments**](#arguments) | [**Examples**](#examples)
 
 ___
-## Prerequisites and dependencies
+## Prerequisites
 
 - Ubuntu 18 or higher
 - Clone this repository
-- All other dependencies will be installed via the install script.
+- All other dependencies will be installed via the install script
 
-
+___
 ## Datasets 
 
 The dimensions of the two datasets used in this benchmark are the following:
@@ -30,14 +30,7 @@ The dimensions of the two datasets used in this benchmark are the following:
 | d2 | 200K | 2000 | 100 | 17.2B |
 
 ___
-## Build
-
-- Install all dependencies (~ 3 mins)
-
-```bash
-cd systems
-sh install_dependencies.sh
-```
+## Build Datasets 
 
 - Build Dataset 1 (~ 11 mins)
 
@@ -46,13 +39,22 @@ cd ../datasets/
 sh install_d1.sh
 ```
 
-- Build Dataset 2 Make sure you have at least free 300GB of free disk space to install this dataset (~ 2 hours on a 1GBps network). 
+- Build Dataset 2 Make sure you have at least free 300GB of free disk space to install this dataset (~ 2 hours on a 1GBps network)
 
 ```bash
 cd ../datasets/
 sh install_d2.sh
 ```
 
+___
+## Download and Install Systems
+
+- Install all dependencies (~ 3 mins)
+
+```bash
+cd systems
+sh install_dependencies.sh
+```
 
 - Download and install all systems
 
@@ -61,12 +63,45 @@ cd systems
 sh install_all.sh
 ```
 
-To build a particular database, run the installation script located in the database folder. For example, to install clickhouse
+To build a particular database, run the installation script located in the database folder
 
 ```bash
-cd database/clickhouse
+cd database/{system}
 sh install.sh
 ```
+
+___
+## Setup Systems
+- Setup all systems (all systems have to be running) to have two datasets ```d1``` and ```d2```
+
+```bash
+cd systems
+sh setup_all.sh
+```
+
+To load data to a particular database, run the loading script located in the database folder
+
+```bash
+cd database/{system}
+sh setup.sh
+```
+
+___
+##  Load Data to Systems 
+- Setup all systems (all systems have to be running)
+
+```bash
+cd systems
+sh load_all.sh
+```
+
+To load data to a particular database, run the loading script located in the database folder
+
+```bash
+cd database/{system}
+sh load.sh
+```
+
 
 ___
 ## Storage Performance
@@ -81,7 +116,7 @@ The storage performance of a system could be accessed as follows:
 ___
 ## Query Execution
 
-Each of the systems has a dedicated subfolder under `systems` folder. Queries for all systems could be queried as followed from the main directory. 
+Each of the systems has a dedicated subfolder under `systems` folder. Queries for all systems could be queried as followed from the main directory
 
 ```bash
 	$ python3 run_eval.py [args]
