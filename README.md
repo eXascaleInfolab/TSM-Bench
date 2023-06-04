@@ -131,6 +131,8 @@ Each of the systems has a dedicated subfolder under `systems` folder. Queries fo
 | monetdb | q5 (upsampling) |  |
 | questdb | q6 (average) | |
 | timescaledb | q7 (correlation) | |
+|  | q8 (distance based similarity search) | |
+|  | q9 (DTW) | |
 
 
 ### Optional arguments
