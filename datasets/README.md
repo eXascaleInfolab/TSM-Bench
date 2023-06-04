@@ -1,6 +1,5 @@
 # Datasets
 
-___
 ## Dimensions 
 
 The dimensions of the two datasets used in this benchmark are the following:
