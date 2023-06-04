@@ -23,10 +23,10 @@ ___
 
 The dimensions of the two datasets used in this benchmark are the following:
 
-| Dataset | # of TS | # of Stations | # of Sensors per station | Length of TS | 
-| ------ | ------ | ------ | ------ | ------ |
-| d1 | 1K | 10 | 100 | 5.18M |
-| d2 | 200K | 2000 | 100 | 17.2B |
+| Dataset | # of TS | # of Stations | # of Sensors per station | Length of TS | Period | 
+| ------ | ------ | ------ | ------ | ------ | ------ |
+| d1 | 1K | 10 | 100 | 5.18M | 01-03-2019 to 30-04-2019 | 
+| d2 | 200K | 2000 | 100 | 17.2B | 01-02-2019 to 10-02-2019 | 
 
 ___
 ## Build Datasets 
