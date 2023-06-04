@@ -1,7 +1,5 @@
 # Datasets
 
-## Dimensions 
-
 The dimensions of the two datasets used in this benchmark are the following:
 
 | Dataset | # of TS | # of Stations | # of Sensors per station | Length of TS | 
