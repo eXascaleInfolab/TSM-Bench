@@ -113,7 +113,7 @@ The storage performance of a system could be accessed as follows:
 ```
 
 ___
-## Query Execution
+## Query Execution [Query, Vary & Plot]
 
 Each of the systems has a dedicated subfolder under `systems` folder. Queries for all systems could be queried as followed from the main directory
 
