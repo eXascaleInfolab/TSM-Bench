@@ -6,8 +6,8 @@ TSM-Bench implements seven Time Series Database Systems (TSDBs) for a mixture se
 - This benchmark evaluates bulk-loading, query performance in both offline and online, and storage performance of TSDBs. 
 - The full list of evaluated **datasets** can be found [here](). The datasets include the two datasets *D-LONG, D-MULTI*, in addition to additional generation scripts that are used during the online workloads. 
 - The **results** of our benchmark can be found [here]().
-- **Additional experiments and results**  can be found [here]().
-- **User-Defined Functions (UDFs)** codes and examples to run can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/udfs). Results could be found [here]().
+- **Additional experiments and results**  can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/additional_experiments).
+- **User-Defined Functions (UDFs)** codes and examples to run can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/udfs). Results could be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/additional_experiments).
 
 ___
 [**Prerequisites and dependencies**](#prerequisites) | [**Datasets**](#datasets) | [**Build**](#build) | [**Query Execution**](#Query-Execution) | [**Storage Performance**](#Storage-Performance) | [**Arguments**](#arguments) | [**Examples**](#examples)
