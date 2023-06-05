@@ -24,101 +24,59 @@ ___
 | | z-normalization-operators | |
 
 ___
-## Examples of Running evals based on figures in the work
+## Examples of Running evaluations
 
 Make sure first that the evaluated system-s is/are running before launching the UDF performanec evaluation
 
 Insert time and throughput is taken for each run. It is a double check that the data has been inserted
 
-##### Similarity Search.
+##### Runtime of Similarity Search [DS-Tree]
 
 
 ```bash
-python3 run_eval.py --dataset d1 --lines 1000000 --columns 46 --algorithm dist --database timescaledb
-python3 run_eval.py --dataset d1 --lines 1000000 --columns 46 --algorithm dist --database monetdb
-python3 run_eval.py --dataset d1 --lines 1000000 --columns 46 --algorithm dist --database extremedb
+python3 run_eval.py --dataset d1 --algorithm dist --database timescaledb
 ```
 
-##### Runtime of SAX representation.
-
-d1
+##### Runtime of SAX representation [Mapping]
 
 ```bash
-python3 run_eval.py --dataset d1 --lines 750000 --columns 46 --algorithm sax-representation --database timescaledb
-python3 run_eval.py --dataset d1 --lines 750000 --columns 46 --algorithm sax-representation --database monetdb
-python3 run_eval.py --dataset d1 --lines 750000 --columns 46 --algorithm sax-representation --database extremedb
+python3 run_eval.py --dataset d1 --algorithm sax-representation --database timescaledb
 ```
 
 
 
-##### Runtime of Centroid Decomposition.
-
-d1
+##### Runtime of Centroid Decomposition [Decomposition]
 
 ```bash
-python3 run_eval.py --dataset d1 --lines 100000 --columns 46 --algorithm cd --database timescaledb
-python3 run_eval.py --dataset d1 --lines 100000 --columns 46 --algorithm cd --database monetdb
-python3 run_eval.py --dataset d1 --lines 100000 --columns 46 --algorithm cd --database extremedb
+python3 run_eval.py --dataset d1 --algorithm cd --database timescaledb
 ```
 
 
 
-##### FIGURE 4.11 Runtime of recovery of missing values (QB4).
-
-d1
+##### Runtime of recovery of missing values [RecovDB]
 
 ```bash
-python3 run_eval.py --dataset d1 --lines 100000 --columns 46 --algorithm recovdb --database timescaledb
-python3 run_eval.py --dataset d1 --lines 100000 --columns 46 --algorithm recovdb --database monetdb
-python3 run_eval.py --dataset d1 --lines 100000 --columns 46 --algorithm recovdb --database extremedb
+python3 run_eval.py --dataset d1 --algorithm recovdb --database timescaledb
+```
 
-
-##### Runtime of data repair algorithm – K-Means.
-
-d1
+##### Runtime of K-Means [Clustering]
 
 ```bash
-python3 run_eval.py --dataset d1 --lines 1000000 --columns 46 --algorithm kmeans --database timescaledb
-python3 run_eval.py --dataset d1 --lines 1000000 --columns 46 --algorithm kmeans --database monetdb
-python3 run_eval.py --dataset d1 --lines 1000000 --columns 46 --algorithm kmeans --database extremedb
+python3 run_eval.py --dataset d1 --algorithm kmeans --database timescaledb
 ```
 
 
-##### Runtime  of KNN
-
-d1
+##### Runtime  of KNN [Classification]
 
 ```bash
-python3 run_eval.py --dataset d1 --lines 5000 --columns 46 --algorithm knn --database timescaledb
-python3 run_eval.py --dataset d1 --lines 5000 --columns 46 --algorithm knn --database monetdb
-python3 run_eval.py --dataset d1 --lines 5000 --columns 46 --algorithm knn --database extremedb
+python3 run_eval.py --dataset d1 --algorithm knn --database timescaledb
 ```
 
 
-##### Runtime of KNN using database operators
+##### Runtime  of Hot-Sax [Anomaly Detection]
 
 ```bash
-python3 run_eval.py --dataset d1 --lines 10000 --columns 46 --algorithm knn-operators --database timescaledb
-python3 run_eval.py --dataset d1 --lines 10000 --columns 46 --algorithm knn-operators --database monetdb
-python3 run_eval.py --dataset d1 --lines 10000 --columns 46 --algorithm knn-operators --database extremedb
-```
-
-##### Runtime of Anomalies detection 
-
-d1
-
-```bash
-python3 run_eval.py --dataset d1 --lines 2000 --columns 46 --algorithm hotsax --database timescaledb
-python3 run_eval.py --dataset d1 --lines 2000 --columns 46 --algorithm hotsax --database monetdb
-python3 run_eval.py --dataset d1 --lines 2000 --columns 46 --algorithm hotsax --database extremedb
-```
-
-##### Runtime of Similiarity search 
-
-```bash
-python3 run_eval.py --dataset d2 --lines 2205 --columns 5000 --algorithm hotsax --database timescaledb
-python3 run_eval.py --dataset d2 --lines 2205 --columns 5000 --algorithm hotsax --database monetdb
-python3 run_eval.py --dataset d2 --lines 2205 --columns 5000 --algorithm hotsax --database extremedb
+python3 run_eval.py --dataset d1 --algorithm hotsax --database timescaledb
 ```
 
 ___
@@ -134,5 +92,5 @@ $ python3 generate_udf.py
 Note that the scripts can be configured to run on different datasets and different dimensions. For example,
 ```bash
 $ cd systems/{systems}/
-$ python3 generate_udf.py --file <path_to_file> --lines 1000 --columns 50
+$ python3 generate_udf.py --file <path_to_file> 
 ```
