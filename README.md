@@ -70,9 +70,9 @@ ___
 	sh setup_all.sh
 	```
 ___
-##  Data Loading [Table 3: Loading Performance]
+##  Data Loading 
 
-- Evaluate data loading to all systems (all systems have to be running), the results will be printed after the loading is done for each system 
+- Evaluate data loading to all systems (all systems have to be running), the results will be printed after the loading is done for each system **[Table 3: Loading Performance]**
 
 	```bash
 	cd systems
@@ -80,10 +80,9 @@ ___
 	```
 
 ___
-## Storage Performance [Table 3: Storage Performance]
+## Storage Performance 
 
-- The storage performance of a system could be accessed as follows: 
-
+- The storage performance of a system could be accessed as follows **[Table 3: Storage Performance]**
 	```bash
 	cd systems/{system}
 	sh compression.sh
@@ -98,7 +97,7 @@ ___
 	python3 run_eval.py [args]
 	```
 
-The scripts would connect to the systems, run all the queries varying the parameters, obtain the results and plot them.
+The scripts would connect to the systems, run all the queries varying the parameters, obtain the results and plot them
 
 ### Arguments 
 | --system | --queries | --datasets |
@@ -131,39 +130,39 @@ The scripts would connect to the systems, run all the queries varying the parame
 
 ### Examples
 
-1. [Figure 3.a] Run query q1 on InfluxDB for Dataset 1 with the default parameters (range=1 day, n_st=1, n_s=3)
+1. **[Figure 3.a]** Run query q1 on InfluxDB for Dataset 1 with the default parameters (range=1 day, n_st=1, n_s=3)
  
 ```bash 
 python3 run_eval.py --systems influx --datasets d1 --queries "q1"
 ```
 
-2. [Figure 4] Run queries q3 and q4 on InfluxDB for Dataset 1 with the default parameters (range=1 day, n_st=1, n_s=3)
+2. **[Figure 4]** Run queries q3 and q4 on InfluxDB for Dataset 1 with the default parameters (range=1 day, n_st=1, n_s=3)
  
 ```bash 
 python3 run_eval.py --systems influx --datasets d1 --queries "q3 q4"
 ```
 
-3. [Figures 3-5] Run all queries on InfluxDB on Dataset 1 with the default parameters
+3. **[Figures 3-5]** Run all queries on InfluxDB on Dataset 1 with the default parameters
  
 ```bash 
 python3 run_eval.py --systems influx --datasets d1
 ```
 
-4. [Figure 5] Run q5 on InfluxDB on Dataset 1 with the default parameters with a 1 minute timeout per query type
+4. **[Figure 5]** Run q5 on InfluxDB on Dataset 1 with the default parameters with a 1 minute timeout per query type
  
 ```bash 
 python3 run_eval.py --systems influx --datasets d1  --queries "q5" --timeout 60
 ```
 
-5. Run query q1 on InfluxDB with custom parameters (range=1 week, n_st=100, n_s=3)
+5. **[Figure 6]** Run all queries on InfluxDB on Dataset 2 with the default parameters while varying the number of stations
+ 
+```bash 
+python3 run_eval.py --systems influx --datasets d1 --rangeUnit day --def_s 3 
+```
+
+6. Run query q1 on InfluxDB with custom parameters (range=1 week, n_st=100, n_s=3)
  
 ```bash 
 python3 run_eval.py --systems influx --datasets d1 --queries q1 --def_st 100 --def_s 3 --range 1 --rangeUnit day
 
-```
-
-7. [Figure 6] Run all queries on InfluxDB on Dataset 2 with the default parameters while varying the number of stations
- 
-```bash 
-python3 run_eval.py --systems influx --datasets d1 --rangeUnit day --def_s 3 
 ```
