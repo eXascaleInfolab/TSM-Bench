@@ -12,12 +12,12 @@ Monitoring Applications* currently under revision for VLDB 2023.
 | d2 | 200K | 2000 | 100 | 17.2B | 01-02-2019 to 10-02-2019 | 
 
 - [**New**]: Additional experiments and results not reported in the paper can be found here: 
-	- SQL ... [results](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Bench%5BAdditional_results%5D.pdf).
+	- SQL: additional results about SQL-based queries could be found here: [results](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Bench%5BAdditional_results%5D.pdf).
 	- User-Defined Functions (UDFs): [code](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/udfs) and [results](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Bench%5BAdditional_results%5D.pdf).
-
+	- Data characteristics: [results](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Bench%5BAdditional_results%5D.pdf).
 
 ___
-[**Prerequisites**](#prerequisites) | [**Build Datasets**](#build-datasets) | [**Installation**](#systems-installation-and-configuration) | [**Experiments**](#experiments) 
+[**Prerequisites**](#prerequisites) | [**Build Datasets**](#build-datasets) | [**Installation**](#systems-installation-and-configuration) | [**Experiments**](#experiments) | [**Generation**](#data-generation) 
 
 ___
 ## Prerequisites
@@ -78,11 +78,11 @@ ___
 	cd systems
 	sh load_all.sh
 	```
-- Note:  All systems need to be running before executing the query (column 2 of Table 3).  
+- Note:  All systems need to be running before executing the query.  
 
 ### Storage Performance 
 
-- To reproduce the storage performance of a given system: 
+- To reproduce the storage performance of a given system (column 2 of Table 3): 
 	```bash
 	cd systems/{system}
 	sh compression.sh
@@ -113,18 +113,13 @@ ___
 |  | q9 (DTW) | |
 
 - **Optional Arguments**: The following arguments allow to add variation in the number of sensors and dynamic changes in predicate ranges:
-
- | args  |  Interpretation | Default value | 
- | --------    | ------- | ------- | 
- | --nb_st   |  Number of stations in the dataset | 10
- | --nb_s   |  Number of sensors in a station | 100
- | --def_st   |   Number of queried stations | 1
- | --def_s   |   Number of queried sensors | 3
- | --rangeUnit   |  Query range unit | day
- | --min_ts   |   Minimum query timestamp | "2019-04-01T00:00:00" |
- | --max_ts   |   Maximum query timestamp | "2019-04-30T00:00:00"
- | --timeout   |   Maximum query time after 5 runs (s) | 20
-
+	- **--nb_st** : Number of stations (Default = 10)
+	- **--def_st** : Number of queried stations (Default = 1)
+ 	- **--def_s** : Number of queried sensors (Default = 3)
+	- **--rangeUnit** : Query range unit (Default = day)
+ 	- **--min_ts** : Minimum query timestamp (Default = "2019-04-01T00:00:00")
+ 	- **--max_ts** : Maximum query timestamp (Default = "2019-04-30T00:00:00")
+	- **--timeout** : Maximum query time after 5 runs (s) (Default = 20)
 
 - **Examples**:
 
@@ -162,6 +157,11 @@ python3 run_eval.py --systems influx --datasets d1 --rangeUnit day --def_s 3
  
 ```bash 
 python3 run_eval.py --systems influx --datasets d1 --queries q1 --def_st 100 --def_s 3 --range 1 --rangeUnit day
-
 ```
+
+___
+
+## Data Generation 
+
+Generation code will be shared when the paper is published. 
 
