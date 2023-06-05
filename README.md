@@ -113,13 +113,13 @@ ___
 |  | q9 (DTW) | |
 
 - **Optional Arguments**: The following arguments allow to add variation in the number of sensors and dynamic changes in predicate ranges:
-	- **--nb_st** : Number of stations (Default = 10)
-	- **--def_st** : Number of queried stations (Default = 1)
- 	- **--def_s** : Number of queried sensors (Default = 3)
-	- **--rangeUnit** : Query range unit (Default = day)
- 	- **--min_ts** : Minimum query timestamp (Default = "2019-04-01T00:00:00")
- 	- **--max_ts** : Maximum query timestamp (Default = "2019-04-30T00:00:00")
-	- **--timeout** : Maximum query time after 5 runs (s) (Default = 20)
+	- `--nb_st` : Number of stations (Default = 10)
+	- `--def_st` : Number of queried stations (Default = 1)
+ 	- `--def_s` : Number of queried sensors (Default = 3)
+	- `--rangeUnit`: Query range unit (Default = day)
+ 	- `--min_ts`: Minimum query timestamp (Default = "2019-04-01T00:00:00")
+ 	- `--max_ts`: Maximum query timestamp (Default = "2019-04-30T00:00:00")
+	- `--timeout` : Maximum query time after 5 runs (s) (Default = 20)
 
 - **Examples**:
 
