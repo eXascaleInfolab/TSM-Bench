@@ -72,7 +72,7 @@ ___
 ___
 ##  Data Loading 
 
-- Evaluate data loading to all systems (all systems have to be running), the results will be printed after the loading is done for each system **[Table 3: Loading Performance]**
+- **[Table 3: Loading Performance]** Evaluate data loading to all systems (all systems have to be running), the results will be printed after the loading is done for each system
 
 	```bash
 	cd systems
@@ -80,9 +80,9 @@ ___
 	```
 
 ___
-## Storage Performance [Table 3: Storage Performance]
+## Storage Performance 
 
-- The storage performance of a system could be accessed as follows 
+- **[Table 3: Storage Performance]** The storage performance of a system could be accessed as follows 
 	```bash
 	cd systems/{system}
 	sh compression.sh
