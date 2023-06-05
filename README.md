@@ -55,18 +55,22 @@ Building a dataset consists of downloading it and decompressing it, making it re
 ___
 ## Systems installation and configuration
 
-- Download and install all systems
+- The following command allows to download, install and setup all the systems
 
 	```bash
 	cd systems
-	sh install_all.sh
+	sh install_all.sh && setup_all.sh
 	```
+	
+<!---
 - Setup all systems (all systems have to be running) to have two datasets ```d1``` and ```d2```
 
 	```bash
 	cd systems
 	sh setup_all.sh
 	```
+
+-->
 ___
 
 ## Experiments
