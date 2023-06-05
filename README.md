@@ -1,15 +1,15 @@
 # TSM-Bench: Benchmarking Time Series Database Systems for Monitoring Applications
 
-TSM-Bench implements seven Time Series Database Systems (TSDBs) for a mixture set of worklods. The benchmark can be easily extended with new systems, queries, datasets, and workloads. The benchmark proposes a novel data generation method that augments seed real-world time series datasets enabling realistic and scalable benchmarking. 
+TSM-Bench implements seven Time Series Database Systems (TSDBs) for a mixture set of worklods. The benchmark can be easily extended with new systems, queries, datasets, and workloads. The benchmark proposes a novel data generation method that augments seed real-world time series datasets enabling realistic and scalable benchmarking. This benchmark is a paper under review for VLDB 2023. 
 
 - The benchmark implements the following TSDBs: [ClickHouse](https://clickhouse.com/), [Druid](https://druid.apache.org/), [eXtremeDB](https://www.mcobject.com/), [InfluxDB](https://docs.influxdata.com/influxdb/v1.7/), [MonetDB](https://www.monetdb.org/easy-setup/), [QuestDB](https://questdb.io/), [TimescaleDB](https://www.timescale.com/).
-- This benchmark evaluates bulk-loading, query performance in both offline and online, and storage performance of TSDBs. 
-- The evaluated **datasets** can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/datasets). The datasets include the two datasets *D-LONG, D-MULTI*, in addition to additional generation scripts that are used during the online workloads. 
+- This benchmark evaluates bulk-loading, storage performance, and query performance in both offline and online of TSDBs. 
+- The evaluated **datasets** can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/datasets). The datasets include the two datasets *D-LONG[d1], D-MULTI[d2]*, in addition to additional generation scripts that are used during the online workloads. 
 - **Additional experiments and results**  can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Bench%5BAdditional_results%5D.pdf).
 - **User-Defined Functions (UDFs)** codes and examples to run can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/udfs). Results could be found [here](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Bench%5BAdditional_results%5D.pdf).
 
 ___
-[**Prerequisites and dependencies**](#prerequisites) | [**Datasets**](#datasets) | [**Build**](#build) | [**Storage Performance**](#Storage-Performance) | [**Query Execution**](#Query-Execution) |  [**Arguments**](#arguments) | [**Examples**](#examples)
+[**Prerequisites and dependencies**](#prerequisites) | [**Datasets**](#datasets) | [**Systems installation and configuration**](#systems-installation-and-configuration) | [**Data Loading**](data-loading) | [**Storage Performance**](storage-performance) | [**Query Execution**](query-execution) | [**Arguments**](#arguments) | [**Examples**](#examples)
 
 ___
 ## Prerequisites
@@ -18,108 +18,85 @@ ___
 - Clone this repository
 - All other dependencies will be installed via the install script
 
+
+- Install all dependencies (~ 3 mins)
+
+	```bash
+	cd systems
+	sh install_dependencies.sh
+	```
+
 ___
 ## Datasets 
 
 The dimensions of the two datasets used in this benchmark are the following:
 
-| Dataset | # of TS | # of Stations | # of Sensors per station | Length of TS | Period | 
+| Dataset | # of TS | # of Stations | # of Sensors per station | Length of TS | Time Period | 
 | ------ | ------ | ------ | ------ | ------ | ------ |
 | d1 | 1K | 10 | 100 | 5.18M | 01-03-2019 to 30-04-2019 | 
 | d2 | 200K | 2000 | 100 | 17.2B | 01-02-2019 to 10-02-2019 | 
 
-___
-## Build Datasets 
+#### Build Datasets 
+
+Building a dataset consists of downloading it and decompressing it, making it ready to be loaded into the TSDBs
 
 - Build Dataset 1 (~ 11 mins)
 
-```bash
-cd ../datasets/
-sh install_d1.sh
-```
+	```bash
+	cd ../datasets/
+	sh install_d1.sh
+	```
 
 - Build Dataset 2 Make sure you have at least free 300GB of free disk space to install this dataset (~ 2 hours on a 1GBps network)
 
-```bash
-cd ../datasets/
-sh install_d2.sh
-```
+	```bash
+	cd ../datasets/
+	sh install_d2.sh
+	```
 
 ___
-## Download and Install Systems
-
-- Install all dependencies (~ 3 mins)
-
-```bash
-cd systems
-sh install_dependencies.sh
-```
+## Systems installation and configuration
 
 - Download and install all systems
 
-```bash
-cd systems
-sh install_all.sh
-```
-
-To build a particular database, run the installation script located in the database folder
-
-```bash
-cd database/{system}
-sh install.sh
-```
-
-___
-## Setup Systems
+	```bash
+	cd systems
+	sh install_all.sh
+	```
 - Setup all systems (all systems have to be running) to have two datasets ```d1``` and ```d2```
 
-```bash
-cd systems
-sh setup_all.sh
-```
+	```bash
+	cd systems
+	sh setup_all.sh
+	```
+___
+##  Data Loading [Table 3: Loading Performance]
 
-To load data to a particular database, run the loading script located in the database folder
+- Evaluate data loading to all systems (all systems have to be running), the results will be printed after the loading is done for each system 
 
-```bash
-cd database/{system}
-sh setup.sh
-```
+	```bash
+	cd systems
+	sh load_all.sh
+	```
 
 ___
-##  Load Data to Systems 
-- Setup all systems (all systems have to be running)
+## Storage Performance [Table 3: Storage Performance]
 
-```bash
-cd systems
-sh load_all.sh
-```
+- The storage performance of a system could be accessed as follows: 
 
-To load data to a particular database, run the loading script located in the database folder
-
-```bash
-cd database/{system}
-sh load.sh
-```
-
-
-___
-## Storage Performance
-
-The storage performance of a system could be accessed as follows: 
-
-```bash
-    $ cd systems/{system}
-    $ sh compression.sh
-```
+	```bash
+	cd systems/{system}
+	sh compression.sh
+	```
 
 ___
 ## Query Execution [Query, Vary & Plot]
 
-Each of the systems has a dedicated subfolder under `systems` folder. Queries for all systems could be queried as followed from the main directory
+- Each of the systems has a dedicated subfolder under `systems` folder. Queries for all systems could be queried as followed from the main directory
 
-```bash
-	$ python3 run_eval.py [args]
-```
+	```bash
+	python3 run_eval.py [args]
+	```
 
 The scripts would connect to the systems, run all the queries varying the parameters, obtain the results and plot them.
 
@@ -154,29 +131,39 @@ The scripts would connect to the systems, run all the queries varying the parame
 
 ### Examples
 
-1. Run queries q1 and q4 on InfluxDB for Dataset 1 with the default parameters (range=1 day, n_st=1, n_s=3)
+1. [Figure 3.a] Run query q1 on InfluxDB for Dataset 1 with the default parameters (range=1 day, n_st=1, n_s=3)
  
 ```bash 
-python3 run_eval.py --systems influx --datasets d1 --queries "q1 q4"
+python3 run_eval.py --systems influx --datasets d1 --queries "q1"
 ```
 
-2. Run query q1 on InfluxDB with custom parameters (range=1 week, n_st=100, n_s=3)
+2. [Figure 4] Run queries q3 and q4 on InfluxDB for Dataset 1 with the default parameters (range=1 day, n_st=1, n_s=3)
+ 
+```bash 
+python3 run_eval.py --systems influx --datasets d1 --queries "q3 q4"
+```
+
+3. [Figures 3-5] Run all queries on InfluxDB on Dataset 1 with the default parameters
+ 
+```bash 
+python3 run_eval.py --systems influx --datasets d1
+```
+
+4. [Figure 5] Run q5 on InfluxDB on Dataset 1 with the default parameters with a 1 minute timeout per query type
+ 
+```bash 
+python3 run_eval.py --systems influx --datasets d1  --queries "q5" --timeout 60
+```
+
+5. Run query q1 on InfluxDB with custom parameters (range=1 week, n_st=100, n_s=3)
  
 ```bash 
 python3 run_eval.py --systems influx --datasets d1 --queries q1 --def_st 100 --def_s 3 --range 1 --rangeUnit day
 
 ```
 
-3. Run all queries on InfluxDB on Dataset 1 with the default parameters
+7. [Figure 6] Run all queries on InfluxDB on Dataset 2 with the default parameters while varying the number of stations
  
 ```bash 
-python3 run_eval.py --systems influx --datasets d1
+python3 run_eval.py --systems influx --datasets d1 --rangeUnit day --def_s 3 
 ```
-
-4. Run all queries on InfluxDB on Dataset 1 with the default parameters with a 1 minute timeout per query type
- 
-```bash 
-python3 run_eval.py --systems influx --datasets d1 --timeout 60
-```
-
-
