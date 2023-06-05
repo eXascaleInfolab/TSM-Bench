@@ -12,9 +12,9 @@ Monitoring Applications* currently under revision for VLDB 2023.
 | d2 | 200K | 2000 | 100 | 17.2B | 01-02-2019 to 10-02-2019 | 
 
 - [**New**]: Additional experiments and results not reported in the paper can be found here: 
-	- SQL: additional results about SQL-based queries could be found here: [results](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Bench%5BAdditional_results%5D.pdf).
-	- User-Defined Functions (UDFs): [code](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/udfs) and [results](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Bench%5BAdditional_results%5D.pdf).
-	- Data characteristics: [results](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Bench%5BAdditional_results%5D.pdf).
+	- SQL: additional results about SQL-based queries could be found here: [results](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/additional-experiments.pdf).
+	- User-Defined Functions (UDFs): [code](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/udfs) and [results](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/additional-experiments.pdf).
+	- Data characteristics: [results](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/additional-experiments.pdf).
 
 ___
 [**Prerequisites**](#prerequisites) | [**Build Datasets**](#build-datasets) | [**Installation**](#systems-installation-and-configuration) | [**Experiments**](#experiments) | [**Generation**](#data-generation) 
