@@ -2,36 +2,36 @@
 
 # ClickHouse
 cd clickhouse
-sh ./load.sh
+sh ./create.sh
 cd ..
 
 # Druid
 cd druid
-sh ./load.sh
+sh ./create.sh
 cd ..
 
 # ExtremeDB
 cd extremedb
-source ./load.sh
+source ./create.sh
 cd ..
 
 # Influx
 cd influx
-sh ./load.sh
+sh ./create.sh
 cd ..
 
 # MonetDB
 cd monetdb
-sh ./load.sh
+sh ./create.sh
 cd ..
 
 
 # QuestDB
 cd questdb
-sh ./load.sh
+sh ./create.sh
 cd ..
 
 # TimescaleDB
 cd  timescaledb
-sh ./load.sh
+sh ./create.sh
 cd ..
