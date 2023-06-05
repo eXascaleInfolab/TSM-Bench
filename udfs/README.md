@@ -85,7 +85,7 @@ ___
 Each of the databases has a dedicated directory in Databases. In them, there is a dedicated directory for each experiment. In order to run an experiment, go to the directory of the experiment and use the Python3 script there. For example,
 
 ```bash
-$ cd systems/{systems}/
+$ cd systems/{system}/
 $ python3 generate_udf.py
 ```
 
