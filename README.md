@@ -80,9 +80,9 @@ ___
 	```
 
 ___
-## Storage Performance 
+## Storage Performance [Table 3: Storage Performance]
 
-- The storage performance of a system could be accessed as follows **[Table 3: Storage Performance]**
+- The storage performance of a system could be accessed as follows 
 	```bash
 	cd systems/{system}
 	sh compression.sh
