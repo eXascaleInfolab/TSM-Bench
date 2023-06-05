@@ -4,20 +4,24 @@ TSM-Bench implements seven Time Series Database Systems (TSDBs) for a mixture se
 
 - The benchmark implements the following TSDBs: [ClickHouse](https://clickhouse.com/), [Druid](https://druid.apache.org/), [eXtremeDB](https://www.mcobject.com/), [InfluxDB](https://docs.influxdata.com/influxdb/v1.7/), [MonetDB](https://www.monetdb.org/easy-setup/), [QuestDB](https://questdb.io/), [TimescaleDB](https://www.timescale.com/).
 - This benchmark evaluates bulk-loading, storage performance, and query performance in both offline and online of TSDBs. 
-- The evaluated **datasets** can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/datasets). The datasets include the two datasets *D-LONG[d1], D-MULTI[d2]*, in addition to additional generation scripts that are used during the online workloads. 
-- **Additional experiments and results**  can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Bench%5BAdditional_results%5D.pdf).
-- **User-Defined Functions (UDFs)** codes and examples to run can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/udfs). Results could be found [here](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Bench%5BAdditional_results%5D.pdf).
+- The evaluated datasets can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/datasets). The datasets include the two datasets *D-LONG[d1], D-MULTI[d2]*, in addition to additional generation scripts that are used during the online workloads. 
+- Additional experiments and results:  can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Bench%5BAdditional_results%5D.pdf).
+- User-Defined Functions (UDFs): codes and examples to run can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/udfs). Results could be found [here](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Bench%5BAdditional_results%5D.pdf).
+- Datasets: The dimensions of the two datasets used in this benchmark are the following:
+
+| Dataset | # of TS | # of Stations | # of Sensors per station | Length of TS | Time Period | 
+| ------ | ------ | ------ | ------ | ------ | ------ |
+| d1 | 1K | 10 | 100 | 5.18M | 01-03-2019 to 30-04-2019 | 
+| d2 | 200K | 2000 | 100 | 17.2B | 01-02-2019 to 10-02-2019 | 
 
 ___
-[**Prerequisites and dependencies**](#prerequisites) | [**Datasets**](#datasets) | [**Systems installation and configuration**](#systems-installation-and-configuration) | [**Data Loading**](#data-loading) | [**Storage Performance**](#storage-performance) | [**Query Execution**](#query-execution) | [**Arguments**](#arguments) | [**Examples**](#examples)
+[**Prerequisites**](#prerequisites) | [**Datasets**](#datasets) | [**Systems installation and configuration**](#systems-installation-and-configuration) | [**Data Loading**](#data-loading) | [**Storage Performance**](#storage-performance) | [**Query Execution**](#query-execution) | [**Arguments**](#arguments) | [**Examples**](#examples)
 
 ___
 ## Prerequisites
 
 - Ubuntu 18 or higher
 - Clone this repository
-- All other dependencies will be installed via the install script
-
 
 - Install all dependencies (~ 3 mins)
 
@@ -25,18 +29,10 @@ ___
 	cd systems
 	sh install_dependencies.sh
 	```
-
+- All the remaining dependencies will be installed via the install script
 ___
-## Datasets 
 
-The dimensions of the two datasets used in this benchmark are the following:
-
-| Dataset | # of TS | # of Stations | # of Sensors per station | Length of TS | Time Period | 
-| ------ | ------ | ------ | ------ | ------ | ------ |
-| d1 | 1K | 10 | 100 | 5.18M | 01-03-2019 to 30-04-2019 | 
-| d2 | 200K | 2000 | 100 | 17.2B | 01-02-2019 to 10-02-2019 | 
-
-#### Build Datasets 
+### Build Datasets 
 
 Building a dataset consists of downloading it and decompressing it, making it ready to be loaded into the TSDBs
 
@@ -70,36 +66,40 @@ ___
 	sh setup_all.sh
 	```
 ___
-##  Data Loading 
 
-- **[Table 3: Loading Performance]** Evaluate data loading to all systems (all systems have to be running), the results will be printed after the loading is done for each system
+## Experiments
+###  Data Loading Performance
+
+- To reproduce the data loading times of all systems (column 1 of Table 3):
 
 	```bash
 	cd systems
 	sh load_all.sh
 	```
+- Note:  All systems need to be running before executing the query (column 2 of Table 3).  
 
-___
-## Storage Performance 
+### Storage Performance 
 
-- **[Table 3: Storage Performance]** The storage performance of a system could be accessed as follows 
+- To reproduce the storage performance of a given system: 
 	```bash
 	cd systems/{system}
 	sh compression.sh
 	```
+- Note: {system} needs to replaced with the name of the system
 
-___
-## Query Execution [Query, Vary & Plot]
+## Query Execution 
 
-- Each of the systems has a dedicated subfolder under `systems` folder. Queries for all systems could be queried as followed from the main directory
+- Each of the systems has a dedicated subfolder under `systems` folder. Queries for all systems could be queried as follows from the main directory
 
 	```bash
 	python3 run_eval.py [args]
 	```
 
-The scripts would connect to the systems, run all the queries varying the parameters, obtain the results and plot them
+- Note: The scripts would connect to the systems, run all the queries varying the parameters, obtain the results and plot them
 
-### Arguments 
+- **Arguments**: [args] should be replaced with the name of the system, query, and dataset:  
+
+
 | --system | --queries | --datasets |
 | ------ | ------ | ------ |
 | clickhouse | q1 (selection) | d1 |
@@ -113,7 +113,8 @@ The scripts would connect to the systems, run all the queries varying the parame
 |  | q9 (DTW) | |
 
 
-### Optional arguments
+
+- The following arguments allow to add variation in the number of sensors and dynamic changes in predicate ranges:
 
  | args  |  Interpretation | Default value | 
  | --------    | ------- | ------- | 
@@ -125,7 +126,6 @@ The scripts would connect to the systems, run all the queries varying the parame
  | --min_ts   |   Minimum query timestamp | "2019-04-01T00:00:00" |
  | --max_ts   |   Maximum query timestamp | "2019-04-30T00:00:00"
  | --timeout   |   Maximum query time after 5 runs (s) | 20
-
 
 
 ### Examples
@@ -166,3 +166,4 @@ python3 run_eval.py --systems influx --datasets d1 --rangeUnit day --def_s 3
 python3 run_eval.py --systems influx --datasets d1 --queries q1 --def_st 100 --def_s 3 --range 1 --rangeUnit day
 
 ```
+
