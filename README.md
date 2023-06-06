@@ -11,9 +11,8 @@ Monitoring Applications* currently under revision for VLDB 2023.
 | d1 | 1K | 10 | 100 | 5.18M | 01-03-2019 to 30-04-2019 | 
 | d2 | 200K | 2000 | 100 | 17.2B | 01-02-2019 to 10-02-2019 | 
 
-- [**New**]: Additional experiments and results not reported in the paper can be found in: 
-	- SQL-based queries: [results](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/additional-experiments.pdf).
-	- User-Defined Functions (UDFs) queries: [code](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/udfs) and [results](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/additional-experiments.pdf).
+- [**New**]: Additional results not reported in the paper can be found in: 
+	- Advanced queries: [SQL](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/additional-experiments.pdf), [UDF](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/additional-experiments.pdf).
 	- Impact of data characteristics: [results](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/additional-experiments.pdf).
 
 ___
