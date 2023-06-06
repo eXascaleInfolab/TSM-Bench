@@ -13,7 +13,7 @@ Monitoring Applications* currently under revision for VLDB 2023.
 
 - [**New**]: Additional experiments and results not reported in the paper can be found here: 
 	- SQL-based queries: [results](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/additional-experiments.pdf).
-	- User-Defined Functions (UDFs): [code](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/udfs) and [results](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/additional-experiments.pdf).
+	- User-Defined Functions (UDFs) queries: [code](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/udfs) and [results](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/additional-experiments.pdf).
 	- Impact of data characteristics: [results](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/additional-experiments.pdf).
 
 ___
