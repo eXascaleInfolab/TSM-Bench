@@ -53,7 +53,7 @@ Building a dataset consists of downloading it and decompressing it, making it re
 	```
 
 ___
-## Systems installation and configuration
+## Systems Setup
 
 - The following command allows to download, install and setup all the systems
 
