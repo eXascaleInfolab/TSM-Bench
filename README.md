@@ -84,7 +84,7 @@ ___
 	cd systems/{system}
 	sh compression.sh
 	```
-- Note: {system} needs to replaced with the name of one of the systems from the [**table below**](#mandatory-arguments).
+- Note: {system} needs to replaced with the name of one of the systems from the table below.
 
 ### Query Execution 
 
