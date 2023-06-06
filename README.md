@@ -21,7 +21,7 @@ ___
 ___
 ## Prerequisites
 
-- Ubuntu 18 or higher
+- Ubuntu 20.04 or higher
 - Clone this repository
 - All the remaining dependencies will be installed via the install script
 ___
