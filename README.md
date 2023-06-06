@@ -24,13 +24,6 @@ ___
 
 - Ubuntu 18 or higher
 - Clone this repository
-
-- Install all dependencies (~ 3 mins)
-
-	```bash
-	cd systems
-	sh install_dependencies.sh
-	```
 - All the remaining dependencies will be installed via the install script
 ___
 
@@ -59,6 +52,7 @@ ___
 
 	```bash
 	cd systems
+	sh install_dependencies.sh
 	sh install_all.sh && sh setup_all.sh
 	```
 	
