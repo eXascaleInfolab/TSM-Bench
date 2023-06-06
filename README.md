@@ -17,7 +17,7 @@ Monitoring Applications* currently under revision for VLDB 2023.
 	- Impact of data characteristics: [results](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/additional-experiments.pdf).
 
 ___
-[**Prerequisites**](#prerequisites) | [**Build Datasets**](#build-datasets) | [**Installation**](#systems-installation-and-configuration) | [**Experiments**](#experiments) | [**Generation**](#data-generation) 
+[**Prerequisites**](#prerequisites) | [**Build Datasets**](#build-datasets) | [**Installation**](#systems-setup) | [**Experiments**](#experiments) | [**Generation**](#data-generation) 
 
 ___
 ## Prerequisites
