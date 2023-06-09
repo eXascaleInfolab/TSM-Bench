@@ -166,7 +166,8 @@ ___
 
 ## Technical Report
 
-Additional results not reported in the paper can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM-Bench_Technical_Report.pdf): 
+- Additional results not reported in the paper can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM-Bench_Technical_Report.pdf): 
+
 	- Advanced queries: SQL, UDF.
 	- Impact of data characteristics.
 
