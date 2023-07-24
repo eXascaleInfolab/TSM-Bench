@@ -1,10 +1,4 @@
-# tsgen : GAN-based Generation using STL-Robust Decomposed Time Series 
-A tensorflow implementation of tsgen, an anomaly-preserving multi time series generation technique.
-tsgen applies InfoGAN model ([https://arxiv.org/abs/1606.03657](https://arxiv.org/abs/1606.03657))
-to time series data for classifying time series data through unsupervised way. To extract the best of time series 
-features, tsgen decomposes the data using the STL-Robust decomposition.  
-
-
+# TS-LSH : LSH-based Generation Technique for Time Series
 
 ## Sample Data
 
@@ -24,7 +18,7 @@ The file path should be put in the parameters files: *parameters.json*.
 
 #### IMPORTANT TO NOTE
 
-As for now, tsgen supports only 1D Time series. 
+As for now, TS-LSH supports only 1D Time series. 
 
 
 
@@ -45,13 +39,13 @@ sh install_all_linux.sh
 
 The model parameters are stored in the **parameters.json** file. 
 
-## Running tsgen
+## Running TS-LSH
 
 Execute 
 <pre><code>
 python main.py
 </code></pre>
-to run the tsgen pipeline, this will decompose the time series data using the STL-Robust decomposition,
+to run the TS-LSH pipeline, this will decompose the time series data using the STL-Robust decomposition,
 train a model for each component, generate new time series data then reconstruct the time series data. 
 
 
