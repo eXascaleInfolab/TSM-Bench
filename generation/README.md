@@ -1,4 +1,4 @@
-# TS-LSH : LSH-based Generation Technique for Time Series
+# TS-LSH : A LSH-based Generation Technique for Time Series
 
 ## Sample Data
 
