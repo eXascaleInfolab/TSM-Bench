@@ -59,16 +59,3 @@ After running the generation script, the output is:
 * *results/dataset/model/train{Ori, Trend, Seasonality, Residue}/fake_long.csv*: the generated data from the associated model as long time series that are constructed by merging windows.
 * *results/dataset/generated_long_components.csv*: the generated data as long time series that are constructed by merging windows..
 * *results/dataset/generated-components-summed.csv*: the generated data that sum the components windows.results/results_metrics.json: metrics on the generated data. 
-
-
-
-
-
-## Other Ressources
-
-
-1. [STL-Robust Decomposition](https://github.com/LeeDoYup/RobustSTL)
-1. [Original GAN tensorflow implementation](https://github.com/buriburisuri/sugartensor/blob/master/sugartensor/example/mnist_gan.py)
-1. [InfoGAN tensorflow implementation](https://github.com/buriburisuri/sugartensor/blob/master/sugartensor/example/mnist_info_gan.py)
-
-
