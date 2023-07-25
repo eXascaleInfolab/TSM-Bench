@@ -1,5 +1,17 @@
 # TS-LSH : A LSH-based Generation Technique for Time Series
 
+___
+## Prerequisites
+
+- Ubuntu 20.04 or higher
+- Clone this repository
+
+Build all databases using the installation script located in the root folder
+
+```bash
+sh install_all_linux.sh
+```
+___
 ## Sample Data
 
 Any csv formatted time series data as following can be used: 
@@ -17,19 +29,7 @@ time,series1,series2 ...
 The file path should be put in the parameters files: *parameters.json*. 
 
 
-## Dependencies
-
-Python v.3.6.
-
-## Build
-
-Build all databases using the installation script located in the root folder
-
-```bash
-sh install_all_linux.sh
-```
-
-
+___
 ## Part 1: Generating synthetic segments
 
 ### Introduction
@@ -51,7 +51,7 @@ Creating seed fragments (sequences) based on real-time sequence data usually lim
 3. execute benchmark  ``python test_dc.py``
 
 
-
+___
 ## Part 2: Generating long time series
 
 ### Running TS-LSH
