@@ -14,7 +14,7 @@ sh install.sh
 ___
 ## Sample Data
 
-Any csv formatted time series data as following can be used: 
+A csv formatted time series data as following can be used: 
 
 <pre><code>
 time,series1,series2 ... 
@@ -30,7 +30,7 @@ The file path should be put in the parameters files: *parameters.json*.
 
 
 ___
-## Part 1: Generating synthetic segments
+## Step 1: Generating synthetic segments
 
 ### Introduction
 
@@ -46,7 +46,7 @@ The objective of this step is to generate seed fragments (sequences) from real-t
 
 
 ___
-## Part 2: Generating long time series
+## Step 2: Generating long time series
 
 ### Running TS-LSH
 
