@@ -30,11 +30,13 @@ The file path should be put in the parameters files: *parameters.json*.
 
 
 ___
-## Step 1: Generating synthetic segments
+## Step 1: Generating synthetic segments using GAN
 
 ### Introduction
 
 The objective of this step is to generate seed fragments (sequences) from real-time sequence data, which is often constrained by data size limitations.
+
+The following we use DCGAN used by TS-Benchmark, but any GAN variant could be used. 
 
 ### Start
 
