@@ -38,7 +38,7 @@ The objective of this step is to generate seed fragments (sequences) from real-t
 
 ### Start
 
-Access the gan/ folder ``cd gan/``:
+Access the GAN folder ``cd gan/``:
 
 1. first train DCGAN model ``python3 DCGAN.py``
 
