@@ -56,7 +56,6 @@ ___
 
 ### Running TS-LSH
 
-Execute 
 <pre><code>
 python main.py
 </code></pre>
