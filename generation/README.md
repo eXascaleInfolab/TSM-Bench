@@ -12,24 +12,6 @@ Build all databases using the installation script located in the root folder
 sh install.sh
 ```
 ___
-## Sample Data
-
-A csv formatted time series data as following can be used: 
-
-<pre><code>
-time,series1,series2 ... 
-1,11.1,21.1 .. 
-2,12.2,22.2 .. 
-3,13.0,23.1 .. 
-     .
-     .
-     .
-</code></pre>
-
-The file path should be put in the parameters files: *parameters.json*. 
-
-
-___
 ## Step 1: Generating synthetic segments using GAN
 
 ### Introduction
