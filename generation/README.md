@@ -9,7 +9,7 @@ ___
 Build all databases using the installation script located in the root folder
 
 ```bash
-sh install_all_linux.sh
+sh install.sh
 ```
 ___
 ## Sample Data
