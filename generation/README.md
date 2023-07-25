@@ -48,7 +48,7 @@ Access the GAN folder ``cd gan/``:
 
 The GAN training time varied depending on the number of iterations, the number of segments, and the size of segments.
 
-In the end of the training process, GAN would generate generated segments to a file ``fake_noise_23_raw_f.txt``
+In the end of the training process, GAN would generate generated segments to a file ``synthetic_segments.txt``
 
 ___
 ## Step 2: Generating long time series

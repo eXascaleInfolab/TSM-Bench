@@ -188,4 +188,4 @@ if __name__ == '__main__':
                     # print(i)
                     # plt.clf()
     seq=np.asarray(seq).reshape(len(seq), 3072)
-    np.savetxt("fake_noise_23_raw_f.txt", seq, fmt='%f',delimiter=',')
+    np.savetxt("synthetic_segments.txt", seq, fmt='%f',delimiter=',')
