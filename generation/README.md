@@ -53,7 +53,7 @@ ___
 This step constructs locality-sensitive hashing (LSH) tables and indexes the GAN-generated segments. It then uses the original data to query the hashing tables to obtain similar synthetic time series segments. Finally, it appends the o 
 
 <pre><code>
-python main.py
+python3 main.py
 </code></pre>
 
 to run the TS-LSH pipeline, this will decompose the time series data using the STL-Robust decomposition,
