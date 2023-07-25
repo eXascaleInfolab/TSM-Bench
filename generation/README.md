@@ -46,6 +46,9 @@ Access the GAN folder ``cd gan/``:
 
 3. execute benchmark  ``python3 test_dc.py``
 
+The GAN training time varied depending on the number of iterations, the number of segments, and the size of segments.
+
+In the end of the training process, GAN would generate generated segments to a file ``fake_noise_23_raw_f.txt``
 
 ___
 ## Step 2: Generating long time series
