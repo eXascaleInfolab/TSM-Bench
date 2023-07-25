@@ -40,9 +40,9 @@ The objective of this step is to generate seed fragments (sequences) from real-t
 
 Access the GAN folder ``cd gan/``:
 
-1. First train DCGAN model ``python3 DCGAN.py``
+1. Train DCGAN model ``python3 DCGAN.py``
 
-2. Then train the encoder model ``python3 encoder_dc.py``
+2. Train the encoder model ``python3 encoder_dc.py``
 
 3. Execute benchmark  ``python3 test_dc.py``
 
