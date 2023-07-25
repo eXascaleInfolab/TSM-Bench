@@ -16,11 +16,6 @@ time,series1,series2 ...
 
 The file path should be put in the parameters files: *parameters.json*. 
 
-#### IMPORTANT TO NOTE
-
-As for now, TS-LSH supports only 1D Time series. 
-
-
 
 ## Dependencies
 
@@ -35,11 +30,31 @@ sh install_all_linux.sh
 ```
 
 
-## Model parameters
+## Part 1: Generating synthetic segments
 
-The model parameters are stored in the **parameters.json** file. 
+### Introduction
 
-## Running TS-LSH
+The main function of this module is to simulate and generate credible time series data.
+In order to simulate time series more effectively and generate time series more effectively, we propose a massive time series data generation framework, which has the following steps:
+Creating seed fragments (sequences) based on real-time sequence data usually limits the data size.
+
+- Use certain generative adversarial network (GAN) models to generate synthetic fragments from real seeds.
+- Create a directed graph of synthesized fragments.
+- On the directed graph of the synthesized segment. Use random walk algorithm to generate continuous time series
+
+### Start
+
+1. first train DCGAN model ``python DCGAN.py``
+
+2. then train the encoder model ``python encoder_dc.py``
+
+3. execute benchmark  ``python test_dc.py``
+
+
+
+## Part 2: Generating long time series
+
+### Running TS-LSH
 
 Execute 
 <pre><code>
@@ -48,14 +63,3 @@ python main.py
 to run the TS-LSH pipeline, this will decompose the time series data using the STL-Robust decomposition,
 train a model for each component, generate new time series data then reconstruct the time series data. 
 
-
-## Generated time series data sample
- 
-After running the generation script, the output is: 
-
-* *results/dataset/decomposition/*: the  STL-Robust decomposition result.
-* *results/dataset/model/*: the learned models. trainResidue for example is the model built by learning from the Residue component, model/trainOri is the model built by learning from the original data. 
-* *results/dataset/model/train{Ori, Trend, Seasonality, Residue}/fake.csv*: the generated data from the associated model as windows.
-* *results/dataset/model/train{Ori, Trend, Seasonality, Residue}/fake_long.csv*: the generated data from the associated model as long time series that are constructed by merging windows.
-* *results/dataset/generated_long_components.csv*: the generated data as long time series that are constructed by merging windows..
-* *results/dataset/generated-components-summed.csv*: the generated data that sum the components windows.results/results_metrics.json: metrics on the generated data. 
