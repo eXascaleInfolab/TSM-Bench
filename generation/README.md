@@ -38,11 +38,11 @@ The objective of this step is to generate seed fragments (sequences) from real-t
 
 ### Start
 
-1. first train DCGAN model ``python DCGAN.py``
+1. first train DCGAN model ``python3 DCGAN.py``
 
-2. then train the encoder model ``python encoder_dc.py``
+2. then train the encoder model ``python3 encoder_dc.py``
 
-3. execute benchmark  ``python test_dc.py``
+3. execute benchmark  ``python3 test_dc.py``
 
 
 ___
