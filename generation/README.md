@@ -39,12 +39,10 @@ ___
 
 ### Running TS-LSH
 
-This step constructs locality-sensitive hashing (LSH) tables and indexes the GAN-generated segments. It then uses the original data to query the hashing tables to obtain similar synthetic time series segments. Finally, it appends the o 
+This step constructs locality-sensitive hashing (LSH) tables and indexes the GAN-generated segments. It then uses the original data to query the hashing tables to obtain similar synthetic time series segments. Finally, it appends the results to the long generated time series. 
+
+The following scripts would execute all previous steps in addition to the state-of-the-art method Graph-GAN:
 
 <pre><code>
 python3 main.py
 </code></pre>
-
-to run the TS-LSH pipeline, this will decompose the time series data using the STL-Robust decomposition,
-train a model for each component, generate new time series data then reconstruct the time series data. 
-
