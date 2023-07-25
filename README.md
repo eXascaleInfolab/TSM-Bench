@@ -160,7 +160,7 @@ ___
 
 ## Data Generation 
 
-The generation code is not published at the moment and will be released as soon as the revision process is completed. 
+The generation code is shared [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/generation). 
 
 ___
 
