@@ -40,15 +40,15 @@ The objective of this step is to generate seed fragments (sequences) from real-t
 
 Access the GAN folder ``cd gan/``:
 
-1. first train DCGAN model ``python3 DCGAN.py``
+1. First train DCGAN model ``python3 DCGAN.py``
 
-2. then train the encoder model ``python3 encoder_dc.py``
+2. Then train the encoder model ``python3 encoder_dc.py``
 
-3. execute benchmark  ``python3 test_dc.py``
+3. Execute benchmark  ``python3 test_dc.py``
 
 The GAN training time varied depending on the number of iterations, the number of segments, and the size of segments.
 
-In the end of the training process, GAN would generate generated segments to a file ``synthetic_segments.txt``
+In the end of the training process, GAN would generate generated segments to a file ``synthetic_segments.txt``.
 
 ___
 ## Step 2: Generating long time series
