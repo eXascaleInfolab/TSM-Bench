@@ -34,9 +34,9 @@ ___
 
 ### Introduction
 
-The objective of this step is to generate seed fragments (sequences) from real-time sequence data, which is often constrained by data size limitations.
+The objective of this step is to generate seed fragments (sequences) from real-time sequence data, which is constrained by size.
 
-The following we use DCGAN used by TS-Benchmark, but any GAN variant could be used. 
+In the following we use DCGAN used by TS-Benchmark, but any GAN variant could be used. 
 
 ### Start
 
