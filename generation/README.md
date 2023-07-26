@@ -50,4 +50,4 @@ python3 main.py
 ___
 ## Sample generation plots:
 
-![image](https://github.com/eXascaleInfolab/TSM-Bench/assets/15266242/62d687d3-4516-4a21-8d10-c6884416bc6f)
+![image](https://github.com/eXascaleInfolab/TSM-Bench/assets/15266242/4a590799-222b-4c52-ac21-3550bfe71f24)
