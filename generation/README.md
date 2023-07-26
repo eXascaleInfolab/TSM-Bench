@@ -18,7 +18,7 @@ ___
 
 The objective of this step is to generate seed fragments (sequences) from real-time sequence data, which is constrained by size.
 
-In the following we use DCGAN used by TS-Benchmark, but any GAN variant could be used. 
+In the following, we use DCGAN used by TS-Benchmark, but any GAN variant could be used. 
 
 ### Start
 
@@ -46,3 +46,8 @@ The following scripts would execute all previous steps in addition to the state-
 <pre><code>
 python3 main.py
 </code></pre>
+
+___
+## Sample generation plots:
+
+![image](https://github.com/eXascaleInfolab/TSM-Bench/assets/15266242/865b39be-cafa-4ad7-bbd6-059ce546e6f3)
