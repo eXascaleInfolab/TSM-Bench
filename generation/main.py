@@ -19,54 +19,67 @@ import graph.random_walk_ori as random_walk
 import pandas as pd
 import lshashpy3 as lshash
 import math 
-from scipy import stats
 
 def sigmoid(x):
     return 1 / (1 + math.exp(-x))
 
+
+# In[3]:
+
+
+data = pd.read_csv('pH_accuracy.csv')
+data = data['pH'].tolist()
+# data = data[:5000]
+len(data)
+
+#define moving average function
 def moving_avg(x, n):
     cumsum = np.cumsum(np.insert(x, 0, 0)) 
     return (cumsum[n:] - cumsum[:-n]) / float(n)
-# data = moving_avg(data, 200).tolist()
 
+#calculate moving average using previous 3 time periods
 
-window = 3072
-
-nTS = 3
-
-print('Reading input data...')
-
-
-# In[2]:
-
-
-# data = pd.read_csv('/localdata/ABench-IoT/Generation/gan/dcgan/Electric.csv')
-# data = data['Electric'].tolist()
-# df_segments = pd.read_csv('/localdata/ABench-IoT/Generation/gan/dcgan/fake_noise_23_raw_f3.txt', header = None)
-
-data = pd.read_csv('data/Electric.csv')
-data = data['Electric'].tolist()
-data = stats.zscore(np.array(data))
-data = data.tolist()
-# data = data[:window * 6 ]
-len(data)
+data = moving_avg(data, 200).tolist()
 
 
 # In[4]:
 
 
-df_segments = pd.read_csv('data/fake_noise_23_raw_f3.txt', header = None)
+plt.plot(data)
+plt.show()
+# plt.plot(generated)
+# plt.show()
+
+
+# In[26]:
+
+
+print('Preparing segments...')
+window = 1000
+segments = []
+for i in range(3):
+    segments += [data[i:i + window] + np.random.normal(0,.008, window) for i in range(0, len(data) - window, int(0.1 * window))]
+
+
+# In[8]:
+
+
+df_segments = pd.DataFrame(segments)
+df_segments = df_segments.T
+
+df_segments.iloc[: , :50].plot(subplots=True, layout=(10,6), figsize=(10, 10), legend = True, color = 'b')
+plt.show()
 
 
 # ## Filter GAN generated data
 
-# In[5]:
+# In[9]:
 
 
 from scipy.signal import lfilter
 print('Filtering GAN generated data...')
 
-df_segments = df_segments.T
+# df_segments = df_segments.T
 
 n = 10  # the larger n is, the smoother curve will be
 b = [1.0 / n] * n
@@ -88,96 +101,74 @@ df_segments.iloc[: , :50].plot(subplots=True, layout=(10,6), figsize=(10, 10), l
 plt.show()
 
 
-# In[6]:
-
-
-segments = [] 
-
-for col in df_segments:
-    segments += [df_segments[col].tolist()]
-print(len(segments))
-
-
 # # LSH
 
-# In[9]:
+# In[10]:
 
 
-# def LSH_update(ori, generated, window, nTS, n_top = 30, hash_length = window // 300, num_hashtables=8):
-#     # index synthetic segments
-#     lsh = lshash.LSHash(hash_length, window, num_hashtables=num_hashtables)
-#     for i in generated:
-#         lsh.index(i) 
-#     to_query = [ori[i:i + window] for i in range(0, len(ori) - window, window)]
-#     lsh_res = []
-#     used = 0
-#     k = int(window * .03)
-#     for i in tqdm(range(nTS)):
-#         temp = list(random.choice( lsh.query(to_query[0], distance_func="euclidean", num_results=n_top))[0][0])
-#         for i in range(1, len(to_query)): 
-#             candidates = lsh.query(to_query[i], distance_func="euclidean", num_results=n_top)
-#             s = list(random.choice(candidates)[0][0])
-#             temp_t = temp[-k:]
-#             s_h = s[:k]
-#             overlap = []
-#             for i in range(-k//2, k//2):
-#                 overlap.append((1 - sigmoid(i))*temp_t[i + k//2] + sigmoid(i)*s_h[i + k//2])
-#     #         for i in range(-1*k , 0):
-#     #             temp[i]= (1 - sigmoid(i))*temp_t[i] + sigmoid(i)*s_h[i]
-#     #         for i in range(0, k):
-#     #             s[i]= (1 - sigmoid(i))*temp_t[i] + sigmoid(i)*s_h[i]
-#             temp[-k:] = overlap
-#             s[:k] = overlap[::-1]
-#             temp.extend(s)
-#             used += 1
-#         lsh_res.append(temp)
-#         print(used, len(generated)*50//100)
-#         if used > len(generated)*50//100: 
-#             lsh = lshash.LSHash(hash_length, window, num_hashtables=num_hashtables)
-#             for i in generated:
-#                 lsh.index(i)    
-#             used = 0
-#     return lsh_res
+print('Launching LSH...')
+lsh = lshash.LSHash(8, len(segments[0]), num_hashtables=8)
 
-def LSH(ori, generated, window, nTS, n_top = 30, hash_length = window // 300, num_hashtables=8, ts_length = -1):
-    if ts_length == -1: 
-        ts_length = len(ori)
-    else:
-        ts_length -= ts_length%len(ori)
-    # index synthetic segments
-    lsh = lshash.LSHash(hash_length, window, num_hashtables=num_hashtables)
-    for i in generated:
-        lsh.index(i) 
-    to_query = [ori[i%(len(ori)-window):i%(len(ori)-window) + window] for i in range(0, ts_length - window, window)]
-    lsh_res = []
-    k = int(window * .03)
-    for i in tqdm(range(nTS)):
-        temp = list(random.choice( lsh.query(to_query[0], distance_func="euclidean", num_results=n_top))[0][0])
-        for i in range(1, len(to_query)): 
-#             print(len(to_query[i]))
-            candidates = lsh.query(to_query[i], distance_func="euclidean", num_results=n_top)
-            s = list(random.choice(candidates)[0][0])
-            temp_t = temp[-k:]
-            s_h = s[:k]
-            overlap = []
-            for i in range(-k//2, k//2):
-                overlap.append((1 - sigmoid(i))*temp_t[i + k//2] + sigmoid(i)*s_h[i + k//2])
-    #         for i in range(-1*k , 0):
-    #             temp[i]= (1 - sigmoid(i))*temp_t[i] + sigmoid(i)*s_h[i]
-    #         for i in range(0, k):
-    #             s[i]= (1 - sigmoid(i))*temp_t[i] + sigmoid(i)*s_h[i]
-            temp[-k:] = overlap
-            s[:k] = overlap[::-1]
-            temp.extend(s)
-        lsh_res.append(temp)
-    return lsh_res
+for i in segments:
+    lsh.index(i)
 
-# lsh_res= LSH(data, segments, window, nTS)
+
+# In[11]:
+
+
+to_query = [data[i:i + window] for i in range(0, len(data) - window, window)]
+
+# plt.plot(to_query[0])
+# plt.show()
+
+# plt.plot(random.choice( lsh.query(to_query[0], distance_func="euclidean", num_results=10))[0][0])
+# plt.show()
+
+# nn = lsh.query(to_query[0], distance_func="euclidean", num_results=10)
+# for ((vec,extra_data),distance) in nn:
+#     print( distance)
+#     plt.plot(vec)
+#     plt.show()
+#     # len(segments)
+
+
+# In[27]:
+
+
+# lsh_res = []
+# for i in range(3):
+#     results = [lsh.query(to_query[i])[0][0][0] for i in range(len(to_query))]
+#     print(len(results))
+#     res_lsh = []
+#     for l in results: 
+#         res_lsh += l
+#     lsh_res.append(res_lsh)
+
+print('Querying LSH...')
+lsh_res = []
+n_top = 10
+k = int(window * .03)
+for i in tqdm(range(3)):
+    temp = list(random.choice( lsh.query(to_query[0], distance_func="euclidean", num_results=n_top))[0][0])
+    for i in range(1, len(to_query)): 
+        s = list(random.choice( lsh.query(to_query[i], distance_func="euclidean", num_results=n_top))[0][0])
+        temp_t = temp[-k:]
+        s_h = s[:k]
+        overlap = []
+        for i in range(-k//2, k//2):
+            overlap.append((1 - sigmoid(i))*temp_t[i + k//2] + sigmoid(i)*s_h[i + k//2])
+#         for i in range(-1*k , 0):
+#             temp[i]= (1 - sigmoid(i))*temp_t[i] + sigmoid(i)*s_h[i]
+#         for i in range(0, k):
+#             s[i]= (1 - sigmoid(i))*temp_t[i] + sigmoid(i)*s_h[i]
+        temp[-k:] = overlap
+        temp.extend(s[k:])
+    lsh_res.append(temp)
 
 
 # # Graph
 
-# In[10]:
+# In[29]:
 
 
 #Calculates the distance between two series. Given series A, B returns the Euclidean distance between A and B
@@ -250,228 +241,156 @@ def random_walk(relation_matrix, probability_matrix, length):
     return np.array(seq)
 
 
-def Graph(ori, generated, window, nTS, ts_length = -1):
-    if ts_length == -1: 
-        ts_length = len(ori)
-    a,b,c,d=transform(np.array(generated), 100, 5)
-    graph_res = []
-    for i in range(nTS):
-        path = random_walk( c, d, ts_length//window)
-#         print(path)
-        temp=[]
-        for s in path:
-    #         print(path[i], i)
-            temp+=list(generated[s])
-        graph_res.append(temp)
-#     print(len(graph_res))   
-    return graph_res
-    
-# def Graph_update(ori, generated, window, nTS):
-#     a,b,c,d=transform(np.array(generated), 100, 5)
-#     used = 0
-#     graph_res = []
-#     for i in range(nTS):
-#         path = random_walk( c, d, int(len(ori)/window))
-# #         print(path)
-#         temp=[]
-#         for s in path:
-#     #         print(path[i], i)
-#             temp+=list(generated[s])
-#             used +=1
-#         graph_res.append(temp)
-#         print(used, len(generated)*50//100)
-#         if used > len(generated)*50//100: 
-#             a,b,c,d=transform(np.array(generated), 100, 5)
-#             used = 0
-# #         print(len(graph_res))   
-#     return graph_res
+# In[30]:
+
+
+seq=[0]
+print('Building Graph...')
+a,b,c,d=transform(np.array(segments), 100, 5)
+
+
+# In[31]:
+
+
+print('Generating using Graph...')
+graph_res = []
+for i in range(3):
+    path = random_walk( c, d, int(len(data)/window))
+    print(path)
+    temp=[]
+    for s in path:
+#         print(path[i], i)
+        temp+=list(segments[s])
+    graph_res.append(temp)
+    print(len(graph_res))
     
 
 
-# # Generate LSH
+# In[32]:
 
-# In[11]:
 
+print(graph_res[0][-3:-1])
+print(graph_res[1][-3:-1])
+print(graph_res[2][-3:-1])
 
-print('Generating LSH...')
-nTS = 100
-ts_length = 5200000
 
+# In[19]:
 
 
-# In[12]:
+# res_lsh = pd.read_csv('example_data.csv')
+# res_lsh = res_lsh['LSH'].tolist()
 
+# res_graph = pd.read_csv('example_data.csv')
+# res_graph = res_graph['Graph'].tolist()
 
-start = time.time()
-lsh_res= LSH(data, segments, window, nTS=nTS, ts_length = ts_length)
-lsh_res = [i[:5200000] for i in lsh_res]
-print('LSH runtime: ', time.time() - start)
 
+# In[45]:
 
-# In[ ]:
 
+xi = list(range(10000))
+# plot the index for the x-values 
 
-df = pd.DataFrame(lsh_res)
-df = df.T
+plt.figure(figsize=(60, 40))
+plt.subplot(7, 1, 1)
 
+# plt.figure(figsize=(60, 8))
+plt.plot(data,color='blue',linewidth=4.0, label='Original')
+plt.xlim(0,len(data))
+plt.ylim(8.1,8.7)
+plt.legend(loc="upper left", prop={'size': 36})
 
-# In[ ]:
+# plt.show()
 
+plt.subplot(7, 1, 2)
 
-df.T.to_csv("results/d1_lsh.csv", sep=',', float_format='%.6f', header=True, index=False)
+# plt.figure(figsize=(60, 8))
+plt.plot(lsh_res[0],color='green',linewidth=4.0, label='LSH')
+plt.xlim(0,len(lsh_res[0]))
+plt.ylim(8.1,8.7)
+plt.legend(loc="upper left", prop={'size': 36})
 
+plt.subplot(7, 1, 3)
 
-# In[ ]:
+# plt.figure(figsize=(60, 8))
+plt.plot(lsh_res[1],color='green',linewidth=4.0, label='LSH')
+plt.xlim(0,len(lsh_res[1]))
+plt.ylim(8.1,8.7)
+# plt.legend(loc="upper left", prop={'size': 36})
+plt.legend(loc="upper left", prop={'size': 36})
 
+plt.subplot(7, 1, 4)
 
-df.T.to_csv("results/d1_lsh.csv", sep=',', float_format='%.6f', header=False, index=False)
+# plt.figure(figsize=(60, 8))
+plt.plot(lsh_res[2],color='green',linewidth=4.0, label='LSH')
+plt.xlim(0,len(lsh_res[1]))
+plt.ylim(8.1,8.7)
+# plt.legend(loc="upper left", prop={'size': 36})
+plt.legend(loc="upper left", prop={'size': 36})
 
 
-# In[ ]:
+plt.subplot(7, 1, 5)
 
+# plt.figure(figsize=(60, 8))
+plt.plot(graph_res[0],color='red',linewidth=4.0, label='Graph')
+plt.xlim(0,len(graph_res[0]))
+plt.ylim(8.1,8.7)
+plt.legend(loc="upper left", prop={'size': 36})
 
-df = pd.concat([df for i in range(2)], axis=0)[:5184000]
-df.columns = ['s' + str(i) for i in range(100)]
-df.to_csv("results/d1_lsh.csv", sep=',', float_format='%.6f', header=True, index=False)
+plt.subplot(7, 1, 6)
 
+# plt.figure(figsize=(60, 8))
+plt.plot(graph_res[1],color='red',linewidth=4.0, label='Graph')
+plt.xlim(0,len(graph_res[1]))
+plt.ylim(8.1,8.7)
+plt.legend(loc="upper left", prop={'size': 36})
 
-# In[ ]:
 
+plt.subplot(7, 1, 7)
 
-import numpy as np
-import pandas as pd
-from datetime import datetime
-from tqdm import tqdm
+# plt.figure(figsize=(60, 8))
+plt.plot(graph_res[2],color='red',linewidth=4.0, label='Graph')
+plt.xlim(0,len(graph_res[2]))
+plt.ylim(8.1,8.7)
+plt.legend(loc="upper left", prop={'size': 36})
 
-nb_station = 10
-nb_sensor = 100
-nb_days = 60
-granularity = 10 #seconds
+# plt.show()
+plt.savefig('results/plot_lsh_graph.pdf',dpi=1600,
+            bbox_inches = 'tight')
 
-dtime = datetime(2019, 3, 1, 00)
-dtimestamp = datetime.timestamp(dtime)
-ms = int(round(dtimestamp * 1000))
-n_it = 10
-print(ms)
 
-list_time = [datetime.fromtimestamp(int((ms + i * granularity * 1000) //1000)).strftime('%Y-%m-%dT%H:%M:%S') for i in range(86400 // granularity * nb_days)] * 10
 
-print(len(list_time))
+# # Metrics
 
-list_st = []
-for s in range(10):
-    list_st += ['st' + str(s) for i in range(86400 // granularity * nb_days)]
-df['time'] = list_time
-df['id_station'] = list_st
-df = df[['time','id_station']+['s'+str(i) for i in range(100)]]
-df
+# In[38]:
 
 
-# In[ ]:
+plt.hist(data, bins=50, alpha=0.5, label ='real')
+plt.hist(lsh_res[0], bins=50, alpha=0.5, label ='lsh')
+plt.hist(graph_res[0], bins=50, alpha=0.5, label ='graph')
+plt.legend()
+plt.show()
+plt.savefig('results/hist_lsh_graph.pdf',dpi=1600,
+            bbox_inches = 'tight')
 
 
-df.to_csv("results/d1_lsh.csv", sep=',', float_format='%.6f', header=True, index=False)
+# In[39]:
 
 
-# # Generate Graph
+type(lsh_res[0])
 
-# In[ ]:
 
+# In[42]:
 
-# Graph
-print('Generating Graph...')
 
-start = time.time()
-graph_res = Graph(data, segments, window, nTS=nTS, ts_length = ts_length)
-for i in range(len(graph_res)):
-    for j in range(len(graph_res[i])):
-        graph_res[i][j] = abs(graph_res[i][j])
-print('Graph runtime: ', time.time() - start, 's')
+import csv
 
+with open('results/lsh.csv', 'w') as myfile:
+    wr = csv.writer(myfile)
+    wr.writerow(lsh_res[0])
 
-# In[ ]:
-
-
-len(graph_res[0])
-
-
-# In[ ]:
-
-
-pd.DataFrame(graph_res)
-
-
-# In[ ]:
-
-
-# graph_res = [abs(i[:5184000]) for i in graph_res]
-
-
-# In[ ]:
-
-
-import itertools
-graph_res_ALL = list(itertools.chain.from_iterable(graph_res))
-print(len(graph_res_ALL))
-
-
-# In[ ]:
-
-
-df_graph = pd.DataFrame()
-for i in range(100):
-    df_graph['s' + str(i)] = list(itertools.chain.from_iterable([graph_res[i*10 + idx] for idx in range(10)]))  #graph_res_ALL[i*5184000:(i+1)*5184000]
-df_graph.head()
-
-
-# In[ ]:
-
-
-import numpy as np
-import pandas as pd
-from datetime import datetime
-from tqdm import tqdm
-
-nb_station = 10
-nb_sensor = 100
-nb_days = 60
-granularity = 10 #seconds
-
-dtime = datetime(2019, 3, 1, 00)
-dtimestamp = datetime.timestamp(dtime)
-ms = int(round(dtimestamp * 1000))
-n_it = 10
-print(ms)
-
-list_time = [datetime.fromtimestamp(int((ms + i * granularity * 1000) //1000)).strftime('%Y-%m-%dT%H:%M:%S') for i in range(86400 // granularity * nb_days)] * 10
-
-print(len(list_time))
-
-list_st = []
-for s in range(10):
-    list_st += ['st' + str(s) for i in range(86400 // granularity * nb_days)]
-df['time'] = list_time
-df['id_station'] = list_st
-df = df[['time','id_station']+['s'+str(i) for i in range(100)]]
-df
-
-
-# In[ ]:
-
-
-df.to_csv("results/d1_graph.csv", sep=',', float_format='%.6f', header=True, index=False)
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
+with open('results/graph.csv', 'w') as myfile:
+    wr = csv.writer(myfile)
+    wr.writerow(graph_res[0])
 
 
 # In[ ]:
