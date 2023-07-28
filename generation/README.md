@@ -1,4 +1,4 @@
-# TS-LSH : A LSH-based Generation Technique for Time Series
+# TS-LSH: A LSH-based Generation Technique for Time Series
 
 ___
 ## Prerequisites
@@ -14,15 +14,24 @@ sh install.sh
 ___
 ## Execution
 
-1. The method takes in synthetic segments and generates seed sequences (~ 3 days)
+### Training before Generation
+
+The user has real-world data and wants to generate realistic synthetic time series. 
+
+1. **[If no GAN model was trained yet]** The method takes in the real data segments under `data/` folder and trains a GAN model to learn its underlying characteristics (~ 3 days) 
 
 ```bash
 python3 DCGAN.py
 python3 encoder_dc.py
+```
+
+2. The method uses the trained GAN model under `generation/` folder to generate realistic synthetic segments into the same folder (~ 40 minutes)
+
+```bash
 python3 test_dc.py
 ```
 
-2. The method uses the synthetic segments to generate long time series (~ 9 minutes)
+3. The method uses the GAN synthetic under `generation/` folder  segments to generate long time series (~ 9 minutes)
 
 ```bash
 python3 main.py
