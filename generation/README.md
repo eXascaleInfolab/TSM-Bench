@@ -31,7 +31,7 @@ python3 encoder_dc.py
 python3 test_dc.py
 ```
 
-3. The method uses the GAN synthetic under `generation/` folder  segments to generate long time series (~ 9 minutes)
+3. The method uses the GAN synthetic under `generation/` folder  segments to generate long time series into the same folder (~ 9 minutes)
 
 ```bash
 python3 main.py
