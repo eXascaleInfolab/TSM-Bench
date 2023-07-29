@@ -1,5 +1,7 @@
 # TS-LSH: A LSH-based Generation Technique for Time Series
 
+<!---
+
 ___
 ## Prerequisites
 
@@ -12,7 +14,10 @@ Build all databases using the installation script located in the root folder
 sh install.sh
 ```
 ___
-## Execution
+
+-->
+
+## Execution with model training
 
 ### Model Training
 
@@ -35,6 +40,9 @@ python3 test_dc.py
 ```bash
 python3 main.py
 ```
+
+## Execution with a pre-trained model 
+
 
 ___
 ## Sample generation plots:
