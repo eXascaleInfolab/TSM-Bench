@@ -1,30 +1,39 @@
 # Comprehensive Benchmark for Time Series Database Systems
 
-TSM-Bench implements seven Time Series Database Systems (TSDBs) for a mixture set of worklods. The benchmark can be easily extended with new systems, queries, datasets, and workloads. The benchmark proposes a novel data generation method that augments seed real-world time series datasets enabling realistic and scalable benchmarking. Technical details can be found in paper: *TSM-Bench: Benchmarking Time Series Database Systems for
+TSM-Bench implements seven Time Series Database Systems (TSDBs) for a mixture set of workloads. The benchmark can be easily extended with new systems, queries, datasets, and workloads. The benchmark proposes a novel data generation method that augments seed real-world time series datasets enabling realistic and scalable benchmarking. Technical details can be found in the paper: *TSM-Bench: Benchmarking Time Series Database Systems for
 Monitoring Applications* currently under revision for VLDB 2023. 
 
 - The benchmark implements the following TSDBs: [ClickHouse](https://clickhouse.com/), [Druid](https://druid.apache.org/), [eXtremeDB](https://www.mcobject.com/), [InfluxDB](https://docs.influxdata.com/influxdb/v1.7/), [MonetDB](https://www.monetdb.org/easy-setup/), [QuestDB](https://questdb.io/), [TimescaleDB](https://www.timescale.com/). It evaluates bulk-loading, storage performance, and query performance in both offline and online of TSDBs. 
-- The evaluated datasets can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/datasets). The datasets include the two datasets *D-LONG[d1], D-MULTI[d2]*, in addition to additional generation scripts that are used during the online workloads. 
+- The evaluated datasets can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/datasets). The datasets include the two datasets *D-LONG[d1], and D-MULTI[d2]*, in addition to additional generation scripts that are used during the online workloads.
 
+[**Prerequisites**](#prerequisites) | [**Build Datasets**](#build-datasets) | [**Installation**](#systems-setup) | [**Experiments**](#experiments) | [**Generation**](#data-generation) | [**Technical Report**](#technical-report)
+
+<!---
 | Dataset | # of TS | # of Stations | # of Sensors per station | Length of TS | Time Period | 
 | ------ | ------ | ------ | ------ | ------ | ------ |
 | d1 | 1K | 10 | 100 | 5.18M | 01-03-2019 to 30-04-2019 | 
 | d2 | 200K | 2000 | 100 | 17.2B | 01-02-2019 to 10-02-2019 | 
 
+
 - [**New**] : [TSM_Technical_Report](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Technical_Report.pdf) which contains additional experiments on
 	- Advanced queries in SQL and UDF.
 	- Impact of data characteristics.
+-->
 
-___
-[**Prerequisites**](#prerequisites) | [**Build Datasets**](#build-datasets) | [**Installation**](#systems-setup) | [**Experiments**](#experiments) | [**Generation**](#data-generation) | [**Technical Report**](#technical-report) 
 
 ___
 ## Prerequisites
 
 - Ubuntu 20.04 or higher
 - Clone this repository
-- All the remaining dependencies will be installed via the install script
+- All the necessary dependencies will be installed via the install script
 ___
+
+
+
+
+___
+
 
 ## Build Datasets 
 
@@ -160,14 +169,18 @@ ___
 
 ## Data Generation 
 
-The generation code is shared [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/generation). 
+The generation code can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/generation). 
 
 ___
 
 ## Technical Report
 
-- Additional results not reported in the paper can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Technical_Report.pdf): 
+Additional results not reported in the paper can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Technical_Report.pdf). The additional experiments cover: 
 
-	- Advanced queries: SQL, UDF.
-	- Impact of data characteristics.
+- Advanced analytical queries in SQL and UDF
+- Selection of the evaluated systems
+- Parameterization of the systems
+- Impact of data characteristics
+
+
 
