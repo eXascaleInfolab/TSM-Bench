@@ -26,18 +26,18 @@ ___
 ___
 ## Examples of Running evaluations
 
-Make sure first that the evaluated system-s is/are running before launching the UDF performanec evaluation
+- Make sure first that the evaluated system is running before launching the UDF performance evaluation
 
-Insert time and throughput is taken for each run. It is a double check that the data has been inserted
+- Insertion time and throughput are computed for each run. It is a double check that the data has been inserted
 
-##### Runtime of Similarity Search [DS-Tree]
+### Similarity Search [DS-Tree]
 
 
 ```bash
 python3 run_eval.py --dataset d1 --algorithm dist --database timescaledb
 ```
 
-##### Runtime of SAX representation [Mapping]
+### Time Series Representation [SAX]
 
 ```bash
 python3 run_eval.py --dataset d1 --algorithm sax-representation --database timescaledb
@@ -45,7 +45,7 @@ python3 run_eval.py --dataset d1 --algorithm sax-representation --database times
 
 
 
-##### Runtime of Centroid Decomposition [Decomposition]
+### Matrix Decomposition [Centroid Decomposition]
 
 ```bash
 python3 run_eval.py --dataset d1 --algorithm cd --database timescaledb
@@ -53,27 +53,27 @@ python3 run_eval.py --dataset d1 --algorithm cd --database timescaledb
 
 
 
-##### Runtime of recovery of missing values [RecovDB]
+### Recovery of Missing Values [RecovDB]
 
 ```bash
 python3 run_eval.py --dataset d1 --algorithm recovdb --database timescaledb
 ```
 
-##### Runtime of K-Means [Clustering]
+### Clustering [K-Means]
 
 ```bash
 python3 run_eval.py --dataset d1 --algorithm kmeans --database timescaledb
 ```
 
 
-##### Runtime  of KNN [Classification]
+### Classification [KNN]
 
 ```bash
 python3 run_eval.py --dataset d1 --algorithm knn --database timescaledb
 ```
 
 
-##### Runtime  of Hot-Sax [Anomaly Detection]
+### Anomaly Detection [Hot-Sax]
 
 ```bash
 python3 run_eval.py --dataset d1 --algorithm hotsax --database timescaledb
