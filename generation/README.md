@@ -14,24 +14,23 @@ sh install.sh
 ___
 ## Execution
 
-### Training before Generation
+### Model Training
 
-The user has real-world data and wants to generate realistic synthetic time series. 
 
-1. **[If no GAN model was trained yet]** The method takes in the real data segments under `data/` folder and trains a GAN model to learn its underlying characteristics (~3 days) 
+1. Train a GAN model on data segments located in `data/` and write the resulting segments into `generation/` (takes ~3 days) 
 
 ```bash
 python3 DCGAN.py
 python3 encoder_dc.py
 ```
 
-2. The method uses the trained GAN model under `generation/` folder to generate realistic synthetic segments into the same folder (~40 minutes)
+2. Generate new segments using the trained ones from Step 1 (takes ~40 minutes)
 
 ```bash
 python3 test_dc.py
 ```
 
-3. The method uses the GAN synthetic under `generation/` folder  segments to generate long time series into the same folder (~9 minutes)
+3. Apply LSH to generate long time series (takes ~9 minutes)
 
 ```bash
 python3 main.py
