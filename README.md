@@ -56,7 +56,7 @@ Building a dataset consists of downloading it and decompressing it, making it re
 ___
 ## Systems Setup
 
-- The following commands allows to download, install and setup all the systems
+- The following commands allow to download, install, and setup all the systems
 
 	```bash
 	cd systems
@@ -93,13 +93,14 @@ ___
 	cd systems/{system}
 	sh compression.sh
 	```
-- Note: {system} needs to replaced with the name of one of the systems from the table below.
+- Note: {system} needs to be replaced with the name of one of the systems from the table below.
 
 ### Query Execution 
 
-- Each of the systems has a dedicated subfolder under `systems` folder. Queries for all systems could be queried as follows from the main directory
+- Each of the systems has a dedicated subfolder under `systems` folder. Queries for all systems can be executed as follows:
 
 	```bash
+ 	cd/
 	python3 run_eval.py [args]
 	```
 
