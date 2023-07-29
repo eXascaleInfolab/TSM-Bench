@@ -37,10 +37,15 @@ python3 test_dc.py
 3. Apply LSH to generate long time series (takes ~9 minutes)
 
 ```bash
-python3 main.py
+python3 gen.py
 ```
 
 ## Execution with a pre-trained model 
+
+
+```bash
+python3 gen.py
+```
 
 
 ___
