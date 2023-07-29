@@ -1,4 +1,4 @@
-# TS-LSH: A LSH-based Generation Technique for Time Series
+# TS-LSH: LSH-based Generation Technique for Long Time Series
 
 <!---
 
@@ -20,7 +20,6 @@ ___
 ## Execution with model training
 
 ### Model Training
-
 
 1. Train a GAN model on data segments located in `data/` and write the resulting segments into `generation/` (takes ~3 days) 
 
