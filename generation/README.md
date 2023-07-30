@@ -42,7 +42,7 @@ python3 test_dc.py
 ```
 ### Time Series Generation
 
-- Apply LSH to generate long time series (takes ~9 minutes)
+- Apply LSH to generate long time series (takes ~20 seconds)
 
 ```bash
 python3 gen_ts.py
