@@ -35,7 +35,7 @@ python3 DCGAN.py
 python3 encoder_dc.py
 ```
 
-- Generate new segments using the trained ones from Step 1 (takes ~40 minutes)
+- Generate new segments using the trained ones from Step 1 (takes ~46 seconds)
 
 ```bash
 python3 test_dc.py
