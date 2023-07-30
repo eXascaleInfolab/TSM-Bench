@@ -142,7 +142,7 @@ ___
 python3 run_eval.py --systems influx --datasets d1 --queries "q1"
 ```
 
-2. **[Figures 4.a 4.b]** Run queries q3 and q4 on InfluxDB for Dataset 1 using default parameters
+2. **[Figures 4.a-b]** Run queries q3 and q4 on InfluxDB for Dataset 1 using default parameters
  
 ```bash 
 python3 run_eval.py --systems influx --datasets d1 --queries "q3 q4"
