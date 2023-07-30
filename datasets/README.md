@@ -1,9 +1,9 @@
 # Datasets
 
+The two datasets are uploaded as ... and are located under ... 
 
 ## Datasets Description
 
-The two datasets are uploaded as ... under ... 
 
 The dimensions of the two datasets used in this benchmark are the following:
 
