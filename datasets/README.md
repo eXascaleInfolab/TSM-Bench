@@ -1,8 +1,13 @@
 # Datasets
 
+
+## Datasets Description
+
+The two datasets are uploaded as ... under ... 
+
 The dimensions of the two datasets used in this benchmark are the following:
 
-| Dataset | # of TS | # of Stations | # of Sensors per station | Length of TS | 
+| dataset | # of TS | # of Stations | # of Sensors per station | Length of TS | 
 | ------ | ------ | ------ | ------ | ------ |
 | d1 | 1K | 10 | 100 | 5.18M |
 | d2 | 200K | 2000 | 100 | 17.2B |
@@ -11,10 +16,10 @@ The dimensions of the two datasets used in this benchmark are the following:
 ___
 ## Building the datasets 
 
-Synthetic dataset is already in the directory. 
 
-To download obtain the real-world datasets run the install script.
+- To download the datasets, run the install script.
 
 ```bash
 $ sh install_{dataset}.sh
 ```
+- Note: You need to replace ```{dataset}``` with one of the datasets from the table above.
