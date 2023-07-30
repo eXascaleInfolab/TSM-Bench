@@ -47,7 +47,7 @@ Building a dataset consists of downloading and decompressing it, making it ready
 	sh install_d1.sh
 	```
 
-- Build Dataset 2 (~ 2 hours on a 1GBps network):  requires at least 300GB of disk space
+- Build Dataset 2 (~ 2 hours on a 1GBps network; requires at least 300GB of disk space)
 
 	```bash
 	cd ../datasets/
