@@ -3,9 +3,18 @@
 We have also implemented additional time series tasks using **User Defined Functions (UDFs)**. The implemented queries involve a mix of matrix operations and iterative procedures, which are very hard to implement in the native language. We consider the following tasks: Similarity Search, Time Series Representation, Matrix Decomposition, Recovery of Missing Values, Clustering, Classification, and Anomaly Detection.
 ___
 
-## Running evals
+### UDFs Execution 
 
-| Database | Algorithm | Datasets |
+- UDF executions for all systems can be executed as follows:
+
+	```bash
+	python3 run_eval.py [args]
+	```
+
+- **Mandatory Arguments**: [args] should be replaced with the name of the system, query, and dataset:  
+
+
+| --system | --algorithm | --datasets |
 | ------ | ------ | ------ |
 | extremedb | cd| d1 |
 | monetdb | dist | d2 |
@@ -19,29 +28,24 @@ ___
 | | sax-representation | |
 | | screen | |
 
-___
-## Examples of Running evaluations
+- **Examples of running UDFs**:
 
-- Make sure first that the evaluated system is running before launching the UDF performance evaluation
+Make sure first that the evaluated system is running before launching the UDF performance evaluation
 
-- Insertion time and throughput are computed for each run. It is a double check that the data has been inserted
-
-### Similarity Search [DS-Tree]
+1.  Similarity Search [DS-Tree]
 
 
 ```bash
 python3 run_eval.py --dataset d1 --algorithm dist --database timescaledb
 ```
 
-### Time Series Representation [SAX]
+2. Time Series Representation [SAX]
 
 ```bash
 python3 run_eval.py --dataset d1 --algorithm sax-representation --database timescaledb
 ```
 
-
-
-### Matrix Decomposition [Centroid Decomposition]
+3. Matrix Decomposition [Centroid Decomposition]
 
 ```bash
 python3 run_eval.py --dataset d1 --algorithm cd --database timescaledb
@@ -49,27 +53,27 @@ python3 run_eval.py --dataset d1 --algorithm cd --database timescaledb
 
 
 
-### Recovery of Missing Values [RecovDB]
+4. Recovery of Missing Values [RecovDB]
 
 ```bash
 python3 run_eval.py --dataset d1 --algorithm recovdb --database timescaledb
 ```
 
-### Clustering [K-Means]
+5. Clustering [K-Means]
 
 ```bash
 python3 run_eval.py --dataset d1 --algorithm kmeans --database timescaledb
 ```
 
 
-### Classification [KNN]
+6. Classification [KNN]
 
 ```bash
 python3 run_eval.py --dataset d1 --algorithm knn --database timescaledb
 ```
 
 
-### Anomaly Detection [Hot-Sax]
+7. Anomaly Detection [Hot-Sax]
 
 ```bash
 python3 run_eval.py --dataset d1 --algorithm hotsax --database timescaledb
