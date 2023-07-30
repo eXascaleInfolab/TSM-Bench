@@ -1,6 +1,6 @@
 # User Defined Functions (UDFs)
 
-We have also implemented additional time series tasks using **User Defined Functions (UDFs)**. The implemented queries involve a mix of matrix operations and iterative procedures, which are very hard to implement in the native language. We consider the following tasks: data normalization, matrix decomposition, anomaly detection, anomaly repair, clustering, and classification. 
+We have also implemented additional time series tasks using **User Defined Functions (UDFs)**. The implemented queries involve a mix of matrix operations and iterative procedures, which are very hard to implement in the native language. We consider the following tasks: Similarity Search [DS-Tree], Time Series Representation [SAX], Matrix Decomposition [Centroid Decomposition], Recovery of Missing Values [RecovDB], Clustering [K-Means], Classification [KNN], Anomaly Detection [Hot-Sax].
 ___
 
 ## Running evals
