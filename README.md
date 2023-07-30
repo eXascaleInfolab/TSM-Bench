@@ -62,7 +62,8 @@ ___
 	```bash
 	cd systems
 	sh install_dependencies.sh
-	sh install_all.sh && sh setup_all.sh
+	sh install_all.sh
+ 	sh setup_all.sh
 	```
 	
 <!---
