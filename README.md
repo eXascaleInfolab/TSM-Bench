@@ -36,14 +36,9 @@ ___
 ___
 
 
-
-
-___
-
-
 ## Build Datasets 
 
-Building a dataset consists of downloading it and decompressing it, making it ready to be loaded into the TSDBs
+Building a dataset consists of downloading and decompressing it, making it ready to be loaded into the TSDBs
 
 - Build Dataset 1 (~ 11 mins)
 
@@ -52,7 +47,7 @@ Building a dataset consists of downloading it and decompressing it, making it re
 	sh install_d1.sh
 	```
 
-- Build Dataset 2 Make sure you have at least free 300GB of free disk space to install this dataset (~ 2 hours on a 1GBps network)
+- Build Dataset 2 (~ 2 hours on a 1GBps network):  requires at least 300GB of disk space
 
 	```bash
 	cd ../datasets/
@@ -62,7 +57,7 @@ Building a dataset consists of downloading it and decompressing it, making it re
 ___
 ## Systems Setup
 
-- The following commands allow to download, install, and setup all the systems
+-  To download, install, and setup all the systems
 
 	```bash
 	cd systems
