@@ -54,5 +54,5 @@ python3 gen_ts.py
 ___
 ## Sample generation plots:
 
-![plot_lsh_graph](https://github.com/eXascaleInfolab/TSM-Bench/assets/15266242/af057b32-37bc-4348-8699-730d7abd3ea7)
+![image](https://github.com/eXascaleInfolab/TSM-Bench/assets/15266242/13d8c2f9-fdbf-495f-aaf9-7f5ec0999470)
 
