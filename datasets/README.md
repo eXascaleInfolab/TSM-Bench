@@ -17,7 +17,7 @@ ___
 ## Building the datasets 
 
 
-- To download the datasets, run the install script.
+- To download the datasets, run the following install script:
 
 ```bash
 $ sh install_{dataset}.sh
