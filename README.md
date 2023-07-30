@@ -44,14 +44,14 @@ Building a dataset consists of downloading and decompressing it, making it ready
 
 	```bash
 	cd ../datasets/
-	sh install_d1.sh
+	sh build_d1.sh
 	```
 
 - Build Dataset 2 (~ 2 hours on a 1GBps network; requires at least 300GB of disk space)
 
 	```bash
 	cd ../datasets/
-	sh install_d2.sh
+	sh build_d2.sh
 	```
 
 ___
