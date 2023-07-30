@@ -74,18 +74,3 @@ python3 run_eval.py --dataset d1 --algorithm knn --database timescaledb
 ```bash
 python3 run_eval.py --dataset d1 --algorithm hotsax --database timescaledb
 ```
-
-___
-## Running eval
-
-In order to run an experiment:
-
-```bash
-$ python3 generate_udf.py
-```
-
-The scripts can be configured to run on different datasets and different dimensions. For example,
-```bash
-$ cd systems/{systems}/
-$ python3 generate_udf.py --file <path_to_file> 
-```
