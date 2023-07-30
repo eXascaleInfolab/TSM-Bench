@@ -27,7 +27,7 @@ def sigmoid(x):
 # In[3]:
 
 
-data = pd.read_csv('pH_accuracy.csv')
+data = pd.read_csv('data/pH_accuracy.csv')
 data = data['pH'].tolist()
 # data = data[:5000]
 len(data)
