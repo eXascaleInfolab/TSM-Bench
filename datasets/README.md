@@ -20,6 +20,6 @@ ___
 - To download the datasets, run the following install script:
 
 ```bash
-$ sh install_{dataset}.sh
+$ sh build_{dataset}.sh
 ```
 - Note: You need to replace ```{dataset}``` with one of the datasets from the table above.
