@@ -18,10 +18,6 @@ ___
 | | recovdb | |
 | | sax-representation | |
 | | screen | |
-| | simple-queries | |
-| | sum-long | |
-| | z-normalization | |
-| | z-normalization-operators | |
 
 ___
 ## Examples of Running evaluations
