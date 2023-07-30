@@ -82,14 +82,13 @@ python3 run_eval.py --dataset d1 --algorithm hotsax --database timescaledb
 ___
 ## Running eval
 
-Each of the databases has a dedicated directory in Databases. In them, there is a dedicated directory for each experiment. In order to run an experiment, go to the directory of the experiment and use the Python3 script there. For example,
+In order to run an experiment:
 
 ```bash
-$ cd systems/{system}/
 $ python3 generate_udf.py
 ```
 
-Note that the scripts can be configured to run on different datasets and different dimensions. For example,
+The scripts can be configured to run on different datasets and different dimensions. For example,
 ```bash
 $ cd systems/{systems}/
 $ python3 generate_udf.py --file <path_to_file> 
