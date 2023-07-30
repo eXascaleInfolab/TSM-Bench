@@ -182,7 +182,7 @@ ___
 
 ## Technical Report
 
-Additional results not reported in the paper can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Technical_Report.pdf). The additional experiments cover: 
+Additional results not reported in the paper can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/TSM_Technical_Report.pdf). The additional experiments cover: 
 
 - Advanced analytical queries in SQL and UDF
 - Selection of the evaluated systems
