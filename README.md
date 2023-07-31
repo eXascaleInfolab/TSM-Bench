@@ -40,14 +40,14 @@ ___
 
 Building a dataset consists of downloading and decompressing it, making it ready to be loaded into the TSDBs
 
-- Build Dataset 1 (~ 11 mins)
+- Build Dataset 1 (takes ~ 10 mins)
 
 	```bash
 	cd ../datasets/
 	sh build_d1.sh
 	```
 
-- Build Dataset 2 (~ 2 hours on a 1GBps network; requires at least 300GB of disk space)
+- Build Dataset 2 (takes ~ 2 hours on a 1GBps network; requires at least 300GB of disk space)
 
 	```bash
 	cd ../datasets/
