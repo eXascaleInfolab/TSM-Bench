@@ -32,7 +32,6 @@ ___
 
 - Ubuntu 20.04 or higher
 - Clone this repository
-- All the necessary dependencies will be installed via the install script
 ___
 
 
