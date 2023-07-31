@@ -42,13 +42,13 @@ Building a dataset consists of downloading and decompressing it, making it ready
 - Build Dataset 1 (takes ~ 10 mins)
 
 	```bash
-	sh ../datasets/build_d1.sh
+	sh datasets/build_d1.sh
 	```
 
 - Build Dataset 2 (takes ~ 2 hours on a 1GBps network; requires at least 300GB of disk space)
 
 	```bash
-	sh ../datasets/build_d2.sh
+	sh datasets/build_d2.sh
 	```
 
 ___
@@ -57,9 +57,9 @@ ___
 -  To download, install, and setup all the systems
 
 	```bash
-	sh install_dependencies.sh
-	sh install_all.sh
- 	sh setup_all.sh
+	sh systems/install_dependencies.sh
+	sh systems/install_all.sh
+ 	sh systems/setup_all.sh
 	```
 	
 <!---
@@ -78,7 +78,7 @@ ___
 - To reproduce the data loading times of all systems (column 1 of Table 3):
 
 	```bash
-	sh load_all.sh
+	sh systems/load_all.sh
 	```
 - Note:  All systems need to be running before executing the query.  
 
