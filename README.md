@@ -37,7 +37,7 @@ ___
 
 ## Build Datasets 
 
-Building a dataset consists of downloading and decompressing it, making it ready to be loaded into the TSDBs
+Building a dataset consists of downloading and decompressing it, making it ready to be loaded into the DB
 
 - Build Dataset 1 (takes ~ 10 mins)
 
