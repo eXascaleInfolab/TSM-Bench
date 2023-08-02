@@ -72,9 +72,14 @@ ___
  	sh setup_all.sh
 	```
 
-	-  Note: Systems can be installed separately as described in the [**customized installation**](#customized-installation) below
+	-  Note:
+   		1. Systems can be installed separately as described in the [**customized installation**](#customized-installation) below
+   		2. If the systems are already installed they can be launched using:
+   			```bash
+		 	cd systems/
+			sh launch_all.sh
+			```
 
-	
 <!---
 - Setup all systems (all systems have to be running) to have two datasets ```d1``` and ```d2```
 
