@@ -22,8 +22,8 @@ Monitoring Applications*, PVLDB'23.
 
 
 - [**New**] : [TSM_Technical_Report](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Technical_Report.pdf) which contains additional experiments on
-	- Advanced queries in SQL and UDF.
-	- Impact of data characteristics.
+    - Advanced queries in SQL and UDF.
+    - Impact of data characteristics.
 -->
 
 
@@ -32,13 +32,13 @@ ___
 
 - Ubuntu 20.04 or higher
 - Clone this repository
-  	```bash
-	git clone github.com/eXascaleInfolab/TSM-Bench 
-	```
+    ```bash
+    git clone github.com/eXascaleInfolab/TSM-Bench 
+    ```
 - Install the dependencies
-	```bash
-	sh systems/install_dependencies.sh
-	```
+    ```bash
+    sh systems/install_dependencies.sh
+    ```
 ___
 
 
@@ -48,17 +48,17 @@ Building a dataset consists of downloading and decompressing it, making it ready
 
 - Build Dataset 1 (takes ~ 10 mins)
 
-	```bash
- 	cd datasets/
-	sh build_d1.sh
-	```
+    ```bash
+    cd datasets/
+    sh build_d1.sh
+    ```
 
 - Build Dataset 2 (takes ~ 2 hours on a 1GBps network; requires at least 300GB of disk space)
 
-	```bash
- 	cd datasets/
-	sh build_d2.sh
-	```
+    ```bash
+    cd datasets/
+    sh build_d2.sh
+    ```
 
 ___
 ## Systems Setup
@@ -66,26 +66,26 @@ ___
 
 -  To download, install, and setup all the systems
 
-	```bash
- 	cd systems/
-	sh install_all.sh
- 	sh setup_all.sh
-	```
+    ```bash
+    cd systems/
+    sh install_all.sh
+    sh setup_all.sh
+    ```
 
-	-  Note:
-   		1. Systems can be installed separately as described in the [**customized installation**](#customized-installation) below
-   		2. If the systems are already installed they can be launched using:
-   			```bash
-		 	cd systems/
-			sh launch_all.sh
-			```
+    -  Note:
+        1. Systems can be installed separately as described in the [**customized installation**](#customized-installation) below
+        2. If the systems are already installed they can be launched using:
+            ```bash
+            cd systems/
+            sh launch_all.sh
+            ```
 
 <!---
 - Setup all systems (all systems have to be running) to have two datasets ```d1``` and ```d2```
 
-	```bash
-	sh setup_all.sh
-	```
+    ```bash
+    sh setup_all.sh
+    ```
 
 -->
 ___
@@ -95,29 +95,29 @@ ___
 
 - To reproduce the data loading times of all systems (column 1 of Table 3):
 
-	```bash
- 	cd systems
-	sh load_all.sh
-	```
+    ```bash
+    cd systems
+    sh load_all.sh
+    ```
 - Note:  All systems need to be running before executing the query.  
 
 ### Storage Performance 
 
 - To reproduce the storage performance of a given system (column 2 of Table 3): 
-	```bash
-	cd systems/{system}
-	sh compression.sh
-	```
+    ```bash
+    cd systems/{system}
+    sh compression.sh
+    ```
 - Note: {system} needs to be replaced with the name of one of the systems from the table below.
 
 ### Query Execution 
 
 - Each of the systems has a dedicated subfolder under `systems` folder. Queries for all systems can be executed as follows:
 
-	```bash
- 	cd/
-	python3 run_eval.py [args]
-	```
+    ```bash
+    cd/
+    python3 run_eval.py [args]
+    ```
 
 - **Mandatory Arguments**: [args] should be replaced with the name of the system, query, and dataset:  
 
@@ -135,26 +135,26 @@ ___
 |  | q9 (DTW) | |
 
 - **Optional Arguments**: The following arguments allow to add variation in the number of sensors and dynamic changes in predicate ranges:
-	- `--nb_st` : Number of stations (Default = 10)
-	- `--def_st` : Number of queried stations (Default = 1)
- 	- `--def_s` : Number of queried sensors (Default = 3)
-	- `--rangeUnit`: Query range unit (Default = day)
- 	- `--min_ts`: Minimum query timestamp (Default = "2019-04-01T00:00:00")
- 	- `--max_ts`: Maximum query timestamp (Default = "2019-04-30T00:00:00")
-	- `--timeout` : Maximum query time after 5 runs (s) (Default = 20)
+    - `--nb_st` : Number of stations (Default = 10)
+    - `--def_st` : Number of queried stations (Default = 1)
+    - `--def_s` : Number of queried sensors (Default = 3)
+    - `--rangeUnit`: Query range unit (Default = day)
+    - `--min_ts`: Minimum query timestamp (Default = "2019-04-01T00:00:00")
+    - `--max_ts`: Maximum query timestamp (Default = "2019-04-30T00:00:00")
+    - `--timeout` : Maximum query time after 5 runs (s) (Default = 20)
 
 - **Examples**:
 
 1. **[Figure 3.a]** Run query q1 on InfluxDB for Dataset 1 using default parameters (range=1 day, n_st=1, n_s=3)
  
 ```bash 
-python3 run_eval.py --systems influx --datasets d1 --queries "q1"
+python3 run_eval.py --systems influx --datasets d1 --queries q1
 ```
 
 2. **[Figures 4.a-b]** Run queries q3 and q4 on InfluxDB for Dataset 1 using default parameters
  
 ```bash 
-python3 run_eval.py --systems influx --datasets d1 --queries "q3 q4"
+python3 run_eval.py --systems influx --datasets d1 --queries q3 q4
 ```
 
 3. **[Figures 3-4]** Run all queries on InfluxDB on Dataset 1 using default parameters
@@ -166,7 +166,7 @@ python3 run_eval.py --systems influx --datasets d1
 4. **[Figure 4.c]** Run q5 on InfluxDB on Dataset 1 with a 1-minute timeout per query type using default parameters
  
 ```bash 
-python3 run_eval.py --systems influx --datasets d1  --queries "q5" --timeout 60
+python3 run_eval.py --systems influx --datasets d1  --queries q5 --timeout 60
 ```
 
 5. **[Figure 6]** Run all queries on InfluxDB for Dataset 2 while varying the number of stations using default parameters
