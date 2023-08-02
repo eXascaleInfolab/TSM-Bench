@@ -28,21 +28,21 @@ python3 run_pretrained.py
 
 ### Model Training
 
-- **Step 1: ** Train a GAN model on data segments located in `data/` and write the resulting segments into `generation/` (takes ~3 days) 
+- **Step 1:** Train a GAN model on data segments located in `data/` and write the resulting segments into `generation/` (takes ~3 days) 
 
 ```bash
 python3 DCGAN.py
 python3 encoder_dc.py
 ```
 
-- **Step 2: ** Generate new segments using the trained ones from Step 1 (takes ~46 seconds)
+- **Step 2:** Generate new segments using the trained ones from Step 1 (takes ~46 seconds)
 
 ```bash
 python3 test_dc.py
 ```
 ### Time Series Generation
 
-- **Step 3: ** Apply LSH to generate long time series (takes ~20 seconds)
+- **Step 3:** Apply LSH to generate long time series (takes ~20 seconds)
 
 ```bash
 python3 gen_ts.py
