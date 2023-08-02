@@ -185,8 +185,8 @@ ___
 To install and setup a specific system
 
 ```bash
-sh systems/{system}/install.sh
-sh systems/{system}/create.sh
+cd systems/{system}
+sh install.sh
 ```
 ___
 
