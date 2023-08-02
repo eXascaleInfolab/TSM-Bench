@@ -32,3 +32,19 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 docker-compose --version
 
+
+# Java
+sudo apt-get install -y openjdk-8-jdk
+sudo update-java-alternatives --jre-headless --jre --set java-1.8.0-openjdk-amd64
+
+# Maven
+sudo apt install -y maven
+
+# Curl
+sudo apt install -y curl
+
+# Docker
+sudo apt install -y docker.io
+sudo systemctl start docker
+sudo systemctl enable docker
+
