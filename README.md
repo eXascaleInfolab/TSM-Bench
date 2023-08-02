@@ -32,6 +32,13 @@ ___
 
 - Ubuntu 20.04 or higher
 - Clone this repository
+  	```bash
+	git clone github.com/eXascaleInfolab/TSM-Bench 
+	```
+- Install the dependencies
+	```bash
+	sh systems/install_dependencies.sh
+	```
 ___
 
 
@@ -54,13 +61,16 @@ Building a dataset consists of downloading and decompressing it, making it ready
 ___
 ## Systems Setup
 
+
 -  To download, install, and setup all the systems
 
 	```bash
-	sh systems/install_dependencies.sh
 	sh systems/install_all.sh
  	sh systems/setup_all.sh
 	```
+
+	-  Note: Systems can be installed separately as described in the [**customized installation**](#customized-installation) below
+
 	
 <!---
 - Setup all systems (all systems have to be running) to have two datasets ```d1``` and ```d2```
@@ -162,6 +172,18 @@ python3 run_eval.py --systems influx --datasets d1 --rangeUnit day --def_s 3
 python3 run_eval.py --systems influx --datasets d1 --queries q1 --def_st 100 --def_s 3 --range 1 --rangeUnit day
 ```
 
+
+
+___
+
+## Customized Installation
+
+To install and setup a specific system
+
+```bash
+sh systems/{system}/install.sh
+sh systems/{system}/create.sh
+```
 ___
 
 ## Data Generation 
