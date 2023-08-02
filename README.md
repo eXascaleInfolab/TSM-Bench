@@ -63,7 +63,9 @@ Building a dataset consists of downloading and decompressing it, making it ready
 ___
 ## Systems Setup
 
+We provide different scripts depending on whether the systems have been already installed or not:
 
+   
 -  To download, install, and setup all the systems
 
     ```bash
@@ -71,14 +73,16 @@ ___
     sh install_all.sh
     sh setup_all.sh
     ```
+    -  Note: Systems can be installed separately as described in the [**customized installation**](#customized-installation) below. 
+ 
+ - To launch the systems
 
-    -  Note:
-        1. Systems can be installed separately as described in the [**customized installation**](#customized-installation) below
-        2. If the systems are already installed they can be launched using:
-            ```bash
-            cd systems/
-            sh launch_all.sh
-            ```
+   ```bash
+   cd systems/
+   sh launch_all.sh
+   ```
+
+    
 
 <!---
 - Setup all systems (all systems have to be running) to have two datasets ```d1``` and ```d2```
@@ -112,7 +116,7 @@ ___
 
 ### Query Execution 
 
-- Each of the systems has a dedicated subfolder under `systems` folder. Queries for all systems can be executed as follows:
+- Each system has a dedicated subfolder under `systems` folder. Queries for all systems can be executed as follows:
 
     ```bash
     cd/
