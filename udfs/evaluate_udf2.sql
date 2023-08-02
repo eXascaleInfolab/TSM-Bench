@@ -14,7 +14,7 @@ create function udf_cd() RETURNS string in 'python' as '
         import numpy as np
         import timeit
         from datetime import datetime
-        sys.path.append("/localdata/ABench-IoT/Algorithms/centroid_decomposition")
+        sys.path.append("cd")
         import cd_ssv
         exdb.init_runtime(skip_load=True)
         cur = current_session.cursor()
@@ -65,7 +65,7 @@ create function udf_cd() RETURNS string in 'python' as '
         import numpy as np
         import timeit
         from datetime import datetime
-        sys.path.append("/localdata/ABench-IoT/Algorithms/centroid_decomposition")
+        sys.path.append("cd")
         import cd_ssv
         exdb.init_runtime(skip_load=True)
         cur = current_session.cursor()
@@ -109,7 +109,7 @@ create function udf_hotsax() RETURNS string in 'python' as '
         import numpy as np
         import timeit
         from datetime import datetime
-        sys.path.append("/localdata/ABench-IoT/Algorithms/hot_sax")
+        sys.path.append("hot_sax")
         import hotsax
         import timeit
         exdb.init_runtime(skip_load=True)
@@ -198,35 +198,35 @@ DROP FUNCTION cd_alg;
 CREATE OR REPLACE FUNCTION cd_alg(time TIMESTAMP, id_station INTEGER, temperature DOUBLE PRECISION) RETURNS TABLE(runtime DOUBLE PRECISION)
 LANGUAGE PYTHON
 {
-	import sys
-	import numpy as np
-	sys.path.append('/home/abdel/ABench-IoT/Algorithms/centroid_decomposition/')
-	import cd_ssv
-	import timeit
-	
-	def create_dict(a, b):
-	    id_stations = list(dict.fromkeys(a))
-	    dictio = {i: [] for i in id_stations}
-	    for i in range(len(b)):
-	    	dictio[a[i]].append(b[i])
-	    return dictio
-	
-	#a = [1, 1, 2, 2, 3, 3, 4, 1, 5, 6]
-	#b = random.sample(range(10, 30), len(a))
-	dictio = create_dict(id_station,temperature)
-	print(dictio)
-	matrix = np.vstack(list(dictio.values())).T
-	print(matrix)
-	n = matrix.shape[0]
-	m = matrix.shape[1]
-	
-	start = timeit.default_timer()
-	matrix_l, matrix_r, z = cd_ssv.CD(matrix, n, m)
-	stop = timeit.default_timer()
-	
-	print('Time: ', stop - start)
-	
-	return stop - start
+    import sys
+    import numpy as np
+    sys.path.append('/home/abdel/ABench-IoT/Algorithms/cd/')
+    import cd_ssv
+    import timeit
+    
+    def create_dict(a, b):
+        id_stations = list(dict.fromkeys(a))
+        dictio = {i: [] for i in id_stations}
+        for i in range(len(b)):
+            dictio[a[i]].append(b[i])
+        return dictio
+    
+    #a = [1, 1, 2, 2, 3, 3, 4, 1, 5, 6]
+    #b = random.sample(range(10, 30), len(a))
+    dictio = create_dict(id_station,temperature)
+    print(dictio)
+    matrix = np.vstack(list(dictio.values())).T
+    print(matrix)
+    n = matrix.shape[0]
+    m = matrix.shape[1]
+    
+    start = timeit.default_timer()
+    matrix_l, matrix_r, z = cd_ssv.CD(matrix, n, m)
+    stop = timeit.default_timer()
+    
+    print('Time: ', stop - start)
+    
+    return stop - start
 };
 
 SET initial_time_cd = get_time();
@@ -248,33 +248,33 @@ DROP FUNCTION sax_alg;
 CREATE OR REPLACE FUNCTION sax_alg(time TIMESTAMP, id_station INTEGER, temperature DOUBLE PRECISION) RETURNS TABLE(runtime DOUBLE PRECISION)
 LANGUAGE PYTHON
 {
-	import sys
-	import numpy as np
-	sys.path.append('/home/abdel/ABench-IoT/Algorithms/hot_sax/')
-	import hotsax
-	import timeit
+    import sys
+    import numpy as np
+    sys.path.append('/home/abdel/ABench-IoT/Algorithms/hot_sax/')
+    import hotsax
+    import timeit
 
-	def create_dict(a, b):
-	    id_stations = list(dict.fromkeys(a))
-	    dictio = {i: [] for i in id_stations}
-	    for i in range(len(b)):
-	    	dictio[a[i]].append(b[i])
-	    return dictio
-	dictio = create_dict(id_station,temperature)
-	matrix = np.vstack(list(dictio.values())).T
-	
-	start = timeit.default_timer()
-	discord = hotsax.hotsax( matrix )
+    def create_dict(a, b):
+        id_stations = list(dict.fromkeys(a))
+        dictio = {i: [] for i in id_stations}
+        for i in range(len(b)):
+            dictio[a[i]].append(b[i])
+        return dictio
+    dictio = create_dict(id_station,temperature)
+    matrix = np.vstack(list(dictio.values())).T
+    
+    start = timeit.default_timer()
+    discord = hotsax.hotsax( matrix )
 
-	r_time = []
-	r_index = []
-	r_value = []
-	for i in range(len(discord)):
-		r_time.append( time[ discord[i][1] ] )
-		r_index.append( discord[i][0] )
-		r_value.append( discord[i][2] )
-	stop = timeit.default_timer()
-	return stop - start
+    r_time = []
+    r_index = []
+    r_value = []
+    for i in range(len(discord)):
+        r_time.append( time[ discord[i][1] ] )
+        r_index.append( discord[i][0] )
+        r_value.append( discord[i][2] )
+    stop = timeit.default_timer()
+    return stop - start
 };
 SELECT * FROM sax_alg( (SELECT time, id_station, temperature FROM datapoints where id_station < 50 and time < str_to_timestamp('2019-05-26 12:00:00', '%Y-%m-%d %H:%M:%S') and time> str_to_timestamp('2019-05-26 12:00:00', '%Y-%m-%d %H:%M:%S') - (interval '1' HOUR )) ) ;     
 
@@ -284,31 +284,31 @@ DROP FUNCTION screen_alg;
 CREATE OR REPLACE FUNCTION screen_alg(time TIMESTAMP, id_station INTEGER, temperature DOUBLE PRECISION) RETURNS TABLE(runtime DOUBLE PRECISION)
 LANGUAGE PYTHON
 {
-	import sys
-	import numpy as np
-	sys.path.append('/home/abdel/ABench-IoT/Algorithms/screen_python/')
-	import screen
-	import datetime
-	import timeit
+    import sys
+    import numpy as np
+    sys.path.append('/home/abdel/ABench-IoT/Algorithms/screen_python/')
+    import screen
+    import datetime
+    import timeit
 
-	def create_dict(a, b):
-	    id_stations = list(dict.fromkeys(a))
-	    dictio = {i: [] for i in id_stations}
-	    for i in range(len(b)):
-	    	dictio[a[i]].append(b[i])
-	    return dictio
-	dictio = create_dict(id_station,temperature)
-	matrix = np.vstack(list(dictio.values())).T
+    def create_dict(a, b):
+        id_stations = list(dict.fromkeys(a))
+        dictio = {i: [] for i in id_stations}
+        for i in range(len(b)):
+            dictio[a[i]].append(b[i])
+        return dictio
+    dictio = create_dict(id_station,temperature)
+    matrix = np.vstack(list(dictio.values())).T
 
-	time = [( datetime.datetime.strptime(x, '%Y-%m-%d %H:%M:%S.%f') - datetime.datetime(1970, 1, 1)).total_seconds() for x in time]
-	time = [int(x) for x in time]
-	
-	start = timeit.default_timer()
-	results = screen.screen(matrix, time, 0.1, -0.1, 300).T
-	stop = timeit.default_timer()
+    time = [( datetime.datetime.strptime(x, '%Y-%m-%d %H:%M:%S.%f') - datetime.datetime(1970, 1, 1)).total_seconds() for x in time]
+    time = [int(x) for x in time]
+    
+    start = timeit.default_timer()
+    results = screen.screen(matrix, time, 0.1, -0.1, 300).T
+    stop = timeit.default_timer()
 
-	sys.path = sys.path[:-1]
-	return stop - start
+    sys.path = sys.path[:-1]
+    return stop - start
 };
 SELECT * FROM screen_alg( (SELECT time, id_station, temperature FROM datapoints where id_station < 50 and time < str_to_timestamp('2019-05-26 12:00:00', '%Y-%m-%d %H:%M:%S') and time> str_to_timestamp('2019-05-26 12:00:00', '%Y-%m-%d %H:%M:%S') - (interval '10' HOUR )) ) ;     
 
@@ -348,7 +348,7 @@ CREATE TABLE matrix_r OF result_type;
 CREATE OR REPLACE FUNCTION cd() RETURNS DOUBLE PRECISION AS $$
     import sys
     import numpy as np
-    sys.path.append('/mnt/hdd/ABench-IoT_timescaledb/ABench-IoT/Algorithms/centroid_decomposition/')
+    sys.path.append('/mnt/hdd/ABench-IoT_timescaledb/ABench-IoT/Algorithms/cd/')
     import cd_ssv
     import timeit
     
@@ -377,7 +377,7 @@ CREATE OR REPLACE FUNCTION cd() RETURNS DOUBLE PRECISION AS $$
     return stop - start
 $$ LANGUAGE plpython3u;
 
-DO $centroid_decomposition$
+DO $cd$
 DECLARE
     start_time TIMESTAMP WITH TIME ZONE;
     end_time TIMESTAMP WITH TIME ZONE;
@@ -390,7 +390,7 @@ BEGIN
 
     RAISE NOTICE 'CentroidDecomposition time seconds = %', delta;
 END;
-$centroid_decomposition$;
+$cd$;
 
 
 DROP TABLE IF EXISTS discords;
@@ -400,7 +400,7 @@ CREATE TABLE discords OF result_type;
 CREATE OR REPLACE FUNCTION hotsax() RETURNS DOUBLE PRECISION AS $$
     import sys
     import numpy as np
-    sys.path.append('/localdata/ABench-IoT/Algorithms/hot_sax')
+    sys.path.append('hot_sax')
     import hotsax
     import timeit
     nb_minutes = 20
@@ -447,27 +447,27 @@ DROP TYPE IF EXISTS result_type CASCADE;
 CREATE TYPE result_type AS ( d DOUBLE PRECISION ARRAY );
 CREATE TABLE screen OF result_type;
 CREATE OR REPLACE FUNCTION screen() RETURNS SETOF result_type AS $$
-	import sys
-	import numpy as np
-	sys.path.append('<implementation_path>/')
-	import screen
-	from datetime import datetime
+    import sys
+    import numpy as np
+    sys.path.append('<implementation_path>/')
+    import screen
+    from datetime import datetime
 
-	a = plpy.execute("SELECT * FROM datapoints ORDER BY time ASC;")
+    a = plpy.execute("SELECT * FROM datapoints ORDER BY time ASC;")
 
-	rows = <rows>
-	columns = <columns>
-	matrix = []
-	timestamps = []
-	for i in range(rows):
-		matrix.append( a[i]['d'] )
-		timestamps.append( a[i]['time'] )
-	timestamps = [ int( (datetime.strptime(x, '%Y-%m-%d %H:%M:%S') - datetime(1970, 1, 1)).total_seconds() ) for x in timestamps]
-	matrix = np.array( matrix )
+    rows = <rows>
+    columns = <columns>
+    matrix = []
+    timestamps = []
+    for i in range(rows):
+        matrix.append( a[i]['d'] )
+        timestamps.append( a[i]['time'] )
+    timestamps = [ int( (datetime.strptime(x, '%Y-%m-%d %H:%M:%S') - datetime(1970, 1, 1)).total_seconds() ) for x in timestamps]
+    matrix = np.array( matrix )
 
-	result = screen.screen(matrix, timestamps, 0.1, -0.1, 300)
+    result = screen.screen(matrix, timestamps, 0.1, -0.1, 300)
 
-	return [ [x] for x in result ]
+    return [ [x] for x in result ]
 $$ LANGUAGE plpython3u;
 --------------------------------------------------------------------------------
 
