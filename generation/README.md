@@ -21,7 +21,7 @@ ___
 
 
 ```bash
-python3 gen_ts.py
+python3 run_pretrained.py
 ```
 
 ## Execution with model training
