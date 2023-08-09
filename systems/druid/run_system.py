@@ -41,7 +41,7 @@ set_date = [random.random() for i in range(500)]
 
 # Parse Arguments
 parser = argparse.ArgumentParser(description = 'Script for running any eval')
-parser.add_argument('--datasets', nargs = '?', type = str, help = 'Dataset name', default = 'd1')
+parser.add_argument('--datasets', nargs = '*', type = str, help = 'Dataset name', default = 'd1')
 parser.add_argument('--queries', nargs = '?', type = str, help = 'List of queries to run (Q1-Q7)', default = "q1 q2 q3 q4 q5 q6 q7")
 parser.add_argument('--nb_st', nargs = '?', type = int, help = 'Number of stations in the dataset', default = 10)
 parser.add_argument('--nb_s', nargs = '?', type = int, help = 'Number of sensors in the dataset', default = 100)
