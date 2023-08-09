@@ -8,10 +8,13 @@ echo "deb https://dev.monetdb.org/downloads/deb/ $(lsb_release -cs) monetdb" >> 
 echo "deb-src https://dev.monetdb.org/downloads/deb/ $(lsb_release -cs) monetdb" >> /etc/apt/sources.list.d/monetdb.list
 wget --output-document=- https://www.monetdb.org/downloads/MonetDB-GPG-KEY | sudo apt-key add -
 sudo apt update
-wget https://www.monetdb.org/downloads/sources/Nov2019-SP3/MonetDB-11.35.19.zip
+# wget https://www.monetdb.org/downloads/sources/Nov2019-SP3/MonetDB-11.35.19.zip
+wget https://www.monetdb.org/downloads/sources/archive/MonetDB-11.35.19.tar.bz2
 sudo apt install -y unzip
-unzip MonetDB-11.35.19.zip
-sudo rm -rf MonetDB-11.35.19.zip
+#unzip MonetDB-11.35.19.zip
+#sudo rm -rf MonetDB-11.35.19.zip
+tar -xf MonetDB-11.35.19.tar.bz2
+sudo rm MonetDB-11.35.19.tar.bz2
 cd MonetDB-11.35.19/
 echo "installing dependencies..."
 sudo apt install -y automake bison gettext libssl-dev libtool libxml2-dev m4 make mercurial pkg-config
