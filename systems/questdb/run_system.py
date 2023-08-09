@@ -132,7 +132,6 @@ with open('queries.sql') as file:
 
 
 runtimes = []
-datasets = args.datasets.split()
 	# Execute queries
 for dataset in args.datasets:
         for i, query in enumerate(queries):
