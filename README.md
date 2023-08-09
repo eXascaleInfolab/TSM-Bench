@@ -12,7 +12,7 @@ Monitoring Applications*, PVLDB'23.
 
 -->
 
-[**Prerequisites**](#prerequisites) | [**Build Datasets**](#build-datasets) | [**Installation**](#systems-setup) | [**Experiments**](#experiments) | [**Generation**](#data-generation) | [**Technical Report**](#technical-report)
+[**Prerequisites**](#prerequisites) | [**Build Datasets**](#build-datasets) | [**Installation**](#systems-setup) | [**Experiments**](#experiments) | [**Data Generation**](#data-generation) | [**Technical Report**](#technical-report)
 
 <!---
 | Dataset | # of TS | # of Stations | # of Sensors per station | Length of TS | Time Period | 
@@ -199,9 +199,46 @@ sh install.sh
 ```
 ___
 
-## Data Generation 
+## Time Series Generation 
 
-The generation code can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/generation). 
+We provide a GAN-based generation that allows to augment a seed dataset with more and/or longer time series that
+have akin properties to the seed ones. The tool can be used either directly using a pre-trained model
+or by retraining from scratch the model.
+
+
+### Execution using a pre-trained model 
+
+
+```bash
+python3 run_pretrained.py
+```
+
+### Execution using model training
+
+#### Model Training
+
+- **Step 1:** Train a GAN model on data segments located in `data/` and write the resulting segments into `generation/` (takes ~3 days) 
+
+```bash
+python3 DCGAN.py
+python3 encoder_dc.py
+```
+
+- **Step 2:** Generate new segments using the trained ones from Step 1 (takes ~46 seconds)
+
+```bash
+python3 test_dc.py
+```
+#### Data Generation
+
+- **Step 3:** Apply LSH to generate long time series (takes ~20 seconds)
+
+```bash
+python3 gen_ts.py
+```
+### Sample generation plots:
+
+![image](https://github.com/eXascaleInfolab/TSM-Bench/assets/15266242/13d8c2f9-fdbf-495f-aaf9-7f5ec0999470)
 
 ___
 
