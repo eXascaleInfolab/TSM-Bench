@@ -116,8 +116,8 @@ with open('queries.sql') as file:
 runtimes = []
 	# Execute queries
 for dataset in args.datasets: 
-	for query in queries: 
-		if 'SELECT' in query.upper():
+	for i, query in enumerate(queries): 
+		if 'SELECT' in query.upper() and "q" + str(i+1) in args.queries :
 			query = query.replace("<db>", dataset)
 			runtimes.append(run_query(query))
 		else: 
