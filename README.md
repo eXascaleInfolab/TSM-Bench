@@ -149,41 +149,43 @@ ___
 
 - **Examples**:
 
-1. **[Figure 3.a]** Run query q1 on InfluxDB for Dataset 1 using default parameters (range=1 day, n_st=1, n_s=3)
+1. **[Figure 3.a]** Run query q1 on InfluxDB for Dataset 1 using default parameters (n_st=1, n_s=3, range=1 day)
  
 ```bash 
 python3 run_eval.py --systems influx --datasets d1 --queries q1
 ```
 
-2. **[Figures 4.a-b]** Run queries q3 and q4 on InfluxDB for Dataset 1 using default parameters
+2. Run q1 on InfluxDB for Dataset 1 with customized parameters (n_st=100, n_s=3, range=1 week)
+ 
+```bash 
+python3 run_eval.py --systems influx --datasets d1 --queries q1 --def_st 100 --def_s 3 --range 1 --rangeUnit day
+```
+
+3. **[Figures 4.a-b]** Run q3 and q4 on InfluxDB for Dataset 1 using default parameters
  
 ```bash 
 python3 run_eval.py --systems influx --datasets d1 --queries q3 q4
 ```
 
-3. **[Figures 3-4]** Run all queries on InfluxDB on Dataset 1 using default parameters
+4. **[Figures 3-4]** Run all queries on InfluxDB on Dataset 1 using default parameters
  
 ```bash 
 python3 run_eval.py --systems influx --datasets d1
 ```
 
-4. **[Figure 4.c]** Run q5 on InfluxDB on Dataset 1 with a 1-minute timeout per query type using default parameters
+5. **[Figure 4.c]** Run q5 on InfluxDB on Dataset 1 with a 1-minute timeout per query type using default parameters
  
 ```bash 
 python3 run_eval.py --systems influx --datasets d1  --queries q5 --timeout 60
 ```
 
-5. **[Figure 6]** Run all queries on InfluxDB for Dataset 2 while varying the number of stations using default parameters
+6. **[Figure 6]** Run all queries on InfluxDB for Dataset 2 while varying the number of stations using default parameters
  
 ```bash 
 python3 run_eval.py --systems influx --datasets d1 --rangeUnit day --def_s 3 
 ```
 
-6. Run query q1 on InfluxDB for Dataset 1 with customized parameters (range=1 week, n_st=100, n_s=3)
- 
-```bash 
-python3 run_eval.py --systems influx --datasets d1 --queries q1 --def_st 100 --def_s 3 --range 1 --rangeUnit day
-```
+
 
 
 
