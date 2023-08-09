@@ -121,15 +121,14 @@ with open('queries.sql') as file:
 runtimes = []
 datasets = args.datasets.split()
 	# Execute queries
-for dataset in datasets: 
-	print(dataset) 
-	for query in queries: 
-		if 'SELECT' in query.upper():
-			query = query.replace("<db>", dataset)
-			runtimes.append(run_query(query))
-		else: 
-			print('Query not supported.')
-			runtimes.append((-1,-1))
+for dataset in args.datasets:
+        for i, query in enumerate(queries):
+                if 'SELECT' in query.upper() and "q" + str(i+1) in args.queries :
+                        query = query.replace("<db>", dataset)
+                        runtimes.append(run_query(query))
+                else:
+                        print('Query not run.')
+                        runtimes.append((-1,-1))
 runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=['q' + str(i+1) for i in range(len(runtimes))]).astype(int)
 print(runtimes)	
 
