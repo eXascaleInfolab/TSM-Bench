@@ -17,7 +17,7 @@ curl -G --data-urlencode "query= DROP TABLE IF EXISTS d1; \
                 " http://localhost:9000/exec
 
 
-ABSOLUTE_PATH = $(readlink -f "../../datasets")
+ABSOLUTE_PATH=$(readlink -f "../../datasets")
 
 curl -G --data-urlencode "query= COPY d1temp FROM '$ABSOLUTE_PATH/d1.csv'; \
                 " http://localhost:9000/exec
