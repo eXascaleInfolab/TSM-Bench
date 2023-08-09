@@ -8,7 +8,7 @@ sudo docker stop timescaledb-container
 sudo docker rm timescaledb-container
 
 
-ABSOLUTE_PATH=$(readlink -f "../../datasets")
+ABSOLUTE_PATH=$(readlink -f "../../")
 
 sudo docker run -d --name timescaledb-container \
 	-p 127.0.0.1:5432:5432 \
