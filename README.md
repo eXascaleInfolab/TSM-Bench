@@ -155,10 +155,10 @@ ___
 python3 run_eval.py --systems influx --datasets d1 --queries q1
 ```
 
-2. Run q1 on InfluxDB for Dataset 1 with customized parameters (n_st=100, n_s=3, range=1 week)
+2. Run q1 on InfluxDB for Dataset 1 with customized parameters (n_st=100, n_s=10, range=1 week)
  
 ```bash 
-pythn3 run_eval.py --systems influx --datasets d1 --queries q1 --def_st 100 --def_s 3 --range 1 --rangeUnit week
+pythn3 run_eval.py --systems influx --datasets d1 --queries q1 --def_st 100 --def_s 10 --range 1 --rangeUnit week
 ```
 
 3. **[Figures 4.a-b]** Run q3 and q4 on InfluxDB for Dataset 1 using default parameters
