@@ -41,7 +41,7 @@ set_date = [random.random() for i in range(500)]
 parser = argparse.ArgumentParser(description = 'Script for running any eval')
 parser.add_argument('--system', nargs = '*', type = str, help = 'System name', default = 'clickhouse')
 parser.add_argument('--datasets', nargs = '*', type = str, help = 'Dataset name', default = 'd1')
-parser.add_argument('--queries', nargs = '*', type = str, help = 'List of queries to run (Q1-Q7)', default = ['q' + str(i) for i in range(1,8)])
+parser.add_argument('--queries', nargs = '?', type = str, help = 'List of queries to run (Q1-Q7)', default = ['q' + str(i) for i in range(1,8)])
 parser.add_argument('--nb_st', nargs = '?', type = int, help = 'Number of stations in the dataset', default = 10)
 parser.add_argument('--nb_s', nargs = '?', type = int, help = 'Number of sensors in the dataset', default = 100)
 parser.add_argument('--def_st', nargs = '?', type = int, help = 'Default number of queried stations', default = 1)
@@ -121,7 +121,7 @@ for dataset in args.datasets:
 			query = query.replace("<db>", dataset)
 			runtimes.append(run_query(query))
 		else: 
-			print('Query not supported.')
+			print('Query not run.')
 			runtimes.append((-1,-1))
 runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=['q' + str(i+1) for i in range(len(runtimes))]).astype(int)
 print(runtimes)	
