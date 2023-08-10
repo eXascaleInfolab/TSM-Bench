@@ -130,7 +130,7 @@ ___
 | ------ | ------ | ------ |
 | clickhouse | q1 (selection) | d1 |
 | druid | q2 (filtering) | d2 |
-| extremedb | q3 (aggregation) |  |
+| extremedb* | q3 (aggregation) |  |
 | influx | q4 (downsampling) |  |
 | monetdb | q5 (upsampling) |  |
 | questdb | q6 (average) | |
@@ -142,6 +142,7 @@ ___
     - `--nb_st` : Number of stations (Default = 10)
     - `--def_st` : Number of queried stations (Default = 1)
     - `--def_s` : Number of queried sensors (Default = 3)
+    - `--range`: Query range value (Default = 1)
     - `--rangeUnit`: Query range unit (Default = day)
     - `--min_ts`: Minimum query timestamp (Default = "2019-04-01T00:00:00")
     - `--max_ts`: Maximum query timestamp (Default = "2019-04-30T00:00:00")
