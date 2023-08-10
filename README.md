@@ -5,7 +5,7 @@ TSM-Bench is a new benchmark that compares seven Time Series Database Systems (T
 - List of benchmarked systems: [ClickHouse](https://clickhouse.com/), [Druid](https://druid.apache.org/), [eXtremeDB](https://www.mcobject.com/)*, [InfluxDB](https://docs.influxdata.com/influxdb/v1.7/), [MonetDB](https://www.monetdb.org/easy-setup/), [QuestDB](https://questdb.io/), [TimescaleDB](https://www.timescale.com/).
 -  The benchmark evaluates bulk-loading, storage performance, and offline/online query performance. 
 - We use two datasets for the evaluation: *D-LONG [d1] and D-MULTI [d2]*. The evaluated datasets can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/datasets).
-- **Note**: Due to license restrictions, we can share only the evaluation version of extremeDB. The results between the benchmarked and the public version might diverge. 
+- <sup>*</sup>**Note**: Due to license restrictions, we can only share the evaluation version of extremeDB. The results between the benchmarked and the public version might diverge. 
 
 <!---
   , in addition to additional generation scripts that are used during the online workloads.
