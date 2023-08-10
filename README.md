@@ -135,57 +135,47 @@ ___
 | monetdb | q5 (upsampling) |  |
 | questdb | q6 (average) | |
 | timescaledb | q7 (correlation) | |
-|  | q8 (distance based similarity search) | |
+| all  | q8 (distance based similarity search) | |
 |  | q9 (DTW) | |
+|  | all | |
+
 
 - **Optional Arguments**: The following arguments allow to add variation in the number of sensors and dynamic changes in predicate ranges:
-    - `--nb_st` : Number of stations (Default = 10)
-    - `--def_st` : Number of queried stations (Default = 1)
     - `--def_s` : Number of queried sensors (Default = 3)
     - `--range`: Query range value (Default = 1)
     - `--rangeUnit`: Query range unit (Default = day)
+    - `--def_st` : Number of queried stations (Default = 1)
+    - `--timeout`: Maximum query time after 5 runs (s) (Default = 20)
     - `--min_ts`: Minimum query timestamp (Default = "2019-04-01T00:00:00")
     - `--max_ts`: Maximum query timestamp (Default = "2019-04-30T00:00:00")
-    - `--timeout` : Maximum query time after 5 runs (s) (Default = 20)
+    - `--nb_st` : Number of stations (Default = 10)
 
 - **Examples**:
 
-1. **[Figure 3.a]** Run query q1 on InfluxDB for Dataset 1 using default parameters (n_st=1, n_s=3, range=1 day)
+
+1. Run query q1 on InfluxDB for Dataset 1 using default parameters (n_st=1, n_s=3, range=1 day)
  
 ```bash 
-python3 run_eval.py --systems influx --datasets d1 --queries q1
+python3 run_eval.py --systems influx --queries q1 --datasets d1
 ```
 
 2. Run q1 on InfluxDB for Dataset 1 with customized parameters (n_st=100, n_s=10, range=1 week)
  
 ```bash 
-pythn3 run_eval.py --systems influx --datasets d1 --queries q1 --def_st 100 --def_s 10 --range 1 --rangeUnit week
+pythn3 run_eval.py --systems influx --queries q1 --datasets d1 --def_st 100 --def_s 10 --range 1 --rangeUnit week
 ```
 
-3. **[Figures 4.a-b]** Run q3 and q4 on InfluxDB for Dataset 1 using default parameters
+3. Run q3 and q4 on InfluxDB for Dataset 1 using default parameters
  
 ```bash 
-python3 run_eval.py --systems influx --datasets d1 --queries q3 q4
+python3 run_eval.py --systems influx --queries q3 q4 --datasets d1
 ```
 
-4. **[Figures 3-4]** Run all queries on InfluxDB on Dataset 1 using default parameters
- 
+4. Run all systems on all queries using Dataset 1 using default parameters (takes  XXX hours)
+
 ```bash 
-python3 run_eval.py --systems influx --datasets d1
+python3 run_eval.py --systems all --queries all --datasets d1 
 ```
-
-5. **[Figure 4.c]** Run q5 on InfluxDB on Dataset 1 with a 1-minute timeout per query type using default parameters
- 
-```bash 
-python3 run_eval.py --systems influx --datasets d1  --queries q5 --timeout 60
-```
-
-6. **[Figure 6]** Run all queries on InfluxDB for Dataset 2 while varying the number of stations using default parameters
- 
-```bash 
-python3 run_eval.py --systems influx --datasets d1 --rangeUnit day --def_s 3 
-```
-
 
 
 
