@@ -120,7 +120,7 @@ ___
 
     ```bash
     cd/
-    python3 run_eval.py [args]
+    python3 tsm_eval.py [args]
     ```
 
 - **Mandatory Arguments**: [args] should be replaced with the name of the system, query, and dataset:  
@@ -156,25 +156,25 @@ ___
 1. Run query q1 on InfluxDB for Dataset 1 using default parameters (n_st=1, n_s=3, range=1 day)
  
 ```bash 
-python3 run_eval.py --systems influx --queries q1 --datasets d1
+python3 tsm_eval.py --systems influx --queries q1 --datasets d1
 ```
 
 2. Run q1 on InfluxDB for Dataset 1 with customized parameters (n_st=100, n_s=10, range=1 week)
  
 ```bash 
-pythn3 run_eval.py --systems influx --queries q1 --datasets d1 --def_st 100 --def_s 10 --range 1 --rangeUnit week
+pythn3 tsm_eval.py --systems influx --queries q1 --datasets d1 --def_st 100 --def_s 10 --range 1 --rangeUnit week
 ```
 
 3. Run q3 and q4 on InfluxDB for Dataset 1 using default parameters
  
 ```bash 
-python3 run_eval.py --systems influx --queries q3 q4 --datasets d1
+python3 tsm_eval.py --systems influx --queries q3 q4 --datasets d1
 ```
 
 4. Run all systems on all queries using Dataset 1 using default parameters (takes  XXX hours)
 
 ```bash 
-python3 run_eval.py --systems all --queries all --datasets d1 
+python3 tsm_eval.py --systems all --queries all --datasets d1 
 ```
 
 
