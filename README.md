@@ -140,8 +140,8 @@ ___
 
 
 - **Optional Arguments**: The following arguments allow to add variation in the number of sensors and dynamic changes in predicate ranges:
-    - `--def_s` : Number of queried sensors (Default = 3)
-    - `--def_st` : Number of queried stations (Default = 1)
+    - `--nb_sr` : Number of queried sensors (Default = 3)
+    - `--nb_st` : Number of queried stations (Default = 1)
     - `--range`: Query range value (Default = 1)
     - `--rangeUnit`: Query range unit (Default = day)
     - `--timeout`: Maximum query time after 5 runs (s) (Default = 20)
@@ -151,16 +151,16 @@ ___
 - **Examples**:
 
 
-1. Run query q1 on InfluxDB for Dataset 1 using default parameters (def_st=1, def_s=3, range=1 day)
+1. Run query q1 on InfluxDB for Dataset 1 using default parameters (nb_st=1, nb_sr=3, range=1 day)
  
 ```bash 
 python3 tsm_eval.py --systems influx --queries q1 --datasets d1
 ```
 
-2. Run q1 on InfluxDB for Dataset 1 with customized parameters (def_st=100, def_s=10, range=1 week)
+2. Run q1 on InfluxDB for Dataset 1 with customized parameters (nb_st=100, nb_sr=10, range=1 week)
  
 ```bash 
-pythn3 tsm_eval.py --systems influx --queries q1 --datasets d1 --def_st 100 --def_s 10 --range 1 --rangeUnit week
+pythn3 tsm_eval.py --systems influx --queries q1 --datasets d1 --nb_st 100 --nb_sr 10 --range 1w
 ```
 
 3. Run q3 and q4 on InfluxDB for Dataset 1 using default parameters
@@ -169,7 +169,7 @@ pythn3 tsm_eval.py --systems influx --queries q1 --datasets d1 --def_st 100 --de
 python3 tsm_eval.py --systems influx --queries q3 q4 --datasets d1
 ```
 
-4. Run all systems on all queries using Dataset 1 using default parameters (takes  XXX hours)
+4. Run all systems on all queries using Dataset 1 using default parameters (takes XXX hours)
 
 ```bash 
 python3 tsm_eval.py --systems all --queries all --datasets d1 
