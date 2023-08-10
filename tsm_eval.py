@@ -4,7 +4,7 @@ import sys
 import subprocess
 
 parser = argparse.ArgumentParser(description = 'Script for running any eval')
-parser.add_argument('--systems', nargs = '+', type = str, help = 'Systems name', default = 'monetdb')
+parser.add_argument('--systems', nargs = '+', type = str, help = 'Systems name', default = ['clickhouse','druid','influx','monetdb','questdb','timescaledb'])
 parser.add_argument('--datasets', nargs = '*', type = str, help = 'Dataset name', default = 'd1')
 parser.add_argument('--queries', nargs = '?', type = str, help = 'List of queries to run (Q1-Q7)', default = "q1 q2 q3 q4 q5 q6 q7")
 parser.add_argument('--nb_st', nargs = '?', type = int, help = 'Number of stations in the dataset', default = 10)
@@ -20,6 +20,15 @@ parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'A
 args = parser.parse_args()
 
 
+if args.systems[0] == 'all':
+    args.systems = ['clickhouse','druid','influx','monetdb','questdb','timescaledb']
+
+if args.queries == 'all':
+    args.queries = "q1 q2 q3 q4 q5 q6 q7"
+
+if args.datasets == 'all':
+    args.datasets = ['d1','d2']
+
 datasets = ['d1', 'd2']
 queries = args.queries.split()
 try: 
@@ -30,7 +39,6 @@ except:
 for d in args.datasets: 	
 	if d not in datasets:
 		sys.exit("Invalid dataset name: " + args.dataset)
-
 for system in systems:
 	systemPath = os.path.join(os.getcwd(), "systems", system)
 	if not(os.path.exists(systemPath)):
