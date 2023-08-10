@@ -119,7 +119,6 @@ ___
 - Each system has a dedicated subfolder under `systems` folder. Queries for all systems can be executed as follows:
 
     ```bash
-    cd/
     python3 tsm_eval.py [args]
     ```
 
