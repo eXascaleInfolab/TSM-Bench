@@ -1,11 +1,11 @@
 #!/bin/bash
 
 
-current="$HOME"
+current="$(pwd)"
 
-export MCO_ROOT="$current"/TSM-Bench/systems/eXtremeDB/
-export MCO_LIBRARY_PATH="$current"/TSM-Bench/systems/eXtremeDB/target/bin.so
-export LD_LIBRARY_PATH="$current"/TSM-Benchsystems/eXtremeDB/target/bin.so
+export MCO_ROOT="$current"
+export MCO_LIBRARY_PATH="$current"/eXtremeDB/target/bin.so
+export LD_LIBRARY_PATH="$current"/eXtremeDB/target/bin.so
 
 
 #export MCO_ROOT=/home/abdel/TSM-Bench/systems/extremedb/eXtremeDB/
