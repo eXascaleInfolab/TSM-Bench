@@ -12,7 +12,7 @@ sudo pip3 install protobuf==3.13.0
 sudo pip3 install tqdm
 sudo pip3 install gdown
 sudo pip3 install pylab-sdk
-
+sudo pip3 install sqlalchemy
 
 # Java
 sudo apt-get install -y openjdk-8-jdk
