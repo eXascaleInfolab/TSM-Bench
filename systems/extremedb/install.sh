@@ -1,9 +1,7 @@
 #!/bin/bash
 
 
-wget --user abdel --password 32gkcUoICCj https://downloads.mcobject.com/abdel/1802_28367/extremedb_8.2_fusion_linux_x86_64_ha_sql_lua_obj.tar.gz
-tar xvzf extremedb_8.2_fusion_linux_x86_64_ha_sql_lua_obj.tar.gz
-rm extremedb_8.2_fusion_linux_x86_64_ha_sql_lua_obj.tar.gz
+tar xvzf extremedb_8.3_fusion_linux_x86_64_sql_lua_eval.tar.gz 
 
 cd eXtremeDB/
 make all
