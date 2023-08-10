@@ -142,24 +142,23 @@ ___
 
 - **Optional Arguments**: The following arguments allow to add variation in the number of sensors and dynamic changes in predicate ranges:
     - `--def_s` : Number of queried sensors (Default = 3)
+    - `--def_st` : Number of queried stations (Default = 1)
     - `--range`: Query range value (Default = 1)
     - `--rangeUnit`: Query range unit (Default = day)
-    - `--def_st` : Number of queried stations (Default = 1)
     - `--timeout`: Maximum query time after 5 runs (s) (Default = 20)
     - `--min_ts`: Minimum query timestamp (Default = "2019-04-01T00:00:00")
     - `--max_ts`: Maximum query timestamp (Default = "2019-04-30T00:00:00")
-    - `--nb_st` : Number of stations (Default = 10)
 
 - **Examples**:
 
 
-1. Run query q1 on InfluxDB for Dataset 1 using default parameters (n_st=1, n_s=3, range=1 day)
+1. Run query q1 on InfluxDB for Dataset 1 using default parameters (def_st=1, def_s=3, range=1 day)
  
 ```bash 
 python3 tsm_eval.py --systems influx --queries q1 --datasets d1
 ```
 
-2. Run q1 on InfluxDB for Dataset 1 with customized parameters (n_st=100, n_s=10, range=1 week)
+2. Run q1 on InfluxDB for Dataset 1 with customized parameters (def_st=100, def_s=10, range=1 week)
  
 ```bash 
 pythn3 tsm_eval.py --systems influx --queries q1 --datasets d1 --def_st 100 --def_s 10 --range 1 --rangeUnit week
