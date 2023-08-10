@@ -4,7 +4,7 @@
 current="$HOME"
 
 export MCO_ROOT="$current"/TSM-Bench/systems/eXtremeDB/
-export MCO_LIBRARY_PATH="$current"/TSM-Bench/systems//eXtremeDB/target/bin.so
+export MCO_LIBRARY_PATH="$current"/TSM-Bench/systems/eXtremeDB/target/bin.so
 export LD_LIBRARY_PATH="$current"/TSM-Benchsystems/eXtremeDB/target/bin.so
 
 
