@@ -32,9 +32,6 @@ ___
 
 - Ubuntu 20.04 or higher
 - Clone this repository
-    ```bash
-    git clone https://github.com/eXascaleInfolab/TSM-Bench 
-    ```
 - Install the dependencies
     ```bash
     sh systems/install_dependencies.sh
