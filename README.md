@@ -32,9 +32,6 @@ ___
 
 - Ubuntu 20.04 or higher
 - Clone this repository
-    ```bash
-    git clone https://github.com/eXascaleInfolab/TSM-Bench 
-    ```
 - Install the dependencies
     ```bash
     sh systems/install_dependencies.sh
@@ -201,6 +198,7 @@ or by retraining from scratch the model.
 
 
 ```bash
+cd ../generation
 python3 run_pretrained.py
 ```
 
@@ -246,7 +244,18 @@ ___
 
 ## Citation
 
-Coming soon
-
+```bibtex
+@inproceedings{khelifati2023vldb,
+  author = {Khelifati, Abdelouahab and Khayati, Mourad and Dignös, Anton and Difallah, Djellel and Cudré-Mauroux, Philippe},
+  title = {TSM-Bench: Benchmarking Time Series Database Systems for Monitoring Applications},
+  booktitle = {Proceedings of the VLDB Endowment},
+  volume = {16},
+  number = {11},
+  pages = {3363--3376},
+  year = {2023},
+  doi = {10.14778/3611479.3611532},
+  url = {https://vldb.org/2023/?papers-research}
+}
+```
 
 
