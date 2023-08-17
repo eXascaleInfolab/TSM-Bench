@@ -52,12 +52,16 @@ parser.add_argument('--timeout', nargs = '?', type = float, help = 'Query execut
 parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
 args = parser.parse_args()
 
-
-
 def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
 	# Connect to the system
+	#print("query intput:", query)
+
+	if rangeUnit in ["week","w","WEEK"]:
+		rangeUnit = "day"
+		rangeL = rangeL*7
+	
 	conn = pymonetdb.connect(username="monetdb", port=54320, password="monetdb", hostname="localhost", database="mydb")
-	cursor = conn.cursor()
+	cursor = conn.cursor()	 
 	runtimes = []
 	full_time = time.time()
 	for it in tqdm(range(n_it)):
@@ -72,7 +76,10 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		for j in li[1:]:
 			q += ', ' + "'" + j + "'"
 		q += ")"
-		temp = temp.replace("<stid>", q)
+	
+		temp = temp.replace("<stid>", q)		
+		temp = temp.replace("<stid1>", f"{random.randint(1,10)}")
+		temp = temp.replace("<stid2>", f"{random.randint(1,10)}") 
 	
 		# sensors
 		li = ['s' + str(z) for z in random.sample(range(args.nb_s), n_s)]
@@ -90,11 +97,24 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		temp = temp.replace("<sfilter>", q_filter + ')')
 		temp = temp.replace("<avg_s>", q_avg)
 		
+
+
+
+		import re 
+		#match a=(b,c,...) make it a=b or a=c or ...
+		equality_missmatches = re.findall(r"\b\w+\s*=\s*\([^)]*?,[^)]*?\)",temp)
+		for equality_missmatch in  equality_missmatches:
+			pattern , options = equality_missmatch.split("=")
+			options = options.replace(")","").replace("(","").split(",")    
+			res = "(" +  " or ".join( [ pattern+"= "+o  for o in options ]) +  ")"   
+			temp = temp.replace(equality_missmatch,res)
+		
 		start = time.time()
 		# print(temp)
-		
-		cursor.execute(temp)
-		cursor.fetchall()
+		print("execution query" , temp)
+		#cursor.execute(temp)
+		cursor.execute( "Select id_station, id_sensor  from d1")
+		print(cursor.fetchall()[:2])
 		diff = (time.time()-start)*1000
 		#  print(temp, diff)
 		runtimes.append(diff)
@@ -109,20 +129,59 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 with open('queries.sql') as file:
 	queries = [line.rstrip() for line in file]
 
+db_name = "monetdb"
+import json
+import itertools
+
+with open("../scenarios.json") as file:
+	scenarios = json.load(file)
+	print(scenarios)
+
+n_stations , n_sensors , n_time_ranges = scenarios["stations"],  scenarios["sensors"], scenarios["time_ranges"]
+
+
+results_dir = "../../results"
+if not os.path.exists(results_dir):
+	os.mkdir(results_dir)
+
 
 runtimes = []
-#datasets = args.datasets.split()
-	# Execute queries
+index_ = []
 for dataset in args.datasets:
-        for i, query in enumerate(queries):
-                if 'SELECT' in query.upper() and "q" + str(i+1) in args.queries :
-                        query = query.replace("<db>", dataset)
-                        runtimes.append(run_query(query))
-                else:
-                        print('Query not run.')
-                        runtimes.append((-1,-1))
+	data_dir = f"{results_dir}/{dataset}"
+	if not os.path.exists(data_dir):
+ 		os.mkdir(data_dir)
+	for i, query in enumerate(queries):
+		try:
+			query_dir = f"{data_dir}/query_{i+1}"
+			if not os.path.exists(query_dir):
+				os.mkdir(query_dir)
+			if 'SELECT' in query.upper() and "q" + str(i+1) in args.queries :
+				query = query.replace("<db>", dataset)
+				for range_unit in n_time_ranges:
+					print("vary range",range_unit)
+					runtimes.append(run_query(query,rangeUnit=range_unit))
+					index_.append(f" {range_unit}")
+				for sensors  in n_sensors:
+					print("vary sensors" , sensors)
+					runtimes.append(run_query(query,n_s=sensors))
+					index_.append(f" s_{sensors}")
+				for stations in n_stations:
+					print("vary station",stations)
+					runtimes.append(run_query(query,n_st=stations))
+					index_.append(f"st_{stations}")
+			else:
+				print('Query not run.')
+				runtimes.append((-1,-1))
+				index_.append(f"query{i+1}")
+			runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
+			print(runtimes)
+			runtimes.to_csv(f"{query_dir}/{db_name}.txt")
+		except Exception as E:
+			raise E
+		runtimes = []
+		index_ = []
 
-runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=['q' + str(i+1) for i in range(len(runtimes))]).astype(int)
-print(runtimes)	
-
+runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
+print(runtimes)
 

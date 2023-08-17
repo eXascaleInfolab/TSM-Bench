@@ -80,7 +80,7 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		date = random_date(args.min_ts, args.max_ts, set_date[(int(rangeL)*it)%500], dform = '%Y-%m-%dT%H:%M:%S')
 		temp = query.replace("<timestamp>", date)
 		temp = temp.replace("<range>", str(rangeL))
-		temp = temp.replace("<rangesUnit>", str(options[rangeUnit]))
+		temp = temp.replace("<rangesUnit>", str(options[rangeUnit.lower()]))
 		
 		# stations
 		li = ['st' + str(z) for z in random.sample(range(args.nb_st), n_st)]
@@ -130,21 +130,59 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 with open('queries.sql') as file:
 	queries = [line.rstrip() for line in file]
 
+db_name = "monetdb"
+import json
+import itertools
+
+with open("../scenarios.json") as file:
+	scenarios = json.load(file)
+	print(scenarios)
+
+n_stations , n_sensors , n_time_ranges = scenarios["stations"],  scenarios["sensors"], scenarios["time_ranges"]
+
+
+results_dir = "../../results"
+if not os.path.exists(results_dir):
+	os.mkdir(results_dir)
+
 
 runtimes = []
-	# Execute queries
+index_ = []
 for dataset in args.datasets:
-        for i, query in enumerate(queries):
-                if 'SELECT' in query.upper() and "q" + str(i+1) in args.queries :
-                        query = query.replace("<db>", dataset)
-                        runtimes.append(run_query(query))
-                else:
-                        print('Query not run.')
-                        runtimes.append((-1,-1))
+	data_dir = f"{results_dir}/{dataset}"
+	if not os.path.exists(data_dir):
+ 		os.mkdir(data_dir)
+	for i, query in enumerate(queries):
+		try:
+			query_dir = f"{data_dir}/query_{i+1}"
+			if not os.path.exists(query_dir):
+				os.mkdir(query_dir)
+			if 'SELECT' in query.upper() and "q" + str(i+1) in args.queries :
+				query = query.replace("<db>", dataset)
+				for range_unit in n_time_ranges:
+					print("vary range",range_unit)
+					runtimes.append(run_query(query,rangeUnit=range_unit))
+					index_.append(f" {range_unit}")
+				for sensors  in n_sensors:
+					print("vary sensors" , sensors)
+					runtimes.append(run_query(query,n_s=sensors))
+					index_.append(f" s_{sensors}")
+				for stations in n_stations:
+					print("vary station",stations)
+					runtimes.append(run_query(query,n_st=stations))
+					index_.append(f"st_{stations}")
+			else:
+				print('Query not run.')
+				runtimes.append((-1,-1))
+				index_.append(f"query{i+1}")
+			runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
+			print(runtimes)
+			runtimes.to_csv(f"{query_dir}/{db_name}.txt")
+		except Exception as E:
+			raise E
+		runtimes = []
+		index_ = []
 
-runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=['q' + str(i+1) for i in range(len(runtimes))]).astype(int)
-print(runtimes)	
-
-
-
+runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
+print(runtimes)
 

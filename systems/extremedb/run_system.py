@@ -17,15 +17,21 @@ print('launching system')
 
 import os
 import subprocess
-from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
 
-process = Popen(['sh', 'variables.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-stdout, stderr = process.communicate()
+# Command to source the script and print the environment
+command = '/bin/bash -c "source variables.sh; env"'
 
-process = Popen(['sh', 'launch.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-stdout, stderr = process.communicate()
+proc = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
+output, error = proc.communicate()
 
-process = Popen(['sleep', '3'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+# Parse the output to extract the environment variables
+env_lines = [line.decode("utf-8").split('=', 1) for line in output.splitlines() if b'=' in line]
+env = dict(env_lines)
+os.environ.update(env)
+
+process = subprocess.Popen(['sh', 'launch.sh'], env=os.environ, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+
+process = subprocess.Popen(['sleep', '10'], stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 stdout, stderr = process.communicate()
 
 import exdb 
@@ -88,7 +94,8 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		temp = temp.replace("<stid>", q)
 	
 		# sensors
-		rand = [str(z) for z in random.sample(range(args.nb_st), n_s)]
+	
+		rand = [str(z) for z in random.sample(range(args.nb_s), n_s)]
 		sidlist = 's' + rand[0]
 		for j in rand[1:]:
 			sidlist += ',' + 's' +  j
@@ -144,20 +151,62 @@ with open('queries.sql') as file:
 	queries = [line.rstrip() for line in file]
 
 
-runtimes = []
-#datasets = args.datasets.split()
-	# Execute queries
-for dataset in args.datasets:
-        for i, query in enumerate(queries):
-                if 'SELECT' in query.upper() and "q" + str(i+1) in args.queries :
-                        query = query.replace("<db>", dataset)
-                        runtimes.append(run_query(query))
-                else:
-                        print('Query not run.')
-                        runtimes.append((-1,-1))
+db_name = "extremedb"
+import json
+import itertools
 
-runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=['q' + str(i+1) for i in range(len(runtimes))]).astype(int)
-print(runtimes)	
+with open("../scenarios.json") as file:
+	scenarios = json.load(file)
+	print(scenarios)
+
+n_stations , n_sensors , n_time_ranges = scenarios["stations"],  scenarios["sensors"], scenarios["time_ranges"]
+
+
+results_dir = "../../results"
+if not os.path.exists(results_dir):
+	os.mkdir(results_dir)
+
+
+runtimes = []
+index_ = []
+for dataset in args.datasets:
+	data_dir = f"{results_dir}/{dataset}"
+	if not os.path.exists(data_dir):
+ 		os.mkdir(data_dir)
+	for i, query in enumerate(queries):
+		try:
+			query_dir = f"{data_dir}/query_{i+1}"
+			if not os.path.exists(query_dir):
+				os.mkdir(query_dir)
+			if 'SELECT' in query.upper() and "q" + str(i+1) in args.queries :
+				query = query.replace("<db>", dataset)
+				for range_unit in n_time_ranges:
+					print("vary range",range_unit)
+					runtimes.append(run_query(query,rangeUnit=range_unit))
+					index_.append(f" {range_unit}")
+				for sensors  in n_sensors:
+					print("vary sensors" , sensors)
+					runtimes.append(run_query(query,n_s=sensors))
+					index_.append(f" s_{sensors}")
+				for stations in n_stations:
+					print("vary station",stations)
+					runtimes.append(run_query(query,n_st=stations))
+					index_.append(f"st_{stations}")
+			else:
+				print('Query not run.')
+				runtimes.append((-1,-1))
+				index_.append(f"query{i+1}")
+			runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
+			print(runtimes)
+			runtimes.to_csv(f"{query_dir}/{db_name}.txt")
+		except Exception as E:
+			raise E
+		runtimes = []
+		index_ = []
+
+runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
+print(runtimes)
+
 
 
 

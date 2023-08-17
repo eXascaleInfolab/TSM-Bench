@@ -2,11 +2,12 @@ import argparse
 import os
 import sys
 import subprocess
+from systems.utils import abr_time_map as unit_options
 
 parser = argparse.ArgumentParser(description = 'Script for running any eval')
 parser.add_argument('--systems', nargs = '+', type = str, help = 'Systems name', default = ['clickhouse','druid','influx','monetdb','questdb','timescaledb'])
 parser.add_argument('--datasets', nargs = '*', type = str, help = 'Dataset name', default = 'd1')
-parser.add_argument('--queries', nargs = '?', type = str, help = 'List of queries to run (Q1-Q7)', default = "q1 q2 q3 q4 q5 q6 q7")
+parser.add_argument('--queries', nargs = '*', type = str, help = 'List of queries to run (Q1-Q7)', default = "q1 q2 q3 q4 q5 q6 q7")
 parser.add_argument('--n_st', nargs = '?', type = int, help = 'Number of stations in the dataset', default = 10)
 parser.add_argument('--n_s', nargs = '?', type = int, help = 'Number of sensors in the dataset', default = 100)
 parser.add_argument('--nb_st', nargs = '?', type = int, help = 'Default number of queried stations', default = 1)
@@ -32,18 +33,19 @@ except:
     args.rangeUnit = "day"
 
 
+if args.systems[0] == "all":
+    args.systems = ['clickhouse','influx','monetdb','questdb','timescaledb','druid']
 
-if args.systems[0] == 'all':
-    args.systems = ['clickhouse','druid','influx','monetdb','questdb','timescaledb']
-
-if args.queries == 'all':
-    args.queries = "q1 q2 q3 q4 q5 q6 q7"
+if "all" in args.queries:
+    args.queries = "q1,q2,q3,q4,q5,q6,q7"
 
 if args.datasets == 'all':
     args.datasets = ['d1','d2']
 
 datasets = ['d1', 'd2']
-queries = args.queries.split()
+
+queries = args.queries if "," not in args.queries  else args.queries.split(",") 
+
 try: 
 	systems = args.systems.split()
 except: 
@@ -52,8 +54,12 @@ except:
 for d in args.datasets: 	
 	if d not in datasets:
 		sys.exit("Invalid dataset name: " + args.dataset)
+
+system_paths = { system : os.path.join(os.getcwd(), "systems", system) for system in systems } 
+
 for system in systems:
-	systemPath = os.path.join(os.getcwd(), "systems", system)
+	systemPath = system_paths[system]
+	print(f"###{system}###")
 	if not(os.path.exists(systemPath)):
 		sys.exit("Invalid system: " + system)
 		
@@ -61,7 +67,7 @@ for system in systems:
 	
 	toRun = ['python3', 'run_system.py', '--datasets', ' '.join(args.datasets)
 		, '--queries', str(args.queries), '--nb_st', str(args.n_st)
-		, '--nb_s', str(args.n_s), '--range', str(args.range), '--rangeUnit', str(args.rangeUnit), '--timeout', str(args.timeout)]
+		, '--nb_s', str(args.n_s), '--range', str(args.range), '--rangeUnit',  unit_options[str(args.rangeUnit).lower()], '--timeout', str(args.timeout)]
 		
 	if len(args.additional_arguments) > 0:
 		toRun = toRun + args.additional_arguments.split(" ")

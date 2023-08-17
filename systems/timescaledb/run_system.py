@@ -59,7 +59,7 @@ args = parser.parse_args()
 
 def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
 	# Connect to the system
-	CONNECTION = "postgres://postgres:postgres@localhost:5432/postgres"
+	CONNECTION = "postgres://postgres:postgres@localhost:5431/postgres"
 	conn = psycopg2.connect(CONNECTION)
 	cursor = conn.cursor()
 	
