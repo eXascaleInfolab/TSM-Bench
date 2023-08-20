@@ -154,7 +154,7 @@ ___
 python3 tsm_eval.py --systems influx --queries q1 --datasets d1
 ```
 
-2. Change the default parameters of query 1 to nb_st=100, nb_sr=10, and range=1 week
+2. Run query 1 InfluxDB for Dataset 1 using custom parameters nb_st=100, nb_sr=10, and range=1 week
  
 ```bash 
 python3 tsm_eval.py --systems influx --queries q1 --datasets d1 --nb_st 10 --nb_sr 10 --range 1w
