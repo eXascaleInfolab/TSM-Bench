@@ -63,6 +63,11 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 	conn = psycopg2.connect(CONNECTION)
 	cursor = conn.cursor()
 	
+
+	if rangeUnit in ["week","w","Week"]:
+		rangeUnit = "day"
+		rangleL = rangeL*7
+		
 	runtimes = []
 	full_time = time.time()
 	for it in tqdm(range(n_it)):
@@ -118,19 +123,61 @@ with open('queries.sql') as file:
 	queries = [line.rstrip() for line in file]
 
 
+db_name = "timescaledb"
+import json
+import itertools
+
+with open("../scenarios.json") as file:
+	scenarios = json.load(file)
+	print(scenarios)
+
+n_stations , n_sensors , n_time_ranges = scenarios["stations"],  scenarios["sensors"], scenarios["time_ranges"]
+
+
+results_dir = "../../results"
+if not os.path.exists(results_dir):
+	os.mkdir(results_dir)
+
+
 runtimes = []
-#datasets = args.datasets.split()
-	# Execute queries
+index_ = []
 for dataset in args.datasets:
-        for i, query in enumerate(queries):
-                if 'SELECT' in query.upper() and "q" + str(i+1) in args.queries :
-                        query = query.replace("<db>", dataset)
-                        runtimes.append(run_query(query))
-                else:
-                        print('Query not run.')
-                        runtimes.append((-1,-1))
-runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=['q' + str(i+1) for i in range(len(runtimes))]).astype(int)
-print(runtimes)	
+	data_dir = f"{results_dir}/{dataset}"
+	if not os.path.exists(data_dir):
+ 		os.mkdir(data_dir)
+	for i, query in enumerate(queries):
+		try:
+			query_dir = f"{data_dir}/query_{i+1}"
+			if not os.path.exists(query_dir):
+				os.mkdir(query_dir)
+			if 'SELECT' in query.upper() and "q" + str(i+1) in args.queries :
+				query = query.replace("<db>", dataset)
+				for range_unit in n_time_ranges:
+					print("vary range",range_unit)
+					runtimes.append(run_query(query,rangeUnit=range_unit))
+					index_.append(f" {range_unit}")
+				for sensors  in n_sensors:
+					print("vary sensors" , sensors)
+					runtimes.append(run_query(query,n_s=sensors))
+					index_.append(f" s_{sensors}")
+				for stations in n_stations:
+					print("vary station",stations)
+					runtimes.append(run_query(query,n_st=stations))
+					index_.append(f"st_{stations}")
+			else:
+				print('Query not run.')
+				runtimes.append((-1,-1))
+				index_.append(f"query{i+1}")
+			runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
+			print(runtimes)
+			runtimes.to_csv(f"{query_dir}/{db_name}.txt")
+		except Exception as E:
+			raise E
+		runtimes = []
+		index_ = []
+
+runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
+print(runtimes)
 
 
 

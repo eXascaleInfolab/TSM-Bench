@@ -75,6 +75,7 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 	}
 	
 	runtimes = []
+	n_queries = []
 	full_time = time.time()
 	for it in tqdm(range(n_it)):
 		date = random_date(args.min_ts, args.max_ts, set_date[(int(rangeL)*it)%500], dform = '%Y-%m-%dT%H:%M:%S')
@@ -115,7 +116,8 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		# print(temp)
 		
 		cursor.execute(temp)
-		cursor.fetchall()
+		queries = cursor.fetchall()
+		n_queries.append(len(queries))
 		diff = (time.time()-start)*1000
 		#  print(temp, diff)
 		runtimes.append(diff)
@@ -123,14 +125,15 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 			break  
 			
 	conn.close()
-	return stats.mean(runtimes), stats.stdev(runtimes)
+	print("n_queries" , stats.median(n_queries) , stats.mean(n_queries) )
+	return stats.mean(runtimes), stats.stdev(runtimes) 
 
 
 # Read Queries
 with open('queries.sql') as file:
 	queries = [line.rstrip() for line in file]
 
-db_name = "monetdb"
+db_name = "questdb"
 import json
 import itertools
 

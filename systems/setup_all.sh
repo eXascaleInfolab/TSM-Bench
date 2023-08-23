@@ -1,16 +1,9 @@
-#!/bin/sh
-
 # ClickHouse
 echo "############Clickhouse##########"
 cd clickhouse
 sh ./setup.sh
 cd ..
 
-# Druid
-echo "############Druid##########"
-cd druid
-sh ./setup.sh
-cd ..
 
 # ExtremeDB
 echo "############ExtremeDB##########"
@@ -40,5 +33,12 @@ cd ..
 # TimescaleDB
 echo "############TimescaleDB##########"
 cd  timescaledb
+sh ./setup.sh
+cd ..
+
+
+# Druid
+echo "############Druid##########"
+cd druid
 sh ./setup.sh
 cd ..

@@ -113,8 +113,6 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		# print(temp)
 		print("execution query" , temp)
 		#cursor.execute(temp)
-		cursor.execute( "Select id_station, id_sensor  from d1")
-		print(cursor.fetchall()[:2])
 		diff = (time.time()-start)*1000
 		#  print(temp, diff)
 		runtimes.append(diff)

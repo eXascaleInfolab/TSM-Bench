@@ -67,7 +67,10 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 	# Connect to the system
 	client = InfluxDBClient(host="localhost", port=8086, username='luca')
 	
+	count = client.query('SELECT COUNT(*)  FROM "d1"."autogen"."sensor";')	
+	print("#rows",count)
 	runtimes = []
+	n_queries = []
 	full_time = time.time()
 	for it in tqdm(range(n_it)):
 		date = random_date(args.min_ts, args.max_ts, set_date[(int(rangeL)*it)%500], dform = '%Y-%m-%dT%H:%M:%S')
@@ -102,7 +105,8 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		temp = temp.replace("<avg_s_as>", q_avg_as)
 		
 		start = time.time()
-		client.query(temp)
+		queries = client.query(temp)
+		n_queries.append(len(queries))	
 		diff = (time.time()-start)*1000
 
 		runtimes.append(diff)
@@ -110,6 +114,7 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 			break  
 			
 	client.close()
+	print("queries results" , stats.median(n_queries),stats.mean(n_queries))
 	return round(stats.mean(runtimes),3) , round(stats.stdev(runtimes),3)
 
 

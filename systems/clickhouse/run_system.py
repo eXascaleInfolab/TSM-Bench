@@ -105,7 +105,9 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		assert not matches , temp
 
 		cursor.execute(temp)
-		cursor.fetchall()
+		results_ = cursor.fetchall()
+		if it == 0:
+			print(results_)
 		diff = (time.time()-start)*1000
 		#  print(temp, diff)
 		runtimes.append(diff)
