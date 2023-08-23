@@ -6,7 +6,6 @@
 # curl -G --data-urlencode "query= DROP TABLE IF EXISTS d1temp; \
 # 		" http://localhost:9000/exp
 
-# curl -G --data-urlencode "query= DROP TABLE IF EXISTS d1; \
 # 		" http://localhost:9000/exp
 
 

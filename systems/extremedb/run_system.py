@@ -135,7 +135,12 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		# print(temp)
 		
 		cursor.execute(temp)
-		cursor.fetchall()
+		results_ = cursor.fetchall()
+		if it == 0:
+			if len(results_) == 0:
+				print("NO QUERY RESULTS")
+			else:
+				print("QUERY RESULTS" , results_[:2])
 		diff = (time.time()-start)*1000
 		#  print(temp, diff)
 		runtimes.append(diff)

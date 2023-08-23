@@ -3,6 +3,10 @@
 
 tar xvzf extremedb_8.3_fusion_linux_x86_64_sql_lua_eval.tar.gz 
 
+export MCO_ROOT="$current"/eXtremeDB/
+export MCO_LIBRARY_PATH="$current"/eXtremeDB/target/bin.so
+export LD_LIBRARY_PATH="$current"/eXtremeDB/target/bin.so
+
 cd eXtremeDB/
 make all
 cd target/python/
@@ -22,9 +26,9 @@ pip3 install --force-reinstall eXtremeDB/target/python/dist/exdb_mcobject-0.1.1-
 # 
 current="$(pwd)"
 
-export MCO_ROOT="$current"/systems/eXtremeDB/
-export MCO_LIBRARY_PATH="$current"/systems/eXtremeDB/target/bin.so
-export LD_LIBRARY_PATH="$current"/systems/eXtremeDB/target/bin.so
+export MCO_ROOT="$current"/eXtremeDB/
+export MCO_LIBRARY_PATH="$current"/eXtremeDB/target/bin.so
+export LD_LIBRARY_PATH="$current"/eXtremeDB/target/bin.so
 
 
 # export MCO_PYTHONAPILIB=/home/abdel/.local/lib/python3.8/site-packages/exdb_mcobject-0.1.1-py3.8-linux-x86_64.egg/exdb/libmcopythonapi.so
