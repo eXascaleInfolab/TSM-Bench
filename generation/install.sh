@@ -19,4 +19,5 @@ python -m pip install sklearn
 python -m pip install future
 python -m pip install lshashpy3
 python -m pip install torch
+python -m pip install scipy
 # Run: time python main_tsgen.py
