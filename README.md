@@ -198,7 +198,7 @@ or by retraining from scratch the model.
 
 
 ```bash
-cd ../generation
+cd generation
 python3 run_pretrained.py
 ```
 
