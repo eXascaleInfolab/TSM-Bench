@@ -30,7 +30,7 @@ TSM-Bench is a new benchmark that compares seven Time Series Database Systems (T
 ___
 ## Prerequisites
 
-- Ubuntu 20.04 or higher
+- Ubuntu 20.04 
 - Clone this repository
 - Install the dependencies
     ```bash
