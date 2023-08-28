@@ -1,4 +1,4 @@
-# Comprehensive Benchmark for Time Series Database Systems
+ # Comprehensive Benchmark for Time Series Database Systems
 
 TSM-Bench is a new benchmark that compares seven Time Series Database Systems (TSDBs) using a mixed set of workloads. It can be easily extended with new systems, queries, datasets, and workloads. The benchmark introduces a novel data generation method that augments seed real-world time series datasets enabling realistic and scalable benchmarking. Technical details can be found in the paper: *TSM-Bench: Benchmarking Time Series Database Systems for Monitoring Applications*, PVLDB'23. 
 
@@ -62,8 +62,20 @@ ___
 
 We provide different scripts depending on whether the systems have been already installed or not:
 
-   
--  To download, install, and setup all the systems
+
+
+To download, install and setup a specific system
+
+```bash
+cd systems/{system}
+sh install.sh
+sh launch.sh
+sh setup.sh
+```
+- Note: {system} needs to be replaced with the name of one of the systems from the table below.
+
+ <!---  
+-  To download, install, setup and load data to systems
 
     ```bash
     cd systems/
@@ -72,16 +84,8 @@ We provide different scripts depending on whether the systems have been already 
     ```
     -  Note: Systems can be installed separately as described in the [**customized installation**](#customized-installation) below. 
  
- - To launch the systems
 
-   ```bash
-   cd systems/
-   sh launch_all.sh
-   ```
 
-    
-
-<!---
 - Setup all systems (all systems have to be running) to have two datasets ```d1``` and ```d2```
 
     ```bash
@@ -92,7 +96,9 @@ We provide different scripts depending on whether the systems have been already 
 ___
 
 ## Experiments
-###  Data Loading Performance
+
+ <!---  
+ ###  Data Loading Performance
 
 - To reproduce the data loading times of all systems (column 1 of Table 3):
 
@@ -102,11 +108,14 @@ ___
     ```
 - Note:  All systems need to be running before executing the query.  
 
+-->
+
 ### Storage Performance 
 
 - To reproduce the storage performance of a given system (column 2 of Table 3): 
     ```bash
     cd systems/{system}
+    sh lauch.sh
     sh compression.sh
     ```
 - Note: {system} needs to be replaced with the name of one of the systems from the table below.
@@ -137,10 +146,10 @@ ___
 
 
 - **Optional Arguments**: The following arguments allow to add variation in the number of sensors and dynamic changes in predicate ranges:
-    - `--nb_sr` : Number of queried sensors (Default = 3)
-    - `--nb_st` : Number of queried stations (Default = 1)
-    - `--range`: Query range value (Default = 1)
-    - `--rangeUnit`: Query range unit (Default = day)
+    - `--nb_sr`: Number of queried sensors when varying other dimensions (Default = 3)
+    - `--nb_st`: Number of queried stations when varying other dimensions (Default = 1)
+    - `--range`: Query range value when varying other dimensions (Default = 1)
+    - `--rangeUnit`: Query range unit when varying other dimensions (Default = day)
     - `--timeout`: Maximum query time after 5 runs (s) (Default = 20)
     - `--min_ts`: Minimum query timestamp (Default = "2019-04-01T00:00:00")
     - `--max_ts`: Maximum query timestamp (Default = "2019-04-30T00:00:00")
@@ -154,10 +163,10 @@ ___
 python3 tsm_eval.py --systems influx --queries q1 --datasets d1
 ```
 
-2. Change the default parameters of query 1 to nb_st=100, nb_sr=10, and range=1 week
+2. Run query 1 InfluxDB for Dataset 1 using custom parameters nb_st=100, nb_sr=10, and range=1 week
  
 ```bash 
-python3 tsm_eval.py --systems influx --queries q1 --datasets d1 --nb_st 100 --nb_sr 10 --range 1w
+python3 tsm_eval.py --systems influx --queries q1 --datasets d1 --nb_st 10 --nb_sr 10 --range 1w
 ```
 
 3. Run q3 and q4 on InfluxDB for Dataset 1 using default parameters
@@ -174,17 +183,6 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 
 
 
-
-___
-
-## Customized Installation
-
-To install and setup a specific system
-
-```bash
-cd systems/{system}
-sh install.sh
-```
 ___
 
 ## Time Series Generation 
@@ -198,7 +196,7 @@ or by retraining from scratch the model.
 
 
 ```bash
-cd ../generation
+cd generation
 python3 run_pretrained.py
 ```
 
