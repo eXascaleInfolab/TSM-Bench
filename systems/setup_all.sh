@@ -34,6 +34,7 @@ cd ..
 echo "############TimescaleDB##########"
 cd  timescaledb
 sh ./setup.sh
+<<<<<<< HEAD
 cd ..
 
 
