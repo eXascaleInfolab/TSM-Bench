@@ -62,9 +62,14 @@ ___
 
 We provide different scripts depending on whether the systems have been already installed or not:
 
+To download, install, setup and load data to systems
 
+```bash
+cd systems/
+sh install_all.sh
+```
 
-To download, install and setup a specific system
+- To download, install and setup a specific system
 
 ```bash
 cd systems/{system}
@@ -72,7 +77,7 @@ sh install.sh
 sh launch.sh
 sh setup.sh
 ```
-- Note: {system} needs to be replaced with the name of one of the systems from the table below.
+**Note:** {system} needs to be replaced with the name of one of the systems from the table below.
 
  <!---  
 -  To download, install, setup and load data to systems
