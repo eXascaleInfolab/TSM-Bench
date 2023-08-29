@@ -3,5 +3,5 @@ select ts, id_station, <sid> FROM <db> where id_station in <stid> AND  ts < '<ti
 SELECT id_station, <avg_s> FROM <db> WHERE  ts < '<timestamp>' AND ts >  '<timestamp>' - <range>*<rangesUnit>* 1000000L AND id_station in <stid> GROUP BY id_station;
 SELECT id_station, ts, <avg_s> FROM <db> WHERE ts < '<timestamp>' AND ts >  '<timestamp>' - <range>*<rangesUnit>* 1000000L AND id_station in <stid> SAMPLE BY 1h;
 SELECT id_station, ts, <avg_s> FROM <db> WHERE  ts < '<timestamp>' AND ts >  '<timestamp>' - <range>*<rangesUnit>* 1000000L AND id_station in <stid> SAMPLE BY 5s FILL(LINEAR) GROUP BY ts, id_station ORDER BY ts;
-SELECT ts, s<sid1> as s_1, s<sid2> as s_2, (s<sid1>+ s<sid2>)/2 from d1 WHERE ts > TIMESTAMP '<timestamp>' - <range>*<rangesUnit>* 1000000L AND ts < TIMESTAMP '<timestamp>' AND id_station=<stid>;
+SELECT ts, s<sid1> as s_1, s<sid2> as s_2, (s<sid1>+ s<sid2>)/2 from d1 WHERE ts > TIMESTAMP '<timestamp>' - <range>*<rangesUnit>* 1000000L AND ts < TIMESTAMP '<timestamp>' AND id_station in <stid>;
 SELECT ((SUM(s<sid1> * s<sid2>) - (SUM(s<sid1>) * SUM(s<sid2>)) / COUNT())) / (SQRT(SUM(s<sid1> * s<sid1>) - (SUM(s<sid1>) * SUM (s<sid1>)) / COUNT()) * SQRT(SUM(s<sid2> * s<sid2>) - (SUM(s<sid2>) * SUM(s<sid2>)) / COUNT() )) AS pearson_corr FROM d1 WHERE  id_station=<stid> AND ts < '<timestamp>' AND ts >  '<timestamp>' - <range>*<rangesUnit>* 1000000L;

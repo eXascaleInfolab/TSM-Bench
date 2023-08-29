@@ -8,6 +8,7 @@ import numpy as np
 import random
 import sys
 import pandas as pd
+import json 
 
 # setting path
 sys.path.append('../')
@@ -15,15 +16,15 @@ from library import *
 
 print('launching system')
 
-# import os
-# import subprocess
-# from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
+import os
+import subprocess
+from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
 # 
-# process = Popen(['sh', 'launch.sh', '&'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-# stdout, stderr = process.communicate()
+process = Popen(['sh', 'launch.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+stdout, stderr = process.communicate()
 # 
-# process = Popen(['sleep', '2'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-# stdout, stderr = process.communicate()
+process = Popen(['sleep', '10'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+stdout, stderr = process.communicate()
 
 
 from clickhouse_driver import Client
@@ -35,6 +36,14 @@ random.seed(1)
 set_st = [str(random.randint(0,9)) for i in range(500)]
 set_s = [str(random.randint(0,99)) for i in range(500)]
 set_date = [random.random() for i in range(500)]
+
+with open("../scenarios.json") as file:
+	scenarios = json.load(file)
+	print(scenarios)
+
+n_stations , n_sensors , n_time_ranges = scenarios["stations"],  scenarios["sensors"], scenarios["time_ranges"]
+default_n_iter = int(scenarios["n_runs"])
+default_timeout = scenarios["timeout"]
 
 
 # Parse Arguments
@@ -50,8 +59,8 @@ parser.add_argument('--range', nargs = '?', type = int, help = 'Query range', de
 parser.add_argument('--rangeUnit', nargs = '?', type = str, help = 'Query range unit', default = 'day')
 parser.add_argument('--max_ts', nargs = '?', type = str, help = 'Maximum query timestamp', default = "2019-04-30T00:00:00")
 parser.add_argument('--min_ts', nargs = '?', type = str, help = 'Minimum query timestamp', default = "2019-04-01T00:00:00")
-parser.add_argument('--n_it', nargs = '?', type = int, help = 'Minimum number of iterations', default = 100)
-parser.add_argument('--timeout', nargs = '?', type = float, help = 'Query execution timeout in seconds', default = 20)
+parser.add_argument('--n_it', nargs = '?', type = int, help = 'Minimum number of iterations', default = default_n_iter)
+parser.add_argument('--timeout', nargs = '?', type = float, help = 'Query execution timeout in seconds', default = default_timeout)
 parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
 args = parser.parse_args()
 
@@ -75,29 +84,39 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		for j in li[1:]:
 			q += ', ' + "'" + j + "'"
 		q += ")"
+
+		q_ = "("+', '.join(["'"+j+"'" for j in li ])+")"
+		assert q_ == q
+
 		temp = temp.replace("<stid>", q)
 	
 		# sensors
 		li = ['s' + str(z) for z in random.sample(range(args.nb_s), n_s)]
 		q = li[0]
-		q_filter = '(' + li[0] + ' > 0.95'
+		q_filter = '(' + li[0] + ' > 0.95' + ')'
 		q_avg = 'avg(' + li[0] + ')'
 		for j in li[1:]:
 			q += ', ' + j
 			# q_filter += ' OR ' + j + ' > 0.95'
 			q_avg += ', ' + 'avg(' + j + ')'
+
 		temp = temp.replace("<sid>", q)
-		temp = temp.replace("<sid1>", str(set_s[(rangeL*it)%500]))
-		temp = temp.replace("<sid2>", str(set_s[(rangeL*(it+1))%500]))
-		temp = temp.replace("<sid3>", str(set_s[(rangeL*(it+2))%500]))
-		temp = temp.replace("<sfilter>", q_filter + ')')
+		temp = temp.replace("<sfilter>", q_filter)
 		temp = temp.replace("<avg_s>", q_avg)
-		
+		temp = temp.replace("<sid1>", "1")
+		temp = temp.replace("<sid2>", "2")		
 		start = time.time()
 		# print(temp)
-		
+
+		import re
+		pattern = r"<\S+>"
+		matches = re.findall(pattern, temp)
+		assert not matches , temp
+
 		cursor.execute(temp)
-		cursor.fetchall()
+		results_ = cursor.fetchall()
+		if it == 0:
+			print(results_)
 		diff = (time.time()-start)*1000
 		#  print(temp, diff)
 		runtimes.append(diff)
@@ -113,19 +132,64 @@ with open('queries.sql') as file:
 	queries = [line.rstrip() for line in file]
 
 
+db_name = "clickhouse"
+
+import itertools
+
+
+results_dir = "../../results"
+if not os.path.exists(results_dir):
+	os.mkdir(results_dir)
+
+
 runtimes = []
-	# Execute queries
-for dataset in args.datasets: 
-	for i, query in enumerate(queries): 
-		if 'SELECT' in query.upper() and "q" + str(i+1) in args.queries :
-			query = query.replace("<db>", dataset)
-			runtimes.append(run_query(query))
-		else: 
-			print('Query not run.')
-			runtimes.append((-1,-1))
-runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=['q' + str(i+1) for i in range(len(runtimes))]).astype(int)
-print(runtimes)	
+index_ = []
+for dataset in args.datasets:
+	data_dir = f"{results_dir}/{dataset}"
+	if not os.path.exists(data_dir):
+ 		os.mkdir(data_dir)
+	for i, query in enumerate(queries):
+		try:
+			query_dir = f"{data_dir}/query_{i+1}"
+			if not os.path.exists(query_dir):
+				os.mkdir(query_dir)
+			if 'SELECT' in query.upper() and "q" + str(i+1) in args.queries :
+				query = query.replace("<db>", dataset)
+				for range_unit in n_time_ranges:
+					print("vary range",range_unit)
+					runtimes.append(run_query(query,rangeUnit=range_unit))
+					index_.append(f" {range_unit}")
+				for sensors  in n_sensors:
+					print("vary sensors" , sensors)
+					runtimes.append(run_query(query,n_s=sensors))
+					index_.append(f" s_{sensors}")
+				for stations in n_stations:
+					print("vary station",stations)
+					runtimes.append(run_query(query,n_st=stations))
+					index_.append(f"st_{stations}")
+			else:
+				print('Query not run.')
+				runtimes.append((-1,-1))
+				index_.append(f"query{i+1}")
+			runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
+			print(runtimes)
+			runtimes.to_csv(f"{query_dir}/{db_name}.txt")
+		except Exception as E:
+			if "INTERPOLATE is not allowed" in str(E):
+				runtimes.append((-1,-1))
+				index_.append(f"query{i+1}")
+			else:
+				raise E
+
+		runtimes = []
+		index_ = []
+
+runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
+print(runtimes)
 
 
+
+process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+stdout, stderr = process.communicate()
 
 

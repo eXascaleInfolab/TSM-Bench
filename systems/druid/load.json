@@ -5,7 +5,7 @@
       "type": "index_parallel",
       "inputSource": {
         "type": "local",
-        "baseDir": "/home/abdel/TSM-Bench/systems/druid/../../datasets/d1.csv",
+        "baseDir": "/home/luca/TSM-Bench/systems/druid/../../datasets/d1.csv",
         "filter": "*"
       },
       "inputFormat": {

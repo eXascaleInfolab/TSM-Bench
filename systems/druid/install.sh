@@ -1,4 +1,7 @@
 #!/bin/sh
+ps -ef | grep 'druid' | grep -v grep | awk '{print $2}' | xargs -r kill -9luca@diufrm227:~/TSM-Bench/systems/druid$
+sleep 10
+
 
 pip3 install pydruid
 
@@ -8,7 +11,7 @@ tar -xf apache-druid-25.0.0-bin.tar.gz
 rm apache-druid-25.0.0-bin.tar.gz
 
 time ./apache-druid-25.0.0/bin/start-single-server-medium &
-sleep 10
+sleep 20
 
 current=$(pwd)
 

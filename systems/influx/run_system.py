@@ -8,10 +8,11 @@ import numpy as np
 import random
 import sys
 import pandas as pd
+import json 
 
 # setting path
 sys.path.append('../')
-from library import *
+from library import random_date
 
 print('launching system')
 
@@ -19,22 +20,35 @@ import os
 import subprocess
 from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
 
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Get the absolute path of the 'systems' directory (one level above)
+systems_dir = os.path.join(script_dir, '..', 'systems')
+sys.path.append(systems_dir)
+
+from utils import *
+
 process = Popen(['sh', 'launch.sh', '&'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
 stdout, stderr = process.communicate()
 
 process = Popen(['sleep', '2'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
 stdout, stderr = process.communicate()
 
-
-
 from influxdb import InfluxDBClient
-
 
 # Generate Random Values
 random.seed(1)
 set_st = [str(random.randint(0,9)) for i in range(500)]
 set_s = [str(random.randint(0,99)) for i in range(500)]
 set_date = [random.random() for i in range(500)]
+
+with open("../scenarios.json") as file:
+	scenarios = json.load(file)
+	print(scenarios)
+
+n_stations , n_sensors , n_time_ranges = scenarios["stations"],  scenarios["sensors"], scenarios["time_ranges"]
+default_n_iter = int(scenarios["n_runs"])
+default_timeout = scenarios["timeout"]
 
 
 # Parse Arguments
@@ -50,8 +64,8 @@ parser.add_argument('--range', nargs = '?', type = int, help = 'Query range', de
 parser.add_argument('--rangeUnit', nargs = '?', type = str, help = 'Query range unit', default = 'day')
 parser.add_argument('--max_ts', nargs = '?', type = str, help = 'Maximum query timestamp', default = "2019-04-30T00:00:00")
 parser.add_argument('--min_ts', nargs = '?', type = str, help = 'Minimum query timestamp', default = "2019-04-01T00:00:00")
-parser.add_argument('--n_it', nargs = '?', type = int, help = 'Minimum number of iterations', default = 100)
-parser.add_argument('--timeout', nargs = '?', type = float, help = 'Query execution timeout in seconds', default = 20)
+parser.add_argument('--n_it', nargs = '?', type = int, help = 'Minimum number of iterations', default = default_n_iter	)
+parser.add_argument('--timeout', nargs = '?', type = float, help = 'Query execution timeout in seconds', default = default_timeout)
 parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
 args = parser.parse_args()
 
@@ -60,9 +74,12 @@ args = parser.parse_args()
 
 def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
 	# Connect to the system
-	client = InfluxDBClient(host="localhost", port=8086, username='abdel')
+	client = InfluxDBClient(host="localhost", port=8086, username='luca')
 	
+	count = client.query('SELECT COUNT(*)  FROM "d1"."autogen"."sensor";')	
+	print("#rows",count)
 	runtimes = []
+	n_queries = []
 	full_time = time.time()
 	for it in tqdm(range(n_it)):
 		date = random_date(args.min_ts, args.max_ts, set_date[(int(rangeL)*it)%500], dform = '%Y-%m-%dT%H:%M:%S')
@@ -81,59 +98,88 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 	
 		# sensors
 		li = ['s' + str(z) for z in random.sample(range(args.nb_s), n_s)]
-		q = li[0]
-		q_filter = "( " + li[0] + ' > 0.95'
-		q_avg = 'mean(' + li[0] + ')'
-		q_avg_ = 'mean_' + li[0]
-		q_avg_as = 'mean(' + li[0] + ')' + ' as mean_' + li[0]
-		for j in li[1:]:
-			q += ', ' + j
-#                 q_filter += ' OR ' + j + ' > 0.95'
-			q_avg +=  ', ' + 'mean(' + j + ')'
-			q_avg_ += ', ' + 'mean_' + j
-			q_avg_as += ', ' + 'mean(' + j + ')' + ' as mean_' + j
+		q = ",".join(li)
+		q_filter = "( " + li[0] + ' > 0.95' +")"
+		q_avg =  ",".join([f"mean({e})" for e in li])  #'mean(' + li[0] + ')'
+		q_avg_ = ",".join([f"mean_{e}" for e in li])
+		q_avg_as = ",".join([ f"mean({e})  as mean_{e}" for e in li])
+                
 		temp = temp.replace("<sid>", q)
 		temp = temp.replace("<sid1>", str(set_s[(args.range*it)%500]))
 		temp = temp.replace("<sid2>", str(set_s[(args.range*(it+1))%500]))
 		temp = temp.replace("<sid>", q)
-		temp = temp.replace("<sfilter>", q_filter + ")")
+		temp = temp.replace("<sfilter>", q_filter )
 		temp = temp.replace("<avg_s>", q_avg)                
 		temp = temp.replace("<avg_s_>", q_avg_)                
 		temp = temp.replace("<avg_s_as>", q_avg_as)
 		
 		start = time.time()
-		# print(temp)
-		
-		client.query(temp)
+		queries = client.query(temp)
+		if it < 2:
+			print(queries)
+		n_queries.append(len(queries))	
 		diff = (time.time()-start)*1000
-		#  print(temp, diff)
+
 		runtimes.append(diff)
 		if time.time() - full_time > args.timeout and it > 5: 
 			break  
 			
 	client.close()
-	return stats.mean(runtimes), stats.stdev(runtimes)
+	print("queries results" , stats.median(n_queries),stats.mean(n_queries))
+	return round(stats.mean(runtimes),3) , round(stats.stdev(runtimes),3)
 
 
 # Read Queries
 with open('queries.sql') as file:
 	queries = [line.rstrip() for line in file]
 
-runtimes = []
 
-#datasets = args.datasets.split()
-	# Execute queries
+db_name = "influx"
+import itertools
+
+
+
+results_dir = "../../results"
+if not os.path.exists(results_dir):
+    os.mkdir(results_dir)
+
+
+runtimes = []
+index_ = []
 for dataset in args.datasets:
-        for i, query in enumerate(queries):
-                if 'SELECT' in query.upper() and "q" + str(i+1) in args.queries :
-                        query = query.replace("<db>", dataset)
-                        runtimes.append(run_query(query))
-                else:
-                        print('Query not run.')
-                        runtimes.append((-1,-1))
-runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=['q' + str(i+1) for i in range(len(runtimes))]).astype(int)
+	data_dir = f"{results_dir}/{dataset}"
+	if not os.path.exists(data_dir):
+		os.mkdir(data_dir)
+	
+	for i, query in enumerate(queries):
+		query_dir = f"{data_dir}/query_{i+1}"
+		if not os.path.exists(query_dir):
+			os.mkdir(query_dir)
+
+		if 'SELECT' in query.upper() and "q" + str(i+1) in args.queries :
+			query = query.replace("<db>", dataset)
+			for range_unit in n_time_ranges:
+				runtimes.append(run_query(query,rangeUnit=range_unit))
+				index_.append(f" {range_unit}")
+			for sensors  in n_sensors:
+                                runtimes.append(run_query(query,n_s=sensors))
+                                index_.append(f" s_{sensors}")
+			for stations in n_stations:
+                                runtimes.append(run_query(query,n_st=stations))
+                                index_.append(f"st_{stations}")
+
+		else:
+			print('Query not run.')
+			runtimes.append((-1,-1))
+			index_.append(f"query{i+1}")
+		runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
+		runtimes.to_csv(f"{query_dir}/{db_name}.txt")
+		runtimes = []
+		index_ = []
+
+runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
 print(runtimes)	
 
-
-
+process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+stdout, stderr = process.communicate()
 

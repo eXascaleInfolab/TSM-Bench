@@ -2,8 +2,8 @@
 
 sudo apt update
 
-# Python3.X
-sudo apt install -y python3
+# Python3.8 (the extremdb installation settup requires to build a 3.8 wheel)
+sudo apt install -y python3.8
 sudo apt install -y python3-pip
 sudo pip3 install saxpy
 sudo pip3 install numpy
@@ -13,7 +13,8 @@ sudo pip3 install tqdm
 sudo pip3 install gdown
 sudo pip3 install pylab-sdk
 sudo pip3 install sqlalchemy
-
+sudo pip3 install matplotlib
+sudo pip3 install matplotlib_terminal
 # Java
 sudo apt-get install -y openjdk-8-jdk
 sudo update-java-alternatives --jre-headless --jre --set java-1.8.0-openjdk-amd64
