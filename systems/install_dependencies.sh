@@ -15,6 +15,11 @@ sudo pip3 install pylab-sdk
 sudo pip3 install sqlalchemy
 sudo pip3 install matplotlib
 sudo pip3 install matplotlib_terminal
+
+sudo apt-get install  libpq-dev -y
+sudo pip3 install psycopg2
+sudo pip3 install pymonetdb
+
 # Java
 sudo apt-get install -y openjdk-8-jdk
 sudo update-java-alternatives --jre-headless --jre --set java-1.8.0-openjdk-amd64
