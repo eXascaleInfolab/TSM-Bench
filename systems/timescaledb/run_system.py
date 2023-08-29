@@ -8,7 +8,7 @@ import numpy as np
 import random
 import sys
 import pandas as pd
-
+import json 
 # setting path
 sys.path.append('../')
 from library import *
@@ -36,6 +36,14 @@ set_st = [str(random.randint(0,9)) for i in range(500)]
 set_s = [str(random.randint(0,99)) for i in range(500)]
 set_date = [random.random() for i in range(500)]
 
+with open("../scenarios.json") as file:
+	scenarios = json.load(file)
+	print(scenarios)
+
+n_stations , n_sensors , n_time_ranges = scenarios["stations"],  scenarios["sensors"], scenarios["time_ranges"]
+default_n_iter = int(scenarios["n_runs"])
+default_timeout = scenarios["timeout"]
+show_loading_bar = scenarios["loadingbar"]
 
 # Parse Arguments
 parser = argparse.ArgumentParser(description = 'Script for running any eval')
@@ -50,11 +58,10 @@ parser.add_argument('--range', nargs = '?', type = int, help = 'Query range', de
 parser.add_argument('--rangeUnit', nargs = '?', type = str, help = 'Query range unit', default = 'day')
 parser.add_argument('--max_ts', nargs = '?', type = str, help = 'Maximum query timestamp', default = "2019-04-30T00:00:00")
 parser.add_argument('--min_ts', nargs = '?', type = str, help = 'Minimum query timestamp', default = "2019-04-01T00:00:00")
-parser.add_argument('--n_it', nargs = '?', type = int, help = 'Minimum number of iterations', default = 100)
-parser.add_argument('--timeout', nargs = '?', type = float, help = 'Query execution timeout in seconds', default = 20)
+parser.add_argument('--n_it', nargs = '?', type = int, help = 'Minimum number of iterations', default = default_n_iter)
+parser.add_argument('--timeout', nargs = '?', type = float, help = 'Query execution timeout in seconds', default = default_timeout)
 parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
 args = parser.parse_args()
-
 
 
 def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
@@ -70,7 +77,7 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		
 	runtimes = []
 	full_time = time.time()
-	for it in tqdm(range(n_it)):
+	for it in tqdm(range(n_it),disable= not show_loading_bar):
 		date = random_date(args.min_ts, args.max_ts, set_date[(int(rangeL)*it)%500], dform = '%Y-%m-%dT%H:%M:%S')
 		temp = query.replace("<timestamp>", date)
 		temp = temp.replace("<range>", str(rangeL))
@@ -105,21 +112,21 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		
 		start = time.time()
 		# print(temp)
-		
 		cursor.execute(temp)
 		results_ = cursor.fetchall()
 		if it == 0:
 			if len(results_) == 0:
 				print("NO QUERY RESULTS")
 			else:
-				print("QUERY RESULTS" , results_[:2])
+				print(f"QUERY RESULTS ({len(results_)})" , results_[:5])
+				print(f"original_query: {temp}")
 
 		diff = (time.time()-start)*1000
 		#  print(temp, diff)
 		runtimes.append(diff)
 		if time.time() - full_time > args.timeout and it > 5: 
 			break  
-			
+				
 	conn.close()
 	return stats.mean(runtimes), stats.stdev(runtimes)
 
@@ -130,14 +137,10 @@ with open('queries.sql') as file:
 
 
 db_name = "timescaledb"
-import json
+
 import itertools
 
-with open("../scenarios.json") as file:
-	scenarios = json.load(file)
-	print(scenarios)
 
-n_stations , n_sensors , n_time_ranges = scenarios["stations"],  scenarios["sensors"], scenarios["time_ranges"]
 
 
 results_dir = "../../results"
@@ -185,6 +188,8 @@ for dataset in args.datasets:
 runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
 print(runtimes)
 
+process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+stdout, stderr = process.communicate()
 
 
 

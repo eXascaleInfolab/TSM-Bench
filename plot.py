@@ -17,15 +17,21 @@ queries = sorted(os.listdir(data_set_folder))
 
 import argparse 
 
-parser = argparse.ArgumentParser(description='Process some integers.')
+parser = argparse.ArgumentParser(description='Query intput.')
 
 parser.add_argument("--query", "-q",type=int,nargs="?", default=1)
-
+parser.add_argument("--store", "-s",type=int,nargs="?",default=1)
 args = parser.parse_args()
 
-first_query = queries[args.query]
-query_dir = f"{data_set_folder}/{first_query}"
-db_txt_files = sorted(os.listdir(query_dir))
+
+try:
+	selected_query = [ q for q in  queries  if q.endswith(str(args.query))][0]
+except IndexError :
+	print(f"query: {args.query} not found, possible queries: {queries}")
+	
+
+query_dir = f"{data_set_folder}/{selected_query}"
+db_txt_files = sorted([ f_name for f_name in os.listdir(query_dir) if f_name.endswith(".txt")])
 
 results = { file_n.split(".")[0] :  pd.read_csv(query_dir+"/"+file_n,index_col=0) for file_n in db_txt_files}
 
@@ -41,7 +47,11 @@ combined_df = pd.concat([df.rename(columns={'runtime': key}) for key, df in stat
 print(combined_df)
 import matplotlib_terminal
 
+
+
 combined_df.plot()
+plt.title(f"{selected_query} varying #stations")
+plt.savefig(f"{query_dir}/stations.png")
 plt.show('gamma') # Use RendererGamma-fast/noblock from img2unicode renderer
 plt.close()
 
@@ -51,6 +61,8 @@ plt.close()
 combined_df = pd.concat([df.rename(columns={'runtime': key}) for key, df in sensor_scenario.items()], axis=1)
 print(combined_df)
 combined_df.plot()
+plt.title(f"{selected_query} varying #sensors")
+plt.savefig(f"{query_dir}/sensors.png")
 plt.show('gamma') # Use RendererGamma-fast/noblock from img2unicode renderer
 plt.close()
 
@@ -59,6 +71,8 @@ plt.close()
 combined_df = pd.concat([df.rename(columns={'runtime': key}) for key, df in time_scenario.items()], axis=1)
 
 combined_df.plot()
+plt.title(f"{selected_query} varying time range")
+plt.savefig(f"{query_dir}/time_range.png")
 plt.show('gamma') # Use RendererGamma-fast/noblock from img2unicode renderer
 plt.close()
 

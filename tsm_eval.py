@@ -2,7 +2,7 @@ import argparse
 import os
 import sys
 import subprocess
-from systems.utils import abr_time_map as unit_options
+from systems.utils.time_settings import abr_time_map as unit_options
 
 parser = argparse.ArgumentParser(description = 'Script for running any eval')
 parser.add_argument('--systems', nargs = '+', type = str, help = 'Systems name', default = ['clickhouse','druid','influx','monetdb','questdb','timescaledb'])
@@ -34,7 +34,7 @@ except:
 
 
 if args.systems[0] == "all":
-    args.systems = ['clickhouse','influx','monetdb','questdb','timescaledb','druid']
+    args.systems = ['clickhouse','influx','monetdb','questdb','timescaledb','extremedb','druid']
 
 if "all" in args.queries:
     args.queries = "q1,q2,q3,q4,q5,q6,q7"

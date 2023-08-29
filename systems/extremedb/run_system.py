@@ -8,6 +8,7 @@ import numpy as np
 import random
 import sys
 import pandas as pd
+import json
 
 # setting path
 sys.path.append('../')
@@ -42,6 +43,12 @@ set_st = [str(random.randint(0,9)) for i in range(500)]
 set_s = [str(random.randint(0,99)) for i in range(500)]
 set_date = [random.random() for i in range(500)]
 
+with open("../scenarios.json") as file:
+	scenarios = json.load(file)
+
+n_stations , n_sensors , n_time_ranges = scenarios["stations"],  scenarios["sensors"], scenarios["time_ranges"]
+default_n_iter = int(scenarios["n_runs"])
+default_timeout = scenarios["timeout"]
 
 # Parse Arguments
 parser = argparse.ArgumentParser(description = 'Script for running any eval')
@@ -56,8 +63,8 @@ parser.add_argument('--range', nargs = '?', type = int, help = 'Query range', de
 parser.add_argument('--rangeUnit', nargs = '?', type = str, help = 'Query range unit', default = 'day')
 parser.add_argument('--max_ts', nargs = '?', type = str, help = 'Maximum query timestamp', default = "2019-04-30T00:00:00")
 parser.add_argument('--min_ts', nargs = '?', type = str, help = 'Minimum query timestamp', default = "2019-04-01T00:00:00")
-parser.add_argument('--n_it', nargs = '?', type = int, help = 'Minimum number of iterations', default = 100)
-parser.add_argument('--timeout', nargs = '?', type = float, help = 'Query execution timeout in seconds', default = 20)
+parser.add_argument('--n_it', nargs = '?', type = int, help = 'Minimum number of iterations', default = default_n_iter)
+parser.add_argument('--timeout', nargs = '?', type = float, help = 'Query execution timeout in seconds', default = default_timeout)
 parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
 args = parser.parse_args()
 
@@ -137,7 +144,9 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		cursor.execute(temp)
 		results_ = cursor.fetchall()
 		if it == 0:
-			if len(results_) == 0:
+			if results_ is None:
+				print(temp)
+			elif len(results_) == 0:
 				print("NO QUERY RESULTS")
 			else:
 				print("QUERY RESULTS" , results_[:2])
@@ -157,14 +166,6 @@ with open('queries.sql') as file:
 
 
 db_name = "extremedb"
-import json
-import itertools
-
-with open("../scenarios.json") as file:
-	scenarios = json.load(file)
-	print(scenarios)
-
-n_stations , n_sensors , n_time_ranges = scenarios["stations"],  scenarios["sensors"], scenarios["time_ranges"]
 
 
 results_dir = "../../results"
@@ -213,6 +214,8 @@ runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
 print(runtimes)
 
 
+process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+stdout, stderr = process.communicate()
 
 
 
