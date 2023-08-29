@@ -69,7 +69,7 @@ cd systems/
 sh install_all.sh
 ```
 
-- To download druid and influxdb execute the following commands (when the setup is done user input is required): 
+- To download druid and influxdb execute the following commands (when the setup is done user input is required):
 
 ```bash
 cd systems/druid
