@@ -1,7 +1,5 @@
 import os
 import sys
-from pygnuplot import gnuplot
-import pygnuplot
 import pandas as pd
 
 import matplotlib.pyplot as plt

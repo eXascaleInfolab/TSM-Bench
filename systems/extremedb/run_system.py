@@ -225,7 +225,7 @@ runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
 print(runtimes)
 
 
-process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+process = subprocess.Popen(['sh', 'stop.sh'], stdin=subprocess.PIPE)
 stdout, stderr = process.communicate()
 
 
