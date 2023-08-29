@@ -62,22 +62,29 @@ ___
 
 We provide different scripts depending on whether the systems have been already installed or not:
 
-To download, install, setup and load data to systems
+To download, install, setup and load data to systems (30mins-1h)
 
 ```bash
 cd systems/
 sh install_all.sh
 ```
 
-- To download, install and setup a specific system
+- To download druid and influxdb execute the following commands (when the setup is done user input is required): 
 
 ```bash
-cd systems/{system}
+cd systems/druid
+sh install.sh
+sh launch.sh
+sh setup.sh
+cd ..
+```
+```bash
+cd systems/influxdb
 sh install.sh
 sh launch.sh
 sh setup.sh
 ```
-**Note:** {system} needs to be replaced with the name of one of the systems from the table below.
+**Note:** Each system can be downloaded this way separately.
 
  <!---  
 -  To download, install, setup and load data to systems
@@ -89,7 +96,6 @@ sh setup.sh
     ```
     -  Note: Systems can be installed separately as described in the [**customized installation**](#customized-installation) below. 
  
-
 
 - Setup all systems (all systems have to be running) to have two datasets ```d1``` and ```d2```
 
