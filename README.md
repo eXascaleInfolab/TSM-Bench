@@ -168,16 +168,16 @@ ___
 - **Examples**:
 
 
-1. Run query q1 on InfluxDB for Dataset 1 using default parameters (nb_st=1, nb_sr=3, range=1 day)
+1. Run query q1 on TimescaleDB for Dataset 1 using default parameters (nb_st=1, nb_sr=3, range=1 day)
  
 ```bash 
-python3 tsm_eval.py --systems influx --queries q1 --datasets d1
+python3 tsm_eval.py --systems timescaledb --queries q1 --datasets d1
 ```
 
-2. Run query 1 InfluxDB for Dataset 1 using custom parameters nb_st=100, nb_sr=10, and range=1 week
+2. Run query 1 TimescaleDB for Dataset 1 using custom parameters nb_st=100, nb_sr=10, and range=1 week
  
 ```bash 
-python3 tsm_eval.py --systems influx --queries q1 --datasets d1 --nb_st 10 --nb_sr 10 --range 1w
+python3 tsm_eval.py --systems timescaledb --queries q1 --datasets d1 --nb_st 10 --nb_sr 10 --range 1w
 ```
 
 3. Run q3 and q4 on InfluxDB for Dataset 1 using default parameters
