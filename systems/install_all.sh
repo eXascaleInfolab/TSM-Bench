@@ -5,11 +5,6 @@ cd clickhouse
 sh ./install.sh
 cd ..
 
-# Druid
-cd druid
-sh ./install.sh
-cd ..
-
 # ExtremeDB
 cd extremedb
 source ./install.sh
@@ -35,3 +30,9 @@ cd ..
 cd  timescaledb
 sh ./install.sh
 cd ..
+
+# Druid
+cd druid
+sh ./install.sh
+cd ..
+

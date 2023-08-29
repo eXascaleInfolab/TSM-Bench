@@ -34,10 +34,7 @@ cd ..
 echo "############TimescaleDB##########"
 cd  timescaledb
 sh ./setup.sh
-<<<<<<< HEAD
 cd ..
-
-
 # Druid
 echo "############Druid##########"
 cd druid
