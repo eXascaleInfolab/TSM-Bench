@@ -8,16 +8,15 @@ sh ./setup.sh
 cd ..
 
 # Druid
-cd druid
-sh ./install.sh
-sh ./launch.sh
-sh ./setup.sh
-cd ..
+#cd druid
+#sh ./install.sh
+#sh ./launch.sh
+#sh ./setup.sh
+#cd ..
 
 # ExtremeDB
 cd extremedb
 sh ./install.sh
-sh ./launch.sh
 sh ./setup.sh
 cd ..
 
@@ -46,7 +45,6 @@ cd ..
 # TimescaleDB
 cd  timescaledb
 sh ./install.sh
-sh ./launch.sh
 sh ./setup.sh
 cd ..
 
