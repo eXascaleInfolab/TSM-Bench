@@ -126,7 +126,7 @@ ___
 
 ### Storage Performance 
 
-- To reproduce the storage performance of a given system (column 2 of Table 3): 
+- To reproduce the storage performance for a given system: 
     ```bash
     cd systems/{system}
     sh lauch.sh
