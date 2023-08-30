@@ -170,28 +170,31 @@ ___
 
 - **Examples**:
 
-All the runtimes and plots will be added to the `results` folder. The runtime results of the systems for a given dataset and query will be added to: `results/{dataset}/{query}/{system}/runtime/`. The runtime plots will be added to the folder `results/{dataset}/{query}{system}/plots/`.
+  - All the runtimes and plots will be added to the `results` folder. The runtime results of the systems for a given dataset and query will be added to: `results/{dataset}/{query}/{system}/runtime/`. The runtime plots will be added to the folder `results/{dataset}/{query}{system}/plots/`.
 
+  - All the queries return the runtimes by varying the number of stations (nb_st), number of sensors (nb_sr), and the range.
 
 1. Run query q1 on extremedb for Dataset 1 using default parameters (nb_st=1, nb_sr=3, range=1 day)
  
 ```bash 
 python3 tsm_eval.py --systems extremedb --queries q1 --datasets d1
 ```
+ <!---  
 
-2. Run query 1 extremedb for Dataset 1 using custom parameters nb_st=100, nb_sr=10, and range=1 week
+2. Run query 1 on extremedb for Dataset 1 using different parameters nb_st=100, nb_sr=10, and range=1 week
  
 ```bash 
 python3 tsm_eval.py --systems extremedb --queries q1 --datasets d1 --nb_st 10 --nb_sr 10 --range 1w
 ```
+-->
 
-3. Run q3 and q4 on extremedb for Dataset 1 using default parameters
+2. Run q2 and q3 on extremedb and timescaledb for Dataset 1 and Dataset 2
  
 ```bash 
-python3 tsm_eval.py --systems extremedb --queries q3 q4 --datasets d1
+python3 tsm_eval.py --systems extremedb timescaledb --queries q2 q3 --datasets d1 d2
 ```
 
-4. Run all systems on all queries using Dataset 1 using default parameters (takes XXX hours)
+3. Run all systems on all queries using Dataset 1 using default parameters (takes XXX hours)
 
 ```bash 
 python3 tsm_eval.py --systems all --queries all --datasets d1 
