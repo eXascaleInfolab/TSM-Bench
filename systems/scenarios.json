@@ -4,5 +4,5 @@
 "time_ranges" : ["minute","hour","day","week","month" ],
 "n_runs" : 100,
 "timeout" : 200,
-"loadingbar" : 0
+"loadingbar" : 1
 }

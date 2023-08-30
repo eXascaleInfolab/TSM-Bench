@@ -27,6 +27,7 @@ systems_dir = os.path.join(script_dir, '..', 'systems')
 sys.path.append(systems_dir)
 
 from utils import *
+from library import *
 
 process = Popen(['sh', 'launch.sh', '&'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
 stdout, stderr = process.communicate()
@@ -76,8 +77,6 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 	# Connect to the system
 	client = InfluxDBClient(host="localhost", port=8086, username='luca')
 	
-	count = client.query('SELECT COUNT(*)  FROM "d1"."autogen"."sensor";')	
-	print("#rows",count)
 	runtimes = []
 	n_queries = []
 	full_time = time.time()
@@ -115,9 +114,6 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		
 		start = time.time()
 		queries = client.query(temp)
-		if it < 2:
-			print(queries)
-		n_queries.append(len(queries))	
 		diff = (time.time()-start)*1000
 
 		runtimes.append(diff)
@@ -125,60 +121,10 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 			break  
 			
 	client.close()
-	print("queries results" , stats.median(n_queries),stats.mean(n_queries))
 	return round(stats.mean(runtimes),3) , round(stats.stdev(runtimes),3)
 
 
-# Read Queries
-with open('queries.sql') as file:
-	queries = [line.rstrip() for line in file]
-
-
-db_name = "influx"
-import itertools
-
-
-
-results_dir = "../../results"
-if not os.path.exists(results_dir):
-    os.mkdir(results_dir)
-
-
-runtimes = []
-index_ = []
-for dataset in args.datasets:
-	data_dir = f"{results_dir}/{dataset}"
-	if not os.path.exists(data_dir):
-		os.mkdir(data_dir)
-	
-	for i, query in enumerate(queries):
-		query_dir = f"{data_dir}/query_{i+1}"
-		if not os.path.exists(query_dir):
-			os.mkdir(query_dir)
-
-		if 'SELECT' in query.upper() and "q" + str(i+1) in args.queries :
-			query = query.replace("<db>", dataset)
-			for range_unit in n_time_ranges:
-				runtimes.append(run_query(query,rangeUnit=range_unit))
-				index_.append(f" {range_unit}")
-			for sensors  in n_sensors:
-                                runtimes.append(run_query(query,n_s=sensors))
-                                index_.append(f" s_{sensors}")
-			for stations in n_stations:
-                                runtimes.append(run_query(query,n_st=stations))
-                                index_.append(f"st_{stations}")
-
-		else:
-			print('Query not run.')
-			runtimes.append((-1,-1))
-			index_.append(f"query{i+1}")
-		runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
-		runtimes.to_csv(f"{query_dir}/{db_name}.txt")
-		runtimes = []
-		index_ = []
-
-runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
-print(runtimes)	
+run_system(args,"influx",run_query)
 
 process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
 stdout, stderr = process.communicate()
