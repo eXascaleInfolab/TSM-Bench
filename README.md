@@ -160,8 +160,8 @@ ___
 
 
 - **Optional Arguments**: The following arguments allow to add variation in the number of sensors and dynamic changes in predicate ranges:
-    - `--nb_sr`: Number of queried sensors when varying other dimensions (Default = 3)
     - `--nb_st`: Number of queried stations when varying other dimensions (Default = 1)
+    - `--nb_sr`: Number of queried sensors when varying other dimensions (Default = 3)
     - `--range`: Query range value when varying other dimensions (Default = 1)
     - `--rangeUnit`: Query range unit when varying other dimensions (Default = day)
     - `--timeout`: Maximum query time after 5 runs (s) (Default = 20)
