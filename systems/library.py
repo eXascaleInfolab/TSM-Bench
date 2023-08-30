@@ -90,8 +90,9 @@ def run_system(args,system_name,run_query_f, query_filters = ("SELECT",)):
 	with open("../scenarios.json") as file:
         	scenarios = json.load(file)
 
+	default_n_iter = int(scenarios["n_runs"])
+	default_timeout = scenarios["timeout"]# Read Queries
 	n_stations , n_sensors , n_time_ranges = scenarios["stations"],  scenarios["sensors"], scenarios["time_ranges"]
-	# Read Queries
 	with open('queries.sql') as file:
 		queries = [line.rstrip() for line in file]
 
@@ -103,41 +104,73 @@ def run_system(args,system_name,run_query_f, query_filters = ("SELECT",)):
 
 	runtimes = []
 	index_ = []
-	for dataset in args.datasets:
-		data_dir = f"{results_dir}/{dataset}"
-		if not os.path.exists(data_dir):
-			os.mkdir(data_dir)
-		for i, query in enumerate(queries):
-			try:
-				query_dir = f"{data_dir}/q{i+1}"
-				if not os.path.exists(query_dir):
-					os.mkdir(query_dir)
-				if all([f in query.upper() for f in query_filters]) and "q" + str(i+1) in args.queries :
-					query = query.replace("<db>", dataset)
-					for range_unit in n_time_ranges:
-						print("vary range",range_unit)
-						runtimes.append(run_query_f(query,rangeUnit=range_unit))
-						index_.append(f" {range_unit}")
-					for sensors  in n_sensors:
-						print("vary sensors" , sensors)
-						runtimes.append(run_query_f(query,n_s=sensors))
-						index_.append(f" s_{sensors}")
-					for stations in n_stations:
-						print("vary station",stations)
-						runtimes.append(run_query_f(query,n_st=stations))
-						index_.append(f"st_{stations}")
-					runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
-					print(runtimes)
-					runtimes.to_csv(f"{query_dir}/{system_name}.txt")
+	try:
+		for dataset in args.datasets:
+			data_dir = f"{results_dir}/{dataset}"
+			if not os.path.exists(data_dir):
+				os.mkdir(data_dir)
+			for i, query in enumerate(queries):
+				try:
+					query_dir = f"{data_dir}/q{i+1}"
+					if not os.path.exists(query_dir):
+						os.mkdir(query_dir)
+					if all([f in query.upper() for f in query_filters]) and "q" + str(i+1) in args.queries :
+						query = query.replace("<db>", dataset)
+						for range_unit in n_time_ranges:
+							print("vary range",range_unit)
+							runtimes.append(run_query_f(query,rangeUnit=range_unit))
+							index_.append(f" {range_unit}")
+						for sensors  in n_sensors:
+							print("vary sensors" , sensors)
+							runtimes.append(run_query_f(query,n_s=sensors))
+							index_.append(f" s_{sensors}")
+						for stations in n_stations:
+							print("vary station",stations)
+							runtimes.append(run_query_f(query,n_st=stations))
+							index_.append(f"st_{stations}")
+						runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
+						print(runtimes)
+						runtimes.to_csv(f"{query_dir}/{system_name}.txt")
+						plot_query_directory(query_dir)
+					else:
+						print(f"query q{i+1} not run")
+				except Exception as E:
+					raise E
+				runtimes = []
+				index_ = []
+				try:
 					plot_query_directory(query_dir)
-				else:
-					print(f"query q{i+1} not run")
-			except Exception as E:
-				raise E
-			runtimes = []
-			index_ = []
-			try:
-				plot_query_directory(query_dir)
-			except ValueError:
-				pass # no objects to concatenate
+				except ValueError:
+					pass # no objects to plot
+	except Exception as E:
+		from subprocess import Popen, PIPE, DEVNULL , STDOUT
+		process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+		stdout, stderr = process.communicate()
+
+def init_parser():
+	with open("../scenarios.json") as file:
+		scenarios = json.load(file)
+	#n_stations , n_sensors , n_time_ranges = scenarios["stations"],  scenarios["sensors"], scenarios["time_ranges"]
+	
+	default_n_iter = int(scenarios["n_runs"])
+	default_timeout = scenarios["timeout"]
+	# Parse Arguments
+	parser = argparse.ArgumentParser(description = 'Script for running any eval')
+	parser.add_argument('--system', nargs = '*', type = str, help = 'System name', default = '')
+	parser.add_argument('--datasets', nargs = '*', type = str, help = 'Dataset name', default = 'd1')
+	parser.add_argument('--queries', nargs = '?', type = str, help = 'List of queries to run (Q1-Q7)', default = ['q' + str(i) for i in range(1,8)])
+	parser.add_argument('--nb_st', nargs = '?', type = int, help = 'Number of stations in the dataset', default = 10)
+	parser.add_argument('--nb_s', nargs = '?', type = int, help = 'Number of sensors in the dataset', default = 100)
+	parser.add_argument('--def_st', nargs = '?', type = int, help = 'Default number of queried stations', default = 1)
+	parser.add_argument('--def_s', nargs = '?', type = int, help = 'Default number of queried sensors', default = 3)
+	parser.add_argument('--range', nargs = '?', type = int, help = 'Query range', default = 1)
+	parser.add_argument('--rangeUnit', nargs = '?', type = str, help = 'Query range unit', default = 'day')
+	parser.add_argument('--max_ts', nargs = '?', type = str, help = 'Maximum query timestamp', default = "2019-04-30T00:00:00")
+	parser.add_argument('--min_ts', nargs = '?', type = str, help = 'Minimum query timestamp', default = "2019-04-01T00:00:00")
+	parser.add_argument('--n_it', nargs = '?', type = int, help = 'Minimum number of iterations', default = default_n_iter  )
+	parser.add_argument('--timeout', nargs = '?', type = float, help = 'Query execution timeout in seconds', default = default_timeout)
+	parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
+	args = parser.parse_args()
+	return args
+
 			     
