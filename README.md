@@ -210,14 +210,19 @@ We provide a GAN-based generation that allows to augment a seed dataset with mor
 have akin properties to the seed ones. The tool can be used either directly using a pre-trained model
 or by retraining from scratch the model.
 
-
-### Execution using a pre-trained model 
-
+### Install requierements
 
 ```bash
 cd generation
+install.sh
+```
+
+### Execution using a pre-trained model 
+
+```bash
 python3 run_pretrained.py
 ```
+The generated plots and data are stored in the `generation/results` folder.
 
 ### Execution using model training
 
