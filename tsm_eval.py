@@ -65,9 +65,9 @@ for system in systems:
 		
 	os.chdir(systemPath)
 	
-	toRun = ['python3', 'run_system.py', '--datasets', ' '.join(args.datasets)
-		, '--queries', str(args.queries), '--nb_st', str(args.n_st)
-		, '--nb_s', str(args.n_s), '--range', str(args.range), '--rangeUnit',  unit_options[str(args.rangeUnit).lower()], '--timeout', str(args.timeout)]
+	toRun = ['python3', 'run_system.py', '--datasets', ' '.join(args.datasets) , "--def_s" , str(args.nb_sr) , "--def_st" , str(args.nb_st),
+		'--queries', str(args.queries), '--nb_st', str(args.n_st),
+		 '--nb_s', str(args.n_s), '--range', str(args.range), '--rangeUnit',  unit_options[str(args.rangeUnit).lower()], '--timeout', str(args.timeout)]
 		
 	if len(args.additional_arguments) > 0:
 		toRun = toRun + args.additional_arguments.split(" ")

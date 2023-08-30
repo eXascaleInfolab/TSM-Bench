@@ -12,8 +12,9 @@ TIME_UNITS = (DAY,WEEK,HOUR,MONTH,SECOND,MINUTE,YEAR)
 time_abr_map  = {
 	 DAY : "d",
 	 WEEK : "w" ,
-	 HOUR : "hour",
-	 SECOND : "s"
+	 HOUR : "h",
+	 SECOND : "s",
+	 MINUTE : "m"
 }
 
 abr_time_map = { v: k for k,v in time_abr_map.items()}
