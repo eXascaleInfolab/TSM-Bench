@@ -8,7 +8,7 @@ TSM-Bench is a new benchmark that compares seven Time Series Database Systems (T
 - <sup>*</sup>**Note**: Due to license restrictions, we can only share the evaluation version of extremeDB. The results between the benchmarked and the public version might diverge. 
 
 <!---
-  , in addition to additional generation scripts that are used during the online workloads.
+  , in addition to additional generation scripts used during the online workloads.
 
 -->
 
@@ -30,8 +30,8 @@ TSM-Bench is a new benchmark that compares seven Time Series Database Systems (T
 ___
 ## Prerequisites
 
-- Ubuntu 20.04 
-- Clone this repository
+- Ubuntu 20 (including Ubuntu derivatives, e.g., Xubuntu).
+- 128 GB RAM
 - Install the dependencies
     ```bash
     sh systems/install_dependencies.sh
@@ -62,29 +62,28 @@ ___
 
 We provide different scripts depending on whether the systems have been already installed or not:
 
-To download, install, setup and load data to systems (30mins-1h)
+- To download, install, setup, and load data to  clickhouse, extremedb, monetdb, questdb, and timescaledb  (30mins-1h)
 
 ```bash
 cd systems/
 sh install_all.sh
 ```
 
-- To download druid and influxdb execute the following commands (when the setup is done user input is required):
+- For druid and influxdb execute the following commands (when the setup is done user input is required):
 
 ```bash
 cd systems/druid
 sh install.sh
 sh launch.sh
 sh setup.sh
-cd ..
 ```
+
 ```bash
-cd systems/influxdb
+cd ../influxdb
 sh install.sh
 sh launch.sh
 sh setup.sh
 ```
-**Note:** Each system can be downloaded this way separately.
 
  <!---  
 -  To download, install, setup and load data to systems
@@ -120,6 +119,8 @@ ___
 - Note:  All systems need to be running before executing the query.  
 
 -->
+
+
 
 ### Storage Performance 
 
@@ -167,23 +168,25 @@ ___
 
 - **Examples**:
 
+All the runtimes and plots will be added to the `results` folder. The runtime results of the systems for a given dataset and query will be added to: `results/{dataset}/{query}/{system}/runtime/`. The runtime plots will be added to the folder `results/{dataset}/{query}{system}/plots/`.
 
-1. Run query q1 on TimescaleDB for Dataset 1 using default parameters (nb_st=1, nb_sr=3, range=1 day)
+
+1. Run query q1 on extremedb for Dataset 1 using default parameters (nb_st=1, nb_sr=3, range=1 day)
  
 ```bash 
-python3 tsm_eval.py --systems timescaledb --queries q1 --datasets d1
+python3 tsm_eval.py --systems extremedb --queries q1 --datasets d1
 ```
 
-2. Run query 1 TimescaleDB for Dataset 1 using custom parameters nb_st=100, nb_sr=10, and range=1 week
+2. Run query 1 extremedb for Dataset 1 using custom parameters nb_st=100, nb_sr=10, and range=1 week
  
 ```bash 
-python3 tsm_eval.py --systems timescaledb --queries q1 --datasets d1 --nb_st 10 --nb_sr 10 --range 1w
+python3 tsm_eval.py --systems extremedb --queries q1 --datasets d1 --nb_st 10 --nb_sr 10 --range 1w
 ```
 
-3. Run q3 and q4 on InfluxDB for Dataset 1 using default parameters
+3. Run q3 and q4 on extremedb for Dataset 1 using default parameters
  
 ```bash 
-python3 tsm_eval.py --systems influx --queries q3 q4 --datasets d1
+python3 tsm_eval.py --systems extremedb --queries q3 q4 --datasets d1
 ```
 
 4. Run all systems on all queries using Dataset 1 using default parameters (takes XXX hours)
