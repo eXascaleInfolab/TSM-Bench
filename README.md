@@ -41,7 +41,8 @@ ___
 
 ## Build Datasets 
 
-Building a dataset consists of downloading and decompressing it, making it ready to be loaded into the DB
+Building a dataset consists of downloading and decompressing it, making it ready to be loaded into the DB. The benchmark can be run using 
+Dataset 1 or Dataset 2 or both.
 
 - Build Dataset 1 (takes ~ 10 mins)
 
