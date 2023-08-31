@@ -63,7 +63,7 @@ ___
 
 We provide different scripts depending on whether the systems have been already installed or not:
 
-- To download, install, setup, and load data to  clickhouse, extremedb, monetdb, questdb, and timescaledb  (takes ~30mins)
+- To download, install, setup, and load data to  clickhouse, extremedb, monetdb, questdb, and timescaledb  (takes ~40mins)
 
 ```bash
 cd systems/
