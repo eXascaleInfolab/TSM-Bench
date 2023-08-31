@@ -43,20 +43,27 @@ def get_list(elm, n_elm, max_r = 10, prefix = '', suffix = '', apostrophe = True
 def to_pm(v):
 		return str(int(v[0][0])) + "$" + '\\' + "pm$" + str(int(v[1][0]))
 
+color_dict = {'clickhouse': "blue",
+		"druid" :  'orange', 
+		"extremedb" : "darkblue" ,
+		"influx" : "pink" ,
+		"monetdb" : "cyan",
+		"questdb" : "grey" ,
+		"timescaledb" : "black"} 
 
 def plot_query_directory(query_dir):
 	import sys
 	import matplotlib.pyplot as plt
-
+	runtime_dir = f"{query_dir}/runtime"
 	plot_dir = f"{query_dir}/plots"
 	selected_query = query_dir.split("/")[-1]
 	
 	if not os.path.exists(plot_dir):
 		os.mkdir(plot_dir)
-	db_txt_files = sorted([ f_name for f_name in os.listdir(query_dir) if f_name.endswith(".txt")])
+	db_txt_files = sorted([ f_name for f_name in os.listdir(runtime_dir) if f_name.endswith(".txt")])
 
-	results = { file_n.split(".")[0] :  pd.read_csv(query_dir+"/"+file_n,index_col=0) for file_n in db_txt_files}
-	print("results to plot",results)
+	results = { file_n.split(".")[0] :  pd.read_csv(runtime_dir+"/"+file_n,index_col=0) for file_n in db_txt_files}
+	#print("results to plot",results)
 	## splits scenarios
 
 	stations_scenario = { k : df[df.index.str.contains('st_')][["runtime"]] for k,df in results.items() }
@@ -66,13 +73,16 @@ def plot_query_directory(query_dir):
 	time_scenario = { k : df[~df.index.str.contains('_')][["runtime"]] for k,df  in results.items() }
 
 	combined_df = pd.concat([df.rename(columns={'runtime': key}) for key, df in stations_scenario.items()], axis=1)	
-	combined_df.plot()
+	combined_df.plot(color=[color_dict.get(x, '#333333') for x in combined_df.columns])
+	plt.xlabel("# stations")
+	plt.ylabel("Runtime (ms)")
 	plt.title(f"{selected_query} varying #stations")
 	plt.savefig(f"{plot_dir}/stations.png")
 	plt.close()
 
 	combined_df = pd.concat([df.rename(columns={'runtime': key}) for key, df in sensor_scenario.items()], axis=1)
-	combined_df.plot()
+	combined_df.plot(color=[color_dict.get(x, '#333333') for x in combined_df.columns])
+	plt.ylabel("Runtime (ms)")
 	plt.title(f"{selected_query} varying #sensors")
 	plt.savefig(f"{plot_dir}/sensors.png")
 	plt.close()
@@ -81,7 +91,8 @@ def plot_query_directory(query_dir):
 
 	combined_df = pd.concat([df.rename(columns={'runtime': key}) for key, df in time_scenario.items()], axis=1)
 
-	combined_df.plot()
+	combined_df.plot(color=[color_dict.get(x, '#333333') for x in combined_df.columns])
+	plt.ylabel("Runtime (ms)")
 	plt.title(f"{selected_query} varying time range")
 	plt.savefig(f"{plot_dir}/time_range.png")
 	plt.close()
@@ -111,7 +122,10 @@ def run_system(args,system_name,run_query_f, query_filters = ("SELECT",)):
 				os.mkdir(data_dir)
 			for i, query in enumerate(queries):
 				try:
-					query_dir = f"{data_dir}/q{i+1}"
+					query_dir_ = f"{data_dir}/q{i+1}"
+					if not os.path.exists(query_dir_):
+						os.mkdir(query_dir_)
+					query_dir = f"{data_dir}/q{i+1}/runtime"
 					if not os.path.exists(query_dir):
 						os.mkdir(query_dir)
 					if all([f in query.upper() for f in query_filters]) and "q" + str(i+1) in args.queries :
@@ -131,7 +145,7 @@ def run_system(args,system_name,run_query_f, query_filters = ("SELECT",)):
 						runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
 						print(runtimes)
 						runtimes.to_csv(f"{query_dir}/{system_name}.txt")
-						plot_query_directory(query_dir)
+						plot_query_directory(query_dir_)
 					else:
 						print(f"query q{i+1} not run")
 				except Exception as E:
@@ -139,7 +153,7 @@ def run_system(args,system_name,run_query_f, query_filters = ("SELECT",)):
 				runtimes = []
 				index_ = []
 				try:
-					plot_query_directory(query_dir)
+					plot_query_directory(query_dir_)
 				except ValueError:
 					pass # no objects to plot
 	except Exception as E:

@@ -150,10 +150,10 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 	
 		
 		start = time.time()
-		# print(temp)
-		
+		#print(temp)
 		cursor.execute(temp)
 		results_ = cursor.fetchall()
+		#print(results_)
 		diff = (time.time()-start)*1000
 		#  print(temp, diff)
 		runtimes.append(diff)
