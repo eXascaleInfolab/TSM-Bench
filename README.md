@@ -1,6 +1,6 @@
  # Comprehensive Benchmark for Time Series Database Systems
 
-TSM-Bench is a new benchmark that compares seven Time Series Database Systems (TSDBs) using a mixed set of workloads. It can be easily extended with new systems, queries, datasets, and workloads. The benchmark introduces a novel data generation method that augments seed real-world time series datasets enabling realistic and scalable benchmarking. Technical details can be found in the paper: *TSM-Bench: Benchmarking Time Series Database Systems for Monitoring Applications*, PVLDB'23. 
+TSM-Bench is a new benchmark that compares seven Time Series Database Systems (TSDBs) using a mixed set of workloads. It can be easily extended with new systems, queries, datasets, and workloads. The benchmark introduces a novel data generation method that augments seed real-world time series datasets enabling realistic and scalable benchmarking. Technical details can be found in the paper: [TSM-Bench: Benchmarking Time Series Database Systems for Monitoring Applications](https://www.vldb.org/pvldb/vol16/p3363-khelifati.pdf), PVLDB'23. 
 
 - List of benchmarked systems: [ClickHouse](https://clickhouse.com/), [Druid](https://druid.apache.org/), [eXtremeDB](https://www.mcobject.com/)*, [InfluxDB](https://docs.influxdata.com/influxdb/v1.7/), [MonetDB](https://www.monetdb.org/easy-setup/), [QuestDB](https://questdb.io/), [TimescaleDB](https://www.timescale.com/).
 -  The benchmark evaluates bulk-loading, storage performance, and offline/online query performance. 
@@ -63,14 +63,14 @@ ___
 
 We provide different scripts depending on whether the systems have been already installed or not:
 
-- To download, install, setup, and load data to  clickhouse, extremedb, monetdb, questdb, and timescaledb  (takes 30mins-1h)
+- To download, install, setup, and load data to  clickhouse, extremedb, monetdb, questdb, and timescaledb  (takes ~40mins)
 
 ```bash
 cd systems/
 sh install_all.sh
 ```
 
-- For druid and influxdb execute the following commands  (takes 30mins-1h)
+- For druid and influxdb execute the following commands  (takes ~30mins)
 
 ```bash
 cd systems/druid
@@ -129,7 +129,7 @@ ___
 - To reproduce the storage performance for a given system: 
     ```bash
     cd systems/{system}
-    sh lauch.sh
+    sh launch.sh
     sh compression.sh
     ```
 - Note: {system} needs to be replaced with the name of one of the systems from the table below.
@@ -188,13 +188,13 @@ python3 tsm_eval.py --systems extremedb --queries q1 --datasets d1 --nb_st 10 --
 ```
 -->
 
-2. Run q2 and q3 on extremedb and timescaledb for Dataset 1 and Dataset 2
+2. Run q2 and q3 on extremedb and timescaledb for Dataset 1 
  
 ```bash 
-python3 tsm_eval.py --systems extremedb timescaledb --queries q2 q3 --datasets d1 d2
+python3 tsm_eval.py --systems extremedb timescaledb --queries q2 q3 --datasets d1
 ```
 
-3. Run queries on all systems for Dataset 1 (takes XXX hours)
+3. Run all the offline workload on all systems for Dataset 1 (takes ~ 3 hours)
 
 ```bash 
 python3 tsm_eval.py --systems all --queries all --datasets d1 
@@ -210,14 +210,19 @@ We provide a GAN-based generation that allows to augment a seed dataset with mor
 have akin properties to the seed ones. The tool can be used either directly using a pre-trained model
 or by retraining from scratch the model.
 
-
-### Execution using a pre-trained model 
-
+### Install requierements
 
 ```bash
 cd generation
+install.sh
+```
+
+### Execution using a pre-trained model 
+
+```bash
 python3 run_pretrained.py
 ```
+The generated plots and data are stored in the `generation/results` folder.
 
 ### Execution using model training
 
