@@ -63,14 +63,14 @@ ___
 
 We provide different scripts depending on whether the systems have been already installed or not:
 
-- To download, install, setup, and load data to  clickhouse, extremedb, monetdb, questdb, and timescaledb  (takes 30mins-1h)
+- To download, install, setup, and load data to  clickhouse, extremedb, monetdb, questdb, and timescaledb  (takes ~30mins)
 
 ```bash
 cd systems/
 sh install_all.sh
 ```
 
-- For druid and influxdb execute the following commands  (takes 30mins-1h)
+- For druid and influxdb execute the following commands  (takes ~30mins)
 
 ```bash
 cd systems/druid
