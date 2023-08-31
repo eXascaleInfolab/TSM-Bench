@@ -129,7 +129,7 @@ ___
 - To reproduce the storage performance for a given system: 
     ```bash
     cd systems/{system}
-    sh lauch.sh
+    sh launch.sh
     sh compression.sh
     ```
 - Note: {system} needs to be replaced with the name of one of the systems from the table below.
