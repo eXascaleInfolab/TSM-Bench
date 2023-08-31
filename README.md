@@ -188,13 +188,13 @@ python3 tsm_eval.py --systems extremedb --queries q1 --datasets d1 --nb_st 10 --
 ```
 -->
 
-2. Run q2 and q3 on extremedb and timescaledb for Dataset 1 and Dataset 2
+2. Run q2 and q3 on extremedb and timescaledb for Dataset 1 
  
 ```bash 
-python3 tsm_eval.py --systems extremedb timescaledb --queries q2 q3 --datasets d1 d2
+python3 tsm_eval.py --systems extremedb timescaledb --queries q2 q3 --datasets d1
 ```
 
-3. Run all the offline workload on all systems for Dataset 1 (takes XXX hours)
+3. Run all the offline workload on all systems for Dataset 1 (takes ~ 3 hours)
 
 ```bash 
 python3 tsm_eval.py --systems all --queries all --datasets d1 
