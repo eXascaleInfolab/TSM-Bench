@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# THE FOLLOWING SCRIPT WILL SETUP AND LOAD D1, TO LOAD D2 UNCOMMENT THE LINES BELOW 
+
+
 current="$(pwd)"
 
 mclient -p54320 -d mydb --interactive --timer=performance -s "DROP TABLE IF EXISTS d1; \
