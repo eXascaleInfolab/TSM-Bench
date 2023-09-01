@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# TO LOAD D2: 
+# setup.sh will load d1 to the systems, to load d2, uncomment the respective lines in the ./setup.sh of each system
+
+
 # ClickHouse
 cd clickhouse
 sh ./install.sh
