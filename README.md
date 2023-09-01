@@ -85,7 +85,10 @@ sh install.sh
 sh launch.sh
 sh setup.sh
 ```
-- **Note**: After installing each system, user input is required
+- **Note 1**: After installing each system, user input is required
+
+- **Note 2**: The previous scripts will setup and load the systems for Dataset 1. To load Dataset 2, uncomment the respective lines in each systems ```./setup.sh``` script
+
 
  <!---  
 -  To download, install, setup and load data to systems
