@@ -42,7 +42,7 @@ ___
 ## Build Datasets 
 
 Building a dataset consists of downloading and decompressing it, making it ready to be loaded into the DB. The benchmark can be run using 
-Dataset 1 or Dataset 2 or both.
+Dataset 1, Dataset 2, or both.
 
 - Build Dataset 1 (takes ~ 10 mins)
 
@@ -60,16 +60,16 @@ Dataset 1 or Dataset 2 or both.
 
 ___
 ## Systems Setup
-### Download, installation and setup
+### Download, installation, and setup
 
-- To download, install, setup, and load data to  clickhouse, extremedb, monetdb, questdb, and timescaledb  (takes ~40mins)
+- To download, install, setup  clickhouse, extremedb, monetdb, questdb, and timescaledb  (takes ~40mins)
 
 ```bash
 cd systems/
 sh install_all.sh
 ```
 
-- For druid and influxdb execute the following commands  (takes ~30mins)
+- For druid and influxdb, execute the following command (takes ~30mins)
 
 ```bash
 cd systems/druid
@@ -87,13 +87,12 @@ sh launch.sh
 
 ### Data loading
 
-To setup and load the systems with Dataset 1
+To load Dataset 1 into the systems
 
 ```bash
 cd ../
 sh load_all.sh
 ```
-
 
 - **Note**: To load Dataset 2, uncomment the respective lines in each systems ```./setup.sh``` script
 
