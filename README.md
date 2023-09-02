@@ -75,22 +75,27 @@ sh install_all.sh
 cd systems/druid
 sh install.sh
 sh launch.sh
-sh load.sh
 ```
 
 ```bash
 cd ../influxdb
 sh install.sh
 sh launch.sh
-sh load.sh
 ```
 - **Note**: After installing each system, user input is required
 
 
 ### Data loading
 
+To setup and load the systems with Dataset 1
 
-- **Note**: The previous scripts will setup and load the systems for Dataset 1. To load Dataset 2, uncomment the respective lines in each systems ```./setup.sh``` script
+```bash
+cd ../
+sh load_all.sh
+```
+
+
+- **Note**: To load Dataset 2, uncomment the respective lines in each systems ```./setup.sh``` script
 
 
  <!---  
