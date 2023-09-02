@@ -60,7 +60,7 @@ Dataset 1 or Dataset 2 or both.
 
 ___
 ## Systems Setup
-### Download, install and setup
+### Download, installation and setup
 
 - To download, install, setup, and load data to  clickhouse, extremedb, monetdb, questdb, and timescaledb  (takes ~40mins)
 
@@ -84,13 +84,13 @@ sh install.sh
 sh launch.sh
 sh load.sh
 ```
-- **Note 1**: After installing each system, user input is required
+- **Note**: After installing each system, user input is required
 
 
-### Data loading, install,ation and setup
+### Data loading
 
 
-- **Note 2**: The previous scripts will setup and load the systems for Dataset 1. To load Dataset 2, uncomment the respective lines in each systems ```./setup.sh``` script
+- **Note**: The previous scripts will setup and load the systems for Dataset 1. To load Dataset 2, uncomment the respective lines in each systems ```./setup.sh``` script
 
 
  <!---  
