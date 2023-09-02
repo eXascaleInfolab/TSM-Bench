@@ -74,14 +74,14 @@ sh install_all.sh
 cd systems/druid
 sh install.sh
 sh launch.sh
-sh setup.sh
+sh load.sh
 ```
 
 ```bash
 cd ../influxdb
 sh install.sh
 sh launch.sh
-sh setup.sh
+sh load.sh
 ```
 - **Note 1**: After installing each system, user input is required
 
