@@ -220,21 +220,21 @@ We provide a GAN-based generation that allows to augment a seed dataset with mor
 have akin properties to the seed ones. The tool can be used either directly using a pre-trained model
 or by retraining from scratch the model.
 
-### Install requierements
+### Install Requirements
 
 ```bash
 cd generation
 install.sh
 ```
 
-### Execution using a pre-trained model 
+### Execution using a Pre-trained Model 
 
 ```bash
 python3 run_pretrained.py
 ```
 The generated plots and data are stored in the `generation/results` folder.
 
-### Execution using model training
+### Execution using Model t^Training
 
 #### Model Training
 
@@ -257,7 +257,7 @@ python3 test_dc.py
 ```bash
 python3 gen_ts.py
 ```
-### Sample generation plots:
+### Sample Generation Plots:
 
 ![image](https://github.com/eXascaleInfolab/TSM-Bench/assets/15266242/13d8c2f9-fdbf-495f-aaf9-7f5ec0999470)
 
