@@ -59,17 +59,16 @@ Dataset 1, Dataset 2, or both.
     ```
 
 ___
-## Systems Configuration
-### Setup
+## Systems Setup
 
-- To download, install, and setup  clickhouse, extremedb, monetdb, questdb, and timescaledb  (takes ~40mins)
+- To install and load data into  clickhouse, extremedb, monetdb, questdb, and timescaledb  (takes ~40mins)
 
 ```bash
 cd systems/
 sh install_all.sh
 ```
 
-- For druid and influxdb, execute the following command (takes ~30mins)
+- For druid and influxdb, execute the following commands; after installing each system, user input is required (takes ~30mins)
 
 ```bash
 cd systems/druid
@@ -82,8 +81,12 @@ cd ../influxdb
 sh install.sh
 sh launch.sh
 ```
-- **Note**: After installing each system, user input is required
 
+
+- **Note**: To load Dataset 2, uncomment the respective lines in ```load.sh``` in each system folder
+
+
+<!---
 
 ### Data Loading
 
@@ -93,8 +96,9 @@ To load Dataset 1 into the systems
 cd ../
 sh load_all.sh
 ```
+-->
 
-- **Note**: To load Dataset 2, uncomment the respective lines in each systems ```./setup.sh``` script
+
 
 
  <!---  
