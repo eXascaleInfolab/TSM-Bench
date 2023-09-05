@@ -4,6 +4,9 @@
 
 sudo docker start timescaledb-container
 
+
+sleep 15
+
 sudo docker exec -it timescaledb-container psql -U postgres -c "SELECT hypertable_size('d1') ;";
 #sudo docker exec -it timescaledb-container psql -U postgres -c "SELECT hypertable_size('d2') ;";
 

@@ -15,17 +15,6 @@ sudo docker run -d --name clickhouse-container \
 sleep 5
 sudo docker stop clickhouse-container
 
-# # loading 
-# time ( cat '../../Datasets/d1.csv' | sudo docker exec -i clickhouse-container clickhouse-client --format_csv_delimiter="," --query="INSERT INTO d1 FORMAT CSVWithNames" ) 
 
-
-
-
-# compression
-
-
-
-# sudo docker cp config.xml clickhouse-container:/etc/clickhouse-server/
-
-# sudo kill -9 $(lsof -t -i:9000)
+sh load.sh
 

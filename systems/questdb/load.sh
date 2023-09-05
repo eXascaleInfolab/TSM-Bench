@@ -28,7 +28,7 @@ curl -G --data-urlencode "query= DROP TABLE d1temp; \
                 " http://localhost:9000/exec
 
 
-
+sh compression.sh
 #curl -G --data-urlencode "query= DROP TABLE IF EXISTS d2temp; \
 #                " http://localhost:9000/exec
 
