@@ -8,34 +8,28 @@
 cd clickhouse
 sh ./install.sh
 sh ./launch.sh
-sh ./load.sh
 cd ..
 
 # Druid
 #cd druid
 #sh ./install.sh
 #sh ./launch.sh
-#sh ./load.sh
 #cd ..
 
 # ExtremeDB
 cd extremedb
 sh ./install.sh
-sh ./load.sh
 cd ..
 
 # Influx
 # cd influx
 # sh ./install.sh
-# sh ./launch.sh
-# sh ./load.sh
 # cd ..
 
 # MonetDB
 cd monetdb
 sh ./install.sh
 sh ./launch.sh
-sh ./load.sh
 cd ..
 
 
@@ -43,13 +37,11 @@ cd ..
 cd questdb
 sh ./install.sh
 sh ./launch.sh
-sh ./load.sh
 cd ..
 
 # TimescaleDB
 cd  timescaledb
 sh ./install.sh
-sh ./load.sh
 cd ..
 
 
