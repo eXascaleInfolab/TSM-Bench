@@ -61,7 +61,15 @@ parser.add_argument('--min_ts', nargs = '?', type = str, help = 'Minimum query t
 parser.add_argument('--n_it', nargs = '?', type = int, help = 'Minimum number of iterations', default = default_n_iter)
 parser.add_argument('--timeout', nargs = '?', type = float, help = 'Query execution timeout in seconds', default = default_timeout)
 parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
+parser.add_argument('--online', nargs = '?' , type = str , help = "online running" , default = "false")
 args = parser.parse_args()
+
+
+
+def create_connection():
+	CONNECTION = "postgres://postgres:postgres@localhost:5431/postgres"
+	conn = psycopg2.connect(CONNECTION)
+			
 
 
 def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
@@ -126,13 +134,61 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 
 
 
-
 db_name = "timescaledb"
 
-run_system(args,"timescaledb",run_query)
+from threading import Thread
+from threading import Event
+def input_data(event):
+	from online_library import generate_continuing_data
+	CONNECTION = "postgres://postgres:postgres@localhost:5431/postgres"
+	conn = psycopg2.connect(CONNECTION)
+	conn.autocommit = True
+	cur = conn.cursor()
+	data = generate_continuing_data()
+	insertion_sql_head = "insert into d1 (time, id_station ," + ",".join(["s"+str(i) for i in range(100)]) + ")"
+	values = [f"('{data['time_stamps'][i]}', '{data['stations'][i]}', {', '.join([str(s_n) for s_n in data['sensors'][i]])})" for i in range(10000)]
+	sql = insertion_sql_head + " VALUES " + ",".join(values)
+	while True:
+		#data = generate_continuing_data()
+		#insertion_sql_head = "insert into d1 (time, id_station ," + ",".join(["s"+str(i) for i in range(100)]) + ")"
+		#values = [f"('{data['time_stamps'][i]}', '{data['stations'][i]}', {', '.join([str(s_n) for s_n in data['sensors'][i]])})" for i in range(10000)]
+		#sql = insertion_sql_head + " VALUES " + ",".join(values)
+		cur.execute(sql)
+		#cur.execute("select count(*) from d1")
+		#res_2 = cur.fetchall()		
+		#print("input")
+		if event.is_set():
+			break	
+		#print("amount_of_data" , res_2)
 
-process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-stdout, stderr = process.communicate()
+rate = 2000
+if __name__ == "__main__":
+	show_loading_bar = False
 
+	if True:#args.online == "true":
+		event = Event()
+		with open('queries.sql') as file:
+			queries = [line.rstrip() for line in file]
+		query = queries[0].replace("<db>", "d1",)
+		for i in range(10):
+			thread = Thread(target=input_data, args=(event,))
+			thread.start()
+			import time 
+			time.sleep(20)
+			print(run_query(query))	
+		#thread = Thread(target=input_data, args=(event,))
+		#thread.start()
+		#thread = Thread(target=input_data, args=(event,))
+		#thread.start()
+		#thread = Thread(target=input_data, args=(event,))
+		#thread.start()
+		#thread = Thread(target=input_data, args=(event,))
+		#thread.start()
+		#thread = Thread(target=input_data, args=(event,))
+		#thread.start()
 
+	
+	print(f"running {db_name}")
+	run_system(args,"timescaledb",run_query)
+	event.set()
 

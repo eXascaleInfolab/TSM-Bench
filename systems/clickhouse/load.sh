@@ -26,6 +26,9 @@ sleep 20
 
 sudo docker exec -it clickhouse-container clickhouse-client --query "SELECT table, formatReadableSize(sum(bytes)) as size FROM system.parts WHERE active AND table='d1' GROUP BY table;"
 
+## uncoment the following for D2 ##
+###################################
+# echo "start loading!"
 
 #sudo docker exec -it clickhouse-container clickhouse-client --query "DROP TABLE IF EXISTS d2;"
 #sleep 3
