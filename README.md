@@ -94,10 +94,9 @@ cd ../
 sh load_all.sh
 ```
 
+- **Note**: To load Dataset 2, uncomment the respective lines in each systems ```./setup.sh``` script
 -->
 
-
-- **Note**: To load Dataset 2, uncomment the respective lines in each systems ```./setup.sh``` script
 
 
  <!---  
