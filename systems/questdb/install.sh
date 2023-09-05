@@ -20,3 +20,4 @@ sudo ./questdb-6.4.1-rt-linux-amd64/bin/questdb.sh start
 
 sleep 25
 
+sh load.sh

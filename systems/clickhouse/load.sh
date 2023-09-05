@@ -1,6 +1,7 @@
 #!/usr//bin/bash
 
 # THE FOLLOWING SCRIPT WILL SETUP AND LOAD D1, TO LOAD D2 UNCOMMENT THE LINES BELOW 
+echo "loading data"
 
 sudo docker stop clickhouse-container
 sudo kill -9 `sudo lsof -t -i:9000`
@@ -25,7 +26,9 @@ sleep 20
 
 sudo docker exec -it clickhouse-container clickhouse-client --query "SELECT table, formatReadableSize(sum(bytes)) as size FROM system.parts WHERE active AND table='d1' GROUP BY table;"
 
-sleep 10
+## uncoment the following for D2 ##
+###################################
+# echo "start loading!"
 
 #sudo docker exec -it clickhouse-container clickhouse-client --query "DROP TABLE IF EXISTS d2;"
 #sleep 3

@@ -47,3 +47,4 @@ sudo monetdb create mydb
 sudo monetdb release mydb
 sudo monetdb set embedpy3=yes mydb
 
+sh load.sh

@@ -29,6 +29,12 @@ curl -G --data-urlencode "query= DROP TABLE d1temp; \
 
 
 
+sh compression.sh
+
+## uncoment the following for D2 ##
+###################################
+# echo "start loading!"
+
 #curl -G --data-urlencode "query= DROP TABLE IF EXISTS d2temp; \
 #                " http://localhost:9000/exec
 
