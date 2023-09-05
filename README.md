@@ -81,7 +81,10 @@ cd ../influxdb
 sh install.sh
 sh launch.sh
 ```
-- **Note**: 
+
+
+- **Note**: To load Dataset 2, uncomment the respective lines in ```./load.sh``` in each system folder
+
 
 <!---
 
@@ -94,8 +97,6 @@ cd ../
 sh load_all.sh
 ```
 -->
-
-- **Note**: To load Dataset 2, uncomment the respective lines in ```./load.sh``` in each system folder
 
 
 
