@@ -83,7 +83,7 @@ sh launch.sh
 ```
 
 
-- **Note**: To load Dataset 2, uncomment the respective lines in ```./load.sh``` in each system folder
+- **Note**: To load Dataset 2, uncomment the respective lines in ```load.sh``` in each system folder
 
 
 <!---
