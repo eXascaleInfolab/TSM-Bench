@@ -23,7 +23,8 @@ sudo docker run -d --name timescaledb-container \
 
 sudo docker start timescaledb-container
 #sudo docker exec -it timescaledb-container psql -U postgres
-sleep 5
+
+sleep 25
 
 
 sh load.sh
