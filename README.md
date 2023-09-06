@@ -83,7 +83,9 @@ sh launch.sh
 ```
 
 
-- **Note**: To load Dataset 2, uncomment the respective lines in ```load.sh``` in each system folder
+- **Notes**:
+    - The above commands load only the dataset D1. To load the larger dataset D2, uncomment the respective lines in ```load.sh``` in each system folder.
+    - If the systems are installed, you can start them by executing ```launch.sh```.
 
 
 <!---
@@ -126,7 +128,7 @@ ___
  <!---  
  ###  Data Loading Performance
 
-- To reproduce the data loading times of all systems (column 1 of Table 3):
+- To compute the data loading times of all systems (column 1 of Table 3):
 
     ```bash
     cd systems
@@ -140,7 +142,7 @@ ___
 
 ### Storage Performance 
 
-- To reproduce the storage performance for a given system: 
+- To compute the storage performance for a given system: 
     ```bash
     cd systems/{system}
     sh launch.sh
@@ -148,7 +150,7 @@ ___
     ```
 - Note: {system} needs to be replaced with the name of one of the systems from the table below.
 
-### Query Execution 
+### Query Execution (Offline)
 
 - Each system has a dedicated subfolder under `systems` folder. Queries for all systems can be executed as follows:
 
@@ -214,7 +216,9 @@ python3 tsm_eval.py --systems extremedb timescaledb --queries q2 q3 --datasets d
 python3 tsm_eval.py --systems all --queries all --datasets d1 
 ```
 
+### Query Execution (Online)
 
+TBA
 
 ___
 
