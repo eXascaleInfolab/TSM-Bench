@@ -49,6 +49,7 @@ Dataset 1, Dataset 2, or both.
     ```bash
     cd datasets/
     sh build_d1.sh
+    cd ..
     ```
 
 - Build Dataset 2 (takes ~ 2 hours on a 1GBps network; requires at least 300GB of disk space)
@@ -56,6 +57,7 @@ Dataset 1, Dataset 2, or both.
     ```bash
     cd datasets/
     sh build_d2.sh
+    cd ..
     ```
 
 ___
