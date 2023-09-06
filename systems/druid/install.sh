@@ -1,5 +1,5 @@
 #!/bin/sh
-ps -ef | grep 'druid' | grep -v grep | awk '{print $2}' | xargs -r kill -9luca@diufrm227:~/TSM-Bench/systems/druid$
+ps -ef | grep 'druid' | grep -v grep | awk '{print $2}' | xargs -r kill -9
 sleep 10
 
 

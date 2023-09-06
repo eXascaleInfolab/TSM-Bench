@@ -99,7 +99,7 @@ def plot_query_directory(query_dir):
 
 def run_system(args,system_name,run_query_f, query_filters = ("SELECT",)):
 	with open("../scenarios.json") as file:
-        	scenarios = json.load(file)
+		scenarios = json.load(file)
 
 	default_n_iter = int(scenarios["n_runs"])
 	default_timeout = scenarios["timeout"]# Read Queries
@@ -154,13 +154,17 @@ def run_system(args,system_name,run_query_f, query_filters = ("SELECT",)):
 				index_ = []
 				try:
 					plot_query_directory(query_dir_)
-				except ValueError:
-					pass # no objects to plot
+				except ValueError as E:
+					print(E)
+					pass # no objects to 
+
+
 	except Exception as E:
 		from subprocess import Popen, PIPE, DEVNULL , STDOUT
 		process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
 		stdout, stderr = process.communicate()
-
+		print(E)    
+    
 def init_parser():
 	with open("../scenarios.json") as file:
 		scenarios = json.load(file)
@@ -187,4 +191,4 @@ def init_parser():
 	args = parser.parse_args()
 	return args
 
-			     
+				 
