@@ -70,17 +70,18 @@ cd systems/
 sh install_all.sh
 ```
 
-- For druid and influxdb, execute the following commands; after installing each system, user input is required (takes ~40mins)
+- For influxdb and druid, execute the following commands; after installing each system, user input is required (takes ~40mins)
+
+```bash
+cd ../influxdb
+sh install.sh
+```
+
 
 ```bash
 cd systems/druid
 sh install.sh
 sh launch.sh && sh load.sh
-```
-
-```bash
-cd ../influxdb
-sh install.sh
 ```
 
 
