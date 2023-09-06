@@ -70,18 +70,17 @@ cd systems/
 sh install_all.sh
 ```
 
-- For druid and influxdb, execute the following commands; after installing each system, user input is required (takes ~30mins)
+- For druid and influxdb, execute the following commands; after installing each system, user input is required (takes ~40mins)
 
 ```bash
 cd systems/druid
 sh install.sh
-sh launch.sh
+sh launch.sh && sh load.sh
 ```
 
 ```bash
 cd ../influxdb
 sh install.sh
-sh launch.sh
 ```
 
 
@@ -147,7 +146,6 @@ ___
 - To compute the storage performance for a given system: 
     ```bash
     cd systems/{system}
-    sh launch.sh
     sh compression.sh
     ```
 - Note: {system} needs to be replaced with the name of one of the systems from the table below.
