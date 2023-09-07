@@ -12,7 +12,7 @@ TSM-Bench is a new benchmark that compares seven Time Series Database Systems (T
 
 -->
 
-[**Prerequisites**](#prerequisites) | [**Build Datasets**](#build-datasets) | [**Installation**](#systems-setup) | [**Experiments**](#experiments) | [**Data Generation**](#data-generation) | [**Technical Report**](#technical-report)
+[**Prerequisites**](#prerequisites) | [**Build Datasets**](#build-datasets) | [**Installation**](#systems-setup) | [**Experiments**](#experiments) | [**Data Generation**](#data-generation) | [**System Integration**](#system-integration) | [**Technical Report**](#technical-report)
 
 <!---
 | Dataset | # of TS | # of Stations | # of Sensors per station | Length of TS | Time Period | 
@@ -267,6 +267,11 @@ python3 gen_ts.py
 ### Sample Generation Plots:
 
 ![image](https://github.com/eXascaleInfolab/TSM-Bench/assets/15266242/13d8c2f9-fdbf-495f-aaf9-7f5ec0999470)
+
+___
+## System Integration
+
+TBA
 
 ___
 
