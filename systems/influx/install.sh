@@ -12,6 +12,9 @@ sudo systemctl stop influxd
 
 pip3 install influxdb
 
+sudo apt install influxdb
+
+
 wget https://dl.influxdata.com/influxdb/releases/influxdb-1.7.10_linux_amd64.tar.gz
 tar xvfz influxdb-1.7.10_linux_amd64.tar.gz
 rm influxdb-1.7.10_linux_amd64.tar.gz
