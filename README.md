@@ -181,11 +181,13 @@ ___
     - `--min_ts`: Minimum query timestamp (Default = "2019-04-01T00:00:00")
     - `--max_ts`: Maximum query timestamp (Default = "2019-04-30T00:00:00")
 
+- **Results**: All the runtimes and plots will be added to the `results` folder.
+  
+    - The runtime results of the systems for a given dataset and query will be added to: `results/{dataset}/{query}/{system}/runtime/`. The runtime plots will be added to the folder `results/{dataset}/{query}{system}/plots/`.
+
+    - All the queries return the runtimes by varying the number of stations (nb_st), number of sensors (nb_sr), and the range.
+
 - **Examples**:
-
-  - All the runtimes and plots will be added to the `results` folder. The runtime results of the systems for a given dataset and query will be added to: `results/{dataset}/{query}/{system}/runtime/`. The runtime plots will be added to the folder `results/{dataset}/{query}{system}/plots/`.
-
-  - All the queries return the runtimes by varying the number of stations (nb_st), number of sensors (nb_sr), and the range.
 
 1. Run query q1 on extremedb for Dataset 1 using default parameters (nb_st=1, nb_sr=3, range=1 day)
  
