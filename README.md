@@ -70,24 +70,20 @@ cd systems/
 sh install_all.sh
 ```
 
-- For influxdb and druid, execute the following commands; after installing each system, user input is required (takes ~40mins)
+- For influxdb and druid, execute the following commands; after installing each system, user input is required (takes ~50mins)
 
 ```bash
 cd ../influxdb
 sh install.sh
 ```
 
-
 ```bash
 cd systems/druid
 sh install.sh
-sh launch.sh && sh load.sh
 ```
 
 
-- **Notes**:
-    - The above commands load only the dataset D1. To load the larger dataset D2, uncomment the respective lines in ```load.sh``` in each system folder.
-    - If the systems are installed, you can start them by executing ```launch.sh```.
+- **Note**: The above commands load only the dataset D1. To load the larger dataset D2, uncomment the respective lines in ```load.sh``` in each system folder.
 
 
 <!---
