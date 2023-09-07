@@ -74,7 +74,7 @@ def plot_query_directory(query_dir):
 
 	combined_df = pd.concat([df.rename(columns={'runtime': key}) for key, df in stations_scenario.items()], axis=1)	
 	combined_df.plot(color=[color_dict.get(x, '#333333') for x in combined_df.columns])
-	plt.xlabel("# stations")
+	plt.xlabel("# Stations")
 	plt.ylabel("Runtime (ms)")
 	plt.title(f"{selected_query} varying #stations")
 	plt.savefig(f"{plot_dir}/stations.png")
@@ -82,7 +82,7 @@ def plot_query_directory(query_dir):
 
 	combined_df = pd.concat([df.rename(columns={'runtime': key}) for key, df in sensor_scenario.items()], axis=1)
 	combined_df.plot(color=[color_dict.get(x, '#333333') for x in combined_df.columns])
-	plt.ylabel("Runtime (ms)")
+	plt.ylabel("Runtime (ms)") or plt.xlabel("# Sesnors")
 	plt.title(f"{selected_query} varying #sensors")
 	plt.savefig(f"{plot_dir}/sensors.png")
 	plt.close()
@@ -92,7 +92,7 @@ def plot_query_directory(query_dir):
 	combined_df = pd.concat([df.rename(columns={'runtime': key}) for key, df in time_scenario.items()], axis=1)
 
 	combined_df.plot(color=[color_dict.get(x, '#333333') for x in combined_df.columns])
-	plt.ylabel("Runtime (ms)")
+	plt.ylabel("Runtime (ms)") or plt.xlabel("Query Range")
 	plt.title(f"{selected_query} varying time range")
 	plt.savefig(f"{plot_dir}/time_range.png")
 	plt.close()
