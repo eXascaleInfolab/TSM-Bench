@@ -239,7 +239,7 @@ python3 run_pretrained.py
 ```
 The generated plots and data are stored in the `generation/results` folder.
 
-### Execution using Model t^Training
+### Execution using Model Training
 
 #### Model Training
 
