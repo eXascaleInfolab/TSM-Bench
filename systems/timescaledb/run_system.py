@@ -85,7 +85,7 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		
 	runtimes = []
 	full_time = time.time()
-	for it in tqdm(range(n_it),disable= not show_loading_bar):
+	for it in tqdm(range(n_it)):
 		date = random_date(args.min_ts, args.max_ts, set_date[(int(rangeL)*it)%500], dform = '%Y-%m-%dT%H:%M:%S')
 		temp = query.replace("<timestamp>", date)
 		temp = temp.replace("<range>", str(rangeL))
@@ -165,7 +165,7 @@ rate = 2000
 if __name__ == "__main__":
 	show_loading_bar = False
 
-	if True:#args.online == "true":
+	if False:#args.online == "true":
 		event = Event()
 		with open('queries.sql') as file:
 			queries = [line.rstrip() for line in file]
@@ -176,16 +176,6 @@ if __name__ == "__main__":
 			import time 
 			time.sleep(20)
 			print(run_query(query))	
-		#thread = Thread(target=input_data, args=(event,))
-		#thread.start()
-		#thread = Thread(target=input_data, args=(event,))
-		#thread.start()
-		#thread = Thread(target=input_data, args=(event,))
-		#thread.start()
-		#thread = Thread(target=input_data, args=(event,))
-		#thread.start()
-		#thread = Thread(target=input_data, args=(event,))
-		#thread.start()
 
 	
 	print(f"running {db_name}")
