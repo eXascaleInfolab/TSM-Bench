@@ -226,12 +226,13 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 - The maximal batchsize depends on your architecture and selected system.
   
 **Examples**:
-```bash 
-python3 tsm_eval_online.py --systems clickhouse,timescaledb --queries a1 --datasets d1 --batchsize 1000 --n_threads 5 --host "your_server_name" 
-```
 
 ```bash 
 python3 tsm_eval_online.py --systems clickhouse --queries q1 --datasets d1 --batchsize 5000 --n_threads 10
+```
+
+```bash 
+python3 tsm_eval_online.py --systems clickhouse,timescaledb --queries a1 --datasets d1 --batchsize 1000 --n_threads 5 --host "your_server_name" 
 ```
 ___
 
