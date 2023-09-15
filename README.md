@@ -234,7 +234,7 @@ python3 tsm_eval_online.py --systems clickhouse --queries q1 --datasets d1 --bat
 ```
 
 ```bash 
-python3 tsm_eval_online.py --systems clickhouse,timescaledb --queries a1 --datasets d1 --batchsize 1000 --n_threads 5 --host "your_server_name" 
+python3 tsm_eval_online.py --systems clickhouse,timescaledb --queries all --datasets d1 --batchsize 1000 --n_threads 5 --host "your_server_name" 
 ```
 ___
 
