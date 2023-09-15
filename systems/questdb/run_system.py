@@ -17,17 +17,7 @@ from library import *
 print('launching system')
 
 import os
-import subprocess
-from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
 
-process = Popen(['sh', 'variables.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-stdout, stderr = process.communicate()
-
-process = Popen(['sh', 'launch.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-stdout, stderr = process.communicate()
-
-process = Popen(['sleep', '3'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-stdout, stderr = process.communicate()
 import psycopg2
 
 # Generate Random Values
@@ -36,18 +26,11 @@ set_st = [str(random.randint(0,9)) for i in range(500)]
 set_s = [str(random.randint(0,99)) for i in range(500)]
 set_date = [random.random() for i in range(500)]
 
-with open("../scenarios.json") as file:
-	scenarios = json.load(file)
-	print(scenarios)
-
-n_stations , n_sensors , n_time_ranges = scenarios["stations"],  scenarios["sensors"], scenarios["time_ranges"]
-default_n_iter = int(scenarios["n_runs"])
-default_timeout = scenarios["timeout"]
 
 
 # Parse Arguments
 parser = argparse.ArgumentParser(description = 'Script for running any eval')
-parser.add_argument('--system', nargs = '*', type = str, help = 'System name', default = 'clickhouse')
+parser.add_argument('--system', nargs = '*', type = str, help = 'System name', default = 'questdb')
 parser.add_argument('--datasets', nargs = '*', type = str, help = 'Dataset name', default = 'd1')
 parser.add_argument('--queries', nargs = '?', type = str, help = 'List of queries to run (Q1-Q7)', default = ['q' + str(i) for i in range(1,8)])
 parser.add_argument('--nb_st', nargs = '?', type = int, help = 'Number of stations in the dataset', default = 10)
@@ -58,18 +41,17 @@ parser.add_argument('--range', nargs = '?', type = int, help = 'Query range', de
 parser.add_argument('--rangeUnit', nargs = '?', type = str, help = 'Query range unit', default = 'day')
 parser.add_argument('--max_ts', nargs = '?', type = str, help = 'Maximum query timestamp', default = "2019-04-30T00:00:00")
 parser.add_argument('--min_ts', nargs = '?', type = str, help = 'Minimum query timestamp', default = "2019-04-01T00:00:00")
-parser.add_argument('--n_it', nargs = '?', type = int, help = 'Minimum number of iterations', default = default_n_iter)
-parser.add_argument('--timeout', nargs = '?', type = float, help = 'Query execution timeout in seconds', default = default_timeout)
+parser.add_argument('--n_it', nargs = '?', type = int, help = 'Minimum number of iterations', default = 100)
+parser.add_argument('--timeout', nargs = '?', type = float, help = 'Query execution timeout in seconds', default = 200)
 parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
-args = parser.parse_args()
 
 
 
-def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
+def run_query(query, rangeL , rangeUnit, n_st , n_s , n_it , host="localhost"):
 	# Connect to the system
 	conn = psycopg2.connect(user="admin",
 	  password="quest",
-	  host="localhost",
+	  host=host,
 	  port="8812",
 	  database="d1")
 	cursor = conn.cursor()
@@ -87,13 +69,13 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 	n_queries = []
 	full_time = time.time()
 	for it in tqdm(range(n_it)):
-		date = random_date(args.min_ts, args.max_ts, set_date[(int(rangeL)*it)%500], dform = '%Y-%m-%dT%H:%M:%S')
+		date = random_date("2019-04-01T00:00:00", "2019-04-30T00:00:00", set_date[(int(rangeL)*it)%500], dform = '%Y-%m-%dT%H:%M:%S')
 		temp = query.replace("<timestamp>", date)
 		temp = temp.replace("<range>", str(rangeL))
 		temp = temp.replace("<rangesUnit>", str(options[rangeUnit.lower()]))
 		
 		# stations
-		li = ['st' + str(z) for z in random.sample(range(args.nb_st), n_st)]
+		li = ['st' + str(z) for z in random.sample(range(10), n_st)]
 		q = "(" + "'" + li[0] + "'"
 		for j in li[1:]:
 			q += ', ' + "'" + j + "'"
@@ -101,7 +83,7 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		temp = temp.replace("<stid>", q)
 	
 		# sensors
-		li = ['s' + str(z) for z in random.sample(range(args.nb_s), n_s)]
+		li = ['s' + str(z) for z in random.sample(range(100), n_s)]
 		q = li[0]
 		q_filter = '(' + li[0] + ' > 0.95'
 		q_avg = 'avg(' + li[0] + ')'
@@ -128,14 +110,34 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		n_queries.append(len(queries))
 		diff = (time.time()-start)*1000
 		runtimes.append(diff)
-		if time.time() - full_time > args.timeout and it > 5: 
+		if time.time() - full_time > 200 and it > 5: 
 			break  
 			
 	conn.close()
 	return stats.mean(runtimes), stats.stdev(runtimes) 
 
+if __name__ == "__main__":
 
-run_system(args,"questdb",run_query)
-process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-stdout, stderr = process.communicate()
+	import os
+	import subprocess
+	from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
+	
+	args = parser.parse_args()
+	process = Popen(['sh', 'variables.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+	stdout, stderr = process.communicate()
+
+	process = Popen(['sh', 'launch.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+	stdout, stderr = process.communicate()
+
+	process = Popen(['sleep', '3'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+	stdout, stderr = process.communicate()
+	
+	def query_f(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it , host="localhost"):
+		return run_query(query, rangeL=rangeL, rangeUnit = rangeUnit ,n_st = n_st , n_s = n_s , n_it = n_it,host=host)
+
+	run_system(args,"questdb",query_f)	
+
+
+	process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+	stdout, stderr = process.communicate()
 

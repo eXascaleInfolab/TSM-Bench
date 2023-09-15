@@ -13,40 +13,7 @@ import json
 # setting path
 sys.path.append('../')
 from library import *
-
-print('launching system')
-
-import os
-import subprocess
-
-# Command to source the script and print the environment
-command = '/bin/bash -c "source variables.sh; env"'
-
-# Run the command as a subprocess, capturing the output
-proc = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
-output, error = proc.communicate()
-
-# Parse the output to extract the environment variables
-env_lines = [line.decode("utf-8").split('=', 1) for line in output.splitlines() if b'=' in line]
-env = dict(env_lines)
-
-
-# Merge the extracted environment variables with the current environment
-new_env = os.environ.copy()
-new_env.update(env)
-
-new_env["OLDPWD"] = os.getcwd()
-os.environ.update(new_env)
-
-
-# Run launch.sh with the modified environment and let it run in the background
-process = subprocess.Popen(['sh', 'launch.sh'], env=new_env, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-
-
-process = subprocess.Popen(['sleep', '10'], env=new_env, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-process.communicate()
-
-import exdb 
+import exdb
 
 # Generate Random Values
 random.seed(1)
@@ -77,11 +44,10 @@ parser.add_argument('--min_ts', nargs = '?', type = str, help = 'Minimum query t
 parser.add_argument('--n_it', nargs = '?', type = int, help = 'Minimum number of iterations', default = default_n_iter)
 parser.add_argument('--timeout', nargs = '?', type = float, help = 'Query execution timeout in seconds', default = default_timeout)
 parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
-args = parser.parse_args()
 
 
 
-def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
+def run_query(query, rangeL , rangeUnit, n_st , n_s , n_it, host="localhost"):
 	options = {"day" : 60 * 60* 24,
 			   "week" : 60 * 60* 24 * 7,
 			   "minute" : 60,
@@ -92,19 +58,19 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 	}	
 	# Connect to the system
 	exdb.init_runtime(debug = False, shm = False, disk = False, tmgr = 'mursiw')
-	conn = exdb.connect('localhost', 5001)
+	conn = exdb.connect(host, 5001)
 	cursor = conn.cursor()
 	runtimes = []
 	full_time = time.time()
 	for it in tqdm(range(n_it)):
-		date = random_date(args.min_ts, args.max_ts, set_date[(int(rangeL)*it)%500], dform = '%Y-%m-%dT%H:%M:%S')
+		date = random_date("2019-04-01T00:00:00", "2019-04-30T00:00:00", set_date[(int(rangeL)*it)%500], dform = '%Y-%m-%dT%H:%M:%S')
 		date = int(time.mktime(datetime.strptime(date, '%Y-%m-%dT%H:%M:%S').timetuple()))
 		temp = query.replace("<timestamp>", str(date))
 		temp = temp.replace("<range>", str(rangeL))
 		temp = temp.replace("<rangesUnit>", str(options[rangeUnit]))
 		
 		# stations
-		li = ['st' + str(z) for z in random.sample(range(args.nb_st), n_st)]
+		li = ['st' + str(z) for z in random.sample(range(10), n_st)]
 		q = "(" + "'" + li[0] + "'"
 		for j in li[1:]:
 			q += ', ' + "'" + j + "'"
@@ -113,7 +79,7 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 	
 		# sensors
 	
-		rand = [str(z) for z in random.sample(range(args.nb_s), n_s)]
+		rand = [str(z) for z in random.sample(range(100), n_s)]
 		sidlist = 's' + rand[0]
 		for j in rand[1:]:
 			sidlist += ',' + 's' +  j
@@ -157,17 +123,55 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		diff = (time.time()-start)*1000
 		#  print(temp, diff)
 		runtimes.append(diff)
-		if time.time() - full_time > args.timeout and it > 5: 
+		if time.time() - full_time > 500 and it > 5: 
 			break  
 			
 	conn.close()
 	return stats.mean(runtimes), stats.stdev(runtimes)
 
+if __name__ == "__main__":
+	print('launching system extremdb')
 
-run_system(args,"extremedb",run_query)
+	import os
+	import subprocess
 
-process = subprocess.Popen(['sh', 'stop.sh'], stdin=subprocess.PIPE)
-stdout, stderr = process.communicate()
+	# Command to source the script and print the environment
+	command = '/bin/bash -c "source variables.sh; env"'
+
+	# Run the command as a subprocess, capturing the output
+	proc = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
+	output, error = proc.communicate()
+
+	# Parse the output to extract the environment variables
+	env_lines = [line.decode("utf-8").split('=', 1) for line in output.splitlines() if b'=' in line]
+	env = dict(env_lines)
+
+
+	# Merge the extracted environment variables with the current environment
+	new_env = os.environ.copy()
+	new_env.update(env)
+
+	new_env["OLDPWD"] = os.getcwd()
+	os.environ.update(new_env)
+
+
+	# Run launch.sh with the modified environment and let it run in the background
+	process = subprocess.Popen(['sh', 'launch.sh'], env=new_env, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+
+
+	process = subprocess.Popen(['sleep', '10'], env=new_env, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+	process.communicate()
+    
+	args = parser.parse_args()
+
+	def query_f(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it, host="localhost"):
+		return run_query(query, rangeL=rangeL, rangeUnit = rangeUnit ,n_st = n_st , n_s = n_s , n_it = n_it,host=host)
+	
+	run_system(args,"extremedb",query_f)
+	
+	
+	process = subprocess.Popen(['sh', 'stop.sh'], stdin=subprocess.PIPE)
+	stdout, stderr = process.communicate()
 
 
 

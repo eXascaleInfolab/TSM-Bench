@@ -153,8 +153,10 @@ def run_system(args,system_name,run_query_f, query_filters = ("SELECT",)):
 				runtimes = []
 				index_ = []
 				try:
+					print("plotting")
 					plot_query_directory(query_dir_)
 				except ValueError as E:
+					print("plotting failed")
 					print(E)
 					pass # no objects to 
 
