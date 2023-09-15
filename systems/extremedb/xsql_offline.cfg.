@@ -1,0 +1,21 @@
+base_name :  d1,
+database_size    :  10g,
+cache_size : 1g,
+
+database_filename: "datapoints.dbs", # database file name, string
+log_filename     : "datapoints.log", # log file name, string
+
+runtime_configuration : {
+        debug_library : false,
+        disk_support : true,
+        shared_memory : false,
+        transaction_manager : mursiw
+    },   
+db_params: {
+        mem_page_size : 512,
+        disk_page_size : 8192,
+        db_log_type : no
+},
+log_params: {
+        redo_log_limit : 1000m
+}

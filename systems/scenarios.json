@@ -1,8 +1,8 @@
 {
-"stations" : [1,2,3,4,5,6,7,8,9,10],
-"sensors" : [1,10,20,30,40,50,60,70,80,90,100],
-"time_ranges" : ["minute","hour","day","week","month" ],
-"n_runs" : 100,
+"stations" : [1,2],
+"sensors" : [1 , 10 ],
+"time_ranges" : ["minute","hour","day"],
+"n_runs" : 20,
 "timeout" : 200,
 "loadingbar" : 1
 }

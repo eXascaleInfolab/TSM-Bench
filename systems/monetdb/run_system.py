@@ -14,17 +14,6 @@ import json
 sys.path.append('../')
 from library import *
 
-print('launching system')
-
-import os
-import subprocess
-from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
-
-process = Popen(['sh', 'launch.sh', '&'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-stdout, stderr = process.communicate()
-
-process = Popen(['sleep', '2'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-stdout, stderr = process.communicate()
 
 import pymonetdb
 
@@ -36,7 +25,6 @@ set_date = [random.random() for i in range(500)]
 
 with open("../scenarios.json") as file:
 	scenarios = json.load(file)
-	print(scenarios)
 
 n_stations , n_sensors , n_time_ranges = scenarios["stations"],  scenarios["sensors"], scenarios["time_ranges"]
 default_n_iter = int(scenarios["n_runs"])
@@ -58,9 +46,8 @@ parser.add_argument('--min_ts', nargs = '?', type = str, help = 'Minimum query t
 parser.add_argument('--n_it', nargs = '?', type = int, help = 'Minimum number of iterations', default = default_n_iter)
 parser.add_argument('--timeout', nargs = '?', type = float, help = 'Query execution timeout in seconds', default = default_timeout)
 parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
-args = parser.parse_args()
 
-def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
+def run_query(query, rangeL , rangeUnit, n_st , n_s , n_it,host="localhost"):
 	# Connect to the system
 	#print("query intput:", query)
 
@@ -68,18 +55,18 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		rangeUnit = "day"
 		rangeL = rangeL*7
 	
-	conn = pymonetdb.connect(username="monetdb", port=54320, password="monetdb", hostname="localhost", database="mydb")
+	conn = pymonetdb.connect(username="monetdb", port=54320, password="monetdb", hostname=host, database="mydb")
 	cursor = conn.cursor()	 
 	runtimes = []
 	full_time = time.time()
 	for it in tqdm(range(n_it)):
-		date = random_date(args.min_ts, args.max_ts, set_date[(int(rangeL)*it)%500], dform = '%Y-%m-%dT%H:%M:%S')
+		date = random_date("2019-04-01T00:00:00", "2019-04-30T00:00:00", set_date[(int(rangeL)*it)%500], dform = '%Y-%m-%dT%H:%M:%S')
 		temp = query.replace("<timestamp>", date)
 		temp = temp.replace("<range>", str(rangeL))
 		temp = temp.replace("<rangesUnit>", rangeUnit)
 		
 		# stations
-		li = ['st' + str(z) for z in random.sample(range(args.nb_st), n_st)]
+		li = ['st' + str(z) for z in random.sample(range(100), n_st)]
 		q = "(" + "'" + li[0] + "'"
 		for j in li[1:]:
 			q += ', ' + "'" + j + "'"
@@ -90,7 +77,7 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 		temp = temp.replace("<stid2>", f"{random.randint(1,10)}") 
 	
 		# sensors
-		li = ['s' + str(z) for z in random.sample(range(args.nb_s), n_s)]
+		li = ['s' + str(z) for z in random.sample(range(10), n_s)]
 		q = li[0]
 		q_filter = '(' + li[0] + ' > 0.95'
 		q_avg = 'avg(' + li[0] + ')'
@@ -123,7 +110,7 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 
 		diff = (time.time()-start)*1000
 		runtimes.append(diff)
-		if time.time() - full_time > args.timeout and it > 5: 
+		if time.time() - full_time > 200 and it > 5: 
 			break  
 			
 	conn.close()
@@ -132,12 +119,27 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 
 
 
+if __name__ == "__main__":
+	print('launching system moentdb')
+
+	import os
+	import subprocess
+	from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
+
+	process = Popen(['sh', 'launch.sh', '&'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+	stdout, stderr = process.communicate()
+
+	process = Popen(['sleep', '2'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+	stdout, stderr = process.communicate()
+	
+	args = parser.parse_args()
+
+	def query_f(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
+		return run_query(query, rangeL=rangeL, rangeUnit = rangeUnit ,n_st = n_st , n_s = n_s , n_it = n_it)
+
+	run_system(args,"extremedb",query_f)
 
 
-run_system(args,"monetdb",run_query)
-
-
-
-process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-stdout, stderr = process.communicate()
+	process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+	stdout, stderr = process.communicate()
 

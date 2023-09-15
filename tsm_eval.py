@@ -3,7 +3,6 @@ import os
 import sys
 import subprocess
 from systems.utils.time_settings import abr_time_map as unit_options
-
 parser = argparse.ArgumentParser(description = 'Script for running any eval')
 parser.add_argument('--systems', nargs = '+', type = str, help = 'Systems name', default = ['clickhouse','druid','influx','monetdb','questdb','timescaledb'])
 parser.add_argument('--datasets', nargs = '*', type = str, help = 'Dataset name', default = 'd1')
@@ -60,10 +59,14 @@ system_paths = { system : os.path.join(os.getcwd(), "systems", system) for syste
 for system in systems:
 	systemPath = system_paths[system]
 	print(f"###{system}###")
+	
+
 	if not(os.path.exists(systemPath)):
 		sys.exit("Invalid system: " + system)
-		
+        
+	curr_wd = os.getcwd()
 	os.chdir(systemPath)
+	
 	
 	toRun = ['python3', 'run_system.py', '--datasets', ' '.join(args.datasets) , "--def_s" , str(args.nb_sr) , "--def_st" , str(args.nb_st),
 		'--queries', str(args.queries), '--nb_st', str(args.n_st),

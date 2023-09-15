@@ -9,4 +9,6 @@ rm datasets.tar.gz
 
 python3 generate_influx.py
 
- head -1 d1.csv > last_row_d1.csv && tail -1 d1.csv >> last_row_d1.csv
+
+
+head -n 1 d1.csv > d1_tail.csv && tail -n 1 d1.csv >> d1_tail.csv

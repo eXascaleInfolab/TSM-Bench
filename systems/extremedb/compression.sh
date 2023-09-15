@@ -7,5 +7,5 @@
 
 #du -sh datapoints.dbsi
 
-sudo du -sh eXtremeDB/target/bin/datapoints.dbs
+sudo du -sh eXtremeDB/target/bin/datapoints_mw.dbs
 # sudo du -sh eXtremeDB/target/bin/datapoints2.dbs
