@@ -12,7 +12,7 @@ TSM-Bench is a new benchmark that compares seven Time Series Database Systems (T
 
 -->
 
-[**Prerequisites**](#prerequisites) | [**Build Datasets**](#build-datasets) | [**Installation**](#systems-setup) | [**Experiments**](#experiments) | [**Data Generation**](#data-generation) | [**Technical Report**](#technical-report)
+[**Prerequisites**](#prerequisites) | [**Build Datasets**](#build-datasets) | [**Installation**](#systems-setup) | [**Experiments**](#experiments) | [**Data Generation**](#data-generation) | [**System Integration**](#system-integration) | [**Technical Report**](#technical-report)
 
 <!---
 | Dataset | # of TS | # of Stations | # of Sensors per station | Length of TS | Time Period | 
@@ -181,11 +181,13 @@ ___
     - `--min_ts`: Minimum query timestamp (Default = "2019-04-01T00:00:00")
     - `--max_ts`: Maximum query timestamp (Default = "2019-04-30T00:00:00")
 
+- **Results**: All the runtimes and plots will be added to the `results` folder.
+  
+    - The runtime results of the systems for a given dataset and query will be added to: `results/{dataset}/{query}/{system}/runtime/`. The runtime plots will be added to the folder `results/{dataset}/{query}{system}/plots/`.
+
+    - All the queries return the runtimes by varying the number of stations (nb_st), number of sensors (nb_sr), and the range.
+
 - **Examples**:
-
-  - All the runtimes and plots will be added to the `results` folder. The runtime results of the systems for a given dataset and query will be added to: `results/{dataset}/{query}/{system}/runtime/`. The runtime plots will be added to the folder `results/{dataset}/{query}{system}/plots/`.
-
-  - All the queries return the runtimes by varying the number of stations (nb_st), number of sensors (nb_sr), and the range.
 
 1. Run query q1 on extremedb for Dataset 1 using default parameters (nb_st=1, nb_sr=3, range=1 day)
  
@@ -256,7 +258,7 @@ python3 run_pretrained.py
 ```
 The generated plots and data are stored in the `generation/results` folder.
 
-### Execution using Model t^Training
+### Execution using Model Training
 
 #### Model Training
 
@@ -282,6 +284,11 @@ python3 gen_ts.py
 ### Sample Generation Plots:
 
 ![image](https://github.com/eXascaleInfolab/TSM-Bench/assets/15266242/13d8c2f9-fdbf-495f-aaf9-7f5ec0999470)
+
+___
+## System Integration
+
+TBA
 
 ___
 
