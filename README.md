@@ -217,15 +217,18 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 
 ### Query Execution (Online)
 
-**Additional Optional Arguments**:
+**Notes**:
+
+- This workload requires two machines.
+- We launch each system separately on a remote server and execute the online query remotely using the --host flag.
+- Druid does not support multithreading.
+- The maximal batchsize depends on your architecture and selected system.
+
+**Optional Arguments**:
 - `--n_threads` : Number of threads to use. (Default 1)
 -  `--batchsize`: Number data points to be inserted each second (if possible) in each thread (Default = 500)
 - `--host` : remote host machine name (Default = "localhost")
 
-### Notes: 
-- For the results in our work we launch each system individually on a remote server and run the online query execution remotely using the --host flag.
-- Druid does not support multithreading.
-- The maximal batchsize depends on your architecture and selected system.
   
 **Examples**:
 
