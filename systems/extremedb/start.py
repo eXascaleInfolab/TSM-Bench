@@ -2,7 +2,7 @@ import os
 import subprocess
 
 
-def launch():
+def launch(set_env_only = False):
 	# Command to source the script and print the environment
 	command = '/bin/bash -c "source variables.sh; env"'
 
@@ -22,10 +22,10 @@ def launch():
 	new_env["OLDPWD"] = os.getcwd()
 	os.environ.update(new_env)
 
+	if not set_env_only:
+		# Run launch.sh with the modified environment and let it run in the background
+		process = subprocess.Popen(['sh', 'launch.sh'], env=new_env, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
-	# Run launch.sh with the modified environment and let it run in the background
-	process = subprocess.Popen(['sh', 'launch.sh'], env=new_env, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
-
-	process = subprocess.Popen(['sleep', '10'], env=new_env, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-	process.communicate()
+		process = subprocess.Popen(['sleep', '10'], env=new_env, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+		process.communicate()

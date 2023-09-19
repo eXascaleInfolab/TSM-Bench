@@ -54,7 +54,7 @@ def run_system(args, system_name, run_query_f, query_filters=("SELECT",)):
                             with open(system_file, "w") as file:
                                 file.write(f" rate/s , runtime , runtime_var \n")
                                 file.write(f"{batch_size},{runtime_mean},{runtime_var}\n")
-			
+                
                 except Exception as E:
                     print("exception in query")
                     print(E)
@@ -63,6 +63,8 @@ def run_system(args, system_name, run_query_f, query_filters=("SELECT",)):
                 index_ = []
 
                 try:
+                    pass
+                 
                     #print("plotting")
                     #plot_query_directory(query_dir_)
                 except ValueError as E:

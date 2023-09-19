@@ -30,9 +30,10 @@ def input_data(event, data , batch_size = 1000, host = "localhost"):
 
 
 def delete_data(date= "2019-04-1T00:00:00", host = "localhost"):
+    print("celaning up influx")
     time.sleep(5)
     start = time.time()
     sql = f"""delete from "sensor" where time > '{date}Z' """
-    client = InfluxDBClient(host=host, port=8086, username='luca', database='d1')
+    client = InfluxDBClient(host=host, port=8086, username='user', database='d1')
     result = client.query("""DELETE FROM "sensor" where time > '2019-04-30T00:00:00Z'""")
     client.close()

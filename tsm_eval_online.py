@@ -99,6 +99,10 @@ for system in systems:
 
 	if args.host == "localhost":
 		system_module.launch()
+
+
+	elif system == "extremedb":
+		system_module.launch(True) #only set the env variables	
 	
 	event = Event()
 	print("starting insertion")
