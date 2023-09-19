@@ -3,7 +3,8 @@ import time
 
 
 
-def input_data(event, data , batch_size = 1000, host = "localhost"):
+def input_data(event, data , results , batch_size = 1000, host = "localhost"):
+    try:
         conn = psycopg2.connect(user="admin",
           password="quest",
           host=host,
@@ -25,9 +26,13 @@ def input_data(event, data , batch_size = 1000, host = "localhost"):
             cur.execute(sql)
                   
             diff = time.time() - start
-            print(f"inserted {batch_size} in {diff}s")
+            results["insertions"].append( (start,batch_size) )     
             if diff < 1:
                 time.sleep(1-diff)
+            else:
+                print(f"insertion of {batch_size} points took to long ({diff}s)")
+    except:
+        results["status"] = "failed"
 
 
 def delete_data(date= "2019-04-30T00:00:00", host = "localhost"):

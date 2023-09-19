@@ -5,6 +5,7 @@ from threading import Event
 from systems.online_library import generate_continuing_data
 import json
 import pandas as pd
+import time 
 
 color_dict = {'clickhouse': "blue",
   "druid" :  'orange', 
@@ -14,11 +15,7 @@ color_dict = {'clickhouse': "blue",
   "questdb" : "grey" ,
   "timescaledb" : "black"} 
 
-
-
-
-
-def run_system(args, system_name, run_query_f, query_filters=("SELECT",)):
+def run_system(args, system_name, run_query_f, insertion_speed , query_filters=("SELECT",) ):
     with open("../scenarios.json") as file:
         scenarios = json.load(file)
 
@@ -28,7 +25,9 @@ def run_system(args, system_name, run_query_f, query_filters=("SELECT",)):
     results_dir = "../../results"
     if not os.path.exists(results_dir):
         os.mkdir(results_dir)
-
+    
+    
+    results = {} # query -> time_start , time_stop , mean_runtime , var_runtime
     try:
         for dataset in args.datasets:
             data_dir = f"{results_dir}/{dataset}"
@@ -42,18 +41,14 @@ def run_system(args, system_name, run_query_f, query_filters=("SELECT",)):
                             os.mkdir(query_dir)
 
                         system_file = f"{query_dir}/{system_name}.txt"
-                        batch_size = args.batchsize
+                        
                  
                         query = query.replace("<db>", dataset)
+                        time_start = time.time()
                         runtime_mean , runtime_var = run_query_f(query, n_s = 10 , n_it = 100, n_st = 1, rangeL = 1, rangeUnit = "day" ,host=args.host)
-
-                        if os.path.exists(system_file):
-                            with open(system_file, "a") as file:
-                                file.write(f"{batch_size},{runtime_mean},{runtime_var}\n")
-                        else:
-                            with open(system_file, "w") as file:
-                                file.write(f" rate/s , runtime , runtime_var \n")
-                                file.write(f"{batch_size},{runtime_mean},{runtime_var}\n")
+                        time_stop = time.time()
+                        results["q" + str(i+1)] = (time_start,time_stop,runtime_mean,runtime_var)
+                     
                 
                 except Exception as E:
                     print("exception in query")
@@ -74,3 +69,31 @@ def run_system(args, system_name, run_query_f, query_filters=("SELECT",)):
 
     except Exception as E:
         print(E)
+        
+    return results
+
+def save_online(results, system , dataset = "d1"):
+    result_folder = "results"
+    online_folder = f"{results_folder}/online"
+    data_set_folder =  f"{online_folder}/{dataset}"
+    
+    os.makedirs(online_folder, exist_ok=True)
+    os.makedirs(result_folder, exist_ok=True)
+    os.makedirs(data_set_folder, exist_ok=True)
+    
+    for query,values in results:
+        query_folder = f"{data_set_folder}/{query}"
+        runtime_folder =  f"{query_folder}/runtime"
+        plot_folder = f"{query_folder}/plots"
+        
+        os.makedirs(query_folder, exist_ok=True)
+        os.makedirs(runtime_folder, exist_ok=True)
+        os.makedirs(runtime_folder, exist_ok=True)
+    
+        
+    
+    
+    
+    
+    
+    

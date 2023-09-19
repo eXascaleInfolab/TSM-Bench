@@ -30,8 +30,10 @@ parser.add_argument('--min_ts', nargs = '?', type = str, help = 'Minimum query t
 parser.add_argument('--timeout', nargs = '?', type = str, help = 'Query execution timeout in seconds', default = 20)
 parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
 parser.add_argument('--online', nargs = '?', type = lambda x : str(x).lower() , help = 'Query execution timeout in seconds', default = "false")
+
 parser.add_argument('--host', nargs = '?', type = str , help = 'Query execution timeout in seconds', default = "localhost")
-parser.add_argument('--batchsize', nargs = '?', type = int , help = 'Query execution timeout in seconds', default = "500")
+parser.add_argument('--batch_start', nargs = '?', type = int , help = 'Query execution timeout in seconds', default = 500)
+parser.add_argument('--batch_step', nargs = '?', type = int , help = 'Query execution timeout in seconds', default = 1000)
 parser.add_argument('--n_threads', nargs = '?', type = int , help = 'Query execution timeout in seconds', default = 1)
 args = parser.parse_args()
 
@@ -79,6 +81,8 @@ from threading import Thread
 from threading import Event
 from systems.online_library import generate_continuing_data
 import time
+from subprocess import Popen, PIPE, STDOUT, DEVNULL
+
 data =  generate_continuing_data() 
 start_date  = data["time_stamps"][0]
 start = data['time_stamps']
@@ -100,33 +104,69 @@ for system in systems:
 	if args.host == "localhost":
 		system_module.launch()
 
-
 	elif system == "extremedb":
-		system_module.launch(True) #only set the env variables	
+		system_module.launch(True) #only set the env variables
 	
-	event = Event()
 	print("starting insertion")
-	threads = []
-	for i in range(args.n_threads):
-		thread = Thread(target=system_module.input_data, args=(event,data, args.batchsize, args.host))
-		thread.start()	
-		threads.append(thread)
+	batch_size = args.batch_start
+	insertion_results = {} # run -> results 
+	query_results = {}
+	for i in range(10):
+		event = Event()
+		threads = []
+		insertion_results[i] = [{"status" : "ok" , "insertions" : [] } for _ in range(args.n_threads)]
+		try:
+			for t_n in range(args.n_threads):
+				try:
+					thread = Thread(target=system_module.input_data, args=(event,data,  insertion_results[i][t_n] , batch_size, args.host))
+					thread.start()
+					threads.append(thread)
+				except Exception as e:
+					if t_n > 0:
+						print(e)
+						print(f"{system} can only use a single thread for insertion, skipping additonal threads")
+						break
+					else:
+						raise e			
+		except Exception as e:
+			print(e)
+			print(f"{system} is not running or insertion rate not supported by system or aviable ressources")
+			break	
+		time.sleep(1)
+		try:
+			query_results[i] = launch_online.run_system(args,system, system_module.run_system.run_query, (t_n+1)*batch_size)		
+		except Exception as e:
+			event.set()
+			time.sleep(1)
+			for thread in threads:
+				thread.join()
+			raise e
 
-	time.sleep(10)		
-	try:
-		launch_online.run_system(args,system, system_module.run_system.run_query)		
-	except Exception as e:
 		event.set()
 		time.sleep(1)
 		for thread in threads:
+			print("joining threads")
 			thread.join()
-		raise e
-
-	event.set()
-	time.sleep(1)
-	for thread in threads:
-		thread.join()
-
+		
+		batch_size = batch_size + args.batch_step
+    
+    
+##store the results
+	final_result  = {}   
+	for batch_iteration,thread_results in insertion_results.items():
+		for query , (start , stop , mean , var) in query_results[batch_iteration].items():
+			final_result[query] = final_result.get(query,{})   
+			diff , insertion_rate  = stop-start , 0
+			for t_n , thread_results in enumerate(thread_results):
+				insertions = thread_results["insertions"]                        
+				insertion_rate += sum([  rate  for time,rate in insertions if time >= start and time <= stop ])/diff
+				if insertion_rate == 0:
+					print("insertions failed")
+				print(insertion_rate)
+			final_result[query][batch_iteration] = (mean , var , insertion_rate)
+	print("final_results" , final_result)
+    
+	#set the database to its initial state
 	try:
 		system_module.delete_data(host=args.host)
 	except Exception as e :
@@ -134,7 +174,6 @@ for system in systems:
 		raise e
 
 	if args.host == "localhost":
-		from subprocess import Popen, PIPE, STDOUT, DEVNULL
 		process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
 		stdout, stderr = process.communicate()	
 	
