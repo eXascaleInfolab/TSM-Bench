@@ -220,8 +220,10 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 **Notes**:
 
 - This workload requires a second machine for querying and continuous ingestion:
-     - Clone this repo in the second machine.
-     - execute the online query using the --host flag.
+     1. Clone this repo in the second machine.
+     2. Install dependencies (see [**Prerequisites**](#prerequisites))
+     3. Intstall the systems (see [**Installation**](#systems-setup))
+     4. Execute the online query using the --host flag.
 
 
 - We launch each system separately on the local machine and execute the online query on a remote machine using the --host flag.
