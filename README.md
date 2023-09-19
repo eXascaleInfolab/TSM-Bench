@@ -217,14 +217,17 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 
 ### Query Execution (Online)
 
-**Notes**:
 
-- This workload requires a second machine for querying and continuous ingestion:
-     1. Clone this repo in the second machine.
-     2. Install dependencies (see [**Prerequisites**](#prerequisites))
-     3. Intstall the systems (see [**Installation**](#systems-setup))
+This workload requires a second machine for querying and continuous ingestion:
+     1. Clone this repo in the second machine: 
+     ```bash 
+       python3 tsm_eval.py --systems extremedb timescaledb --queries q2 q3 --datasets d1
+     ```
+     2. Install dependencies:
+     3. Install the systems (see [**Installation**](#systems-setup))
      4. Execute the online query using the --host flag.
 
+**Notes**:
 
 - We launch each system separately on the local machine and execute the online query on a remote machine using the --host flag.
 - The maximal batchsize depends on your architecture and selected system.
