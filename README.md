@@ -219,8 +219,12 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 
 **Notes**:
 
-- This workload requires two machines; the first for querying and the second for continuous ingestion.
-- We launch each system separately on a remote server and execute the online query remotely using the --host flag.
+- This workload requires an additional machine for querying and continuous ingestion:
+    - clone this repo in this machine.
+    - execute the online query using the --host flag.
+
+
+- We launch each system separately on the local machine and execute the online query on a remote machine using the --host flag.
 - The maximal batchsize depends on your architecture and selected system.
 - Druid does not support multithreading.
 
