@@ -34,6 +34,13 @@ def input_data(event, data , results , batch_size = 1000, host = "localhost"):
     except Exception as e:
         results["status"] = "failed"
         print(e)
+        message = str(e)
+        if "table busy" in message:
+                  print("questdb can not handle insertions from multiple thread")
+        else:
+                  print("insertion rate to high")
+
+       
 
 def delete_data(date= "2019-04-30T00:00:00", host = "localhost"):
     conn = psycopg2.connect(user="admin",
