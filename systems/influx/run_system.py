@@ -39,7 +39,7 @@ def run_query(query, rangeL , rangeUnit , n_st , n_s , n_it , host = "localhost"
 		temp = query.replace("<timestamp>", date)
 		temp = temp.replace("<range>", str(rangeL))
 		temp = temp.replace("<rangesUnit>", str(rangeUnit[0]))
-		print(date,temp)	
+		#print(date,temp)	
 		# stations
 		li = ['st' + str(z) for z in random.sample(range(100), n_st)]
 		#  print(li)

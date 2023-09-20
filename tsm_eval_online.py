@@ -5,14 +5,14 @@ import subprocess
 from systems.utils.time_settings import abr_time_map as unit_options
 from systems import run_online 
 
-from systems import  influx ,extremedb, timescaledb , questdb , druid , monetdb , clickhouse
+from systems import  influx ,extremedb, timescaledb , questdb  , monetdb , clickhouse
 
 system_module_map = { "influx" : influx,
 	"extremedb" : extremedb,
     "clickhouse" : clickhouse,
 	"questdb" : questdb,
     "monetdb" : monetdb,
-	"druid" : druid,
+	#"druid" : druid,
 	"timescaledb" : timescaledb
 	} 
 
@@ -141,7 +141,7 @@ for dataset in args.datasets:
                 raise e
 
             event.set()
-            time.sleep(1)
+            time.sleep(3)
             for thread in threads:
                 print("joining threads")
                 thread.join()
@@ -149,15 +149,16 @@ for dataset in args.datasets:
             batch_size = batch_size + args.batch_step
 
 
-    ##store the results
+    ##store the result
+        print(insertion_results)
         final_result  = {}   
         for batch_iteration,thread_results in insertion_results.items():
             for query , (start , stop , mean , var) in query_results[batch_iteration].items():
                 final_result[query] = final_result.get(query,{})   
-                diff , insertion_rate  = stop-start , 0
+                diff , insertion_rate  = stop-(start-1) , 0
                 for t_n , thread_results in enumerate(thread_results):
-                    insertions = thread_results["insertions"]                        
-                    insertion_rate += sum([  rate  for time,rate in insertions if time >= start and time <= stop ])/diff
+                    insertions = thread_results["insertions"]
+                    insertion_rate += sum([  rate  for time,rate in insertions if time >= start-1 and time <= stop ])/diff
                     if insertion_rate == 0:
                         print("insertions failed")
                     print(insertion_rate)
