@@ -220,14 +220,22 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 ### Query Execution (Online)
 
 
-This workload requires a second machine for querying and continuous ingestion:
-     1. Clone this repo in the second machine: 
-     ```bash 
-       python3 tsm_eval.py --systems extremedb timescaledb --queries q2 q3 --datasets d1
-     ```
-     2. Install dependencies:
-     3. Install the systems (see [**Installation**](#systems-setup))
-     4. Execute the online query using the --host flag.
+This workload requires two servers: the first to deploy the systems (similar as above) and the second runs as a client to generate writes and queries.
+To configure the second server: 
+1. Clone this repo
+2. Install dependencies:
+
+    ```bash
+    sh systems/install_dependencies.sh
+    ```
+3. Install the systems (see [**Installation**](#systems-setup))
+4. Execute the online query using the --host flag.
+
+
+**Optional Arguments**:
+- `--n_threads` : Number of threads to use. (Default 1)
+-  `--batchsize`: Number data points to be inserted each second (if possible) in each thread (Default = 500)
+- `--host` : remote host machine name (Default = "localhost")
 
 **Notes**:
 
@@ -235,11 +243,6 @@ This workload requires a second machine for querying and continuous ingestion:
 - The maximal batchsize depends on your architecture and selected system.
 - Druid does not support multithreading.
 
-
-**Optional Arguments**:
-- `--n_threads` : Number of threads to use. (Default 1)
--  `--batchsize`: Number data points to be inserted each second (if possible) in each thread (Default = 500)
-- `--host` : remote host machine name (Default = "localhost")
 
   
 **Examples**:
