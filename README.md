@@ -219,15 +219,28 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 
 ### Query Execution (Online)
 
-**Additional Optional Arguments**:
+
+This workload requires a second machine for querying and continuous ingestion:
+     1. Clone this repo in the second machine: 
+     ```bash 
+       python3 tsm_eval.py --systems extremedb timescaledb --queries q2 q3 --datasets d1
+     ```
+     2. Install dependencies:
+     3. Install the systems (see [**Installation**](#systems-setup))
+     4. Execute the online query using the --host flag.
+
+**Notes**:
+
+- We launch each system separately on the local machine and execute the online query on a remote machine using the --host flag.
+- The maximal batchsize depends on your architecture and selected system.
+- Druid does not support multithreading.
+
+
+**Optional Arguments**:
 - `--n_threads` : Number of threads to use. (Default 1)
 -  `--batchsize`: Number data points to be inserted each second (if possible) in each thread (Default = 500)
 - `--host` : remote host machine name (Default = "localhost")
 
-### Notes: 
-- For the results in our work we launch each system individually on a remote server and run the online query execution remotely using the --host flag.
-- Druid does not support multithreading.
-- The maximal batchsize depends on your architecture and selected system.
   
 **Examples**:
 
@@ -236,7 +249,7 @@ python3 tsm_eval_online.py --systems clickhouse --queries q1 --datasets d1 --bat
 ```
 
 ```bash 
-python3 tsm_eval_online.py --systems clickhouse,timescaledb --queries a1 --datasets d1 --batchsize 1000 --n_threads 5 --host "your_server_name" 
+python3 tsm_eval_online.py --systems clickhouse,timescaledb --queries all --datasets d1 --batchsize 1000 --n_threads 5 --host "your_server_name" 
 ```
 ___
 
