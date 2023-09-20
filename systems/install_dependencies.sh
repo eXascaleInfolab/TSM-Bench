@@ -8,7 +8,7 @@ sudo apt-get install -y build-essential
 sudo apt-get install -y unzip
 
 python3.8 -m venv TSMvenv
-. venv/bin/activate
+. TSMvenv/bin/activate
 python3.8 -m pip install --upgrade pip
 # Python3.8 (the extremdb installation settup requires to build a 3.8 wheel)
 
@@ -22,6 +22,7 @@ pip3 install pylab-sdk
 pip3 install sqlalchemy
 pip3 install matplotlib
 pip3 install matplotlib_terminal
+pip3 install pandas
 
 sudo apt-get install  libpq-dev -y
 pip3 install psycopg2
