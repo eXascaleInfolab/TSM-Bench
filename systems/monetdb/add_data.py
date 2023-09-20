@@ -2,7 +2,7 @@
 import pymonetdb
 import time
 
-def input_data(event,data,batch_size, host="localhost"):
+def input_data(event,data,results, batch_size, host="localhost"):
     results["evaluated"] = True
     try:
         conn = pymonetdb.connect(username="monetdb", port=54320, password="monetdb", hostname=host, database="mydb", autocommit = True)
@@ -23,10 +23,10 @@ def input_data(event,data,batch_size, host="localhost"):
 
             diff = time.time() - start
             results["insertions"].append( (start,batch_size) )   
-                if diff <= 1:
-                    time.sleep(1-diff)
-                else:
-                    print(f"insertion to slow took {diff}s")
+            if diff <= 1:
+                time.sleep(1-diff)
+            else:
+                print(f"insertion to slow took {diff}s")
 
     except:
         results["status"] = "failed"

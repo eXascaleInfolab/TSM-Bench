@@ -128,7 +128,7 @@ if __name__ == "__main__":
 	process = Popen(['sh', 'launch.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
 	stdout, stderr = process.communicate()
 
-	process = Popen(['sleep', '3'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+	process = Popen(['sleep', '10'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
 	stdout, stderr = process.communicate()
 	show_loading_bar = False	
 	print(f"running {db_name}")	

@@ -28,7 +28,9 @@ def input_data(event, data , results , batch_size = 1000, host = "localhost"):
                 else:
                     print(f"insertion of {batch_size} points took to long ({round(diff,3)}s)")
                 return 
-        except:
+        except Exception as e:
+            print(e)
+            print("influx failed to ingest data")
             results["status"] = "failed"
             
 

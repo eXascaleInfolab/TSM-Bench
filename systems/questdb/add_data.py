@@ -31,9 +31,9 @@ def input_data(event, data , results , batch_size = 1000, host = "localhost"):
                 time.sleep(1-diff)
             else:
                 print(f"insertion of {batch_size} points took to long ({diff}s)")
-    except:
+    except Exception as e:
         results["status"] = "failed"
-
+        print(e)
 
 def delete_data(date= "2019-04-30T00:00:00", host = "localhost"):
     conn = psycopg2.connect(user="admin",
