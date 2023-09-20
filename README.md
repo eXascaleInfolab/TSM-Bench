@@ -32,9 +32,11 @@ ___
 
 - Ubuntu 20 (including Ubuntu derivatives, e.g., Xubuntu); 128 GB RAM
 - Clone this repository
-- Install the dependencies
+- Install the dependencies and activate the created virtual environment
+  
     ```bash
     sh systems/install_dependencies.sh
+    source TSMvenv/bin/activate
     ```
 ___
 
