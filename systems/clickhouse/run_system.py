@@ -101,7 +101,7 @@ if __name__ == "__main__":
 	def query_f(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it , host="localhost"):
 		return run_query(query, rangeL=rangeL, rangeUnit = rangeUnit ,n_st = n_st , n_s = n_s , n_it = n_it,host=host)
 	
-	run_system(args,"clickhouse",query_f)	
+	run_system(args,"clickhouse",query_f)
 
 	process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
 	stdout, stderr = process.communicate()
