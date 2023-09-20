@@ -1,9 +1,9 @@
 #!/bin/bash
 
-cd systems 
+cd systems
 cd extremedb
 
-#### exdb module for python isntallation 
+#### exdb module for python isntallation
  tar xvzf extremedb_8.3_fusion_linux_x86_64_sql_lua_eval.tar.gz
 
 # export MCO_ROOT="$current"/eXtremeDB/
@@ -39,3 +39,7 @@ pip3 install pydruid
 pip3 install clickhouse-driver
 
 cd ..
+
+pip3 install influxdb
+
+sudo apt install influxdb
