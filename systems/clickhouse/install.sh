@@ -4,7 +4,7 @@
 sudo kill -9 `sudo lsof -t -i:9000`
 sleep 2
 
-sudo pip3 install clickhouse-driver
+pip3 install clickhouse-driver
 
 sudo docker pull clickhouse/clickhouse-server
 
