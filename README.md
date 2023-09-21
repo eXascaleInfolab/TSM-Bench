@@ -257,7 +257,12 @@ To configure the second server:
 - The targeted ingestion  rate per second equals to batchsize*n_threads*100.
 - The maximal batchsize depends on your architecture and selected system.
 - Druid supports ingestion and queries concurrently, while QuestDB and MonetDB do not support multithreading.
-- If you stop the programm before its 
+- If you stop the programm before its termination the database might not be set into its correct state properly you need to reload the dataset in the host machine:
+    ```bash
+   cd systems/{system}
+   sh load.sh
+   ```   
+  
   
 **Examples**:
 
