@@ -230,7 +230,7 @@ To configure the second server:
 3. Install the systems client libraries
    
     ```bash
-    sh systems/independent_system_install.sh
+    sh systems/install_systems_minimal.sh
     ```
 4. Run the system on the host serve
 
