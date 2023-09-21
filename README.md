@@ -232,7 +232,7 @@ To configure the second server:
     ```bash
     sh systems/independent_system_install.sh
     ```
-4. Run the system on the host server
+4. Run the system on the host server (server 1)
 
    ```bash
    cd systems/{system}
