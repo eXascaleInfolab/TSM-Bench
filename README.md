@@ -219,7 +219,7 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 ### Query Execution (Online)
 
 
-This workload requires two servers: the first one is the host machine used to deploy the systems (similar as above) and the second runs as a client to generate writes and queries.
+This workload requires two servers: the first one serves as a host machine to deploy the systems (similar as above) and the second one runs as a client to generate writes and queries.
 To configure the second server: 
 1. Clone this repo
 2. Install dependencies:
@@ -232,13 +232,13 @@ To configure the second server:
     ```bash
     sh systems/independent_system_install.sh
     ```
-4. Run the system on the host server (server 1)
+4. Run the system on the host serve
 
    ```bash
    cd systems/{system}
    sh launch.sh
    ```   
-5. Execute the online query using the --host flag.
+5. Execute the online query using the --host flag (see examples below).
    
 6. Stop the system on the host server
    ```bash
@@ -250,6 +250,25 @@ To configure the second server:
 - `--n_threads` : Number of threads to use. (Default 10)
 - `--batch_start`: Number data points to be inserted each second (if possible) in each thread (Default = 100)
 - `--batch_step`: Number data points to be inserted each second (if possible) in each thread (Default = 100)
+
+
+  
+**Examples**:
+
+```bash 
+python3 tsm_eval_online.py --systems clickhouse --queries q1 --host "your_server_name"
+```
+
+```bash 
+python3 tsm_eval_online.py --systems questdb --queries all --n_threads 1 --host "your_server_name" 
+```
+
+
+- **Results**: 
+    - The runtime results of the systems will be added to: `results/online/{dataset}/{query}/runtime/`. The runtime plots will be added to the folder `results/online/{dataset}/{query}/plots/`.
+   
+    - All the queries return the runtimes by varying the ingestion rate.
+
 
 **Notes**:
 
@@ -263,22 +282,9 @@ To configure the second server:
    sh load.sh
    ```   
   
-  
-**Examples**:
 
-```bash 
-python3 tsm_eval_online.py --systems clickhouse --queries q1 --host "your_server_name"
-```
-
-```bash 
-python3 tsm_eval_online.py --systems questdb --queries all --n_threads 1 --host "your_server_name" 
-```
 ___
 
-- **Results**: All the runtimes and plots will be added to the `results` folder in the second server.
-    - The runtime results of the systems will be added to: `results/online/{dataset}/{query}/runtime/`. The runtime plots will be added to the folder `results/online/{dataset}/{query}/plots/`.
-   
-    - All the queries return the runtimes by varying the ingestion rate.
 
 ## Time Series Generation 
 
