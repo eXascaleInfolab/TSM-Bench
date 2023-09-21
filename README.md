@@ -244,6 +244,7 @@ To configure the second server:
 **Notes**:
 
 - We launch each system separately on the local machine and execute the online query on a remote machine using the --host flag.
+- The targeted insertion rate per second equals to batchsize*n_threads*100.
 - The maximal batchsize depends on your architecture and selected system.
 - Druid supports ingestion and queries concurrently, while QuestDB and MonetDB do not support multithreading.
 - If you stop the programm before its 
