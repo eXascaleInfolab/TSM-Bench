@@ -86,7 +86,7 @@ def run_query(query, rangeL , rangeUnit , n_st , n_s , n_it, host="localhost"):
 
 db_name = "timescaledb"
 if __name__ == "__main__":
-	print('launching system')
+	print('launching timescaledb')
 	args =init_parser() 
 
 	import os

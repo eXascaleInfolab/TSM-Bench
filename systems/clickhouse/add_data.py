@@ -6,7 +6,7 @@ from clickhouse_driver import Client
 from clickhouse_driver import connect as connect_ClickHouse
 
 
-def input_data(event, data , results , batch_size = 1000, host = "localhost"):
+def input_data(t_n, event, data , results , batch_size = 1000, host = "localhost"):
     results["evaluated"] = True
     try:
         conn = connect_ClickHouse(f"clickhouse://{host}")
@@ -15,6 +15,7 @@ def input_data(event, data , results , batch_size = 1000, host = "localhost"):
         insertion_sql_head = "insert into d1 (time, id_station ," + ",".join(["s"+str(i) for i in range(100)]) + ")"
         values = [f"('{data['time_stamps'][i]}', '{data['stations'][i]}', {', '.join([str(s_n) for s_n in data['sensors'][i]])})" for i in range(batch_size)]
         sql = insertion_sql_head + " VALUES " + ",".join(values)
+        sql = sql.replace("<st_id>",str(t_n % 10))
         print("values ready")
         #print(sql)
         while True:

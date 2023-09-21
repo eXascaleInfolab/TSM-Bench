@@ -2,10 +2,11 @@ import argparse
 import os
 import sys
 import subprocess
+    
 from systems.utils.time_settings import abr_time_map as unit_options
 parser = argparse.ArgumentParser(description = 'Script for running any eval')
 parser.add_argument('--systems', nargs = '+', type = str, help = 'Systems name', default = ['clickhouse','druid','influx','monetdb','questdb','timescaledb'])
-parser.add_argument('--datasets', nargs = '*', type = str, help = 'Dataset name', default = 'd1')
+parser.add_argument('--datasets', nargs = '*', type = str, help = 'Dataset name', default = ['d1'])
 parser.add_argument('--queries', nargs = '*', type = str, help = 'List of queries to run (Q1-Q7)', default = "q1 q2 q3 q4 q5 q6 q7")
 parser.add_argument('--n_st', nargs = '?', type = int, help = 'Number of stations in the dataset', default = 10)
 parser.add_argument('--n_s', nargs = '?', type = int, help = 'Number of sensors in the dataset', default = 100)
@@ -52,7 +53,7 @@ except:
 
 for d in args.datasets: 	
 	if d not in datasets:
-		sys.exit("Invalid dataset name: " + args.dataset)
+		sys.exit("Invalid dataset name: " + args.datasets)
 
 system_paths = { system : os.path.join(os.getcwd(), "systems", system) for system in systems } 
 

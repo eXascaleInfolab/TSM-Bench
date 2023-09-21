@@ -6,7 +6,6 @@ from systems.utils.time_settings import abr_time_map as unit_options
 from systems import run_online 
 
 from systems import  influx ,extremedb, timescaledb , questdb  , monetdb , clickhouse
-
 system_module_map = { "influx" : influx,
 	"extremedb" : extremedb,
     "clickhouse" : clickhouse,
@@ -34,9 +33,9 @@ parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'A
 parser.add_argument('--online', nargs = '?', type = lambda x : str(x).lower() , help = 'Query execution timeout in seconds', default = "false")
 
 parser.add_argument('--host', nargs = '?', type = str , help = 'Query execution timeout in seconds', default = "localhost")
-parser.add_argument('--batch_start', nargs = '?', type = int , help = 'Query execution timeout in seconds', default = 500)
-parser.add_argument('--batch_step', nargs = '?', type = int , help = 'Query execution timeout in seconds', default = 1000)
-parser.add_argument('--n_threads', nargs = '?', type = int , help = 'Query execution timeout in seconds', default = 1)
+parser.add_argument('--batch_start', nargs = '?', type = int , help = 'Query execution timeout in seconds', default = 10)
+parser.add_argument('--batch_step', nargs = '?', type = int , help = 'Query execution timeout in seconds', default = 10)
+parser.add_argument('--n_threads', nargs = '?', type = int , help = 'Query execution timeout in seconds', default = 10)
 args = parser.parse_args()
 
 
@@ -54,7 +53,7 @@ except:
 
 
 if args.systems[0] == "all":
-    args.systems = ['clickhouse','influx','monetdb','questdb','timescaledb','extremedb','druid']
+    args.systems = ['clickhouse','influx','monetdb','questdb','timescaledb','extremedb']
 
 if "all" in args.queries:
     args.queries = "q1,q2,q3,q4,q5,q6,q7"
@@ -72,15 +71,15 @@ except:
 
 system_paths = { system : os.path.join(os.getcwd(), "systems", system) for system in systems } 
 
-
-
 from threading import Thread
 from threading import Event
 from systems.online_library import generate_continuing_data
 import time
 from subprocess import Popen, PIPE, STDOUT, DEVNULL
 
-data =  generate_continuing_data() 
+print("generating ingestion data")
+data =  generate_continuing_data(args.batch_start+args.batch_step*10)
+
 start_date  = data["time_stamps"][0]
 start = data['time_stamps']
 
@@ -115,8 +114,15 @@ for dataset in args.datasets:
             insertion_results[i] = [{"status" : "ok" , "insertions" : [] } for _ in range(args.n_threads)]
             try:
                 for t_n in range(args.n_threads):
+                    batch_size_ = batch_size
+                    if system in ["questdb","monetdb"]:
+                        batch_size_ = batch_size*(args.n_threads+1)
+                        if t_n > 0:
+                            print("system can not handle multiple insertions")
+                            break
+                
                     try:
-                        thread = Thread(target=system_module.input_data, args=(event,data,  insertion_results[i][t_n] , batch_size, args.host))
+                        thread = Thread(target=system_module.input_data, args=(t_n,event,data,insertion_results[i][t_n] , batch_size_, args.host))
                         thread.start()
                         threads.append(thread)
                     except Exception as e:

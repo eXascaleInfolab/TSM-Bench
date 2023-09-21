@@ -14,7 +14,6 @@ import json
 sys.path.append('../')
 from library import *
 
-print('launching system')
 
 import os
 
@@ -97,28 +96,29 @@ def run_query(query, rangeL , rangeUnit, n_st , n_s , n_it , host="localhost"):
 	return stats.mean(runtimes), stats.stdev(runtimes) 
 
 if __name__ == "__main__":
+    print('launching system')
 
-	import os
-	import subprocess
-	from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
-	
-	args = init_parser() 
+    import os
+    import subprocess
+    from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
+    
+    args = init_parser() 
 
-	process = Popen(['sh', 'variables.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-	stdout, stderr = process.communicate()
+    process = Popen(['sh', 'variables.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+    stdout, stderr = process.communicate()
 
-	process = Popen(['sh', 'launch.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-	stdout, stderr = process.communicate()
+    process = Popen(['sh', 'launch.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+    stdout, stderr = process.communicate()
 
-	process = Popen(['sleep', '3'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-	stdout, stderr = process.communicate()
-	
-	def query_f(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it , host="localhost"):
-		return run_query(query, rangeL=rangeL, rangeUnit = rangeUnit ,n_st = n_st , n_s = n_s , n_it = n_it,host=host)
+    process = Popen(['sleep', '3'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+    stdout, stderr = process.communicate()
+    
+    def query_f(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it , host="localhost"):
+        return run_query(query, rangeL=rangeL, rangeUnit = rangeUnit ,n_st = n_st , n_s = n_s , n_it = n_it,host=host)
 
-	run_system(args,"questdb",query_f)	
+    run_system(args,"questdb",query_f)	
 
 
-	process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-	stdout, stderr = process.communicate()
+    process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+    stdout, stderr = process.communicate()
 
