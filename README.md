@@ -232,7 +232,7 @@ To configure the second server:
     ```bash
     sh systems/install_systems_minimal.sh
     ```
-4. Run the system on the host serve
+4. Run the system on the host server
 
    ```bash
    cd systems/{system}
