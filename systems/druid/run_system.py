@@ -14,14 +14,6 @@ import json
 sys.path.append('../')
 from library import *
 
-print('launching system')
-
-import os
-import subprocess
-from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
-
-process = Popen(['sh', 'launch.sh', '&'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-stdout, stderr = process.communicate() #launch.sh  from druid has to sleep for long itself
 
 from pydruid.client import *
 from pydruid.db import connect
@@ -117,10 +109,17 @@ def run_query(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = arg
 	return stats.mean(runtimes), stats.stdev(runtimes)
 
 
+if __name__ == "__main__":
+    print('launching druid')
+
+    import subprocess
+    from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
+
+    process = Popen(['sh', 'launch.sh', '&'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+    stdout, stderr = process.communicate() #launch.sh  from druid has to sleep for long itself
+
+    run_system(args,"druid",run_query)
 
 
-run_system(args,"druid",run_query)
-
-
-process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-stdout, stderr = process.communicate()
+    process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+    stdout, stderr = process.communicate()

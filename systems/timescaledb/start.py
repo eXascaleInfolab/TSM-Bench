@@ -10,5 +10,5 @@ def launch():
 	process = Popen(['sh', 'launch.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
 	stdout, stderr = process.communicate()
 
-	process = Popen(['sleep', '3'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+	process = Popen(['sleep', '20'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
 	stdout, stderr = process.communicate()

@@ -3,7 +3,8 @@ import time
 
 
 
-def input_data(event, data , batch_size = 1000, host = "localhost"):
+def input_data(t_n, event, data , results , batch_size = 1000, host = "localhost"):
+    try:
         conn = psycopg2.connect(user="admin",
           password="quest",
           host=host,
@@ -15,7 +16,7 @@ def input_data(event, data , batch_size = 1000, host = "localhost"):
         values = [f"('{data['time_stamps'][i]}', '{data['stations'][i]}', {', '.join([str(s_n) for s_n in data['sensors'][i]])})" for i in range(batch_size)]
 
         sql = insertion_sql_head + " VALUES " + ",".join(values)
-        #print(sql)
+        sql = sql.replace("<st_id>",str(t_n % 10))
         while True:
             if event.is_set():
                 break
@@ -25,12 +26,24 @@ def input_data(event, data , batch_size = 1000, host = "localhost"):
             cur.execute(sql)
                   
             diff = time.time() - start
-            print(f"inserted {batch_size} in {diff}s")
+            results["insertions"].append( (start,batch_size) )     
             if diff < 1:
                 time.sleep(1-diff)
+            else:
+                print(f"insertion of {batch_size} points took to long ({diff}s)")
+    except Exception as e:
+        results["status"] = "failed"
+        print(e)
+        message = str(e)
+        if "table busy" in message:
+                  print("questdb can not handle insertions from multiple threads")
+        else:
+                  print("insertion rate to high")
 
+       
 
 def delete_data(date= "2019-04-30T00:00:00", host = "localhost"):
+    print("cleaning up questdb")
     conn = psycopg2.connect(user="admin",
           password="quest",
           host=host,

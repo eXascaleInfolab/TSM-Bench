@@ -32,9 +32,11 @@ ___
 
 - Ubuntu 20 (including Ubuntu derivatives, e.g., Xubuntu); 128 GB RAM
 - Clone this repository
-- Install the dependencies
+- Install the dependencies and activate the created virtual environment 
+  
     ```bash
     sh systems/install_dependencies.sh
+    source TSMvenv/bin/activate
     ```
 ___
 
@@ -102,12 +104,11 @@ sh load_all.sh
 
 
  <!---  
--  To download, install, setup and load data to systems
+-  To download, install, setup and load dataset ```d1``` to systems
 
     ```bash
     cd systems/
     sh install_all.sh
-    sh setup_all.sh
     ```
     -  Note: Systems can be installed separately as described in the [**customized installation**](#customized-installation) below. 
  
@@ -183,7 +184,7 @@ ___
 
 - **Results**: All the runtimes and plots will be added to the `results` folder.
   
-    - The runtime results of the systems for a given dataset and query will be added to: `results/{dataset}/{query}/{system}/runtime/`. The runtime plots will be added to the folder `results/{dataset}/{query}{system}/plots/`.
+    - The runtime results of the systems for a given dataset and query will be added to: `results/{offline}/{dataset}/{query}/{system}/runtime/`. The runtime plots will be added to the folder `results/{offline}/{dataset}/{query}{system}/plots/`.
 
     - All the queries return the runtimes by varying the number of stations (nb_st), number of sensors (nb_sr), and the range.
 
@@ -226,34 +227,41 @@ To configure the second server:
     ```bash
     sh systems/install_dependencies.sh
     ```
-3. Install the systems (see [**Installation**](#systems-setup))
-4. Execute the online query using the --host flag.
+3. Install the systems client libraries
+   
+      ```bash
+    sh systems/independent_system_install.sh
+    ```
+5. Execute the online query using the --host flag.
 
 
 **Optional Arguments**:
-- `--n_threads` : Number of threads to use. (Default 1)
--  `--batchsize`: Number data points to be inserted each second (if possible) in each thread (Default = 500)
 - `--host` : remote host machine name (Default = "localhost")
+- `--n_threads` : Number of threads to use. (Default 10)
+- `--batch_start`: Number data points to be inserted each second (if possible) in each thread (Default = 100)
+- `--batch_step`: Number data points to be inserted each second (if possible) in each thread (Default = 100)
 
 **Notes**:
 
 - We launch each system separately on the local machine and execute the online query on a remote machine using the --host flag.
 - The maximal batchsize depends on your architecture and selected system.
-- Druid does not support multithreading.
-
-
+- Druid supports ingestion and queries concurrently, while QuestDB and MonetDB do not support multithreading.
+- If you stop the programm before its 
   
 **Examples**:
 
 ```bash 
-python3 tsm_eval_online.py --systems clickhouse --queries q1 --datasets d1 --batchsize 5000 --n_threads 10
+python3 tsm_eval_online.py --systems clickhouse --queries q1 --host "your_server_name"
 ```
 
 ```bash 
-python3 tsm_eval_online.py --systems clickhouse,timescaledb --queries all --datasets d1 --batchsize 1000 --n_threads 5 --host "your_server_name" 
+python3 tsm_eval_online.py --systems questdb --queries all --datasets d1  --n_threads 1 --host "your_server_name" 
 ```
 ___
 
+- **Results**: All the runtimes and plots will be added to the `results` folder.
+    - The runtime results of the systems for a given dataset and query will be added to: `results/{online}/{dataset}/{query}/{system}/runtime/`. The runtime plots will be added to the folder `results/{online}/{dataset}/{query}{system}/plots/`.
+    - 
 ## Time Series Generation 
 
 We provide a GAN-based generation that allows to augment a seed dataset with more and/or longer time series that

@@ -14,7 +14,6 @@ import json
 sys.path.append('../')
 from library import *
 
-print('launching system')
 
 import os
 
@@ -25,26 +24,6 @@ random.seed(1)
 set_st = [str(random.randint(0,9)) for i in range(500)]
 set_s = [str(random.randint(0,99)) for i in range(500)]
 set_date = [random.random() for i in range(500)]
-
-
-
-# Parse Arguments
-parser = argparse.ArgumentParser(description = 'Script for running any eval')
-parser.add_argument('--system', nargs = '*', type = str, help = 'System name', default = 'questdb')
-parser.add_argument('--datasets', nargs = '*', type = str, help = 'Dataset name', default = 'd1')
-parser.add_argument('--queries', nargs = '?', type = str, help = 'List of queries to run (Q1-Q7)', default = ['q' + str(i) for i in range(1,8)])
-parser.add_argument('--nb_st', nargs = '?', type = int, help = 'Number of stations in the dataset', default = 10)
-parser.add_argument('--nb_s', nargs = '?', type = int, help = 'Number of sensors in the dataset', default = 100)
-parser.add_argument('--def_st', nargs = '?', type = int, help = 'Default number of queried stations', default = 1)
-parser.add_argument('--def_s', nargs = '?', type = int, help = 'Default number of queried sensors', default = 3)
-parser.add_argument('--range', nargs = '?', type = int, help = 'Query range', default = 1)
-parser.add_argument('--rangeUnit', nargs = '?', type = str, help = 'Query range unit', default = 'day')
-parser.add_argument('--max_ts', nargs = '?', type = str, help = 'Maximum query timestamp', default = "2019-04-30T00:00:00")
-parser.add_argument('--min_ts', nargs = '?', type = str, help = 'Minimum query timestamp', default = "2019-04-01T00:00:00")
-parser.add_argument('--n_it', nargs = '?', type = int, help = 'Minimum number of iterations', default = 100)
-parser.add_argument('--timeout', nargs = '?', type = float, help = 'Query execution timeout in seconds', default = 200)
-parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
-
 
 
 def run_query(query, rangeL , rangeUnit, n_st , n_s , n_it , host="localhost"):
@@ -117,27 +96,29 @@ def run_query(query, rangeL , rangeUnit, n_st , n_s , n_it , host="localhost"):
 	return stats.mean(runtimes), stats.stdev(runtimes) 
 
 if __name__ == "__main__":
+    print('launching system')
 
-	import os
-	import subprocess
-	from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
-	
-	args = parser.parse_args()
-	process = Popen(['sh', 'variables.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-	stdout, stderr = process.communicate()
+    import os
+    import subprocess
+    from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
+    
+    args = init_parser() 
 
-	process = Popen(['sh', 'launch.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-	stdout, stderr = process.communicate()
+    process = Popen(['sh', 'variables.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+    stdout, stderr = process.communicate()
 
-	process = Popen(['sleep', '3'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-	stdout, stderr = process.communicate()
-	
-	def query_f(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it , host="localhost"):
-		return run_query(query, rangeL=rangeL, rangeUnit = rangeUnit ,n_st = n_st , n_s = n_s , n_it = n_it,host=host)
+    process = Popen(['sh', 'launch.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+    stdout, stderr = process.communicate()
 
-	run_system(args,"questdb",query_f)	
+    process = Popen(['sleep', '3'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+    stdout, stderr = process.communicate()
+    
+    def query_f(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it , host="localhost"):
+        return run_query(query, rangeL=rangeL, rangeUnit = rangeUnit ,n_st = n_st , n_s = n_s , n_it = n_it,host=host)
+
+    run_system(args,"questdb",query_f)	
 
 
-	process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-	stdout, stderr = process.communicate()
+    process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+    stdout, stderr = process.communicate()
 

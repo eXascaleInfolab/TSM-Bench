@@ -1,24 +1,32 @@
 #!/bin/sh
 
-sudo apt update
+sudo apt-get update
+sudo apt-get install -y python3.8-venv
+sudo apt-get install -y libpython3.8-dev
+sudo apt-get install -y python3-dev
+sudo apt-get install -y build-essential
+sudo apt-get install -y unzip
 
+python3.8 -m venv TSMvenv
+. TSMvenv/bin/activate
+python3.8 -m pip install --upgrade pip
 # Python3.8 (the extremdb installation settup requires to build a 3.8 wheel)
-sudo apt install -y python3.8
-sudo apt install -y python3-pip
-sudo pip3 install saxpy
-sudo pip3 install numpy
-sudo pip3 install pandas
-sudo pip3 install protobuf==3.13.0
-sudo pip3 install tqdm
-sudo pip3 install gdown
-sudo pip3 install pylab-sdk
-sudo pip3 install sqlalchemy
-sudo pip3 install matplotlib
-sudo pip3 install matplotlib_terminal
+
+pip3 install saxpy
+pip3 install numpy
+pip3 install pandas
+pip3 install protobuf==3.13.0
+pip3 install tqdm
+pip3 install gdown
+pip3 install pylab-sdk
+pip3 install sqlalchemy
+pip3 install matplotlib
+pip3 install matplotlib_terminal
+pip3 install pandas
 
 sudo apt-get install  libpq-dev -y
-sudo pip3 install psycopg2
-sudo pip3 install pymonetdb
+pip3 install psycopg2
+pip3 install pymonetdb
 
 # Java
 sudo apt-get install -y openjdk-8-jdk
@@ -53,4 +61,3 @@ sudo apt install -y curl
 sudo apt install -y docker.io
 sudo systemctl start docker
 sudo systemctl enable docker
-

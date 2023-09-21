@@ -66,7 +66,7 @@ def run_query(query, rangeL , rangeUnit, n_st , n_s , n_it,host="localhost"):
 		temp = temp.replace("<rangesUnit>", rangeUnit)
 		
 		# stations
-		li = ['st' + str(z) for z in random.sample(range(100), n_st)]
+		li = ['st' + str(z) for z in random.sample(range(10), n_st)]
 		q = "(" + "'" + li[0] + "'"
 		for j in li[1:]:
 			q += ', ' + "'" + j + "'"
@@ -77,7 +77,7 @@ def run_query(query, rangeL , rangeUnit, n_st , n_s , n_it,host="localhost"):
 		temp = temp.replace("<stid2>", f"{random.randint(1,10)}") 
 	
 		# sensors
-		li = ['s' + str(z) for z in random.sample(range(10), n_s)]
+		li = ['s' + str(z) for z in random.sample(range(100), n_s)]
 		q = li[0]
 		q_filter = '(' + li[0] + ' > 0.95'
 		q_avg = 'avg(' + li[0] + ')'
