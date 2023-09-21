@@ -184,7 +184,7 @@ ___
 
 - **Results**: All the runtimes and plots will be added to the `results` folder.
   
-    - The runtime results of the systems for a given dataset and query will be added to: `results/{offline}/{dataset}/{query}/{system}/runtime/`. The runtime plots will be added to the folder `results/{offline}/{dataset}/{query}{system}/plots/`.
+    - The runtime results of the systems for a given dataset and query will be added to: `results/offline/{dataset}/{query}/{system}/runtime/`. The runtime plots will be added to the folder `results/offline/{dataset}/{query}{system}/plots/`.
 
     - All the queries return the runtimes by varying the number of stations (nb_st), number of sensors (nb_sr), and the range.
 
@@ -229,11 +229,21 @@ To configure the second server:
     ```
 3. Install the systems client libraries
    
-      ```bash
+    ```bash
     sh systems/independent_system_install.sh
     ```
-5. Execute the online query using the --host flag.
+4. Run the system on the host server
 
+   ```bash
+   cd systems/{system}
+   sh launch.sh
+   ```   
+5. Execute the online query using the --host flag.
+   
+6. Stop the system on the host server
+   ```bash
+   sh stop.sh
+   ```   
 
 **Optional Arguments**:
 - `--host` : remote host machine name (Default = "localhost")
@@ -256,12 +266,12 @@ python3 tsm_eval_online.py --systems clickhouse --queries q1 --host "your_server
 ```
 
 ```bash 
-python3 tsm_eval_online.py --systems questdb --queries all --datasets d1  --n_threads 1 --host "your_server_name" 
+python3 tsm_eval_online.py --systems questdb --queries all --n_threads 1 --host "your_server_name" 
 ```
 ___
 
-- **Results**: All the runtimes and plots will be added to the `results` folder.
-    - The runtime results of the systems will be added to: `results/{online}/{dataset}/{query}/{system}/runtime/`. The runtime plots will be added to the folder `results/{online}/{dataset}/{query}{system}/plots/`.
+- **Results**: All the runtimes and plots will be added to the `results` folder in the second server.
+    - The runtime results of the systems will be added to: `results/online/{dataset}/{query}/{system}/runtime/`. The runtime plots will be added to the folder `results/online/{dataset}/{query}{system}/plots/`.
       
 ## Time Series Generation 
 
