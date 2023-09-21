@@ -272,7 +272,9 @@ ___
 
 - **Results**: All the runtimes and plots will be added to the `results` folder in the second server.
     - The runtime results of the systems will be added to: `results/online/{dataset}/{query}/{system}/runtime/`. The runtime plots will be added to the folder `results/online/{dataset}/{query}{system}/plots/`.
-      
+   
+    - All the queries return the runtimes by varying the ingestion rate.
+
 ## Time Series Generation 
 
 We provide a GAN-based generation that allows to augment a seed dataset with more and/or longer time series that
