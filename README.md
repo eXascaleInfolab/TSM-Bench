@@ -230,7 +230,7 @@ To configure the second server:
 3. Install the systems client libraries
    
     ```bash
-    sh systems/install_systems_minimal.sh
+    sh systems/install_exta_lib.sh
     ```
 4. Run the system on the host server
 
