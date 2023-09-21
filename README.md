@@ -184,7 +184,7 @@ ___
 
 - **Results**: All the runtimes and plots will be added to the `results` folder.
   
-    - The runtime results of the systems for a given dataset and query will be added to: `results/offline/{dataset}/{query}/{system}/runtime/`. The runtime plots will be added to the folder `results/offline/{dataset}/{query}{system}/plots/`.
+    - The runtime results of the systems for a given dataset and query will be added to: `results/offline/{dataset}/{query}/runtime/`. The runtime plots will be added to the folder `results/offline/{dataset}/{query}/plots/`.
 
     - All the queries return the runtimes by varying the number of stations (nb_st), number of sensors (nb_sr), and the range.
 
@@ -271,7 +271,7 @@ python3 tsm_eval_online.py --systems questdb --queries all --n_threads 1 --host 
 ___
 
 - **Results**: All the runtimes and plots will be added to the `results` folder in the second server.
-    - The runtime results of the systems will be added to: `results/online/{dataset}/{query}/{system}/runtime/`. The runtime plots will be added to the folder `results/online/{dataset}/{query}{system}/plots/`.
+    - The runtime results of the systems will be added to: `results/online/{dataset}/{query}/runtime/`. The runtime plots will be added to the folder `results/online/{dataset}/{query}/plots/`.
    
     - All the queries return the runtimes by varying the ingestion rate.
 
