@@ -22,15 +22,18 @@ def input_data(event,data,results, batch_size, host="localhost"):
             cur.execute(sql)
 
             diff = time.time() - start
+                  
             results["insertions"].append( (start,batch_size) )   
             if diff <= 1:
                 time.sleep(1-diff)
             else:
-                print(f"insertion to slow took {diff}s")
+                print(f"insertion to slow (took {diff}s)")
 
-    except:
+    except Exception as e:
+        import traceback
         results["status"] = "failed"
-                  
+        print(traceback.format_exc())
+        print(e)
     return 
 
 

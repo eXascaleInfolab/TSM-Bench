@@ -39,12 +39,12 @@ fi
 sudo monetdbd stop master_db
 sudo rm -rf master_db/
 sudo monetdbd create master_db
-sudo set listenaddr=0.0.0.0 master_db
+sudo set listenaddr=0.0.0.0 master_db  
 sudo kill -9 `sudo lsof -t -i:54320`
 sudo monetdbd set port=54320 master_db
 sudo monetdbd start master_db
 sudo monetdb create mydb
 sudo monetdb release mydb
 sudo monetdb set embedpy3=yes mydb
-
+sudo set listenaddr=0.0.0.0 master_db
 sh load.sh
