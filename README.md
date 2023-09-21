@@ -219,7 +219,7 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 ### Query Execution (Online)
 
 
-This workload requires two servers: the first to deploy the systems (similar as above) and the second runs as a client to generate writes and queries.
+This workload requires two servers: the first one is the host machine used to deploy the systems (similar as above) and the second runs as a client to generate writes and queries.
 To configure the second server: 
 1. Clone this repo
 2. Install dependencies:
