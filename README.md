@@ -236,15 +236,15 @@ This workload requires two servers: the first one serves as a host machine to de
     sh systems/install_client_lib.sh
     ```
 #### Query Execution
-- Run the system on the host server 
+1. Run the system on the host server 
 
    ```bash
    cd systems/{system}
    sh launch.sh
    ```   
-- Execute the online query using the --host flag (see examples below).
+2. Execute the online query using the --host flag (see examples below).
    
-- Stop the system on the host server
+3. Stop the system on the host server
    ```bash
    sh stop.sh
    ```   
@@ -252,19 +252,19 @@ This workload requires two servers: the first one serves as a host machine to de
 **Optional Arguments**:
 - `--host` : remote host machine name (Default = "localhost")
 - `--n_threads` : Number of threads to use. (Default 10)
-- `--batch_start`: Number data points to be inserted each second (if possible) in each thread (Default = 100)
-- `--batch_step`: Number data points to be inserted each second (if possible) in each thread (Default = 100)
+- `--batch_start`: Number data points to be inserted each second (if possible) in each thread (Default = 10000)
+- `--batch_step`: Number data points to be inserted each second (if possible) in each thread (Default = 10000)
 
 
   
 **Examples**:
 
-1. Run query q1 on clickhouse.
+1. Run query q1 in an online manner on clickhouse.
 
 ```bash 
 python3 tsm_eval_online.py --systems clickhouse --queries q1 --host "server_address"
 ```
-2. Run all queries on questdb using one thread.  
+2. Run all queries in an online manner on questdb using one thread.  
 
 ```bash 
 python3 tsm_eval_online.py --systems questdb --queries all --n_threads 1 --host "server_address" 
@@ -273,9 +273,9 @@ python3 tsm_eval_online.py --systems questdb --queries all --n_threads 1 --host 
 
 **Notes**:
 
-- We launch each system separately on the local machine and execute the online query on a remote machine using the --host flag.
+- We launch each system separately on the host machine and execute the online query on the client machine using the --host flag.
 - The maximal batchsize depends on your architecture and the selected TSDB.
-- Druid supports ingestion and queries concurrently, while QuestDB and MonetDB do not support multithreading.
+- Druid supports ingestion and queries concurrently, while QuestDB does not support multithreading.
 - If you stop the program before its termination or shut down the system, the database might not be set into its initial state properly; you need to reload the dataset in the host machine:
     ```bash
    cd systems/{system}
