@@ -252,8 +252,8 @@ This workload requires two servers: the first one serves as a host machine to de
 **Optional Arguments**:
 - `--host` : remote host machine name (Default = "localhost")
 - `--n_threads` : Number of threads to use. (Default 10)
-- `--batch_start`: Number data points to be inserted each second (if possible) in each thread (Default = 100)
-- `--batch_step`: Number data points to be inserted each second (if possible) in each thread (Default = 100)
+- `--batch_start`: Number data points to be inserted each second (if possible) in each thread (Default = 10000)
+- `--batch_step`: Number data points to be inserted each second (if possible) in each thread (Default = 10000)
 
 
   
@@ -273,9 +273,9 @@ python3 tsm_eval_online.py --systems questdb --queries all --n_threads 1 --host 
 
 **Notes**:
 
-- We launch each system separately on the local machine and execute the online query on a remote machine using the --host flag.
+- We launch each system separately on the host machine and execute the online query on the client machine using the --host flag.
 - The maximal batchsize depends on your architecture and the selected TSDB.
-- Druid supports ingestion and queries concurrently, while QuestDB and MonetDB do not support multithreading.
+- Druid supports ingestion and queries concurrently, while QuestDB does not support multithreading.
 - If you stop the program before its termination or shut down the system, the database might not be set into its initial state properly; you need to reload the dataset in the host machine:
     ```bash
    cd systems/{system}
