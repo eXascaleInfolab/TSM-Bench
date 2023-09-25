@@ -35,7 +35,7 @@ ___
 - Install the dependencies and activate the created virtual environment 
   
     ```bash
-    sh systems/install_dependencies.sh
+    sh systems/install_dep.sh
     source TSMvenv/bin/activate
     ```
 ___
@@ -227,12 +227,13 @@ This workload requires two servers: the first one serves as a host machine to de
 - Install dependencies:
 
     ```bash
-    sh systems/install_dependencies.sh
+    sh systems/install_dep.sh
+    source TSMvenv/bin/activate
     ```
 - Install the system libraries
    
     ```bash
-    sh systems/install_exta_lib.sh
+    sh systems/install_client_lib.sh
     ```
 #### Query Execution
 - Run the system on the host server 
@@ -258,12 +259,12 @@ This workload requires two servers: the first one serves as a host machine to de
   
 **Examples**:
 
-1. Query bla bla
+1. Run query q1 on clickhouse.
 
 ```bash 
 python3 tsm_eval_online.py --systems clickhouse --queries q1 --host "server_address"
 ```
-2. Query bla bla
+2. Run query all queries on questdb using one thread.  
 
 ```bash 
 python3 tsm_eval_online.py --systems questdb --queries all --n_threads 1 --host "server_address" 
