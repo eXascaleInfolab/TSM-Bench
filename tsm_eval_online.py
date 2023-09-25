@@ -18,7 +18,7 @@ system_module_map = { "influx" : influx,
 datasets_choices = ['d1']
 
 parser = argparse.ArgumentParser(description = 'Script for running any eval')
-parser.add_argument('--systems', nargs = '+', type = str, help = 'Systems name', default = ['clickhouse'])
+parser.add_argument('--system', nargs = '+', type = str, help = 'Systems name', default = ['clickhouse'])
 parser.add_argument('--datasets', choices= datasets_choices, nargs = '*', type = str, help = 'Dataset name', default = ['d1'])
 parser.add_argument('--queries', nargs = '*', type = str, help = 'List of queries to run (Q1-Q7)', default = "q1 q2 q3 q4 q5 q6 q7")
 parser.add_argument('--n_st', nargs = '?', type = int, help = 'Number of stations in the dataset', default = 10)
@@ -34,7 +34,7 @@ parser.add_argument('--online', nargs = '?', type = lambda x : str(x).lower() , 
 
 parser.add_argument('--host', nargs = '?', type = str , help = 'Query execution timeout in seconds', default = "localhost")
 parser.add_argument('--batch_start', nargs = '?', type = int , help = 'Query execution timeout in seconds', default = 10)
-parser.add_argument('--batch_step', nargs = '?', type = int , help = 'Query execution timeout in seconds', default = 10)
+parser.add_argument('--batch_step', nargs = '?', type = int , help = 'Query execution timeout in seconds', default = 100)
 parser.add_argument('--n_threads', nargs = '?', type = int , help = 'Query execution timeout in seconds', default = 10)
 args = parser.parse_args()
 
@@ -78,7 +78,7 @@ import time
 from subprocess import Popen, PIPE, STDOUT, DEVNULL
 
 print("generating ingestion data")
-data =  generate_continuing_data(args.batch_start+args.batch_step*10)
+data =  generate_continuing_data(args.batch_start+args.batch_step*100)
 
 start_date  = data["time_stamps"][0]
 start = data['time_stamps']
@@ -108,15 +108,15 @@ for dataset in args.datasets:
         batch_size = args.batch_start
         insertion_results = {} # run -> results 
         query_results = {}
-        for i in range(0,8,3):
+        for i in range(0,20,3):
             event = Event()
             threads = []
             insertion_results[i] = [{"status" : "ok" , "insertions" : [] } for _ in range(args.n_threads)]
             try:
                 for t_n in range(args.n_threads):
                     batch_size_ = batch_size
-                    if system in ["questdb","monetdb"]:
-                        batch_size_ = batch_size*(args.n_threads+1)
+                    if system in ["questdb"]: #,"monetdb"
+                        batch_size_ = batch_size*(args.n_threads)
                         if t_n > 0:
                             print("system can not handle multiple insertions")
                             break
@@ -131,7 +131,7 @@ for dataset in args.datasets:
                             print(f"{system} can only use a single thread for insertion, skipping additonal threads")
                             break
                         else:
-                            raise e			
+                            raise e
             except Exception as e:
                 print(e)
                 print(f"{system} is not running or insertion rate not supported by system or aviable ressources")
@@ -147,7 +147,7 @@ for dataset in args.datasets:
                 raise e
 
             event.set()
-            time.sleep(3)
+            time.sleep(30)
             for thread in threads:
                 print("joining threads")
                 thread.join()
@@ -158,18 +158,20 @@ for dataset in args.datasets:
     ##store the result
         print(insertion_results)
         final_result  = {}   
-        for batch_iteration,thread_results in insertion_results.items():
+        for batch_iteration, thread_results_full  in insertion_results.items():
             for query , (start , stop , mean , var) in query_results[batch_iteration].items():
                 final_result[query] = final_result.get(query,{})   
                 diff , insertion_rate  = stop-(start-1) , 0
-                for t_n , thread_results in enumerate(thread_results):
+                print(query)
+                for t_n , thread_results in enumerate(thread_results_full):
+                    print(type(thread_results),"BBBBBB")
                     insertions = thread_results["insertions"]
                     insertion_rate += sum([  rate  for time,rate in insertions if time >= start-1 and time <= stop ])/diff
                     if insertion_rate == 0:
                         print("insertions failed")
                     print(insertion_rate)
                 final_result[query][batch_iteration] = (mean , var , insertion_rate)
-        print("final_results" , final_result)
+                print("final_results" , final_result)
         run_online.save_online(final_result, system , dataset)
         #set the database to its initial state
         try:
