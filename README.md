@@ -236,15 +236,15 @@ This workload requires two servers: the first one serves as a host machine to de
     sh systems/install_client_lib.sh
     ```
 #### Query Execution
-- Run the system on the host server 
+1. Run the system on the host server 
 
    ```bash
    cd systems/{system}
    sh launch.sh
    ```   
-- Execute the online query using the --host flag (see examples below).
+2. Execute the online query using the --host flag (see examples below).
    
-- Stop the system on the host server
+3. Stop the system on the host server
    ```bash
    sh stop.sh
    ```   
@@ -259,12 +259,12 @@ This workload requires two servers: the first one serves as a host machine to de
   
 **Examples**:
 
-1. Run query q1 on clickhouse.
+1. Run query q1 in an online manner on clickhouse.
 
 ```bash 
 python3 tsm_eval_online.py --systems clickhouse --queries q1 --host "server_address"
 ```
-2. Run all queries on questdb using one thread.  
+2. Run all queries in an online manner on questdb using one thread.  
 
 ```bash 
 python3 tsm_eval_online.py --systems questdb --queries all --n_threads 1 --host "server_address" 
