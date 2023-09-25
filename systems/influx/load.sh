@@ -7,6 +7,8 @@ sudo ./influxdb-1.7.10-1/usr/bin/influx -import -path=../../datasets/d1-influxdb
 
 sudo du -sh /var/lib/influxdb/data/d1
 
+
+
 ## uncoment the following for D2 ##
 ###################################
 # echo "start loading!"
@@ -14,4 +16,4 @@ sudo du -sh /var/lib/influxdb/data/d1
 #sudo du -sh /var/lib/influxdb/data/d2
 
 
-
+echo "DONE"
