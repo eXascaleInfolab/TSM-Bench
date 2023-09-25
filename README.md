@@ -264,7 +264,7 @@ This workload requires two servers: the first one serves as a host machine to de
 ```bash 
 python3 tsm_eval_online.py --systems clickhouse --queries q1 --host "server_address"
 ```
-2. Run query all queries on questdb using one thread.  
+2. Run all queries on questdb using one thread.  
 
 ```bash 
 python3 tsm_eval_online.py --systems questdb --queries all --n_threads 1 --host "server_address" 
