@@ -148,7 +148,7 @@ ___
     ```
 - Note: {system} needs to be replaced with the name of one of the systems from the table below.
 
-### Query Execution (Offline)
+### Query Workload (Offline)
 
 - Each system has a dedicated subfolder under `systems` folder. Queries for all systems can be executed as follows:
 
@@ -216,31 +216,34 @@ python3 tsm_eval.py --systems extremedb timescaledb --queries q2 q3 --datasets d
 python3 tsm_eval.py --systems all --queries all --datasets d1 
 ```
 
-### Query Execution (Online)
+### Query Workload (Online)
 
 
 This workload requires two servers: the first one serves as a host machine to deploy the systems (similar as above) and the second one runs as a client to generate writes and queries.
-To configure the second server: 
-1. Clone this repo
-2. Install dependencies:
+
+#### Client Setup
+
+- Clone this repo
+- Install dependencies:
 
     ```bash
     sh systems/install_dependencies.sh
     ```
-3. Install the systems client libraries
+- Install the system libraries
    
     ```bash
     sh systems/install_exta_lib.sh
     ```
-4. Run the system on the host server
+#### Query Execution
+- Run the system on the host server 
 
    ```bash
    cd systems/{system}
    sh launch.sh
    ```   
-5. Execute the online query using the --host flag (see examples below).
+- Execute the online query using the --host flag (see examples below).
    
-6. Stop the system on the host server
+- Stop the system on the host server
    ```bash
    sh stop.sh
    ```   
@@ -255,26 +258,22 @@ To configure the second server:
   
 **Examples**:
 
-```bash 
-python3 tsm_eval_online.py --systems clickhouse --queries q1 --host "your_server_name"
-```
+1. Query bla bla
 
 ```bash 
-python3 tsm_eval_online.py --systems questdb --queries all --n_threads 1 --host "your_server_name" 
+python3 tsm_eval_online.py --systems clickhouse --queries q1 --host "server_address"
 ```
+2. Query bla bla
 
-
-- **Results**: 
-    - The runtime results of the systems will be added to: `results/online/{dataset}/{query}/runtime/`. The runtime plots will be added to the folder `results/online/{dataset}/{query}/plots/`.
-   
-    - All the queries return the runtimes by varying the ingestion rate.
+```bash 
+python3 tsm_eval_online.py --systems questdb --queries all --n_threads 1 --host "server_address" 
+```
 
 
 **Notes**:
 
 - We launch each system separately on the local machine and execute the online query on a remote machine using the --host flag.
-- The targeted ingestion  rate per second equals to batchsize*n_threads*100.
-- The maximal batchsize depends on your architecture and selected system.
+- The maximal batchsize depends on your architecture and the selected TSDB.
 - Druid supports ingestion and queries concurrently, while QuestDB and MonetDB do not support multithreading.
 - If you stop the program before its termination or shut down the system, the database might not be set into its initial state properly; you need to reload the dataset in the host machine:
     ```bash
@@ -282,6 +281,11 @@ python3 tsm_eval_online.py --systems questdb --queries all --n_threads 1 --host 
    sh load.sh
    ```   
   
+
+**Results**: 
+    - The runtime results of the systems will be added to: `results/online/{dataset}/{query}/runtime/`. The runtime plots will be added to the folder `results/online/{dataset}/{query}/plots/`.
+    - All the queries return the runtimes by varying the ingestion rate.
+
 
 ___
 
