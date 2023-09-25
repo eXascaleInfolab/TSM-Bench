@@ -284,8 +284,10 @@ python3 tsm_eval_online.py --system questdb --queries all --n_threads 1 --host "
   
 
 **Results**: 
-    - The runtime results of the systems will be added to: `results/online/{dataset}/{query}/runtime/`. The runtime plots will be added to the folder `results/online/{dataset}/{query}/plots/`.
-    - All the queries return the runtimes by varying the ingestion rate.
+
+- The runtime results of the systems will be added to: `results/online/{dataset}/{query}/runtime/`. 
+- The runtime plots will be added to the folder `results/online/{dataset}/{query}/plots/`.
+- All the queries return the runtimes by varying the ingestion rate.
 
 
 ___
