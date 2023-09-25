@@ -148,7 +148,7 @@ ___
     ```
 - Note: {system} needs to be replaced with the name of one of the systems from the table below.
 
-### Query Workload (Offline)
+### Offline Workload
 
 - Each system has a dedicated subfolder under `systems` folder. Queries for all systems can be executed as follows:
 
@@ -216,7 +216,7 @@ python3 tsm_eval.py --systems extremedb timescaledb --queries q2 q3 --datasets d
 python3 tsm_eval.py --systems all --queries all --datasets d1 
 ```
 
-### Query Workload (Online)
+### Online Workload
 
 
 This workload requires two servers: the first one serves as a host machine to deploy the systems (similar as above) and the second one runs as a client to generate writes and queries.
