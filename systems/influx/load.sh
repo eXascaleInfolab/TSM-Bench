@@ -2,6 +2,7 @@
 
 # THE FOLLOWING SCRIPT WILL SETUP AND LOAD D1, TO LOAD D2 UNCOMMENT THE LINES BELOW 
 
+
 log_file="influx_startup.txt"
 start_time=$(date +%s.%N)
 
