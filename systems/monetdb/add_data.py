@@ -2,23 +2,31 @@
 import pymonetdb
 import time
 
+conn = None
+
 def input_data(t_n,event,data,results, batch_size, host="localhost"):    
     results["evaluated"] = True
     try:
-        conn = pymonetdb.connect(username="monetdb", port=54320, password="monetdb", hostname=host, database="mydb", autocommit = True)
+        global conn
+        if conn is None:
+            conn = pymonetdb.connect(username="monetdb", port=54320, password="monetdb", hostname=host, database="mydb", autocommit = True)
         cur = conn.cursor()
-        data = data
+        isolation_level = "SERIALIZABLE" # "REPEATABLE READ" #"READ COMMITTED"
+        cur.execute(f"SET TRANSACTION ISOLATION LEVEL {isolation_level}")
 
+        data = data
         insertion_sql_head = "insert into d1 (time, id_station ," + ",".join(["s"+str(i) for i in range(100)]) + ")"
         values = [f"('{data['time_stamps'][i]}', '{data['stations'][i]}', {', '.join([str(s_n) for s_n in data['sensors'][i]])})" for i in range(batch_size)]
         print("time stamps", data['time_stamps'][batch_size-10:batch_size])
         sql = insertion_sql_head + " VALUES " + ",".join(values)
-        sql = sql.replace("<st_id>",str(t_n % 10))
+        sql = sql.replace("<st_id>",str(t_n))
         # print("sql",sql)
         while True:
             print("input")
             if event.is_set():
-                conn.close()
+                if conn is not None: 
+                    conn.close()
+                    conn = None
                 break
 
             start = time.time()

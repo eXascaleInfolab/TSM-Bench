@@ -20,7 +20,7 @@ def input_data(t_n, event, data , results , batch_size = 1000, host = "localhost
         while True:
             if event.is_set():
                 break
-                  
+            print("input")
             start = time.time()
           
             cur.execute(sql)

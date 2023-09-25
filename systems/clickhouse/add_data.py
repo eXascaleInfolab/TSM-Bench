@@ -16,8 +16,6 @@ def input_data(t_n, event, data , results , batch_size = 1000, host = "localhost
         values = [f"('{data['time_stamps'][i]}', '{data['stations'][i]}', {', '.join([str(s_n) for s_n in data['sensors'][i]])})" for i in range(batch_size)]
         sql = insertion_sql_head + " VALUES " + ",".join(values)
         sql = sql.replace("<st_id>",str(t_n % 10))
-        print("values ready")
-        #print(sql)
         while True:
             if event.is_set():
                 break
