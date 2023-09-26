@@ -66,15 +66,12 @@ sh install.sh
 
 ## Datasets Building & Loading 
 
-Building a dataset consists of downloading and decompressing it, making it ready to be loaded into the DB. The benchmark can be run using 
-Dataset 1, Dataset 2, or both.
+Building a dataset consists of downloading and decompressing it, making it ready to be loaded into the DB:
 
 - Build Dataset 1 (takes ~ 10 mins)
 
 ```bash
-cd datasets/
-sh build_d1.sh
-cd ..
+sh datasets/build_d1.sh
 
 ```
 
@@ -84,7 +81,7 @@ cd ..
 sh systems/load_all.sh d1
 ```
 
-- **Note**: To build and load the larger dataset d2, replace 'd1' with 'd2'.
+- **Note**: To build and load the larger dataset d2, replace ```d1``` with ```d2```.
 
  <!---  
 -  To download, install, setup and load dataset ```d1``` to systems

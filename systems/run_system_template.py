@@ -120,10 +120,10 @@ if __name__ == "__main__":
     
     # launch the system 
     process = Popen(['sh', 'launch.sh', '&'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-    # TODO: remove this line if you should not wait for sh.launch to terminate (i.e the process needs to be running in the background) if
+    # TODO: remove this line if you should not wait for sh.launch to terminate (i.e the process needs to be running in the background)
     stdout, stderr = process.communicate() 
     
-    ## if you removed the previous line adjust the sleep command to ensure your system has started up
+    ### TODO: if you removed the previous line adjust the sleep command to ensure your system has started up
     process = Popen(['sleep', '2'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
     stdout, stderr = process.communicate() 
     
