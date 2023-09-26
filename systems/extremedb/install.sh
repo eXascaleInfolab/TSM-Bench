@@ -30,5 +30,4 @@ export MCO_ROOT="$current"/eXtremeDB/
 export MCO_LIBRARY_PATH="$current"/eXtremeDB/target/bin.so
 export LD_LIBRARY_PATH="$current"/eXtremeDB/target/bin.so
 
-sh load.sh
 

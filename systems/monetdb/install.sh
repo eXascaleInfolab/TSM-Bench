@@ -46,5 +46,4 @@ sudo monetdbd start master_db
 sudo monetdb create mydb
 sudo monetdb release mydb
 sudo monetdb set embedpy3=yes mydb
-sudo monetdbd set listenaddr=0.0.0.0 master_dd
-sh load.sh
+sudo monetdbd set listenaddr=0.0.0.0 master_db

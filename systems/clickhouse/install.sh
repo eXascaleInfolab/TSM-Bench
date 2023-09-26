@@ -16,5 +16,4 @@ sleep 5
 sudo docker stop clickhouse-container
 
 
-sh load.sh
 
