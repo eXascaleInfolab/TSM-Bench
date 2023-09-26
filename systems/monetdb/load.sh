@@ -1,5 +1,6 @@
 #!/bin/sh
-
+sudo monetdbd start master_db
+sleep 10
 # THE FOLLOWING SCRIPT WILL SETUP AND LOAD D1, TO LOAD D2 UNCOMMENT THE LINES BELOW 
 dataset="d1"
 

@@ -6,6 +6,7 @@ if [ $# -ge 1 ]; then
 fi
 echo "loading $dataset"
 
+cd systems
 
 # ClickHouse
 cd clickhouse
@@ -19,7 +20,7 @@ cd ..
 
 # ExtremeDB
 cd extremedb
-source ./load.sh $dataset
+sh ./load.sh $dataset
 cd ..
 
 

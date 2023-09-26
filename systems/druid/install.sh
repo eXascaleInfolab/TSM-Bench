@@ -15,5 +15,3 @@ rm apache-druid-25.0.0-bin.tar.gz
 echo "start Druid server"
 
 time ./apache-druid-25.0.0/bin/start-single-server-medium &
-
-sh load.sh

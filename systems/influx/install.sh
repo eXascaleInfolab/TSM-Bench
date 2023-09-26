@@ -19,8 +19,6 @@ tar xvfz influxdb-1.7.10_linux_amd64.tar.gz
 rm influxdb-1.7.10_linux_amd64.tar.gz
 sudo ./influxdb-1.7.10-1/usr/bin/influxd &
 
-sleep 15
 
-sh load.sh
 
 

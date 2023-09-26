@@ -22,4 +22,3 @@ sudo cp server.conf /root/.questdb/conf/
 
 sleep 25
 
-sh load.sh

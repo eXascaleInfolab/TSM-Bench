@@ -1,5 +1,5 @@
 #!/bin/sh
-
+cd systems
 
 # ClickHouse
 cd clickhouse

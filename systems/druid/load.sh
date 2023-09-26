@@ -59,6 +59,11 @@ while : ; do
       echo "Failed message detected! Exiting..."
       break  # Exit the loop when "failed" is found
     fi
+    
+      if grep -q "FAILED" "$log_file"; then
+      echo "Failed message detected! Exiting..."
+      break  # Exit the loop when "FAILED" is found
+    fi
 
     if grep -q "loading complete!" "$log_file"; then
       echo "loading complete! Exiting..."
@@ -80,7 +85,7 @@ echo "load database"
 #du -sh ./apache-druid-25.0.0/var/druid/segment-cache/d1
 
 
-echo "data loading finished"
+
 
 ## uncoment the following for D2 ##
 ###################################

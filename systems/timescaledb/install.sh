@@ -16,9 +16,3 @@ sudo docker start timescaledb-container
 sudo docker cp ./pg_hba.conf  timescaledb-container:/home/postgres/pgdata/data/
 sudo docker restart timescaledb-container
 
-sleep 25
-sh load.sh
-
-#sudo docker exec -it timescaledb-container psql -U postgres
-#  docker exec -it timescaledb psql -U postgres
-#https://docs.timescale.com/install/latest/installation-docker/
