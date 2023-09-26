@@ -326,7 +326,7 @@ python3 ts_seg.py
 
 #### Step 2: Model Training
 
-1. Train a GAN model on data segments located in `data/` and write the resulting segments into `generation/` (takes ~3 days) 
+1. Train a GAN model on the original segments and write the generated segments into `generation/` (takes ~3 days) 
 
 ```bash
 python3 DCGAN.py
