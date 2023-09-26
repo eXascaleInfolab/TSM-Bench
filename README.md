@@ -82,7 +82,7 @@ sh datasets/build_d1.sh
 sh systems/load_all.sh d1
 ```
 
-- **Note**: To build and load the larger dataset d2, replace 'd1' with 'd2'.
+- **Note**: To build and load the larger dataset d2, replace ```d1``` with ```d2```.
 
  <!---  
 -  To download, install, setup and load dataset ```d1``` to systems
