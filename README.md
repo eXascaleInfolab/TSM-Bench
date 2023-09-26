@@ -44,25 +44,12 @@ ___
 
 ## Systems Setup
 
-- To install and load dataset d1 into  clickhouse, extremedb, monetdb, questdb, and timescaledb  (takes ~40mins)
+- To install and load dataset d1 into  clickhouse, extremedb, monetdb, questdb, and timescaledb  (takes ~15mins)
 
 ```bash
 cd systems/
 sh install_all.sh
 ```
-
-- We recommend to install influxdb and druid separately. To install the two systems and load d1, run the following commands---after installing each system, user input is required (takes ~50mins)
-
-```bash
-cd ../influxdb
-sh install.sh
-```
-
-```bash
-cd systems/druid
-sh install.sh
-```
-
 
 ## Datasets Building & Loading 
 
