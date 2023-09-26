@@ -41,28 +41,7 @@ ___
 ___
 
 
-## Build Datasets 
 
-Building a dataset consists of downloading and decompressing it, making it ready to be loaded into the DB. The benchmark can be run using 
-Dataset 1, Dataset 2, or both.
-
-- Build Dataset 1 (takes ~ 10 mins)
-
-    ```bash
-    cd datasets/
-    sh build_d1.sh
-    cd ..
-    ```
-
-- Build Dataset 2 (takes ~ 2 hours on a 1GBps network; requires at least 300GB of disk space)
-
-    ```bash
-    cd datasets/
-    sh build_d2.sh
-    cd ..
-    ```
-
-___
 ## Systems Setup
 
 - To install and load dataset d1 into  clickhouse, extremedb, monetdb, questdb, and timescaledb  (takes ~40mins)
@@ -85,23 +64,26 @@ sh install.sh
 ```
 
 
-- **Note**: To load the larger dataset d2, uncomment the respective lines in ```load.sh``` in each system folder.
+## Datasets Building & Loading 
 
+Building a dataset consists of downloading and decompressing it, making it ready to be loaded into the DB. The benchmark can be run using 
+Dataset 1, Dataset 2, or both.
 
-<!---
+- Build Dataset 1 (takes ~ 10 mins)
 
-### Data Loading
+    ```bash
+    cd datasets/
+    sh build_d1.sh
+    cd ..
+    ```
 
-To load Dataset 1 into the systems
-
+- Load Dataset 1 (takes ~ 2 hours)
+  
 ```bash
-cd ../
-sh load_all.sh
+sh systems/load_all.sh d1
 ```
--->
 
-
-
+- **Note**: To build and load the larger dataset d2, replace 'd1' with 'd2'.
 
  <!---  
 -  To download, install, setup and load dataset ```d1``` to systems
