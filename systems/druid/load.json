@@ -5,7 +5,7 @@
       "type": "index_parallel",
       "inputSource": {
         "type": "local",
-        "baseDir": "/home/luca/TSM-Bench/systems/druid/../../datasets/d1.csv",
+        "baseDir": "/home/luca/TSM-Bench/systems/druid/../../datasets/d1test.csv",
         "filter": "*"
       },
       "inputFormat": {
@@ -27,7 +27,7 @@
       "maxRowsInMemory": 5000000
     },
     "dataSchema": {
-      "dataSource": "d1",
+      "dataSource": "d1test",
       "timestampSpec": {
         "column": "time",
         "format": "iso"

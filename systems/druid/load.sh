@@ -3,14 +3,23 @@
 # THE FOLLOWING SCRIPT WILL SETUP AND LOAD D1, TO LOAD D2 UNCOMMENT THE LINES BELOW
 
 
-
-
 current=$(pwd)
+
+dataset="d1"
+if [ $# -ge 1 ]; then
+    dataset="$1"
+fi
+echo "loading $dataset"
 
 
 echo "start!"
-sed 's?path_to_file?'`pwd`/../../datasets/d1.csv'?' load_template.json > load.json
+
+sed "s/d1/$dataset/g" load_template.json > temp_template.json
+
+sed 's?path_to_file?'`pwd`/../../datasets/$dataset.csv'?' temp_template.json > load.json
 echo "load json"
+
+rm temp_template.json
 
 
 sh launch.sh
@@ -41,7 +50,6 @@ while : ; do
   if [ "$current_lines" -gt "$last_line" ]; then
     # Print the new lines
     sed -n "$((last_line + 1)),$current_lines p" "$log_file"
-    echo "test"
 
     # Update the last_line variable
     last_line="$current_lines"
@@ -64,7 +72,7 @@ rm $log_file
 
 end_time=$(date +%s.%N)
 elapsed_time=$(echo "$end_time - $start_time" | bc)
-echo "Loading time: $elapsed_time seconds" > loading_time.txt
+echo "Loading time: $elapsed_time seconds" > loading_time_$dataset.txt
 echo $elapsed_time
 
 

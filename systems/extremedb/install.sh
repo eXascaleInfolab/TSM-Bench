@@ -15,7 +15,7 @@ python3 setup.py install --user
 
 cd ../../..
 cp xsql.cfg eXtremeDB/target/bin
-cp create.sql eXtremeDB/target/bin
+#cp create.sql eXtremeDB/target/bin
 
 sudo cp -r eXremeDB/target/bin.so/ /usr/
 
