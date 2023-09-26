@@ -71,11 +71,12 @@ Dataset 1, Dataset 2, or both.
 
 - Build Dataset 1 (takes ~ 10 mins)
 
-    ```bash
-    cd datasets/
-    sh build_d1.sh
-    cd ..
-    ```
+```bash
+cd datasets/
+sh build_d1.sh
+cd ..
+
+```
 
 - Load Dataset 1 (takes ~ 2 hours)
   
