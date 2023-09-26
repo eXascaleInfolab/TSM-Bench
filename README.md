@@ -318,10 +318,10 @@ The generated plots and data are stored in the `generation/results` folder.
   
 #### Step 1: Data Partionning
 
-- Parition your input data located in `data/` into segments of the same length
+- Partition your input data located in `data/` into segments of the same length
 
 ```bash
-python3 ts_part.py
+python3 ts_seg.py
 ```
 
 #### Step 2: Model Training
@@ -338,7 +338,7 @@ python3 encoder_dc.py
 ```bash
 python3 test_dc.py
 ```
-#### Step3: Data Generation
+#### Step 3: Data Generation
 
 - Apply LSH to generate long time series (takes ~20 seconds)
 
