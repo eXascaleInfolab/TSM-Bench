@@ -1,5 +1,6 @@
 #!/bin/sh
-
+cd systems
+was_in_root=$?
 
 # ClickHouse
 cd clickhouse
@@ -46,3 +47,9 @@ cd influx
 sh ./install.sh
 cd ..
 
+
+
+
+if [ $was_in_root -eq 0 ]; then
+    cd ..
+fi
