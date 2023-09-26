@@ -4,7 +4,7 @@ import time
 def input_data(t_n,event, data, results , batch_size, host="localhost"):
     try:
         from systems.online_library import generate_continuing_data
-        CONNECTION = f"postgres://postgres:postgres@{host}:5431/postgres"
+        CONNECTION = f"postgres://postgres:postgres@{host}:5432/postgres"
         conn = psycopg2.connect(CONNECTION)
         conn.autocommit = True
         cur = conn.cursor()
@@ -33,7 +33,7 @@ def input_data(t_n,event, data, results , batch_size, host="localhost"):
 
 
 def delete_data(date= "2019-04-1 00:00:00", host = "localhost"):
-    CONNECTION = f"postgres://postgres:postgres@{host}:5431/postgres"
+    CONNECTION = f"postgres://postgres:postgres@{host}:5432/postgres"
     conn = psycopg2.connect(CONNECTION)
     conn.autocommit = True
     print("cleaning up the timescale database")

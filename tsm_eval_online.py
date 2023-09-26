@@ -52,8 +52,8 @@ except:
     args.rangeUnit = "day"
 
 
-if args.systems[0] == "all":
-    args.systems = ['clickhouse','influx','monetdb','questdb','timescaledb','extremedb']
+if args.system[0] == "all":
+    args.system = ['clickhouse','influx','monetdb','questdb','timescaledb','extremedb']
 
 if "all" in args.queries:
     args.queries = "q1,q2,q3,q4,q5,q6,q7"
@@ -65,9 +65,9 @@ if args.datasets == 'all':
 queries = args.queries if "," not in args.queries  else args.queries.split(",") 
 
 try: 
-	systems = args.systems.split()
+	systems = args.system.split()
 except: 
-	systems = args.systems
+	systems = args.system
 
 system_paths = { system : os.path.join(os.getcwd(), "systems", system) for system in systems } 
 

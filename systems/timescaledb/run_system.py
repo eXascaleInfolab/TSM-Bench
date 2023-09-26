@@ -24,7 +24,7 @@ set_date = [random.random() for i in range(500)]
 
 def run_query(query, rangeL , rangeUnit , n_st , n_s , n_it, host="localhost"):
 	# Connect to the system
-	CONNECTION = f"postgres://postgres:postgres@{host}:5431/postgres"
+	CONNECTION = f"postgres://postgres:postgres@{host}:5432/postgres"
 	conn = psycopg2.connect(CONNECTION)
 	cursor = conn.cursor()
 	

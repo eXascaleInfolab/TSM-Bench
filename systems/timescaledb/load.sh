@@ -7,7 +7,7 @@
 sudo docker start timescaledb-container
 #sudo docker exec -it timescaledb-container psql -U postgres
 
-sleep 35
+sleep 25
 sudo docker exec -it timescaledb-container psql -U postgres -c  "DROP TABLE IF EXISTS d1 CASCADE;"
 
 
