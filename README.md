@@ -47,8 +47,7 @@ ___
 - To install and load dataset d1 into  clickhouse, extremedb, monetdb, questdb, and timescaledb  (takes ~15mins)
 
 ```bash
-cd systems/
-sh install_all.sh
+sh systems/install_all_sys.sh
 ```
 
 ## Datasets Building & Loading 
@@ -58,7 +57,7 @@ Building a dataset consists of downloading and decompressing it, making it ready
 - Build Dataset 1 (takes ~ 10 mins)
 
 ```bash
-sh datasets/build_d1.sh
+sh datasets/build.sh d1
 
 ```
 
