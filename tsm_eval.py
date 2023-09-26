@@ -4,8 +4,9 @@ import sys
 import subprocess
     
 from systems.utils.time_settings import abr_time_map as unit_options
+from systems.config import system_names
 parser = argparse.ArgumentParser(description = 'Script for running any eval')
-parser.add_argument('--systems', nargs = '+', type = str, help = 'Systems name', default = ['clickhouse','druid','influx','monetdb','questdb','timescaledb'])
+parser.add_argument('--systems', nargs = '+', type = str, help = 'Systems name', default = ['clickhouse'], choices = system_names)
 parser.add_argument('--datasets', nargs = '*', type = str, help = 'Dataset name', default = ['d1'])
 parser.add_argument('--queries', nargs = '*', type = str, help = 'List of queries to run (Q1-Q7)', default = "q1 q2 q3 q4 q5 q6 q7")
 parser.add_argument('--n_st', nargs = '?', type = int, help = 'Number of stations in the dataset', default = 10)
@@ -34,7 +35,7 @@ except:
 
 
 if args.systems[0] == "all":
-    args.systems = ['clickhouse','influx','monetdb','questdb','timescaledb','extremedb','druid']
+    args.systems = system_names
 
 if "all" in args.queries:
     args.queries = "q1,q2,q3,q4,q5,q6,q7"
