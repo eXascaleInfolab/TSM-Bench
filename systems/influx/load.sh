@@ -31,15 +31,11 @@ while : ; do
     last_line="$current_lines"
 
     # Check if any line in the new lines contains "failed"
-    if grep -q "failed" "$log_file"; then
-      echo "Failed message detected! Exiting..."
+    if grep -q "Failed" "$log_file"; then
+      echo "Final message detected! Exiting..."
       break  # Exit the loop when "failed" is found
     fi
 
-    if grep -q "loading complete!" "$log_file"; then
-      echo "loading complete! Exiting..."
-      break  # Exit the loop when "failed" is found
-    fi
   fi
 
   sleep 10  # Wait for a few seconds before checking again
