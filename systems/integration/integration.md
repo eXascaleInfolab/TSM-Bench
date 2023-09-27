@@ -10,7 +10,7 @@
  - Create a folder with the name of your system under `/systems` and install your database inside.
  - Install the Python client library inside the virtual environment (TSMvenv).
  - Load the datasets. You can add a loading script similar to the ones in `/systems/{system}/load.sh`. 
-   -  the column names from the datasets are: time , id_station and s0 ,s1 .. s99
+   -  The column names from the datasets are: time , id_station and `s0 ,s1 .. s99`
    -  The relative path of the dataset is `../../datasets/dataset.csv`
 
   
@@ -21,8 +21,8 @@
 - Add the name of your system's folder to [config.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/config.py).
 
 - To use the online workload add the additional files:
-    - `__init__.py`: s script to use your folder as a Python module. The script should follow this [template](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/__init__template.py) and replacing "system" with "your\_system\_name".
-    - `start.py`: a script to launch your system. The script should follow this [template](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/integration/start_template.py).
-    - `add_data.py`: a script to add and delete data.  The script should follow this [template](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/add_tempalte.py).
+    - `__init__.py`: script to use your folder as a Python module. The script should follow this [template](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/__init__template.py) and replacing "system" with "your\_system\_name".
+    - `start.py`: script to launch your system. The script should follow this [template](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/integration/start_template.py).
+    - `add_data.py`: script to add and delete data.  The script should follow this [template](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/add_tempalte.py).
 
 
