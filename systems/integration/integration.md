@@ -21,9 +21,8 @@
 - Add the name of your system's folder to [config.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/config.py).
 
 - To use the online workload add the additional files:
-    - `__init__.py`: file to use your folder as a Python module using 
-[\_\_init\_\_.py template ](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/__init__template.py) and replacing "system" with "your\_system\_name".
-    - `start.py`: a file to launch your system  using [start.py template](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/integration/start_template.py).
-    - `add_data.py`: a file to add and delete data using [add_data template ](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/add_tempalte.py).
+    - `__init__.py`: s script to use your folder as a Python module. The script should follow this [template](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/__init__template.py) and replacing "system" with "your\_system\_name".
+    - `start.py`: a script to launch your system. The script should follow this [template](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/integration/start_template.py).
+    - `add_data.py`: a script to add and delete data.  The script should follow this [template](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/add_tempalte.py).
 
 
