@@ -5,7 +5,7 @@ import time
 from influxdb import InfluxDBClient
 
 
-def input_data(t_n,event, data , results , batch_size = 1000, host = "localhost"):
+def input_data(t_n,event, data , results , batch_size = 1000, host = "localhost", dataset = "d1"):
         results["evaluated"] = True
         try:
             from systems.online_library import generate_continuing_data
@@ -20,7 +20,7 @@ def input_data(t_n,event, data , results , batch_size = 1000, host = "localhost"
 
                 start = time.time()
                 
-                write = client.write_points([f.replace("<>",str(i)) + " " + str(1556582400000+i*20000000) for i in range(batch_size)] , database='d1', time_precision='ms', batch_size=batch_size ,protocol="line")
+                write = client.write_points([f.replace("<>",str(i)) + " " + str(1556582400000+i*20000000) for i in range(batch_size)] , database= dataset , time_precision='ms', batch_size=batch_size ,protocol="line")
                 diff = time.time() - start
                 results["insertions"].append( (start,batch_size) )     
                 if diff < 1:
@@ -35,11 +35,12 @@ def input_data(t_n,event, data , results , batch_size = 1000, host = "localhost"
             
 
 
-def delete_data(date= "2019-04-1T00:00:00", host = "localhost"):
+def delete_data(date= "2019-04-1T00:00:00", host = "localhost", dataset = "d1"):
     print("celaning up influx")
     time.sleep(5)
     start = time.time()
+    client = InfluxDBClient(host=host, port=8086, username='user', database=dataset)
+    
     sql = f"""delete from "sensor" where time > '{date}Z' """
-    client = InfluxDBClient(host=host, port=8086, username='user', database='d1')
-    result = client.query("""DELETE FROM "sensor" where time > '2019-04-30T00:00:00Z'""")
+    result = client.query(sql)
     client.close()

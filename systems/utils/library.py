@@ -121,6 +121,9 @@ def run_system(args,system_name,run_query_f, query_filters = ("SELECT",)):
     if not os.path.exists(results_dir):
         os.mkdir(results_dir)
 
+    log_file = "../../tsm_eval_error_log.txt"
+
+            
     runtimes = []
     index_ = []
     try:
@@ -139,17 +142,55 @@ def run_system(args,system_name,run_query_f, query_filters = ("SELECT",)):
                     if all([f in query.upper() for f in query_filters]) and "q" + str(i+1) in args.queries :
                         query = query.replace("<db>", dataset)
                         for range_unit in n_time_ranges:
-                            print("vary range",range_unit)
-                            runtimes.append(run_query_f(query,rangeUnit=range_unit))
-                            index_.append(f" {range_unit}")
+                            try:
+                                print("vary range",range_unit)
+                                runtimes.append(run_query_f(query,rangeUnit=range_unit))
+                                index_.append(f" {range_unit}")
+                            except Exception as E:
+                                import traceback
+                                print(E)
+                                runtimes.append((-1,-1))
+                                index_.append(f" {range_unit}")
+                                with open(log_file, 'a') as error_file:
+                                    error_file.write(f"#############{system_name}#########")
+                                    error_file.write(f"######Query{i+1}#####")
+                                    error_file.write(f"######Range Scenario{range_unit}#####")
+                                    traceback.print_exc(file=error_file)
+                                break
                         for sensors  in n_sensors:
-                            print("vary sensors" , sensors)
-                            runtimes.append(run_query_f(query,n_s=sensors))
-                            index_.append(f" s_{sensors}")
+                            try:
+                                print("vary sensors" , sensors)
+                                runtimes.append(run_query_f(query,n_s=sensors))
+                                index_.append(f" s_{sensors}")
+                            except Exception as E:
+                                import traceback
+                                runtimes.append((-1,-1))
+                                index_.append(f" s_{sensors}")                                                        
+                                with open(log_file, 'a') as error_file:
+                                    error_file.write(f"#############{system_name}#########")
+                                    error_file.write(f"######Query{i+1}#####")
+                                    error_file.write(f"######Sensor Scenario{sensors}#####")
+                                    traceback.print_exc(file=error_file)
+                                print(E)
+                                break
+                                                        
                         for stations in n_stations:
-                            print("vary station",stations)
-                            runtimes.append(run_query_f(query,n_st=stations))
-                            index_.append(f"st_{stations}")
+                            try:
+                                print("vary station",stations)
+                                runtimes.append(run_query_f(query,n_st=stations))
+                                index_.append(f"st_{stations}")
+                            except Exception as E:
+                                import traceback
+                                runtimes.append((-1,-1))
+                                index_.append(f"st_{stations}")
+                                with open(log_file, 'a') as error_file:
+                                    error_file.write(f"#############{system_name}#########")
+                                    error_file.write(f"######Query{i+1}#####")
+                                    error_file.write(f"######Station Scenario{stations}#####")
+                                    traceback.print_exc(file=error_file)
+                                print(E)
+                                break  
+                                                        
                         runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
                         print(runtimes)
                         runtimes.to_csv(f"{query_dir}/{system_name}.txt")

@@ -34,7 +34,7 @@ if [ "$dataset" = "d2" ];then
 	python3 generate_influx.py d2
 fi
 
-head -n 1 $dataset.csv > ${dataset}_tail.csv && tail -n 1 ${dataset}.csv >> ${datase}_tail.csv
+head -n 1 $dataset.csv > ${dataset}_tail.csv && tail -n 1 ${dataset}.csv >> ${dataset}_tail.csv
 
 
 

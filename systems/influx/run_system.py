@@ -14,10 +14,10 @@ import json
 sys.path.append('../')
 sys.path.append("systems")
 
-from library import random_date
+from utils.library import random_date
 
 from utils import *
-from library import *
+from utils.library import *
 
 from influxdb import InfluxDBClient
 

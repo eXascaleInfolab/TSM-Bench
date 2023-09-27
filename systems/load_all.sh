@@ -15,7 +15,7 @@ cd ..
 
 # Druid
 cd druid
-sh ./load.sh $dataset
+#sh ./load.sh $dataset
 cd ..
 
 # ExtremeDB
