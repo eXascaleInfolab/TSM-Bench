@@ -316,10 +316,12 @@ python3 gen_ts.py
 ![image](https://github.com/eXascaleInfolab/TSM-Bench/assets/15266242/13d8c2f9-fdbf-495f-aaf9-7f5ec0999470)
 
 ___
-## System Integration
+## Benchmark Extension
 
-TSM-Bench allows to integrate new systems in a seamless way. We provide a step-by-step [tutorial](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/integration.md) on how 
-to perform the intergation. 
+TSM-Bench allows to integrate new queries and systems in a seamless way.
+- Additional queries:
+- New systems: we provide a step-by-step [tutorial](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/integration.md) on how 
+to integrate new systems. 
 
 ___
 
