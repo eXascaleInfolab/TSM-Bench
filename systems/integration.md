@@ -1,9 +1,18 @@
-### System Integration
+# System Integration
 
- - In the `systems` folder create a folder with the name of your system.
- - Install your system inside the folder and install the Python client library inside the virtual environment (TSMvenv).
+## Prerequisites
+- Ubuntu 20
+- The system needs to provide a Python connection
+- The system needs to support csv format for data loading
+
+## Intergration steps
+
+ - Create a folder with the name of your system under `/systems` and install your database inside.
+ - Install the Python client library inside the virtual environment (TSMvenv).
  - Load the datasets:
-   #### Data Loading Example for MonetDB:
+
+
+#### Data Loading Example for MonetDB:
 ```bash
    dataset=d1
    current="$(pwd)"
