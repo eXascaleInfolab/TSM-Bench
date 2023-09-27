@@ -21,9 +21,9 @@ echo "load json"
 
 rm temp_template.json
 
+echo"wait for launch"
 
 sh launch.sh
-echo "wait for launch"
 
 
 start_time=$(date +%s.%N)
@@ -35,7 +35,8 @@ log_file="druid_startup.txt"
 ./apache-druid-25.0.0/bin/post-index-task --file load.json --url http://localhost:8081 > "$log_file" 2>&1 &
 
 echo "start loading"
-
+echo "this will take a while"
+echo "on the link above you can check if it is running by clicking on Ingestion" 
 # Initialize the last_line variable
 last_line=0
 

@@ -8,11 +8,22 @@ fi
 echo "loading $dataset"
 
 
-
-sudo docker start timescaledb-container
+container_name="timescaledb-container"
+sudo docker start "$container_name"
 #sudo docker exec -it timescaledb-container psql -U postgres
 
-sleep 25
+# Wait for the container to be in a running state
+while true; do
+    container_status=$(sudo docker inspect -f '{{.State.Status}}' "$container_name")
+    echo "$container_status"
+    if [ "$container_status" = "running" ]; then
+        break
+    fi
+    sleep 1
+done
+
+sleep 5
+
 sudo docker exec -it timescaledb-container psql -U postgres -c  "DROP TABLE IF EXISTS $dataset CASCADE;"
 
 

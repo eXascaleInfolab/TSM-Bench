@@ -10,7 +10,6 @@ cd ..
 # Druid
 cd druid
 sh ./install.sh
-sh ./launch.sh
 cd ..
 
 # ExtremeDB

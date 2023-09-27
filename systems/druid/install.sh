@@ -12,6 +12,6 @@ tar -xf apache-druid-25.0.0-bin.tar.gz
 rm apache-druid-25.0.0-bin.tar.gz
 
 
-echo "start Druid server"
+#echo "start Druid server"
 
-time ./apache-druid-25.0.0/bin/start-single-server-medium &
+#time ./apache-druid-25.0.0/bin/start-single-server-medium &
