@@ -260,10 +260,8 @@ ___
 
 ## Benchmark Extension
 
-TSM-Bench allows to integrate new queries and systems in a seamless way.
-- **Additional queries**:
-- **New systems**: we provide a step-by-step [tutorial](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/integration.md) on how 
-to integrate new systems. 
+TSM-Bench allows to integrate new systems in a seamless way. We provide a step-by-step [tutorial](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/integration.md) on how 
+to integrate your system as part of the benchmark. 
 
 ___
 
