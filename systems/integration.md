@@ -1,9 +1,9 @@
 ### System Integration
 
- - In the systems folder create a folder with the name of your system.
- - Install your system inside the folder and install the python client inside the virtual enviorment (TSMvenv)
+ - In the `systems` folder create a folder with the name of your system.
+ - Install your system inside the folder and install the Python client library inside the virtual environment (TSMvenv).
  - Load the datasets:
-   #### Example:
+   #### Data Loading Example for MonetDB:
 ```bash
    dataset=d1
    current="$(pwd)"
@@ -14,19 +14,19 @@
  ```
 
 
-- The following files need to be added to the folder:
-1. queries.sql file containting the queries with place holder values \<sid\> ,\<stid\> and \<timestamp\>. [Example queries.sql file](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/queries.sql)
-2. launch.sh file to launch the database  [Example launch.sh file](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/influx/launch.sh)
-3. stop.sh file to stop the database (optional but recommended)
-4. add a run_system.py to the folder using the given [Template](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/run_system_template.py)
-5. add the name of your system/folder to the [config.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/config.py)
+- Add the following files to the system's folder:
+1. `queries.sql` file containing the queries with placeholder values \<sid\> ,\<stid\> and \<timestamp\>. [Example queries.sql file](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/queries.sql).
+2. `launch.sh` file to launch the database  [Example launch.sh file](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/influx/launch.sh).
+3. `stop.sh` file to stop the database (optional but recommended).
+4. Add a `run_system.py` to the folder using the given [Template](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/run_system_template.py).
+5. Add the name of your system's folder to the [config.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/config.py).
 
-- to use the online workload add the following files:
-1. add a \_\_init\_\_.py file to use your folder as a python module using 
-[MonetDB \_\_init\_\_.py ](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/__init__.py) and replacing monetdb with "your\_system\_name".
-2. start.py file to launch your system:
-   define a launch function as in [MonetDB](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/start.py) and as in the launch section of the run_systems file.
-3. add_data.py file to add and delete data as in [MonetDB add\_data.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/add_data.py) replace the connection and query execution and delete the data above the input timestamp.
+- To use the online workload add the following files:
+1. add a `__init__.py` file to use your folder as a Python module using 
+[MonetDB \_\_init\_\_.py ](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/__init__.py) and replacing MonetDB with "your\_system\_name".
+2. `start.py` file to launch your system:
+   define a launch function as in [MonetDB](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/start.py) and as in the launch section of the `run_systems` file.
+3. `add_data.py` file to add and delete data as in [MonetDB add\_data.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/add_data.py) replace the connection and query execution and delete the data above the input timestamp.
 
 
 
