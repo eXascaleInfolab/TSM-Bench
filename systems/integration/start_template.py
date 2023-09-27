@@ -1,5 +1,5 @@
 def launch():
-	print('launching monetdb')
+	print('launching system')
 
 	import os
 	import subprocess
