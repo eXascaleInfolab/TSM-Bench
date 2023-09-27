@@ -12,7 +12,7 @@ TSM-Bench is a new benchmark that compares seven Time Series Database Systems (T
 
 -->
 
-[**Prerequisites**](#prerequisites) | [**Build Datasets**](#build-datasets) | [**Installation**](#systems-setup) | [**Experiments**](#experiments) | [**Data Generation**](#data-generation) | [**System Integration**](#system-integration) | [**Technical Report**](#technical-report)
+[**Prerequisites**](#prerequisites) | [**Build Datasets**](#build-datasets) | [**Installation**](#systems-setup) | [**Experiments**](#experiments) | [**Data Generation**](#data-generation) | [**Benchmark Extension**](#benchmark-extension) | [**Technical Report**](#technical-report)
 
 <!---
 | Dataset | # of TS | # of Stations | # of Sensors per station | Length of TS | Time Period | 
@@ -258,20 +258,22 @@ python3 tsm_eval_online.py --system questdb --queries all --n_threads 1 --host "
 
 ___
 
-
-## Time Series Generation 
-
-We provide a [GAN-based generation](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/generation) that allows to augment a seed dataset with more and/or longer time series that
-have akin properties to the seed ones. The tool can be used either directly using a pre-trained model
-or by retraining from scratch the model.
-
-___
 ## Benchmark Extension
 
 TSM-Bench allows to integrate new queries and systems in a seamless way.
 - **Additional queries**:
 - **New systems**: we provide a step-by-step [tutorial](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/integration.md) on how 
 to integrate new systems. 
+
+___
+
+
+
+## Time Series Generation 
+
+We provide a [GAN-based generation](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/generation) that allows to augment a seed dataset with more and/or longer time series that
+have akin properties to the seed ones. The tool can be used either directly using a pre-trained model
+or by retraining from scratch the model.
 
 ___
 
