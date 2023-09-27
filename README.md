@@ -261,7 +261,7 @@ ___
 
 ## Time Series Generation 
 
-We provide a GAN-based generation that allows to augment a seed dataset with more and/or longer time series that
+We provide a [GAN-based generation](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/generation) that allows to augment a seed dataset with more and/or longer time series that
 have akin properties to the seed ones. The tool can be used either directly using a pre-trained model
 or by retraining from scratch the model.
 
