@@ -3,7 +3,6 @@ import time
 
 def input_data(t_n,event, data, results , batch_size, host="localhost", dataset = "d1"):
     try:
-        from systems.online_library import generate_continuing_data
         CONNECTION = f"postgres://postgres:postgres@{host}:5432/postgres"
         conn = psycopg2.connect(CONNECTION)
         conn.autocommit = True
