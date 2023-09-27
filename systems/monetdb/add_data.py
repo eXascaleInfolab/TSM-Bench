@@ -4,7 +4,7 @@ import time
 
 conn = None
 
-def input_data(t_n,event,data,results, batch_size, host="localhost"):    
+def input_data(t_n,event,data,results, batch_size, host="localhost", dataset = "d1"):    
     results["evaluated"] = True
     try:
         global conn
@@ -15,7 +15,7 @@ def input_data(t_n,event,data,results, batch_size, host="localhost"):
         cur.execute(f"SET TRANSACTION ISOLATION LEVEL {isolation_level}")
 
         data = data
-        insertion_sql_head = "insert into d1 (time, id_station ," + ",".join(["s"+str(i) for i in range(100)]) + ")"
+        insertion_sql_head = "insert into "+dataset+" (time, id_station ," + ",".join(["s"+str(i) for i in range(100)]) + ")"
         values = [f"('{data['time_stamps'][i]}', '{data['stations'][i]}', {', '.join([str(s_n) for s_n in data['sensors'][i]])})" for i in range(batch_size)]
         print("time stamps", data['time_stamps'][batch_size-10:batch_size])
         sql = insertion_sql_head + " VALUES " + ",".join(values)
@@ -52,9 +52,9 @@ def input_data(t_n,event,data,results, batch_size, host="localhost"):
 
 
 
-def delete_data(date= "2019-04-1 00:00:00", host = "localhost"):
+def delete_data(date= "2019-04-1 00:00:00", host = "localhost", dataset = "d1"):
     conn = pymonetdb.connect(username="monetdb", port=54320, password="monetdb", hostname=host, database="mydb", autocommit = True)
     print("cleaning up monetdb database")
     cur = conn.cursor()
     time.sleep(10) # concurrency safety
-    res = cur.execute(f"DELETE from d1 where time > TIMESTAMP '{date}';")
+    res = cur.execute(f"DELETE from {dataset} where time > TIMESTAMP '{date}';")

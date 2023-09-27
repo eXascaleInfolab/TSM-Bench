@@ -63,12 +63,12 @@ def run_query(query, rangeL ,rangeUnit ,n_st ,n_s ,n_it , host="localhost"):
 		temp = temp.replace("<sid1>", "1")
 		temp = temp.replace("<sid2>", "2")		
 		start = time.time()
-		# print(temp)
 
 		import re
 		pattern = r"<\S+>"
 		matches = re.findall(pattern, temp)
 		assert not matches , temp
+		print(temp)
 
 		cursor.execute(temp)
 		results_ = cursor.fetchall()

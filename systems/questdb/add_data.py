@@ -3,7 +3,7 @@ import time
 
 
 
-def input_data(t_n, event, data , results , batch_size = 1000, host = "localhost"):
+def input_data(t_n, event, data , results , batch_size = 1000, host = "localhost", dataset = "d1"):
     try:
         conn = psycopg2.connect(user="admin",
           password="quest",
@@ -12,7 +12,7 @@ def input_data(t_n, event, data , results , batch_size = 1000, host = "localhost
           database="d1")
         cur = conn.cursor()
         data = data
-        insertion_sql_head = "insert into d1 (ts, id_station ," + ",".join(["s"+str(i) for i in range(100)]) + ")"
+        insertion_sql_head = "insert into "+dataset+" (ts, id_station ," + ",".join(["s"+str(i) for i in range(100)]) + ")"
         values = [f"('{data['time_stamps'][i]}', '{data['stations'][i]}', {', '.join([str(s_n) for s_n in data['sensors'][i]])})" for i in range(batch_size)]
 
         sql = insertion_sql_head + " VALUES " + ",".join(values)
@@ -42,7 +42,7 @@ def input_data(t_n, event, data , results , batch_size = 1000, host = "localhost
 
        
 
-def delete_data(date= "2019-04-30T00:00:00", host = "localhost"):
+def delete_data(date= "2019-04-30T00:00:00", host = "localhost", dataset = "d1"):
     print("cleaning up questdb")
     conn = psycopg2.connect(user="admin",
           password="quest",
@@ -51,7 +51,7 @@ def delete_data(date= "2019-04-30T00:00:00", host = "localhost"):
           database="d1")
     start = time.time()
     cur = conn.cursor()
-    sql = f"""create table table_copy as (select * from d1 where ts < '{date}') timestamp (ts) PARTITION BY DAY; """
+    sql = f"""create table table_copy as (select * from {dataset} where ts < '{date}') timestamp (ts) PARTITION BY DAY; """
     cur.execute(sql)
-    cur.execute("drop table d1;")
-    cur.execute("rename table table_copy to d1;")
+    cur.execute(f"drop table {dataset};")
+    cur.execute(f"rename table table_copy to {dataset};")

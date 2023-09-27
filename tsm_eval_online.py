@@ -122,7 +122,7 @@ for dataset in args.datasets:
                             break
                 
                     try:
-                        thread = Thread(target=system_module.input_data, args=(t_n,event,data,insertion_results[i][t_n] , batch_size_, args.host))
+                        thread = Thread(target=system_module.input_data, args=(t_n,event,data,insertion_results[i][t_n] , batch_size_, args.host,dataset))
                         thread.start()
                         threads.append(thread)
                     except Exception as e:
@@ -175,7 +175,7 @@ for dataset in args.datasets:
         run_online.save_online(final_result, system , dataset)
         #set the database to its initial state
         try:
-            system_module.delete_data(host=args.host)
+            system_module.delete_data(host=args.host,dataset=dataset)
         except Exception as e :
             print("deletion failed")
             raise e
