@@ -9,11 +9,11 @@
 
  - Create a folder with the name of your system under `/systems` and install your database inside.
  - Install the Python client library inside the virtual environment (TSMvenv).
- - Load the datasets
+ - Load the datasets. You can add a loading script similar to the ones in `/systems/{system}/load.sh`. 
    -  the column names from the datasets are: time , id_station and s0 ,s1 .. s99
-   -  The relative location of the dataset is  `../../datasets/dataset.csv`
+   -  The relative path of the dataset is `../../datasets/dataset.csv`
 
-   Take a look at the Examples: [ ExtremeDB load.sh](https://github.com/eXascaleInfolab/TSM-Bench/blob/tree/main/systems/monetdb/load.sh) or [MonetDB load.sh](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/extremedb/load.sh) 
+  
 
 - Create a file called `queries.sql`that implements the queries. Make sure to keep the variables \<sid\> ,\<stid\> and \<timestamp\> as placeholders (see example [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/queries.sql)).
 - Create a file called `launch.sh` to launch the database (see example [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/influx/launch.sh)).
