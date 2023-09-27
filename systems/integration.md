@@ -33,7 +33,7 @@
 [MonetDB \_\_init\_\_.py ](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/__init__.py) and replacing MonetDB with "your\_system\_name".
     - `start.py`: a file to launch your system:
    define a launch function as in [MonetDB](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/start.py) and as in the launch section of the `run_systems` file.
-    `add_data.py`: a file to add and delete data as in [MonetDB add\_data.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/add_data.py) replace the connection and query execution and delete the data above the input timestamp.
+    - `add_data.py`: a file to add and delete data as in [MonetDB add\_data.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/add_data.py) replace the connection and query execution and delete the data above the input timestamp.
 
 
 
