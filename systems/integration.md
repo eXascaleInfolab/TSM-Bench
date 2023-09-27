@@ -25,9 +25,8 @@
 
 - Add the following files to the system's folder:
     - `queries.sql`: a file that implements the queries. Make sure to keep the variables \<sid\> ,\<stid\> and \<timestamp\> as placeholders (see example [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/queries.sql)).
-    - `launch.sh` file to launch the database ([an example launch.sh file](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/influx/launch.sh)).
-    - `stop.sh` file to stop the database (optional but recommended).
-    - Add a `run_system.py` to the folder using the given ([a template](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/run_system_template.py)).
+    - `launch.sh`: a file to launch the database (see example [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/influx/launch.sh)).
+    - `run_system.py`: a python script to run the queries using this ([template](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/run_system_template.py)).
     - Add the name of your system's folder to the [config.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/config.py).
 
 - To use the online workload add the following files:
