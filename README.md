@@ -318,7 +318,8 @@ python3 gen_ts.py
 ___
 ## System Integration
 
-TBA
+TSM-Bench allows to integrate new systems in a seamless way. We provide a step-by-step [tutorial](link) on how 
+to perform the intergation. 
 
 ___
 
