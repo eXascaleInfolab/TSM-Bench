@@ -1,9 +1,18 @@
-### System Integration
+# System Integration
 
- - In the `systems` folder create a folder with the name of your system.
- - Install your system inside the folder and install the Python client library inside the virtual environment (TSMvenv).
+## Prerequisites
+- Ubuntu 20
+- The system needs to provide a Python connection
+- The system needs to support csv format for data loading
+
+## Intergration steps
+
+ - Create a folder with the name of your system under `/systems` and install your database inside.
+ - Install the Python client library inside the virtual environment (TSMvenv).
  - Load the datasets:
-   #### Data Loading Example for MonetDB:
+
+
+#### Data Loading Example for MonetDB:
 ```bash
    dataset=d1
    current="$(pwd)"
@@ -14,19 +23,17 @@
  ```
 
 
-- Add the following files to the system's folder:
-1. `queries.sql` file containing the queries with placeholder values \<sid\> ,\<stid\> and \<timestamp\> ([an example queries.sql file](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/queries.sql)).
-2. `launch.sh` file to launch the database ([an example launch.sh file](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/influx/launch.sh)).
-3. `stop.sh` file to stop the database (optional but recommended).
-4. Add a `run_system.py` to the folder using the given ([a template](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/run_system_template.py)).
-5. Add the name of your system's folder to the [config.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/config.py).
+- Create a file called `queries.sql`that implements the queries. Make sure to keep the variables \<sid\> ,\<stid\> and \<timestamp\> as placeholders (see example [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/queries.sql)).
+- Create a file called `launch.sh` to launch the database (see example [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/influx/launch.sh)).
+- Create a python script called  `run_system.py`to run the queries. The script should adhere to this [template](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/run_system_template.py).
+- Add the name of your system's folder to [config.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/config.py).
 
-- To use the online workload add the following files:
-1. add a `__init__.py` file to use your folder as a Python module using 
+- To use the online workload add the additional files:
+    - `__init__.py`: file to use your folder as a Python module using 
 [MonetDB \_\_init\_\_.py ](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/__init__.py) and replacing MonetDB with "your\_system\_name".
-2. `start.py` file to launch your system:
+    - `start.py`: a file to launch your system:
    define a launch function as in [MonetDB](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/start.py) and as in the launch section of the `run_systems` file.
-3. `add_data.py` file to add and delete data as in [MonetDB add\_data.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/add_data.py) replace the connection and query execution and delete the data above the input timestamp.
+    - `add_data.py`: a file to add and delete data as in [MonetDB add\_data.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/add_data.py) replace the connection and query execution and delete the data above the input timestamp.
 
 
 
