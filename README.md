@@ -260,7 +260,7 @@ ___
 
 ## Benchmark Extension
 
-TSM-Bench allows to integrate new systems in a seamless way. We provide a step-by-step [tutorial](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/README.md) on how 
+TSM-Bench allows to integrate new systems in a seamless way. We provide a step-by-step [tutorial](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/) on how 
 to integrate your system as part of the benchmark. 
 
 ___
