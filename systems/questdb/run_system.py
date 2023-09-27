@@ -12,7 +12,7 @@ import json
 
 # setting path
 sys.path.append('../')
-from library import *
+from utils.library import *
 
 
 import os

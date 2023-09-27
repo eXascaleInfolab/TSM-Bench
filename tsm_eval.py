@@ -5,6 +5,9 @@ import subprocess
     
 from systems.utils.time_settings import abr_time_map as unit_options
 from systems.config import system_names
+
+datasets = ['d1', 'd2', 'TEST']
+
 parser = argparse.ArgumentParser(description = 'Script for running any eval')
 parser.add_argument('--systems', nargs = '+', type = str, help = 'Systems name', default = ['clickhouse'], choices = system_names)
 parser.add_argument('--datasets', nargs = '*', type = str, help = 'Dataset name', default = ['d1'])
@@ -19,6 +22,7 @@ parser.add_argument('--min_ts', nargs = '?', type = str, help = 'Minimum query t
 parser.add_argument('--timeout', nargs = '?', type = str, help = 'Query execution timeout in seconds', default = 20)
 parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
 args = parser.parse_args()
+
 
 
 try:
@@ -43,7 +47,6 @@ if "all" in args.queries:
 if args.datasets == 'all':
     args.datasets = ['d1','d2']
 
-datasets = ['d1', 'd2']
 
 queries = args.queries if "," not in args.queries  else args.queries.split(",") 
 

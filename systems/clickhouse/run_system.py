@@ -13,7 +13,7 @@ from clickhouse_driver import Client
 from clickhouse_driver import connect as connect_ClickHouse
 # setting path
 sys.path.append('../')
-from library import *
+from utils.library import *
 
 
 
@@ -68,7 +68,7 @@ def run_query(query, rangeL ,rangeUnit ,n_st ,n_s ,n_it , host="localhost"):
 		pattern = r"<\S+>"
 		matches = re.findall(pattern, temp)
 		assert not matches , temp
-		print(temp)
+		#print(temp)
 
 		cursor.execute(temp)
 		results_ = cursor.fetchall()

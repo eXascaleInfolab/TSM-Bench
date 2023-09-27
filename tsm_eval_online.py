@@ -3,7 +3,7 @@ import os
 import sys
 import subprocess
 from systems.utils.time_settings import abr_time_map as unit_options
-from systems import run_online 
+from systems.utils import run_online 
 
 from systems import  influx ,extremedb, timescaledb , questdb  , monetdb , clickhouse
 system_module_map = { "influx" : influx,
@@ -73,7 +73,7 @@ system_paths = { system : os.path.join(os.getcwd(), "systems", system) for syste
 
 from threading import Thread
 from threading import Event
-from systems.online_library import generate_continuing_data
+from systems.utils.online_library import generate_continuing_data
 import time
 from subprocess import Popen, PIPE, STDOUT, DEVNULL
 
