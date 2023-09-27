@@ -24,11 +24,11 @@
 
 
 - Add the following files to the system's folder:
-1. `queries.sql` file containing the queries with placeholder values \<sid\> ,\<stid\> and \<timestamp\> ([an example queries.sql file](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/queries.sql)).
-2. `launch.sh` file to launch the database ([an example launch.sh file](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/influx/launch.sh)).
-3. `stop.sh` file to stop the database (optional but recommended).
-4. Add a `run_system.py` to the folder using the given ([a template](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/run_system_template.py)).
-5. Add the name of your system's folder to the [config.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/config.py).
+    - `queries.sql` file containing the queries with placeholder values \<sid\> ,\<stid\> and \<timestamp\> ([an example queries.sql file](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/queries.sql)).
+    - `launch.sh` file to launch the database ([an example launch.sh file](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/influx/launch.sh)).
+    - `stop.sh` file to stop the database (optional but recommended).
+    - Add a `run_system.py` to the folder using the given ([a template](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/run_system_template.py)).
+    - Add the name of your system's folder to the [config.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/config.py).
 
 - To use the online workload add the following files:
 1. add a `__init__.py` file to use your folder as a Python module using 
