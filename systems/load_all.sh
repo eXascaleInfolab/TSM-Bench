@@ -8,14 +8,15 @@ echo "loading $dataset"
 
 cd systems
 
-# ClickHouse
-cd clickhouse
+
+# TimescaleDB
+cd  timescaledb
 sh ./load.sh $dataset
 cd ..
 
-# Druid
-cd druid
-#sh ./load.sh $dataset
+# ClickHouse
+cd clickhouse
+sh ./load.sh $dataset
 cd ..
 
 # ExtremeDB
@@ -35,6 +36,9 @@ cd questdb
 sh ./load.sh $dataset
 cd ..
 
+sh stop_all.sh
+
+
 # TimescaleDB
 cd  timescaledb
 sh ./load.sh $dataset
@@ -43,5 +47,12 @@ cd ..
 
 # Influx
 cd influx
+sh ./load.sh $dataset
+cd ..
+
+sh stop_all.sh
+
+# Druid
+cd druid
 sh ./load.sh $dataset
 cd ..
