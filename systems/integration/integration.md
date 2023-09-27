@@ -7,11 +7,10 @@
 
 ## Integration steps
 
- - Create a folder with the name of your system under `/systems` and install your database inside.
- - Install the Python client library inside the virtual environment (TSMvenv).
- - Load the datasets. You can add a loading script similar to the ones in `/systems/{system}/load.sh`. 
-   -  The column names from the datasets are: time , id_station and `s0 ,s1 ... s99`
-   -  The relative path of the dataset is `../../datasets/dataset.csv`
+- Create a folder with the name of your system under `/systems` and install your database inside.
+- Install the Python client library inside the virtual environment (TSMvenv).
+- Load the datasets located under `../../datasets/dataset.csv` . You can add a loading script similar to the ones in `/systems/{system}/load.sh`. 
+- Note: the column names from the datasets are: time , id_station and `s0 ,s1 ... s99`
 
   
 
