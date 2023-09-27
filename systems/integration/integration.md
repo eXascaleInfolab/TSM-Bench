@@ -10,7 +10,7 @@
 
 - Create a folder with the name of your system under `/systems` and install your database inside.
 - Install the Python client library inside the virtual environment (TSMvenv).
-- Load the datasets located under the `/datasets` folder . You can add a loading script similar to the ones in `/systems/{system}/load.sh`. The column names from the datasets are: time , id_station and `s0 ,s1 ... s99`
+- Load the datasets located under the `/datasets` folder. Examples of loading are provided in `/systems/{system}/load.sh`. The column names from the datasets are: time , id_station and `s0 ,s1 ... s99`
 
   
 
