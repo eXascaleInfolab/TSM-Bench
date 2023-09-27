@@ -28,12 +28,12 @@
 - Create a python script called  `run_system.py`to run the queries. The script should adhere to this ([template](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/run_system_template.py)).
 - Add the name of your system's folder to [config.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/config.py).
 
-- To use the online workload add the following files:
-1. add a `__init__.py` file to use your folder as a Python module using 
+- To use the online workload add the additional files:
+    - `__init__.py`: file to use your folder as a Python module using 
 [MonetDB \_\_init\_\_.py ](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/__init__.py) and replacing MonetDB with "your\_system\_name".
-2. `start.py` file to launch your system:
+    - `start.py`: a file to launch your system:
    define a launch function as in [MonetDB](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/start.py) and as in the launch section of the `run_systems` file.
-3. `add_data.py` file to add and delete data as in [MonetDB add\_data.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/add_data.py) replace the connection and query execution and delete the data above the input timestamp.
+    `add_data.py`: a file to add and delete data as in [MonetDB add\_data.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/add_data.py) replace the connection and query execution and delete the data above the input timestamp.
 
 
 
