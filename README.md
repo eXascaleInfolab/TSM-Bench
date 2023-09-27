@@ -12,7 +12,7 @@ TSM-Bench is a new benchmark that compares seven Time Series Database Systems (T
 
 -->
 
-[**Prerequisites**](#prerequisites) | [**Build Datasets**](#build-datasets) | [**Installation**](#systems-setup) | [**Experiments**](#experiments) | [**Data Generation**](#data-generation) | [**System Integration**](#system-integration) | [**Technical Report**](#technical-report)
+[**Prerequisites**](#prerequisites) | [**Build Datasets**](#build-datasets) | [**Installation**](#systems-setup) | [**Experiments**](#experiments) | [**Data Generation**](#data-generation) | [**Benchmark Extension**](#benchmark-extension) | [**Technical Report**](#technical-report)
 
 <!---
 | Dataset | # of TS | # of Stations | # of Sensors per station | Length of TS | Time Period | 
@@ -258,68 +258,20 @@ python3 tsm_eval_online.py --system questdb --queries all --n_threads 1 --host "
 
 ___
 
+## Benchmark Extension
+
+TSM-Bench allows to integrate new systems in a seamless way. We provide a step-by-step [tutorial](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/) on how 
+to integrate your system as part of the benchmark. 
+
+___
+
+
 
 ## Time Series Generation 
 
-We provide a GAN-based generation that allows to augment a seed dataset with more and/or longer time series that
+We provide a [GAN-based generation](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/generation) that allows to augment a seed dataset with more and/or longer time series that
 have akin properties to the seed ones. The tool can be used either directly using a pre-trained model
 or by retraining from scratch the model.
-
-### Install Requirements
-
-```bash
-cd generation
-install.sh
-```
-
-### Execution using a Pre-trained Model 
-
-```bash
-python3 run_pretrained.py
-```
-The generated plots and data are stored in the `generation/results` folder.
-
-### Execution using Model Training
-
-  
-#### Step 1: Data Partionning
-
-- Partition your input data located in `data/` into segments of the same length
-
-```bash
-python3 ts_seg.py
-```
-
-#### Step 2: Model Training
-
-1. Train a GAN model on the original segments and write the generated segments into `generation/` (takes ~3 days) 
-
-```bash
-python3 DCGAN.py
-python3 encoder_dc.py
-```
-
-2. Generate new segments using the trained ones from Step 1 (takes ~46 seconds)
-
-```bash
-python3 test_dc.py
-```
-#### Step 3: Data Generation
-
-- Apply LSH to generate long time series (takes ~20 seconds)
-
-```bash
-python3 gen_ts.py
-```
-### Sample Generation Plots:
-
-![image](https://github.com/eXascaleInfolab/TSM-Bench/assets/15266242/13d8c2f9-fdbf-495f-aaf9-7f5ec0999470)
-
-___
-## System Integration
-
-TSM-Bench allows to integrate new systems in a seamless way. We provide a step-by-step [tutorial](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/integration.md) on how 
-to perform the intergation. 
 
 ___
 
