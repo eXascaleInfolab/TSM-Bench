@@ -318,14 +318,14 @@ python3 gen_ts.py
 ___
 ## System Integration
 
-TSM-Bench allows to integrate new systems in a seamless way. We provide a step-by-step [tutorial](link) on how 
+TSM-Bench allows to integrate new systems in a seamless way. We provide a step-by-step [tutorial](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/integration.md) on how 
 to perform the intergation. 
 
 ___
 
 ## Technical Report
 
-Additional results not reported in the paper can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/TSM_Technical_Report.pdf). The additional experiments cover: 
+Additional results not reported in the paper can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/misc/TSM_Technical_Report.pdf). The additional experiments cover: 
 
 - Advanced analytical queries in SQL and UDF
 - Selection of the evaluated systems
