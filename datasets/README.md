@@ -13,7 +13,7 @@ We use our LSH-GAN data generator to augment the sise of the seed dataset into t
 
 ## Datasets Building 
 
-We provide a script to download the datasets and decompressing them
+Due to size limitations, we upload only D1 in a compressed format. To download the two datasets as a csv format, run the following building script:
 
 - Build Dataset 1 (takes ~ 10 mins)
 
@@ -33,9 +33,7 @@ sh build.sh d2
 
 The seed dataset was kindly provided by the [Federal Office for the Environment in Switzerland (FOEN)](https://www.bafu.admin.ch/bafu/en/home/topics/water.html).
 
-## Size
 
- |
 
 
  
