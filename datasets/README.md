@@ -13,7 +13,7 @@ We use our LSH-GAN data generator to augment the sise of the seed dataset into t
 
 ## Datasets Building 
 
-Due to size limitations, we upload only D1 in a compressed format. To download the two datasets as a csv format, run the following building script:
+Due to size limitations, we upload only d1 in a compressed format. To download the two datasets as a csv format, run the following building script:
 
 - Build Dataset 1 (takes ~ 10 mins)
 
