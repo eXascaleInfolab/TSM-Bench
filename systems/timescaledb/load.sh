@@ -1,5 +1,6 @@
 #!/bin/sh
 
+sleep 25 
 
 dataset="d1"
 if [ $# -ge 1 ]; then
