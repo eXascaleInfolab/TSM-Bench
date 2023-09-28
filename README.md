@@ -46,7 +46,7 @@ sh datasets/build.sh d1
 
 ```
 
-- To load Dataset 1 into the database (takes ~ 2 hours)
+- To load Dataset 1 into all the systems (takes ~ 2 hours)
   
 ```bash
 sh systems/load_all.sh d1
