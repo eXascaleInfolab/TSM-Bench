@@ -18,14 +18,14 @@ We provide a script to download the datasets and decompressing them
 - Build Dataset 1 (takes ~ 10 mins)
 
 ```bash
-sh datasets/build.sh d1
+sh build.sh d1
 
 ```
 
 - Build Dataset 2 (takes a considerable time)
 
 ```bash
-sh datasets/build.sh d2
+sh build.sh d2
 
 ```
 
