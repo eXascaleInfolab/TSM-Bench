@@ -31,6 +31,7 @@ python3 ts_seg.py
 1. Train a GAN model on the original segments and write the generated segments into `results/` (takes ~3 days) 
 
 ```bash
+cd gan/
 python3 DCGAN.py
 python3 encoder_dc.py
 ```
