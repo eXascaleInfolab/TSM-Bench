@@ -18,7 +18,7 @@ The generated plots and data are stored in the `generation/results` folder.
 ### Execution by retraining the model
 
   
-#### Step 1: Data partionning
+#### Step 1: Data partitioning
 
 - Partition your input data located in `data/` into segments of the same length
 
@@ -28,7 +28,7 @@ python3 ts_seg.py
 
 #### Step 2: Model training
 
-1. Train a GAN model on the original segments and write the generated segments into `generation/` (takes ~3 days) 
+1. Train a GAN model on the original segments and write the generated segments into `results/` (takes ~3 days) 
 
 ```bash
 python3 DCGAN.py
@@ -40,6 +40,7 @@ python3 encoder_dc.py
 ```bash
 python3 test_dc.py
 ```
+
 #### Step 3: Data generation
 
 - Apply LSH to generate long time series (takes ~20 seconds)
