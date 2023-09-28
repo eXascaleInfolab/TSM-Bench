@@ -7,24 +7,9 @@ TSM-Bench is a new benchmark that compares seven Time Series Database Systems (T
 - We use two datasets for the evaluation: *D-LONG [d1] and D-MULTI [d2]*. The evaluated datasets can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/datasets).
 - <sup>*</sup>**Note**: Due to license restrictions, we can only share the evaluation version of extremeDB. The results between the benchmarked and the public version might diverge. 
 
-<!---
-  , in addition to additional generation scripts used during the online workloads.
-
--->
-
-[**Prerequisites**](#prerequisites) | [**Build Datasets**](#build-datasets) | [**Installation**](#systems-setup) | [**Experiments**](#experiments) | [**Data Generation**](#data-generation) | [**Benchmark Extension**](#benchmark-extension) | [**Technical Report**](#technical-report)
-
-<!---
-| Dataset | # of TS | # of Stations | # of Sensors per station | Length of TS | Time Period | 
-| ------ | ------ | ------ | ------ | ------ | ------ |
-| d1 | 1K | 10 | 100 | 5.18M | 01-03-2019 to 30-04-2019 | 
-| d2 | 200K | 2000 | 100 | 17.2B | 01-02-2019 to 10-02-2019 | 
+[**Prerequisites**](#prerequisites) | [**Build Datasets**](#build-datasets) | [**Installation**](#systems-setup) | [**Experiments**](#experiments) | [**Data Generation**](#data-generation) | [**Benchmark Extension**](#benchmark-extension) | [**Technical Report**](#technical-report) | [**Contributors**](#contributors)
 
 
-- [**New**] : [TSM_Technical_Report](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/results/TSM_Technical_Report.pdf) which contains additional experiments on
-    - Advanced queries in SQL and UDF.
-    - Impact of data characteristics.
--->
 
 
 ___
@@ -283,6 +268,13 @@ Additional results not reported in the paper can be found [here](https://github.
 - Selection of the evaluated systems
 - Parameterization of the systems
 - Impact of data characteristics
+
+___
+
+## Contributors
+
+
+Abdelouahab Khelifati, Mourad Khayati (mkhayati@exascale.info) and Luca Althaus.
 
 ___
 
