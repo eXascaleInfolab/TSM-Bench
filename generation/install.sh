@@ -1,3 +1,5 @@
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt-get update
 sudo apt-get install git
 sudo apt-get install git-lfs
 git config --global credential.helper store
@@ -20,4 +22,8 @@ python -m pip install future
 python -m pip install lshashpy3
 python -m pip install torch
 python -m pip install scipy
+python -m pip install matplotlib
+python -m pip install torch
+python -m pip install torchvision
+python -m pip install wfdb
 # Run: time python main_tsgen.py

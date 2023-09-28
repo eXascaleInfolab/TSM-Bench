@@ -153,7 +153,7 @@ if __name__ == '__main__':
     g_net.load_state_dict(
                 torch.load(r"./gang_path"))
     try:
-        encoder_.load_state_dict(torch.load(r'E:\Project\GAN-abnormal detection\ME_DCGAN_Cartoon\ganen_path'))
+        encoder_.load_state_dict(torch.load('./ganen_path'))
         print('success')
     except:
         print('falied')

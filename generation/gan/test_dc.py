@@ -188,4 +188,4 @@ if __name__ == '__main__':
                     # print(i)
                     # plt.clf()
     seq=np.asarray(seq).reshape(len(seq), 3072)
-    np.savetxt("synthetic_segments.txt", seq, fmt='%f',delimiter=',')
+    np.savetxt("../results/synthetic_segments.txt", seq, fmt='%f',delimiter=',')
