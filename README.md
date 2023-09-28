@@ -39,16 +39,14 @@ sh systems/install_all_sys.sh
 
 ## Datasets Building & Loading 
 
-Building a dataset consists of downloading and decompressing it, making it ready to be loaded into the DB:
-
-- Build Dataset 1 (takes ~ 10 mins)
+- To download and decompress Dataset 1 (takes ~ 10 mins)
 
 ```bash
 sh datasets/build.sh d1
 
 ```
 
-- Load Dataset 1 (takes ~ 2 hours)
+- To load Dataset 1 into the database (takes ~ 2 hours)
   
 ```bash
 sh systems/load_all.sh d1
