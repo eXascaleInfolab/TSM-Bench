@@ -31,7 +31,7 @@ sh systems/install_dep.sh
 source TSMvenv/bin/activate
 ```
 
-- Install all the systems load dataset d1  (takes ~15mins)
+- Install all the systems (takes ~15mins)
 
 ```bash
 sh systems/install_all_sys.sh
