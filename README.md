@@ -26,10 +26,10 @@ ___
 
 - Install the dependencies and activate the created virtual environment 
   
-    ```bash
-    sh systems/install_dep.sh
-    source TSMvenv/bin/activate
-    ```
+```bash
+sh systems/install_dep.sh
+source TSMvenv/bin/activate
+```
 
 - Install all the systems load dataset d1  (takes ~15mins)
 
