@@ -3,7 +3,7 @@
 ## Description
 We use as seed a real-world dataset of water temperature and level time series recorded using multiple hydrometric sensors. Temperature series contain duplicates and similar consecutive values while level series are erratic and contain abrupt changes. We augment the seed dataset by scaling i) the number of time series—we increase the number of stations and/or sensors—and ii) the length of time series—we increase their duration.
 
-We use our LSH-GAN data generator to augment the sise of the seed dataset into two larger datasets. The dimensions of the two datasets used in this benchmark are the following:
+We use our LSH-GAN data generator to augment the size of the seed dataset into two larger datasets. The dimensions of the two datasets used in the benchmark are the following:
 
 | dataset | # of TS | # of Stations | # of Sensors per station | Length of TS | 
 | ------ | ------ | ------ | ------ | ------ |
