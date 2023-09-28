@@ -39,7 +39,7 @@ sh systems/install_all_sys.sh
 
 ## Datasets Building & Loading 
 
-- Download and decompress Dataset 1 in a csv format (takes ~ 10 mins)
+- Download and decompress Dataset 1 (takes ~ 10 mins)
 
 ```bash
 sh datasets/build.sh d1
