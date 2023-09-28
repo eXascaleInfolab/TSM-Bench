@@ -17,19 +17,21 @@ ___
 
 - Ubuntu 20 (including Ubuntu derivatives, e.g., Xubuntu); 128 GB RAM
 - Clone this repository
-- Install the dependencies and activate the created virtual environment 
-  
-    ```bash
-    sh systems/install_dep.sh
-    source TSMvenv/bin/activate
-    ```
+
 ___
 
 
 
 ## Systems Setup
 
-- To install and load dataset d1 into  clickhouse, extremedb, monetdb, questdb, and timescaledb  (takes ~15mins)
+- Install the dependencies and activate the created virtual environment 
+  
+    ```bash
+    sh systems/install_dep.sh
+    source TSMvenv/bin/activate
+    ```
+
+- Install all the systems load dataset d1  (takes ~15mins)
 
 ```bash
 sh systems/install_all_sys.sh
