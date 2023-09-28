@@ -104,7 +104,7 @@ if __name__ == '__main__':
     #     # 限制在一个给定的区间[min, max]内,[0,1]
     #     return out
     #
-    date=np.loadtxt('./column_23_3072_3072.txt',delimiter=',')
+    date=np.loadtxt('../data/column_23_3072_3072.txt',delimiter=',')
     lis=[]
     for i in range(3072):
         lis.append(date[i].reshape((3,32,32))/10)
