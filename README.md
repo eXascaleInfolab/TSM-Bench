@@ -104,7 +104,7 @@ ___
 
 ### Offline Workload
 
-- The results of offline queries for all systems can be obtained using:
+- The offline queries for all systems can be executed from the root folder using:
 
     ```bash
     python3 tsm_eval.py [args]
