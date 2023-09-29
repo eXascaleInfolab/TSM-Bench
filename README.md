@@ -44,6 +44,7 @@ sh systems/install_all_sys.sh
 ```bash
 cd datasets/
 sh build.sh d1
+cd ..
 
 ```
 
