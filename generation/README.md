@@ -5,7 +5,7 @@
 
 ```bash
 cd generation/
-install.sh
+sh install.sh
 ```
 
 ### Execution using a pre-trained model 
