@@ -42,7 +42,8 @@ sh systems/install_all_sys.sh
 - Download and decompress Dataset 1 (takes ~ 10 mins)
 
 ```bash
-sh datasets/build.sh d1
+cd datasets/
+sh build.sh d1
 
 ```
 
