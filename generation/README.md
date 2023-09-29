@@ -4,7 +4,7 @@
 ### Install requirements
 
 ```bash
-cd generation
+cd generation/
 install.sh
 ```
 
