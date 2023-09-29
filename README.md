@@ -27,14 +27,15 @@ ___
 - Install the dependencies and activate the created virtual environment 
   
 ```bash
-sh systems/install_dep.sh
 source TSMvenv/bin/activate
+cd /systems
+sh install_dep.sh
 ```
 
 - Install all the systems (takes ~15mins)
 
 ```bash
-sh systems/install_all_sys.sh
+sh install_all_sys.sh
 ```
 
 ## Datasets Building & Loading 
@@ -42,18 +43,16 @@ sh systems/install_all_sys.sh
 - Download and decompress Dataset 1 (takes ~ 10 mins)
 
 ```bash
-cd datasets/
+cd ../datasets/
 sh build.sh d1
-cd ..
 
 ```
 
 - Load Dataset 1 into all the systems (takes ~ 2 hours)
   
 ```bash
-cd systems/
+cd ../systems/
 sh load_all.sh d1
-cd ..
 ```
 
 - **Note**: To build and load the larger dataset d2, replace ```d1``` with ```d2```.
