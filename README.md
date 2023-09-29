@@ -104,7 +104,7 @@ ___
 
 ### Offline Workload
 
-- Each system has a dedicated subfolder under `systems` folder. Queries for all systems can be executed as follows:
+- The results of offline queries for all systems can be obtained using:
 
     ```bash
     python3 tsm_eval.py [args]
