@@ -6,7 +6,6 @@ if [ $# -ge 1 ]; then
 fi
 echo "loading $dataset"
 
-cd systems
 
 
 # TimescaleDB
