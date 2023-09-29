@@ -27,9 +27,9 @@ ___
 - Install the dependencies and activate the created virtual environment 
   
 ```bash
-source TSMvenv/bin/activate
 cd /systems
 sh install_dep.sh
+source TSMvenv/bin/activate
 ```
 
 - Install all the systems (takes ~15mins)
