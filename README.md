@@ -180,13 +180,17 @@ This workload requires two servers: the first one serves as a host machine to de
 - Install dependencies:
 
     ```bash
-    sh systems/install_dep.sh
+    cd systems/
+    sh install_dep.sh
     source TSMvenv/bin/activate
+    cd ../
     ```
 - Install the system libraries
    
     ```bash
-    sh systems/install_client_lib.sh
+    cd systems/
+    sh install_client_lib.sh
+    cd ../
     ```
 #### Query Execution
 1. Run the system on the host server 
