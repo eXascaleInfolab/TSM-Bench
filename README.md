@@ -27,7 +27,7 @@ ___
 - Install the dependencies and activate the created virtual environment 
   
 ```bash
-cd systems
+cd systems/
 sh install_dep.sh
 source TSMvenv/bin/activate
 ```
