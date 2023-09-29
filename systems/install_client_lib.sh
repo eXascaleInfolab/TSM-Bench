@@ -1,6 +1,5 @@
 #!/bin/bash
 
-cd systems
 cd extremedb
 
 #### exdb module for python isntallation
