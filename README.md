@@ -181,9 +181,9 @@ This workload requires two servers: the first one serves as a host machine to de
 - Install dependencies:
 
     ```bash
-    source TSMvenv/bin/activate
     cd systems/
     sh install_dep.sh
+    source TSMvenv/bin/activate
     ```
 - Install the system libraries
    
