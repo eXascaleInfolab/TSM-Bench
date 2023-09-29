@@ -173,7 +173,7 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 ### Online Workload
 
 
-This workload requires two servers: the first one serves as a host machine to deploy the systems (similar as above) and the second one runs as a client to generate writes and queries.
+This workload requires two servers: the first one serves as a host machine to deploy the systems (similar to above) and the second one runs as a client to generate writes and queries.
 
 #### Client Setup
 
@@ -189,16 +189,15 @@ This workload requires two servers: the first one serves as a host machine to de
    
     ```bash
     sh install_client_lib.sh
-    cd ..
     ```
 #### Query Execution
-1. Run the system on the host server 
+1. Run the system on the host side 
 
    ```bash
    cd systems/{system}
    sh launch.sh
    ```   
-2. Execute the online query using the --host flag (see examples below).
+2. Execute the online query on the client side using the --host flag (see examples below).
    
 3. Stop the system on the host server
    ```bash
@@ -218,12 +217,12 @@ This workload requires two servers: the first one serves as a host machine to de
 1. Run query q1 in an online manner on clickhouse.
 
 ```bash 
-python3 tsm_eval_online.py --system clickhouse --queries q1 --host "server_address"
+python3 tsm_eval_online.py --system clickhouse --queries q1 --host "host_address"
 ```
 2. Run all queries in an online manner on questdb using one thread.  
 
 ```bash 
-python3 tsm_eval_online.py --system questdb --queries all --n_threads 1 --host "server_address" 
+python3 tsm_eval_online.py --system questdb --queries all --n_threads 1 --host "host_address" 
 ```
 
 
