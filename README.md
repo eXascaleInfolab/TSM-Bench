@@ -94,17 +94,6 @@ ___
 
 -->
 
-
-
-### Storage Performance 
-
-- To compute the storage performance for a given system: 
-    ```bash
-    cd systems/{system}
-    sh compression.sh
-    ```
-- Note: {system} needs to be replaced with the name of one of the systems from the table below.
-
 ### Offline Workload
 
 - The offline queries for all systems can be executed from the root folder using:
@@ -248,6 +237,18 @@ python3 tsm_eval_online.py --system questdb --queries all --n_threads 1 --host "
 - The runtime plots will be added to the folder `results/online/{dataset}/{query}/plots/`.
 - All the queries return the runtimes by varying the ingestion rate.
 
+
+
+
+
+### Storage Performance 
+
+- To compute the storage performance for a given system: 
+    ```bash
+    cd systems/{system}
+    sh compression.sh
+    ```
+- Note: {system} needs to be replaced with the name of one of the systems from the table below.
 
 ___
 
