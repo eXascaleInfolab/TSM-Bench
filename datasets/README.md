@@ -5,7 +5,7 @@ We use as seed a real-world dataset of water temperature and level time series r
 
 We use our LSH-GAN data generator to augment the size of the seed dataset into two larger datasets. The dimensions of the two datasets used in the benchmark are the following:
 
-| Dataset | # TS | # Stations | # Sensors/station | TS Length | 
+| dataset | # of TS | # of Stations | # of Sensors per station | Length of TS | 
 | ------ | ------ | ------ | ------ | ------ |
 | d1 | 1K | 10 | 100 | 5.18M |
 | d2 | 200K | 2000 | 100 | 17.2B

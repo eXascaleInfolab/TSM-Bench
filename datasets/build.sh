@@ -7,9 +7,13 @@ if [ $# -ge 1 ]; then
 fi
 
 if [ "$dataset" = "d1" ];then
+	mkdir -p splits
+	cat d1_splits/datasets_splits.* > datasets.tar.gz
+	tar -zxvf datasets.tar.gz
+	mv datasets/* ./
+	rm datasets -r
+	rm datasets.tar.gz
 
-	wget -O d1.csv https://zenodo.org/record/8385578/files/d1.csv?download=1
-	
 	python3 generate_influx.py d1
 fi 
 
