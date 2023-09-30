@@ -36,6 +36,7 @@ source TSMvenv/bin/activate
 
 ```bash
 sh install_all_sys.sh
+cd ..
 ```
 
 ## Datasets Building & Loading 
