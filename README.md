@@ -41,7 +41,7 @@ cd ..
 
 ## Datasets Building & Loading 
 
-- Download and decompress Dataset 1 (takes ~ 10 mins)
+- Download and decompress Dataset 1 (takes ~ 3 mins)
 
 ```bash
 cd datasets
