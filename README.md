@@ -115,10 +115,7 @@ ___
 | questdb | q6 (average) | |
 | timescaledb | q7 (correlation) | |
 | all  | all | all |
-| - | Additional queries |- |
 
-|  | q9 (DTW) | |
-|  | all | |
 
 
 - **Optional Arguments**: The following arguments allow to add variation in the number of sensors and dynamic changes in predicate ranges:
