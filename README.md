@@ -114,7 +114,9 @@ ___
 | monetdb | q5 (upsampling) |  |
 | questdb | q6 (average) | |
 | timescaledb | q7 (correlation) | |
-| all  | q8 (distance based similarity search) | |
+| all  | all | all |
+| - | Additional queries |- |
+
 |  | q9 (DTW) | |
 |  | all | |
 
