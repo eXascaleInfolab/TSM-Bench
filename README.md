@@ -176,7 +176,6 @@ This workload requires two servers: the first one serves as a host machine to de
    
     ```bash
     sh install_client_lib.sh
-    cd ..
     ```
 #### Query Execution
 1. Run the system on the host side 
