@@ -9,8 +9,6 @@ sudo apt update
 sudo apt install python3.6
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.6 1
 sudo update-alternatives --config python
-python3.8 -m venv TSMvenv
-. TSMvenv/bin/activate
 # Choose 3.6 version
 sudo apt -y install python3-pip
 pip3 install --upgrade pip
