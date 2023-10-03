@@ -51,7 +51,6 @@ sh build.sh d1
 - Load Dataset 1 into all the systems (takes ~ 2 hours)
   
 ```bash
-cd ../systems
 sh load_all.sh d1
 ```
 
