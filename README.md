@@ -36,7 +36,6 @@ source TSMvenv/bin/activate
 
 ```bash
 sh install_all_sys.sh
-cd ..
 ```
 
 ## Datasets Building & Loading 
@@ -44,7 +43,7 @@ cd ..
 - Download and decompress Dataset 1 (takes ~ 3 mins)
 
 ```bash
-cd datasets
+cd ../datasets
 sh build.sh d1
 cd ..
 
@@ -53,7 +52,7 @@ cd ..
 - Load Dataset 1 into all the systems (takes ~ 2 hours)
   
 ```bash
-cd systems
+cd ../systems
 sh load_all.sh d1
 cd ..
 ```
