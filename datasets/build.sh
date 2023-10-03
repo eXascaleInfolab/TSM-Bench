@@ -7,7 +7,7 @@ if [ $# -ge 1 ]; then
 fi
 
 if [ "$dataset" = "d1" ];then
-	mkdir -p splits
+	#mkdir -p splits
 	cat d1_splits/datasets_splits.* > datasets.tar.gz
 	tar -zxvf datasets.tar.gz
 	mv datasets/* ./
