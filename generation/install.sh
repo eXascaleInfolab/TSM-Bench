@@ -12,6 +12,7 @@ sudo update-alternatives --config python
 # Choose 3.6 version
 sudo apt -y install python3-pip
 pip3 install --upgrade pip
+python -m pip install lshashpy3
 python -m pip install numpy
 python -m pip install pandas
 python -m pip install matplotlib
@@ -19,11 +20,11 @@ python -m pip install https://files.pythonhosted.org/packages/86/9f/be0165c6eefd
 python -m pip install sugartensor==1.0.0.2
 python -m pip install sklearn
 python -m pip install future
-python -m pip install lshashpy3
 python -m pip install torch
 python -m pip install scipy
 python -m pip install matplotlib
 python -m pip install torch
 python -m pip install torchvision
 python -m pip install wfdb
+python -m pip install lshashpy3
 # Run: time python main_tsgen.py
