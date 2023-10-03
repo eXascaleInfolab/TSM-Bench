@@ -4,9 +4,9 @@
 ### Install requirements
 
 ```bash
-source systems/TSMvenv/bin/activate
 cd generation/
 sh install.sh
+source TSMvenv/bin/activate
 ```
 
 ### Execution using a pre-trained model 
