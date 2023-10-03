@@ -45,7 +45,6 @@ sh install_all_sys.sh
 ```bash
 cd ../datasets
 sh build.sh d1
-cd ..
 
 ```
 
@@ -54,7 +53,6 @@ cd ..
 ```bash
 cd ../systems
 sh load_all.sh d1
-cd ..
 ```
 
 - **Note**: To build and load the larger dataset d2, replace ```d1``` with ```d2```.
