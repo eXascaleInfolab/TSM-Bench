@@ -11,7 +11,7 @@ sh install.sh
 ### Execution using a pre-trained model 
 
 ```bash
-python3 run_pretrained.py
+python run_pretrained.py
 ```
 The generated plots and data are stored in the `generation/results` folder.
 
@@ -23,7 +23,7 @@ The generated plots and data are stored in the `generation/results` folder.
 - Partition your input data located in `data/` into segments of the same length
 
 ```bash
-python3 ts_seg.py
+python ts_seg.py
 ```
 
 #### Step 2: Model training
@@ -32,14 +32,14 @@ python3 ts_seg.py
 
 ```bash
 cd gan/
-python3 DCGAN.py
-python3 encoder_dc.py
+python DCGAN.py
+python encoder_dc.py
 ```
 
 2. Generate new segments using the trained ones from Step 1 (takes ~46 seconds)
 
 ```bash
-python3 test_dc.py
+python test_dc.py
 ```
 
 #### Step 3: Data generation
@@ -47,7 +47,7 @@ python3 test_dc.py
 - Apply LSH to generate long time series (takes ~20 seconds)
 
 ```bash
-python3 gen_ts.py
+python gen_ts.py
 ```
 ### Sample Generation plots:
 
