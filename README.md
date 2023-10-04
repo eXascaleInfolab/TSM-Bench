@@ -7,7 +7,7 @@ TSM-Bench is a new benchmark that compares seven Time Series Database Systems (T
 - We use two datasets for the evaluation: *D-LONG [d1] and D-MULTI [d2]*. The evaluated datasets can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/datasets).
 - <sup>*</sup>**Note**: Due to license restrictions, we can only share the evaluation version of extremeDB. The results between the benchmarked and the public version might diverge. 
 
-[**Prerequisites**](#prerequisites) | [**Build Datasets**](#datasets-loading) | [**Installation**](#systems-setup) | [**Experiments**](#experiments) | [**Benchmark Extension**](#benchmark-extension) | [**Technical Report**](#technical-report) | [**Data Generation**](#time-series-generation) | [**Contributors**](#contributors)
+[**Prerequisites**](#prerequisites) | [**Installation**](#systems-setup) | [**Datasets Loading**](#datasets-loading) | [**Experiments**](#experiments) | [**Benchmark Extension**](#benchmark-extension) | [**Technical Report**](#technical-report) | [**Data Generation**](#time-series-generation) | [**Contributors**](#contributors)
 
 
 
