@@ -1,14 +1,20 @@
+#!/bin/sh
+
+
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt-get update
-sudo apt-get install git
-sudo apt-get install git-lfs
+sudo apt-get install -y git
+sudo apt-get install -y git-lfs
 git config --global credential.helper store
 git lfs pull
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt update
-sudo apt install python3.6
+sudo apt install -y python3.6
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.6 1
-sudo update-alternatives --config python
+sudo update-alternatives --config pytho
+sudo apt install python3.6-distutils
+sudo apt-get install python3-distutils
+sudo apt-get install python3-apt
 # Choose 3.6 version
 sudo apt -y install python3-pip
 pip3 install --upgrade pip
