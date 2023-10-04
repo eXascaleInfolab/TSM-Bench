@@ -363,12 +363,12 @@ plt.savefig('results/plot_lsh_graph.pdf',dpi=1600,
 
 # In[38]:
 
-
+plt.figure()
 plt.hist(data, bins=50, alpha=0.5, label ='real')
 plt.hist(lsh_res[0], bins=50, alpha=0.5, label ='lsh')
 plt.hist(graph_res[0], bins=50, alpha=0.5, label ='graph')
 plt.legend()
-plt.show()
+# plt.show()
 plt.savefig('results/hist_lsh_graph.pdf',dpi=1600,
             bbox_inches = 'tight')
 
