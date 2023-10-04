@@ -12,7 +12,6 @@ sudo update-alternatives --config python
 # Choose 3.6 version
 sudo apt -y install python3-pip
 pip3 install --upgrade pip
-python -m pip install lshashpy3
 python -m pip install numpy
 python -m pip install pandas
 python -m pip install matplotlib
