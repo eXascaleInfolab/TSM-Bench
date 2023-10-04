@@ -4,7 +4,6 @@
 ### Install requirements
 
 ```bash
-source systems/TSMvenv/bin/activate
 cd generation/
 sh install.sh
 ```
