@@ -36,15 +36,14 @@ python DCGAN.py
 python encoder_dc.py
 ```
 
-2. Generate new segments using the trained ones from Step 1 (takes ~46 seconds)
-
+2. Generate new segments using the trained ones from Step 1
 ```bash
 python test_dc.py
 ```
 
 #### Step 3: Data generation
 
-- Apply LSH to generate long time series (takes ~20 seconds)
+- Apply LSH to generate long time series 
 
 ```bash
 python gen_ts.py
