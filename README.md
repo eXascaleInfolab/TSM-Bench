@@ -91,7 +91,7 @@ ___
 -->
 
 ### Offline Workload
-- If the virtual enviorement is not activated active from the root folder using:
+- Activate the virtual enviorement, if not already done:
   
    ```bash
    source systems/TSMvenv/bin/activate
