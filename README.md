@@ -91,9 +91,14 @@ ___
 -->
 
 ### Offline Workload
-
+- If the virtual enviorement is not activated active from the root folder using:
+  
+   ```bash
+   source systems/TSMvenv/bin/activate
+   ```
+   
 - The offline queries for all systems can be executed from the root folder using:
-
+   
     ```bash
     python3 tsm_eval.py [args]
     ```
@@ -163,7 +168,7 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 This workload requires two servers: the first one serves as a host machine to deploy the systems (similar to above) and the second one runs as a client to generate writes and queries.
 
 #### Client Setup
-
+ 
 - Clone this repo
 - Install dependencies:
 
@@ -183,10 +188,15 @@ This workload requires two servers: the first one serves as a host machine to de
    ```bash
    cd systems/{system}
    sh launch.sh
-   ```   
-2. Execute the online query on the client side using the --host flag (see examples below).
+   ```
+2. If the virtual enviorement is not activated active from the root folder using:
+  
+   ```bash
+   source systems/TSMvenv/bin/activate
+   ```
+3.  Execute the online query on the client side using the --host flag (see examples below).
    
-3. Stop the system on the host server
+4. Stop the system on the host server
    ```bash
    sh stop.sh
    ```   
