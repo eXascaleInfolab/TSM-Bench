@@ -2,7 +2,6 @@ import datetime
 import time
 import sys
 
-
 dataset = "d1"
 # Check if the correct number of arguments is provided
 if len(sys.argv) != 2:
@@ -42,9 +41,9 @@ while True:
         #print(influx_line)
         data_target.write(influx_line)
         if(index%1000==0):
-            print(index)
-            #print(influx_line)
+            print(index,end="\r")
         index=index+1
 data_target.close()
 data_src.close()
+print()
 print(time.time()-start)
