@@ -1,0 +1,1 @@
+{"clickhouse_hostname": "localhost", "druid_hostname": "localhost", "extreme_hostname": "localhost", "influx_hostname": "localhost", "monetdb_hostname": "localhost", "questdb_hostname": "localhost", "timescaledb_hostname": "localhost"}
