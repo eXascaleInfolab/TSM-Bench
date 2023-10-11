@@ -41,7 +41,7 @@ sudo docker exec -it timescaledb-container psql -U postgres -c  "SELECT create_h
 current="$(pwd)"
 
 sleep 10
-sudo docker exec -it timescaledb-container psql -U postgres -c "COPY d1 FROM '/var/lib/postgresql/data/TSM-Bench/datasets/$dataset.csv' DELIMITER ',' CSV HEADER;";
+sudo docker exec -it timescaledb-container psql -U postgres -c "COPY $dataset FROM '/var/lib/postgresql/data/TSM-Bench/datasets/$dataset.csv' DELIMITER ',' CSV HEADER;";
 
 sleep 10
 sudo docker exec -it timescaledb-container psql -U postgres -c "ALTER TABLE $dataset SET (timescaledb.compress, timescaledb.compress_segmentby='id_station');
@@ -50,13 +50,11 @@ SELECT compress_chunk(i) FROM show_chunks('$dataset') i ORDER BY i DESC OFFSET 1
 
 end_time=$(date +%s.%N)
 elapsed_time=$(echo "$end_time - $start_time" | bc)
-echo "Loading time: $elapsed_time seconds" > loading_time_$dataset.txt
-echo $elapsed_time
-echo "database compression"
 
-sleep 10
-sudo docker exec -it timescaledb-container psql -U postgres -c "SELECT hypertable_size('$dataset') ;"
+echo "computing compression"
+compression="$(sh compression.sh $dataset | tail -n 1)"
 
-sh compression.sh
+echo "$dataset $compression ${elapsed_time}s"
 
+echo "$dataset $compression ${elapsed_time}s" >> time_and_compression.txt
 

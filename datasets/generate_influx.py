@@ -21,6 +21,8 @@ index=1
 line = data_src.readline()
 
 start = time.time()
+new_line = '\n'
+
 while True:
     line = data_src.readline()
     if not line:
@@ -31,17 +33,13 @@ while True:
         date_str = str(int(datetime.datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S").timestamp()) * 1000)
         id_station = columns[1]
         influx_line = "sensor,id_station="+id_station + " "
-        #for i in range(100):
-        #    influx_line += "s"+str(i)+"=" + str(columns[i+2]) 
-        #    if i < 99: 
-        #        influx_line += ','
-            # print(influx_line)
-        influx_line += ",".join([ f"s{i}={v}" for i,v in enumerate(columns[2:102]) ] )
-        influx_line = influx_line[:-1] + " " + date_str + '\n'
-        #print(influx_line)
+        influx_line += ",".join([ f"s{i}={(v if (v != '' and v != new_line) else 'null')}" for i,v in enumerate(columns[2:102]) if (v != '' and v != new_line) ]  )
+        influx_line =  influx_line[:-1] + " " + date_str + '\n'
+        print("line",influx_line)
         data_target.write(influx_line)
         if(index%1000==0):
-            print(index,end="\r")
+            pass
+            #passprint(index,end="\r")
         index=index+1
 data_target.close()
 data_src.close()

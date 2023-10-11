@@ -13,8 +13,6 @@ sudo mkdir $HOME/.questdb/conf/
 sudo cp server.conf $HOME/.questdb/conf/
 sudo cp server.conf /root/.questdb/conf/
 
-# sudo ./questdb.sh start
-
 sudo ./questdb-6.4.1-rt-linux-amd64/bin/questdb.sh start
 
 sudo cp server.conf $HOME/.questdb/conf/

@@ -12,4 +12,4 @@ wait
 cat d2_1_4.csv d2_2_4.csv d2_3_4.csv d2_4_4.csv > d2.csv
 
 # Remove individual files
-rm d2_*
+#rm d2_*
