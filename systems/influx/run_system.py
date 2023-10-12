@@ -93,7 +93,6 @@ if __name__ == "__main__":
 	print("launching system")
 	main_process = Popen(['sh', 'launch.sh'], stdin=PIPE, stdout=PIPE, stderr=STDOUT)
 
-	print("after communicate")
 
 	process = Popen(['sleep', '10'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
 	stdout, stderr = process.communicate()

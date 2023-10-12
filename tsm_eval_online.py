@@ -30,7 +30,6 @@ parser.add_argument('--max_ts', nargs = '?', type = str, help = 'Maximum query t
 parser.add_argument('--min_ts', nargs = '?', type = str, help = 'Minimum query timestamp', default = "2019-04-01T00:00:00")
 parser.add_argument('--timeout', nargs = '?', type = str, help = 'Query execution timeout in seconds', default = 20)
 parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
-parser.add_argument('--online', nargs = '?', type = lambda x : str(x).lower() , help = 'Query execution timeout in seconds', default = "false")
 
 parser.add_argument('--host', nargs = '?', type = str , help = 'Query execution timeout in seconds', default = "localhost")
 parser.add_argument('--batch_start', nargs = '?', type = int , help = 'Query execution timeout in seconds', default = 10)
@@ -77,15 +76,15 @@ from systems.utils.online_library import generate_continuing_data
 import time
 from subprocess import Popen, PIPE, STDOUT, DEVNULL
 
-print("generating ingestion data")
-data =  generate_continuing_data(args.batch_start+args.batch_step*100)
-
-start_date  = data["time_stamps"][0]
-start = data['time_stamps']
 
 curr_wd = os.getcwd()
 
 for dataset in args.datasets:
+    print("generating ingestion data")
+    data =  generate_continuing_data(args.batch_start+args.batch_step*100,dataset)
+    start_date  = data["time_stamps"][0]
+    start = data['time_stamps']
+
     for system in systems:
         systemPath = system_paths[system]
         if not(os.path.exists(systemPath)):
