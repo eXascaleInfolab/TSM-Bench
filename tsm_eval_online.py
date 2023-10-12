@@ -19,7 +19,7 @@ datasets_choices = ['d1']
 
 parser = argparse.ArgumentParser(description = 'Script for running any eval')
 parser.add_argument('--system', nargs = '+', type = str, help = 'Systems name', default = ['clickhouse'])
-parser.add_argument('--datasets', choices= datasets_choices, nargs = '*', type = str, help = 'Dataset name', default = ['d1'])
+parser.add_argument('--datasets', nargs = '*', type = str, help = 'Dataset name', default = ['d1'])
 parser.add_argument('--queries', nargs = '*', type = str, help = 'List of queries to run (Q1-Q7)', default = "q1 q2 q3 q4 q5 q6 q7")
 parser.add_argument('--n_st', nargs = '?', type = int, help = 'Number of stations in the dataset', default = 10)
 parser.add_argument('--n_s', nargs = '?', type = int, help = 'Number of sensors in the dataset', default = 100)
@@ -148,7 +148,7 @@ for dataset in args.datasets:
             event.set()
             time.sleep(30)
             for thread in threads:
-                print("joining threads")
+                #print("joining threads")
                 thread.join()
 
             batch_size = batch_size + args.batch_step
@@ -161,16 +161,15 @@ for dataset in args.datasets:
             for query , (start , stop , mean , var) in query_results[batch_iteration].items():
                 final_result[query] = final_result.get(query,{})   
                 diff , insertion_rate  = stop-(start-1) , 0
-                print(query)
+                #print(query)
                 for t_n , thread_results in enumerate(thread_results_full):
-                    print(type(thread_results),"BBBBBB")
                     insertions = thread_results["insertions"]
                     insertion_rate += sum([  rate  for time,rate in insertions if time >= start-1 and time <= stop ])/diff
                     if insertion_rate == 0:
                         print("insertions failed")
                     print(insertion_rate)
                 final_result[query][batch_iteration] = (mean , var , insertion_rate)
-                print("final_results" , final_result)
+                #print("final_results" , final_result)
         run_online.save_online(final_result, system , dataset)
         #set the database to its initial state
         try:

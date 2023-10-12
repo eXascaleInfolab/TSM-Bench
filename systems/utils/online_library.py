@@ -1,8 +1,8 @@
 
-
+import subprocess
 import os
 import pandas as pd
-def generate_continuing_data(batch_size = 100000,dataset):
+def generate_continuing_data(batch_size ,dataset):
     path_to_data_folder = "../datasets" if os.path.isdir("../datasets") else "datasets"
     data_set_name = "d1_tail.csv" 
     data_set_path =  f"{path_to_data_folder}/{data_set_name}"
