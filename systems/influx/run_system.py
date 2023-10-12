@@ -91,17 +91,23 @@ if __name__ == "__main__":
 	sys.path.append(systems_dir)
 	
 	print("launching system")
-	process = Popen(['sh', 'launch.sh', '&'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-	stdout, stderr = process.communicate()
+	main_process = Popen(['sh', 'launch.sh'], stdin=PIPE, stdout=PIPE, stderr=STDOUT)
 
-	process = Popen(['sleep', '2'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-	stdout, stderr = process.communicate()	
-	
+	print("after communicate")
+
+	process = Popen(['sleep', '10'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+	stdout, stderr = process.communicate()
+    
+
 	def query_f(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it, host = "localhost"):
 		return run_query(query, rangeL = rangeL, rangeUnit = rangeUnit, n_st = n_st, n_s = n_s, n_it = n_it, host= host)
 		
 	run_system(args,"influx",query_f)
+	command = "ps -ef | grep 'influxd' | grep -v grep | awk '{print $2}' | xargs -r kill -9"
+	print("shutting down")
 
-	process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+	process = Popen(command, shell=True, stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+
 	stdout, stderr = process.communicate()
 
+	#main_process.communicate()

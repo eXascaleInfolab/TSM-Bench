@@ -156,6 +156,17 @@ if __name__ == "__main__":
 	#process = subprocess.Popen(['sh', 'stop.sh'], stdin=subprocess.PIPE)
 	#stdout, stderr = process.communicate()
 	main_process.communicate()
+	process_name = 'influxd'
 
+# Use pgrep to find the process ID(s)
+	try:
+		pids = subprocess.check_output(['pgrep', process_name], universal_newlines=True)
+		pids = pids.strip().split('\n')
+	except subprocess.CalledProcessError:
+		pids = []
+
+# Terminate the process(es)
+	for pid in pids:
+		subprocess.run(['kill', pid])
 
 
