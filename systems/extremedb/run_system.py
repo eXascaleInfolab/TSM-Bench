@@ -116,8 +116,8 @@ if __name__ == "__main__":
 
 	import os
 	import subprocess
-
-	# Command to source the script and print the environment
+	
+        # Command to source the script and print the environment
 	command = '/bin/bash -c "source variables.sh; env"'
 
 	# Run the command as a subprocess, capturing the output
@@ -138,7 +138,7 @@ if __name__ == "__main__":
 
 
 	# Run launch.sh with the modified environment and let it run in the background
-	process = subprocess.Popen(['sh', 'launch.sh'], env=new_env, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+	main_process = subprocess.Popen(['sh', 'launch.sh'], env=new_env, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
 
 	process = subprocess.Popen(['sleep', '10'], env=new_env, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
@@ -153,8 +153,9 @@ if __name__ == "__main__":
 	run_system(args,"extremedb",query_f)
 	
 	
-	process = subprocess.Popen(['sh', 'stop.sh'], stdin=subprocess.PIPE)
-	stdout, stderr = process.communicate()
+	#process = subprocess.Popen(['sh', 'stop.sh'], stdin=subprocess.PIPE)
+	#stdout, stderr = process.communicate()
+	main_process.communicate()
 
 
 
