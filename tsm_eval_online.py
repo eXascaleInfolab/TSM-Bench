@@ -107,7 +107,7 @@ for dataset in args.datasets:
         batch_size = args.batch_start
         insertion_results = {} # run -> results 
         query_results = {}
-        for i in range(0,20,3):
+        for i in range(0,20,5):
             event = Event()
             threads = []
             insertion_results[i] = [{"status" : "ok" , "insertions" : [] } for _ in range(args.n_threads)]

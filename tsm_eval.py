@@ -4,6 +4,7 @@ import sys
 import subprocess
     
 from systems.utils.time_settings import abr_time_map as unit_options
+from systems.utils.storer import set_offline
 from systems.config import system_names
 
 datasets = ['d1', 'd2', 'TEST']
@@ -80,5 +81,4 @@ for system in systems:
 	if len(args.additional_arguments) > 0:
 		toRun = toRun + args.additional_arguments.split(" ")
 	
-	# print(toRun)
 	subprocess.run(toRun)

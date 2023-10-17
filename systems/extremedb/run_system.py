@@ -13,6 +13,7 @@ import json
 # setting path
 sys.path.append('../')
 from utils.library import *
+from utils.storer import store
 import exdb
 
 # Generate Random Values

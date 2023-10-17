@@ -120,7 +120,7 @@ def run_query(query, rangeL , rangeUnit, n_st , n_s , n_it,host="localhost"):
 
 
 if __name__ == "__main__":
-	print('launching system moentdb')
+	print('launching system monetdb')
 
 	import os
 	import subprocess
@@ -137,7 +137,7 @@ if __name__ == "__main__":
 	def query_f(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
 		return run_query(query, rangeL=rangeL, rangeUnit = rangeUnit ,n_st = n_st , n_s = n_s , n_it = n_it)
 
-	run_system(args,"extremedb",query_f)
+	run_system(args,"monetdb",query_f)
 
 
 	process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)

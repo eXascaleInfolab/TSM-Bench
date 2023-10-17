@@ -7,7 +7,6 @@ import time
 def input_data(t_n,event, data , results , batch_size = 10, host = "localhost", dataset = "d1"):
     results["evaluated"] = True
     try:
-        from systems.online_library import generate_continuing_data
         exdb.init_runtime(debug = True, shm = False, disk = False, tmgr = 'mursiw')
         conn = exdb.connect(host,5001)
         cur = conn.cursor()
