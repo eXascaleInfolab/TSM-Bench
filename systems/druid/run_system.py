@@ -117,7 +117,8 @@ if __name__ == "__main__":
 
     process = Popen(['sh', 'launch.sh', '&'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
     stdout, stderr = process.communicate() #launch.sh  from druid has to sleep for long itself
-
+    
+    print("druid launched")
     run_system(args,"druid",run_query)
 
 

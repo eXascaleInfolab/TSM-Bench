@@ -63,8 +63,6 @@ def plot_query_directory(query_dir):
     db_txt_files = sorted([ f_name for f_name in os.listdir(runtime_dir) if f_name.endswith(".txt")])
 
     results = { file_n.split(".")[0] :  pd.read_csv(runtime_dir+"/"+file_n,index_col=0) for file_n in db_txt_files}
-    #print("results to plot",results)
-    ## splits scenarios
 
     stations_scenario = { k : df[df.index.str.contains('st_')][["runtime"]] for k,df in results.items() }
 
@@ -73,7 +71,6 @@ def plot_query_directory(query_dir):
     time_scenario = { k : df[~df.index.str.contains('_')][["runtime"]] for k,df  in results.items() }
 
     combined_df = pd.concat([df.rename(columns={'runtime': key}) for key, df in stations_scenario.items()], axis=1)
-    ## extract integer part eg "st1" -> 1
     new_index = combined_df.index.map(lambda x: int(x[3:]))
     combined_df.set_index(new_index,inplace = True)
 
@@ -94,9 +91,6 @@ def plot_query_directory(query_dir):
     plt.close()
 
     combined_df = pd.concat([df.rename(columns={'runtime': key}) for key, df in time_scenario.items()], axis=1)
-#     new_index = combined_df.index.map(lambda x: str(x[1:]))
-#     print(combined_df)
-#    combined_df.set_index(new_index,inplace = True)
     combined_df.plot(color=[color_dict.get(x, '#333333') for x in combined_df.columns])
     plt.ylabel("Runtime (ms)") or plt.xlabel("Query Range")
     plt.title(f"{selected_query} varying query range")
@@ -164,6 +158,7 @@ def run_system(args,system_name,run_query_f, query_filters = ("SELECT",)):
                                 index_.append(f" s_{sensors}")
                             except Exception as E:
                                 import traceback
+                                print(E)
                                 runtimes.append((-1,-1))
                                 index_.append(f" s_{sensors}")                                                        
                                 with open(log_file, 'a') as error_file:
@@ -171,7 +166,6 @@ def run_system(args,system_name,run_query_f, query_filters = ("SELECT",)):
                                     error_file.write(f"######Query{i+1}#####")
                                     error_file.write(f"######Sensor Scenario{sensors}#####")
                                     traceback.print_exc(file=error_file)
-                                print(E)
                                 break
                                                         
                         for stations in n_stations:
@@ -181,6 +175,7 @@ def run_system(args,system_name,run_query_f, query_filters = ("SELECT",)):
                                 index_.append(f"st_{stations}")
                             except Exception as E:
                                 import traceback
+                                print(E)
                                 runtimes.append((-1,-1))
                                 index_.append(f"st_{stations}")
                                 with open(log_file, 'a') as error_file:
@@ -188,7 +183,6 @@ def run_system(args,system_name,run_query_f, query_filters = ("SELECT",)):
                                     error_file.write(f"######Query{i+1}#####")
                                     error_file.write(f"######Station Scenario{stations}#####")
                                     traceback.print_exc(file=error_file)
-                                print(E)
                                 break  
                                                         
                         runtimes = pd.DataFrame(runtimes, columns=['runtime','stddev'], index=index_)
@@ -215,8 +209,8 @@ def run_system(args,system_name,run_query_f, query_filters = ("SELECT",)):
         from subprocess import Popen, PIPE, DEVNULL , STDOUT
         traceback.print_exc()
         print(E)
-        process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-        stdout, stderr = process.communicate()
+        #process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+        #stdout, stderr = process.communicate()
       
     
 def init_parser():

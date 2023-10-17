@@ -42,7 +42,7 @@ def run_query(query, rangeL , rangeUnit , n_st , n_s , n_it , host = "localhost"
 		#print(date,temp)	
 		# stations
 		li = ['st' + str(z) for z in random.sample(range(10), n_st)]
-		#  print(li)
+		#print("querying")
 		q = '(id_station =' + "'" + li[0] + "'"
 		for j in li[1:]:
 			q += ' OR '  + 'id_station =' + "'" + j + "'"
@@ -68,7 +68,7 @@ def run_query(query, rangeL , rangeUnit , n_st , n_s , n_it , host = "localhost"
 		
 		start = time.time()
 		queries = client.query(temp)
-		##print(queries)
+		#print("done querying")
 		diff = (time.time()-start)*1000
 
 		runtimes.append(diff)
@@ -91,10 +91,10 @@ if __name__ == "__main__":
 	sys.path.append(systems_dir)
 	
 	print("launching system")
-	main_process = Popen(['sh', 'launch.sh'], stdin=PIPE, stdout=PIPE, stderr=STDOUT)
+	main_process = Popen(['sh', 'launch.sh' ], stdin=PIPE, stdout=PIPE, stderr=STDOUT)
+        
 
-
-	process = Popen(['sleep', '10'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+	process = Popen(['sleep', '20'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
 	stdout, stderr = process.communicate()
     
 
@@ -105,8 +105,7 @@ if __name__ == "__main__":
 	command = "ps -ef | grep 'influxd' | grep -v grep | awk '{print $2}' | xargs -r kill -9"
 	print("shutting down")
 
-	process = Popen(command, shell=True, stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+	#process = Popen(command, shell=True, stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
 
-	stdout, stderr = process.communicate()
+	#stdout, stderr = process.communicate()
 
-	#main_process.communicate()
