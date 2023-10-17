@@ -25,8 +25,8 @@ set_date = [random.random() for i in range(500)]
 
 def run_query(query, rangeL ,rangeUnit ,n_st ,n_s ,n_it , host="localhost"):
 	# Connect to the system
-	conn = connect_ClickHouse(f"clickhouse://{host}")
-	cursor = conn.cursor()
+	conn = connect_ClickHouse(f"clickhouse://{host}",port=9000)
+	cursor = conn.cursor()#cursor = Client(host='localhost',port=9001)
 	runtimes = []
 	full_time = time.time()
 	for it in tqdm(range(n_it)):
@@ -70,15 +70,15 @@ def run_query(query, rangeL ,rangeUnit ,n_st ,n_s ,n_it , host="localhost"):
 		#assert not matches , temp
 		print(temp)
 
-		cursor.execute(temp)
-		results_ = cursor.fetchall()
+		print(cursor.execute(temp))
+		#results_ = cursor.fetchall()
 		diff = (time.time()-start)*1000
 		#  print(temp, diff)
 		runtimes.append(diff)
 		if time.time() - full_time > 200 and it > 5: 
 			break  
 			
-	conn.close()
+	#conn.close()
 	return stats.mean(runtimes), stats.stdev(runtimes)
 
 

@@ -7,7 +7,7 @@ from systems.utils.time_settings import abr_time_map as unit_options
 from systems.utils.storer import set_offline
 from systems.config import system_names
 
-datasets = ['d1', 'd2', 'TEST']
+datasets = ['d1', 'd2', 'TEST',"test"]
 
 parser = argparse.ArgumentParser(description = 'Script for running any eval')
 parser.add_argument('--systems', nargs = '+', type = str, help = 'Systems name', default = ['clickhouse'], choices = system_names+ ["all"])

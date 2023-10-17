@@ -8,15 +8,15 @@ wget https://github.com/questdb/questdb/releases/download/6.4.1/questdb-6.4.1-rt
 tar -xf questdb-6.4.1-rt-linux-amd64.tar.gz
 rm questdb-6.4.1-rt-linux-amd64.tar.gz
 
-sudo mkdir /root/.questdb/conf
+#sudo mkdir /root/.questdb/conf
 sudo mkdir $HOME/.questdb/conf/
 sudo cp server.conf $HOME/.questdb/conf/
-sudo cp server.conf /root/.questdb/conf/
+#sudo cp server.conf /root/.questdb/conf/
 
-sudo ./questdb-6.4.1-rt-linux-amd64/bin/questdb.sh start
+ ./questdb-6.4.1-rt-linux-amd64/bin/questdb.sh start
 
 sudo cp server.conf $HOME/.questdb/conf/
-sudo cp server.conf /root/.questdb/conf/
+#sudo cp server.conf /root/.questdb/conf/
 
 sleep 25
 

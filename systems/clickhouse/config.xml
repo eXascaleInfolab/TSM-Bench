@@ -125,7 +125,7 @@
          (this protocol is also informally called as "the TCP protocol");
          See also 'tcp_port_secure' for secure connections.
     -->
-    <tcp_port>9000</tcp_port>
+    <tcp_port>9001</tcp_port>
 
     <!-- Compatibility with MySQL protocol.
          ClickHouse will pretend to be MySQL for applications connecting to this port.
@@ -152,7 +152,7 @@
     <!-- Native interface wrapped with PROXYv1 protocol
          PROXYv1 header sent for every connection.
          ClickHouse will extract information about proxy-forwarded client address from the header.
-    -->
+	    -->
     <!-- <tcp_with_proxy_port>9011</tcp_with_proxy_port> -->
 
     <!-- Port for communication between replicas. Used for data exchange.
