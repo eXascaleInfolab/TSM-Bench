@@ -21,7 +21,7 @@ echo "load json"
 
 rm temp_template.json
 
-echo"wait for launch"
+echo" wait for launch"
 
 sh launch.sh
 
