@@ -12,7 +12,6 @@ import numpy as np
 from tqdm import tqdm
 import torch.nn.functional as F
 import os
-import cv2
 
 
 class D_Net(nn.Module):
