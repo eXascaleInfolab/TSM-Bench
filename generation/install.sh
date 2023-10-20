@@ -33,5 +33,4 @@ python -m pip install torchvision
 python -m pip install wfdb
 python -m pip install lshashpy3
 python -m pip  install opencv-python 
-python -m pip opencv-python-headless
 # Run: time python main_tsgen.py
