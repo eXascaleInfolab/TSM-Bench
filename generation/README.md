@@ -1,24 +1,29 @@
 # TS-LSH: LSH-based Generation Technique for Long Time Series
 
 
-### Install requirements
+
+
+## Install requirements
 
 ```bash
 cd generation/
 sh install.sh
 ```
 
-### Execution using a pre-trained model 
+You can generate new time series either using our pre-trained model or by retraining the model from scratch  
+
+
+## Option 1: Execution using pre-trained model 
 
 ```bash
 python run_pretrained.py
 ```
 The generated plots and data are stored in the `generation/results` folder.
 
-### Execution by retraining the model
+## Option2: Execution by training the model
 
   
-#### Step 1: Data partitioning
+### Step 1: Data partitioning
 
 - Partition your input data located in `data/` into segments of the same length
 
@@ -26,7 +31,7 @@ The generated plots and data are stored in the `generation/results` folder.
 python ts_seg.py
 ```
 
-#### Step 2: Model training
+### Step 2: Model training
 
 1. Train a GAN model on the original segments and write the generated segments into `results/` (takes ~3 days) 
 
@@ -41,14 +46,14 @@ python encoder_dc.py
 python test_dc.py
 ```
 
-#### Step 3: Data generation
+### Step 3: Data generation
 
 - Apply LSH to generate long time series 
 
 ```bash
 python gen_ts.py
 ```
-### Sample Generation plots:
+## Generation Examples:
 
 ![image](https://github.com/eXascaleInfolab/TSM-Bench/assets/15266242/13d8c2f9-fdbf-495f-aaf9-7f5ec0999470)
 
