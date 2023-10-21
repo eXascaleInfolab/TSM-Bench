@@ -59,8 +59,3 @@ python gen_ts.py
 
 
 
-## GAN Code Attribution
-The GAN code used in `gan/` was obtained from the [TS-Benchmark](https://github.com/dbiir/TS-Benchmark) repo.
-
-
-
