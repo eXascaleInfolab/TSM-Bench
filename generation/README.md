@@ -13,11 +13,11 @@ sh install.sh
 You can generate new time series either using our pre-trained model or by retraining the model from scratch.  
 
 
-## Option 1: Execution using pre-trained model 
+## Option 1: Execution using pre-trained model      
 
 ```bash
 python run_pretrained.py
-```
+`` `
 The generated plots and data are stored in the `generation/results` folder.
 
 ## Option 2: Execution by training the model
@@ -56,4 +56,11 @@ python gen_ts.py
 ## Generation Examples:
 
 ![image](https://github.com/eXascaleInfolab/TSM-Bench/assets/15266242/13d8c2f9-fdbf-495f-aaf9-7f5ec0999470)
+
+
+
+## GAN Code Attribution
+The GAN code used in `gan/` was obtained from the [TS-Benchmark](https://github.com/dbiir/TS-Benchmark) repo.
+
+
 
