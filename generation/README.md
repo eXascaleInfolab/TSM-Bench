@@ -17,7 +17,7 @@ You can generate new time series either using our pre-trained model or by retrai
 
 ```bash
 python run_pretrained.py
-`` `
+```
 The generated plots and data are stored in the `generation/results` folder.
 
 ## Option 2: Execution by training the model
