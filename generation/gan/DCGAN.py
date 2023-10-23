@@ -1,5 +1,5 @@
 """
-This code was obtained from the https://github.com/dbiir/TS-Benchmark repository.
+Source of the code: https://github.com/dbiir/TS-Benchmark.
 """
 
 
