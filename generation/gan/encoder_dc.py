@@ -1,3 +1,7 @@
+"""
+Source of the code: https://github.com/dbiir/TS-Benchmark.
+"""
+
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
@@ -12,7 +16,6 @@ import numpy as np
 from tqdm import tqdm
 import torch.nn.functional as F
 import os
-import cv2
 
 
 class D_Net(nn.Module):
@@ -138,7 +141,7 @@ if __name__ == '__main__':
     #     return out
     #
     #
-    date = np.loadtxt('./column_23_3072_3072.txt', delimiter=',')
+    date=np.loadtxt('../data/column_23_3072_3072.txt',delimiter=',')
     lis = []
     for i in range(3072):
         lis.append(date[i].reshape((3, 32, 32))/10)

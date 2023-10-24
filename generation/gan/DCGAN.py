@@ -1,3 +1,10 @@
+"""
+Source of the code: https://github.com/dbiir/TS-Benchmark.
+"""
+
+
+
+
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
