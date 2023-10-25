@@ -33,7 +33,7 @@ python ts_seg.py
 
 ### Model training
 
-1. Train a GAN model on the original segments and write the generated segments into `results/` (takes ~10 days) 
+1. Train a GAN model on the original segments and add the generated segments into `results/` (takes ~10 days) 
 
 ```bash
 cd gan/
@@ -41,7 +41,7 @@ python DCGAN.py
 python encoder_dc.py
 ```
 
-2. Generate new segments using the trained ones from Step 1
+2. Generate new segments using the trained ones 
 ```bash
 python test_dc.py
 ```
