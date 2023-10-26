@@ -184,7 +184,7 @@ if __name__ == '__main__':
                 if i%10 == 0:
                     print('Epoch [{}/{}], d_loss: {:.3f}, g_loss: {:.3f} '
                           'D real: {:.3f}, D fake: {:.3f}'
-                          .format(epoch, 6000, d_loss, g_loss,
+                          .format(epoch, 1000, d_loss, g_loss,
                                   real_scores.data.mean(), fake_scores.data.mean()))
                     print(d_loss_real,d_loss_fake)
                     torch.save(d_net.state_dict(), r"./gand_path")
