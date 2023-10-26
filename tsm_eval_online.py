@@ -7,13 +7,13 @@ from systems.utils import run_online
 
 from systems import  influx ,extremedb, timescaledb , questdb  , monetdb , clickhouse
 system_module_map = { "influx" : influx,
-	"extremedb" : extremedb,
+    "extremedb" : extremedb,
     "clickhouse" : clickhouse,
-	"questdb" : questdb,
+    "questdb" : questdb,
     "monetdb" : monetdb,
-	#"druid" : druid,
-	"timescaledb" : timescaledb
-	} 
+    #"druid" : druid,
+    "timescaledb" : timescaledb
+    } 
 
 datasets_choices = ['d1']
 

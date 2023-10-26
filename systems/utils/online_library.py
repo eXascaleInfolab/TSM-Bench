@@ -2,14 +2,11 @@
 import subprocess
 import os
 import pandas as pd
+
 def generate_continuing_data(batch_size ,dataset):
-    path_to_data_folder = "../datasets" if os.path.isdir("../datasets") else "datasets"
-    data_set_name = "d1_tail.csv" 
-    data_set_path =  f"{path_to_data_folder}/{data_set_name}"
-    tail_process = subprocess.Popen(['tail', data_set_path, '-n', '1'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout, stderr = tail_process.communicate()
-    date , station , *sensors = stdout.decode("utf-8").strip().split(",")
-    date_pd = pd.to_datetime(date)
+    from systems.utils import get_start_and_stop_dates
+
+    _ , date_pd = get_start_and_stop_dates(dataset)
 
     new_time_stamps = [ pd.to_datetime(date) + pd.Timedelta(seconds=10 * i) for i in range(1,batch_size+1)]
     print(new_time_stamps[0],new_time_stamps[-1])

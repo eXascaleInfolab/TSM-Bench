@@ -25,7 +25,7 @@ echo "$number"
 result=$number
 
 echo "result"
-echo "$result" 
+echo "${result}B" 
 
 
 mute=$(sudo docker stop timescaledb-container) 

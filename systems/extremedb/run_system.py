@@ -10,10 +10,14 @@ import sys
 import pandas as pd
 import json
 
+import os
+import subprocess
 # setting path
-sys.path.append('../')
-from utils.library import *
-from utils.storer import store
+sys.path.append('../../')
+from systems.utils.library import *
+from systems.utils import change_directory , parse_args
+from systems import run_system
+
 import exdb
 
 # Generate Random Values
@@ -22,152 +26,138 @@ set_st = [str(random.randint(0,9)) for i in range(500)]
 set_s = [str(random.randint(0,99)) for i in range(500)]
 set_date = [random.random() for i in range(500)]
 
-with open("../scenarios.json") as file:
-	scenarios = json.load(file)
-
-n_stations , n_sensors , n_time_ranges = scenarios["stations"],  scenarios["sensors"], scenarios["time_ranges"]
-default_n_iter = int(scenarios["n_runs"])
-default_timeout = scenarios["timeout"]
-
 
 def run_query(query, rangeL , rangeUnit, n_st , n_s , n_it, host="localhost"):
-	options = {"day" : 60 * 60* 24,
-			   "week" : 60 * 60* 24 * 7,
-			   "minute" : 60,
-			   "hour" : 60 * 60,
-			   "second" : 1,
-			   "month" : 60 * 60 * 24 * 30,
-			   "year" :  60 * 60 * 24 * 30 * 12
-	}	
-	# Connect to the system
-	exdb.init_runtime(debug = False, shm = False, disk = False, tmgr = 'mursiw')
-	conn = exdb.connect(host, 5001)
-	cursor = conn.cursor()
-	runtimes = []
-	full_time = time.time()
-	for it in tqdm(range(n_it)):
-		date = random_date("2019-04-01T00:00:00", "2019-04-30T00:00:00", set_date[(int(rangeL)*it)%500], dform = '%Y-%m-%dT%H:%M:%S')
-		date = int(time.mktime(datetime.strptime(date, '%Y-%m-%dT%H:%M:%S').timetuple()))
-		temp = query.replace("<timestamp>", str(date))
-		temp = temp.replace("<range>", str(rangeL))
-		temp = temp.replace("<rangesUnit>", str(options[rangeUnit]))
-		
-		# stations
-		li = ['st' + str(z) for z in random.sample(range(10), n_st)]
-		q = "(" + "'" + li[0] + "'"
-		for j in li[1:]:
-			q += ', ' + "'" + j + "'"
-		q += ")"
-		temp = temp.replace("<stid>", q)
-	
-		# sensors
-	
-		rand = [str(z) for z in random.sample(range(100), n_s)]
-		sidlist = 's' + rand[0]
-		for j in rand[1:]:
-			sidlist += ',' + 's' +  j
-		li = ['s' + str(z) + "@tt" for z in rand]
-		li_filtered = ['s' + str(z) + "@fe as s" + str(z) for z in rand]
-		
-		q = li[0]
-		q_filtered = li_filtered[0] 
-		q_seq_group_agg_avg = "seq_group_agg_avg(" + li[0] + " , t@tt/3600) as " + li[0].split('@')[0]
-		q_seq_avg = "seq_avg(" + li[0] + ")" 
-		q_seq_stretch = "seq_stretch(ts5,t," + li[0].split('@')[0] + ")" 
-		q_filter = "!seq_filter_search(" +li[0] + "> 0.95"
-		q_filterAND = "!seq_filter_search(" +li[0] + "> 0.95"
-		
-		for j in range(1,len(li_filtered)):
-			q_filtered += ', ' + li_filtered[j] 
+    options = {"day" : 60 * 60* 24,
+               "week" : 60 * 60* 24 * 7,
+              "minute" : 60,
+               "hour" : 60 * 60,
+               "second" : 1,
+               "month" : 60 * 60 * 24 * 30,
+               "year" :  60 * 60 * 24 * 30 * 12
+    }
+    # Connect to the system
+    exdb.init_runtime(debug = False, shm = False, disk = False, tmgr = 'mursiw')
+    conn = exdb.connect(host, 5001)
+    cursor = conn.cursor()
+    runtimes = []
+    full_time = time.time()
+    for it in tqdm(range(n_it)):
+        date = random_date("2019-04-01T00:00:00", "2019-04-30T00:00:00", set_date[(int(rangeL)*it)%500], dform = '%Y-%m-%dT%H:%M:%S')
+        date = int(time.mktime(datetime.strptime(date, '%Y-%m-%dT%H:%M:%S').timetuple()))
+        temp = query.replace("<timestamp>", str(date))
+        temp = temp.replace("<range>", str(rangeL))
+        temp = temp.replace("<rangesUnit>", str(options[rangeUnit]))
 
-		for j in li[1:]:
-			q += ', ' + j
-			q_seq_avg += ", seq_avg(" + j + ")" 
-			q_seq_group_agg_avg += ", seq_group_agg_avg(" + j + " , t@tt/3600)" + " as " +  j.split('@')[0] #        li[0] + ' > 0.95'
-			q_seq_stretch += ", seq_stretch(ts5,t," + j.split('@')[0] + ")" 
-		temp = temp.replace("<sid>", q)
-		temp = temp.replace("<sid1>", str(set_s[(rangeL*it)%500]))
-		temp = temp.replace("<sid2>", str(set_s[(rangeL*(it+1))%500]))
-		temp = temp.replace("<sid3>", str(set_s[(rangeL*(it+2))%500]))
-		temp = temp.replace("<sidlist>", sidlist)
-		temp = temp.replace("<seq_avg>", q_seq_avg)
-		temp = temp.replace("<sid_filtered>", q_filtered)
-		temp = temp.replace("<seq_group_agg_avg>", q_seq_group_agg_avg)
-		temp = temp.replace("<sfilter>", q_filter + ", tt)")
-		temp = temp.replace("<sfilterAND>", q_filterAND + ", tt)")
-		temp = temp.replace("<seq_stretch>", q_seq_stretch)    
-	
-		
-		start = time.time()
-		#print(temp)
-		cursor.execute(temp)
-		results_ = cursor.fetchall()
-		#print(results_)
-		diff = (time.time()-start)*1000
-		#  print(temp, diff)
-		runtimes.append(diff)
-		if time.time() - full_time > 500 and it > 5: 
-			break  
-			
-	conn.close()
-	return stats.mean(runtimes), stats.stdev(runtimes)
-
-if __name__ == "__main__":
-	print('launching system extremdb')
-
-	import os
-	import subprocess
-	
-        # Command to source the script and print the environment
-	command = '/bin/bash -c "source variables.sh; env"'
-
-	# Run the command as a subprocess, capturing the output
-	proc = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
-	output, error = proc.communicate()
-
-	# Parse the output to extract the environment variables
-	env_lines = [line.decode("utf-8").split('=', 1) for line in output.splitlines() if b'=' in line]
-	env = dict(env_lines)
-
-
-	# Merge the extracted environment variables with the current environment
-	new_env = os.environ.copy()
-	new_env.update(env)
-
-	new_env["OLDPWD"] = os.getcwd()
-	os.environ.update(new_env)
-
-
-	# Run launch.sh with the modified environment and let it run in the background
-	main_process = subprocess.Popen(['sh', 'launch.sh'], env=new_env, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-
-
-	process = subprocess.Popen(['sleep', '10'], env=new_env, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-	process.communicate()
+        # stations
+        li = ['st' + str(z) for z in random.sample(range(10), n_st)]
+        q = "(" + "'" + li[0] + "'"
+        for j in li[1:]:
+            q += ', ' + "'" + j + "'"
+        q += ")"
+        temp = temp.replace("<stid>", q)
     
-	args = init_parser() 
+        # sensors
+    
+        rand = [str(z) for z in random.sample(range(100), n_s)]
+        sidlist = 's' + rand[0]
+        for j in rand[1:]:
+            sidlist += ',' + 's' +  j
+        li = ['s' + str(z) + "@tt" for z in rand]
+        li_filtered = ['s' + str(z) + "@fe as s" + str(z) for z in rand]
+        
+        q = li[0]
+        q_filtered = li_filtered[0] 
+        q_seq_group_agg_avg = "seq_group_agg_avg(" + li[0] + " , t@tt/3600) as " + li[0].split('@')[0]
+        q_seq_avg = "seq_avg(" + li[0] + ")" 
+        q_seq_stretch = "seq_stretch(ts5,t," + li[0].split('@')[0] + ")" 
+        q_filter = "!seq_filter_search(" +li[0] + "> 0.95"
+        q_filterAND = "!seq_filter_search(" +li[0] + "> 0.95"
+        
+        for j in range(1,len(li_filtered)):
+            q_filtered += ', ' + li_filtered[j] 
+
+        for j in li[1:]:
+            q += ', ' + j
+            q_seq_avg += ", seq_avg(" + j + ")" 
+            q_seq_group_agg_avg += ", seq_group_agg_avg(" + j + " , t@tt/3600)" + " as " +  j.split('@')[0] #        li[0] + ' > 0.95'
+            q_seq_stretch += ", seq_stretch(ts5,t," + j.split('@')[0] + ")" 
+        temp = temp.replace("<sid>", q)
+        temp = temp.replace("<sid1>", str(set_s[(rangeL*it)%500]))
+        temp = temp.replace("<sid2>", str(set_s[(rangeL*(it+1))%500]))
+        temp = temp.replace("<sid3>", str(set_s[(rangeL*(it+2))%500]))
+        temp = temp.replace("<sidlist>", sidlist)
+        temp = temp.replace("<seq_avg>", q_seq_avg)
+        temp = temp.replace("<sid_filtered>", q_filtered)
+        temp = temp.replace("<seq_group_agg_avg>", q_seq_group_agg_avg)
+        temp = temp.replace("<sfilter>", q_filter + ", tt)")
+        temp = temp.replace("<sfilterAND>", q_filterAND + ", tt)")
+        temp = temp.replace("<seq_stretch>", q_seq_stretch)    
 
 
-	def query_f(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it, host="localhost"):
-		return run_query(query, rangeL=rangeL, rangeUnit = rangeUnit ,n_st = n_st , n_s = n_s , n_it = n_it,host=host)
-	
-	run_system(args,"extremedb",query_f)
-	
-	
-	#process = subprocess.Popen(['sh', 'stop.sh'], stdin=subprocess.PIPE)
-	#stdout, stderr = process.communicate()
-	main_process.communicate()
-	process_name = 'influxd'
+        start = time.time()
+        #print(temp)
+        cursor.execute(temp)
+        results_ = cursor.fetchall()
+        diff = (time.time()-start)*1000
+        #print(results_)
+        #  print(temp, diff)
+        runtimes.append(diff)
+        if time.time() - full_time > 500 and it > 5: 
+            break  
 
-# Use pgrep to find the process ID(s)
-	try:
-		pids = subprocess.check_output(['pgrep', process_name], universal_newlines=True)
-		pids = pids.strip().split('\n')
-	except subprocess.CalledProcessError:
-		pids = []
+    conn.close()
+    return stats.mean(runtimes), stats.stdev(runtimes)
 
-# Terminate the process(es)
-	for pid in pids:
-		subprocess.run(['kill', pid])
+
+main_process = None
+
+def launch():
+    global main_process
+    print('launching system extremdb')
+    with change_directory(__file__):
+        
+        # first load envioerment variables
+        command = '/bin/bash -c "source variables.sh; env"'
+        # Run the command as a subprocess, capturing the output
+        proc = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
+        output, error = proc.communicate()
+        
+        #Parse the output to extract the environment variables
+        env_lines = [line.decode("utf-8").split('=', 1) for line in output.splitlines() if b'=' in line]
+        env = dict(env_lines)
+        
+        # Merge the extracted environment variables with the current environment
+        new_env = os.environ.copy()
+        new_env.update(env)
+
+        new_env["OLDPWD"] = os.getcwd()
+        os.environ.update(new_env)
+        
+        main_process = subprocess.Popen(['sh', 'launch.sh'], env=new_env, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+
+
+        process = subprocess.Popen(['sleep', '10'], env=new_env, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+        process.communicate()
+    
+def stop():
+    global main_process
+    main_process.communicate()
+    
+    
+if __name__ == "__main__":
+    
+    launch()
+    
+    args = parse_args() 
+
+    def query_f(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
+        return run_query(query, rangeL=rangeL, rangeUnit = rangeUnit ,n_st = n_st , n_s = n_s , n_it = n_it)
+    
+    run_system(args,"extremedb",query_f)
+    
+    stop()
+    
+
 
 

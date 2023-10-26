@@ -1,5 +1,5 @@
 #!/bin/sh
 
 
-sudo docker stop timescaledb-container
+docker stop timescaledb-container
 

@@ -14,6 +14,9 @@ echo "convert the datasetformat (this is not counted in the time measuring)"
 python3 generate_influx.py $dataset
 cd ../systems/influx
 
+
+curl -X POST "http://localhost:8086/query" --data-urlencode "q=DROP DATABASE $dataset"
+
 log_file="influx_startup.txt"
 start_time=$(date +%s.%N)
 

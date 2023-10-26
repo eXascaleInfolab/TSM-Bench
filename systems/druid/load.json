@@ -5,7 +5,7 @@
       "type": "index_parallel",
       "inputSource": {
         "type": "local",
-        "baseDir": "/home/luca/test/TSM-Bench/systems/druid/../../datasets/repeats_80.csv",
+        "baseDir": "/home/luca/test/TSM-Bench/systems/druid/../../datasets/large_outliers_20.csv",
         "filter": "*"
       },
       "inputFormat": {
@@ -27,7 +27,7 @@
       "maxRowsInMemory": 5000000
     },
     "dataSchema": {
-      "dataSource": "repeats_80",
+      "dataSource": "large_outliers_20",
       "timestampSpec": {
         "column": "time",
         "format": "iso"

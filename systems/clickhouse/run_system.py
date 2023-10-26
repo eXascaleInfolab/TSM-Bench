@@ -1,6 +1,5 @@
 from datetime import datetime
 from tqdm import tqdm
-import argparse
 import os
 import time
 import statistics as stats
@@ -11,17 +10,32 @@ import pandas as pd
 import json 
 from clickhouse_driver import Client
 from clickhouse_driver import connect as connect_ClickHouse
+import subprocess
+from subprocess import Popen, PIPE, STDOUT, DEVNULL
+
 # setting path
-sys.path.append('../')
-from utils.library import *
-
-
-
+sys.path.append('../..')
+from systems.utils.library import *
+from systems.utils import change_directory , parse_args
+from systems import run_system
 # Generate Random Values
 random.seed(1)
 set_st = [str(random.randint(0,9)) for i in range(500)]
 set_s = [str(random.randint(0,99)) for i in range(500)]
 set_date = [random.random() for i in range(500)]
+
+def launch():    
+    with change_directory(__file__):
+        process = Popen(['sh', 'launch.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+        stdout, stderr = process.communicate()
+
+        process = Popen(['sleep', '10'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+        stdout, stderr = process.communicate()
+
+def stop():
+    with change_directory(__file__):
+        process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+        stdout, stderr = process.communicate()
 
 def run_query(query, rangeL ,rangeUnit ,n_st ,n_s ,n_it , host="localhost"):
     # Connect to the system
@@ -71,17 +85,12 @@ def run_query(query, rangeL ,rangeUnit ,n_st ,n_s ,n_it , host="localhost"):
             station_list = ['st' + str(z) for z in random.sample(range(10), n_st)] # sample stations
             q = "("+', '.join(["'"+j+"'" for j in station_list ])+")"
             temp = temp.replace("<stid>", q)
-            
-            
+                
         start = time.time()
-
         
-        #print(temp)
-        #time.sleep(15)
         cursor.execute(temp)
         cursor.fetchall()
-        #print(cursor.execute(temp))
-        #print(cursor.fetchall())
+        
         diff = (time.time()-start)*1000
         runtimes.append(diff)
         if time.time() - full_time > 200 and it > 5:
@@ -90,27 +99,14 @@ def run_query(query, rangeL ,rangeUnit ,n_st ,n_s ,n_it , host="localhost"):
     conn.close()
     return stats.mean(runtimes), stats.stdev(runtimes)
 
-
-
-
-
-
 if __name__ == "__main__":
-    import os
-    import subprocess
-    from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
-
-    process = Popen(['sh', 'launch.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-    stdout, stderr = process.communicate()
-    process = Popen(['sleep', '10'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-    stdout, stderr = process.communicate()
+    launch()
     
-    args = init_parser() 
+    args = parse_args() 
     
-    def query_f(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it , host="localhost"):
-        return run_query(query, rangeL=rangeL, rangeUnit = rangeUnit ,n_st = n_st , n_s = n_s , n_it = n_it,host=host)
+    def query_f(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
+        return run_query(query, rangeL=rangeL, rangeUnit = rangeUnit ,n_st = n_st , n_s = n_s , n_it = n_it)
     
     run_system(args,"clickhouse",query_f)
 
-    process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-    stdout, stderr = process.communicate()
+    stop()

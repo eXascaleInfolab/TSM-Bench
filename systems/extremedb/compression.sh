@@ -5,4 +5,4 @@
 output=$(sudo du -sk eXtremeDB/target/bin/datapoints.dbs)
 echo "$output"
 compression=$(echo "$output" | awk '{print $1}')
-echo "$compression"
+echo "${compression}KB"

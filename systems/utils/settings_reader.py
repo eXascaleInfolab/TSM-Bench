@@ -1,6 +1,6 @@
 import json
 
-def read_settings():
+def read_scenarios():
 	with open("../scenarios.json") as file:
 		scenarios = json.load(file)
 		return scenarios
