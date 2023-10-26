@@ -10,7 +10,7 @@ cd generation/
 sh install.sh
 ```
 
-You can generate new time series either using our pre-trained model or by retraining the model from scratch.  
+You can generate new time series using our pre-trained model or by retraining the model from scratch.  The latter takes a considerable amount of time.
 
 
 ## Option 1: Execution using pre-trained model      
@@ -23,7 +23,7 @@ The generated plots and data are stored in the `generation/results` folder.
 ## Option 2: Execution by training the model
 
   
-### Data partitioning
+### Data Partitioning
 
 - Partition your input data located in `data/` into segments of the same length
 
@@ -31,7 +31,7 @@ The generated plots and data are stored in the `generation/results` folder.
 python ts_seg.py
 ```
 
-### Model training
+### Model Training
 
 1. Train a GAN model on the original segments and add the generated segments into `results/` (takes ~10 days) 
 
@@ -46,7 +46,7 @@ python encoder_dc.py
 python test_dc.py
 ```
 
-### Data generation
+### Data Generation
 
 - Apply LSH to generate long time series 
 
