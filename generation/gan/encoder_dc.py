@@ -161,7 +161,7 @@ if __name__ == '__main__':
     except:
         print('falied')
 
-    for epoch in range(6000):
+    for epoch in range(1000):
             for i, img in enumerate(dataloader):
                 for p in d_net.parameters(): p.data.clamp_(-0.01, 0.01)
                 # img = img / 10
