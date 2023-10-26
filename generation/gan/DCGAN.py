@@ -137,7 +137,7 @@ if __name__ == '__main__':
             g_net.parameters(), lr=0.0002, betas=(0.5, 0.999))
     pbbox=[]
     bbox=[]
-    for epoch in range(6000):
+    for epoch in range(1000):
             for i, img in enumerate(dataloader):
                 for p in d_net.parameters(): p.data.clamp_(-0.01, 0.01)
                 # img = img / 10
