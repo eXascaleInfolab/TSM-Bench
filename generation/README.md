@@ -33,7 +33,7 @@ python ts_seg.py
 
 ### Model Training
 
-1. Train a GAN model on the original segments and add the generated segments into `results/` (takes ~10 days) 
+1. Train a GAN model on the original segments and add the generated segments into `results/` (takes ~36 hours) 
 
 ```bash
 cd gan/
