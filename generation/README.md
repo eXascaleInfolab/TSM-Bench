@@ -51,6 +51,7 @@ python test_dc.py
 - Apply LSH to generate long time series 
 
 ```bash
+cd ..
 python gen_ts.py
 ```
 ## Generation Examples:
