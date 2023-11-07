@@ -23,7 +23,7 @@ The generated plots and data are stored in the `generation/results` folder.
 ## Option 2: Execution by training the model
 
   
-### Data Partitioning
+### 1. Data Partitioning
 
 - Partition your input data located in `data/` into segments of the same length
 
@@ -31,22 +31,21 @@ The generated plots and data are stored in the `generation/results` folder.
 python ts_seg.py
 ```
 
-### Model Training
+### 2. Model Training
 
-1. Train a GAN model on the original segments and add the generated segments into `results/` (takes ~ 2 days) 
+- Train a GAN model on the original segments and add the generated segments into `results/` (takes ~ 2 days) 
 
 ```bash
 cd gan/
 python DCGAN.py
 python encoder_dc.py
 ```
-
-2. Generate new segments using the trained ones 
+- Generate new segments using the trained ones 
 ```bash
 python test_dc.py
 ```
 
-### Data Generation
+### 3. Data Generation
 
 - Apply LSH to generate long time series 
 
