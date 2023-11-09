@@ -47,12 +47,26 @@ python test_dc.py
 
 ### 3. Data Generation
 
-- Apply LSH to generate long time series 
+Apply LSH to generate long time series using ```gen_ts.py```. To use this scipt, the following arguments and examples are provided:
 
-```bash
-cd ..
-python gen_ts.py
-```
+- `--len_ts` (optional, integer): The length of ts.
+- `--nb_ts` (optional, integer): The number of ts.
+- `--fori` (optional, string): A link to the original file.
+- `--fsynth` (optional, string): A link to the synthetic segments.
+- `--output_to` (optional, string): A link to the exported generated file.
+
+1. Running the script with default values:
+
+   ```bash
+   python gen_ts.py
+    ```
+1. Generate 10 time series with a million datapoints each:: 
+
+   ```bash
+   python gen_ts.py --len_ts 100000 --nb_ts 10
+    ```
+
+
 ## Generation Examples:
 
 ![image](https://github.com/eXascaleInfolab/TSM-Bench/assets/15266242/13d8c2f9-fdbf-495f-aaf9-7f5ec0999470)
