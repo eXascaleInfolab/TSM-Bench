@@ -15,13 +15,31 @@ You can generate new time series using our pre-trained model or by retraining th
 
 ## Option 1: Execution using pre-trained model      
 
-```bash
-python run_pretrained.py
-```
+
+Using a pre-trained model, LSH can be applied to generate long time series using ```run_pretrained.py```. To use this script, the following arguments and examples are provided:
+
+- `--len_ts` (optional, integer): The length of ts.
+- `--nb_ts` (optional, integer): The number of ts.
+- `--fori` (optional, string): A link to the original file.
+- `--fsynth` (optional, string): A link to the synthetic segments.
+- `--output_to` (optional, string): A link to the exported generated file.
+
+1. Running the script with default values:
+
+   ```bash
+   python run_pretrained.py
+    ```
+1. Generate 10 time series with a million datapoints each:: 
+
+   ```bash
+   python run_pretrained.py --len_ts 100000 --nb_ts 10
+    ```
+
 The generated plots and data are stored in the `generation/results` folder.
 
 ## Option 2: Execution by training the model
 
+Training a model on a new dataset could be done using the following steps. 
   
 ### 1. Data Partitioning
 
@@ -65,6 +83,7 @@ Apply LSH to generate long time series using ```gen_ts.py```. To use this scipt,
    ```bash
    python gen_ts.py --len_ts 100000 --nb_ts 10
     ```
+The generated plots and data are stored in the `generation/results` folder.
 
 
 ## Generation Examples:
