@@ -4,7 +4,7 @@ TS-LSH is a scalable data generator that closely emulates the properties of real
 You can generate new time series using our pre-trained model (Option 1) or by retraining the model from scratch (Option 2). 
 The generated plots and data will be saved in the `generation/results` folder.
 
-## Generation Examples:
+## Generation Examples
 
 ![image](https://github.com/eXascaleInfolab/TSM-Bench/assets/15266242/13d8c2f9-fdbf-495f-aaf9-7f5ec0999470)
 
@@ -21,7 +21,7 @@ sh install.sh
 
 ## Arguments:
 
-- You can customize the generation using the following parameters:
+- You can customize the time series generation using the following parameters:
 
    - `--len_ts` (optional, integer): The length of time series.
    - `--nb_ts` (optional, integer): The number of time series.
