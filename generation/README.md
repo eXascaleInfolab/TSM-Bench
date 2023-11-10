@@ -1,47 +1,53 @@
 # TS-LSH: LSH-based Generation Technique for Long Time Series
 
+TS-LSH is a scalable data generator that closely emulates the properties of real-world time series. One of the benefits of this tool is to facilitate data sharing for benchmarking tasks, particularly when datasets are non-public due to privacy issues.  Our method relies on Generative Adversarial Network (GAN) to create large volumes of time series data. 
+You can generate new time series using our pre-trained model (Option 1) or by retraining the model from scratch (Option 2). 
+The generated plots and data will be saved in the `generation/results` folder.
+
+## Generation Examples:
+
+![image](https://github.com/eXascaleInfolab/TSM-Bench/assets/15266242/13d8c2f9-fdbf-495f-aaf9-7f5ec0999470)
 
 
 
-## Install requirements
+## Setup
+- Install the necessary dependencies using the following script:
 
 ```bash
 cd generation/
 sh install.sh
 ```
 
-You can generate new time series using our pre-trained model or by retraining the model from scratch.  The latter takes a considerable amount of time.
+
+## Arguments:
+
+- You can customize the generation using the following parameters:
+
+   - `--len_ts` (optional, integer): The length of time series.
+   - `--nb_ts` (optional, integer): The number of time series.
+   - `--fori` (optional, string): A link to the original file.
+   - `--fsynth` (optional, string): A link to the synthetic segments.
+   - `--output_to` (optional, string): A link to the exported generated file.
+
+## TS-LSH Usage
+
+### Option 1: Generation using pre-trained model      
 
 
-## Option 1: Execution using pre-trained model      
-
-
-Using a pre-trained model, LSH can be applied to generate long time series using ```run_pretrained.py```. To use this script, the following arguments and examples are provided:
-
-- `--len_ts` (optional, integer): The length of ts.
-- `--nb_ts` (optional, integer): The number of ts.
-- `--fori` (optional, string): A link to the original file.
-- `--fsynth` (optional, string): A link to the synthetic segments.
-- `--output_to` (optional, string): A link to the exported generated file.
-
-1. Running the script with default values:
-
-   ```bash
+```bash
    python run_pretrained.py
-    ```
-1. Generate 10 time series with a million datapoints each:: 
+```
+- Example: Generate 10 time series with 100K datapoints each:: 
 
-   ```bash
-   python run_pretrained.py --len_ts 100000 --nb_ts 10
-    ```
+```bash
+   python  run_pretrained.py --len_ts 100000 --nb_ts 10
+```
 
-The generated plots and data are stored in the `generation/results` folder.
 
-## Option 2: Execution by training the model
+### Option 2: Generation by training the model
 
-Training a model on a new dataset could be done using the following steps. 
-  
-### 1. Data Partitioning
+ 
+#### 1. Data Partitioning
 
 - Partition your input data located in `data/` into segments of the same length
 
@@ -49,7 +55,7 @@ Training a model on a new dataset could be done using the following steps.
 python ts_seg.py
 ```
 
-### 2. Model Training
+#### 2. Model Training
 
 - Train a GAN model on the original segments and add the generated segments into `results/` (takes ~ 2 days) 
 
@@ -63,9 +69,19 @@ python encoder_dc.py
 python test_dc.py
 ```
 
-### 3. Data Generation
+#### 3. Data Generation
 
-Apply LSH to generate long time series using ```gen_ts.py```. To use this scipt, the following arguments and examples are provided:
+```bash
+python gen_ts.py
+```
+- Example: Generate 10 time series with a million datapoints each:
+
+```bash
+python gen_ts.py --len_ts 100000 --nb_ts 10
+```
+  
+<!--
+Apply LSH to generate long time series using ```gen_ts.py```. To use this script, the following arguments and examples are provided:
 
 - `--len_ts` (optional, integer): The length of ts.
 - `--nb_ts` (optional, integer): The number of ts.
@@ -78,17 +94,15 @@ Apply LSH to generate long time series using ```gen_ts.py```. To use this scipt,
    ```bash
    python gen_ts.py
     ```
-1. Generate 10 time series with a million datapoints each:: 
+1. Generate 10 time series with 100K datapoints each:
 
-   ```bash
+```bash
    python gen_ts.py --len_ts 100000 --nb_ts 10
-    ```
+```
 The generated plots and data are stored in the `generation/results` folder.
+-->
 
 
-## Generation Examples:
-
-![image](https://github.com/eXascaleInfolab/TSM-Bench/assets/15266242/13d8c2f9-fdbf-495f-aaf9-7f5ec0999470)
 
 
 
