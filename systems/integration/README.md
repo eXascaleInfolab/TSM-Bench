@@ -8,10 +8,10 @@
 
 ## Integration steps
 
-- Create a folder with the name of your system under `/systems` and install your database inside.
+- Create a folder with the name of your system under `systems/` and install your database inside.
 - Install the Python client library inside the virtual environment (TSMvenv).
-- Load the datasets located under the `/datasets` folder. The column names of the datasets are: time , id_station and `s0 ,s1 ... s99`
- Examples of loading are provided in `/systems/{system}/load.sh`. 
+- Load the datasets located under the `datasets/` folder. The column names of the datasets are: time, id_station and `s0 ,s1 ... s99`
+ Examples of loading are provided in `systems/{system}/load.sh`. 
   
 
 - Create a file called `queries.sql`that implements the queries. Make sure to keep the variables \<sid\> ,\<stid\> and \<timestamp\> as placeholders (see example [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/queries.sql)).
