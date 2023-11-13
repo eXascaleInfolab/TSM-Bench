@@ -72,6 +72,7 @@ python test_dc.py
 #### 3. Data Generation
 
 ```bash
+cd ..
 python gen_ts.py
 ```
 - Example: Generate 10 time series with with 100K datapoints each:
