@@ -37,7 +37,7 @@ sh install.sh
 ```bash
    python run_pretrained.py
 ```
-- Example: Generate 10 time series with 100K datapoints each:: 
+- Example: Generate 10 time series with 100K datapoints each: 
 
 ```bash
    python  run_pretrained.py --len_ts 100000 --nb_ts 10
@@ -74,7 +74,7 @@ python test_dc.py
 ```bash
 python gen_ts.py
 ```
-- Example: Generate 10 time series with a million datapoints each:
+- Example: Generate 10 time series with with 100K datapoints each:
 
 ```bash
 python gen_ts.py --len_ts 100000 --nb_ts 10
