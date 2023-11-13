@@ -92,6 +92,8 @@ def plot_result(data, lsh_res, nb_ts, len_ts):
         plt.xlim(0,len(lsh_res[0]))
 #         plt.ylim(8.1,8.7)
         plt.legend(loc="upper left", prop={'size': 36})
+    plt.savefig('results/plot.png', bbox_inches='tight')
+
 
 
 
