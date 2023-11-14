@@ -5,4 +5,3 @@ SELECT id_station, EXTRACT(YEAR FROM time) AS "year", date_trunc('month', time) 
 select time, id_station, <sid> FROM <db> where id_station in <stid> AND time > TIMESTAMP '<timestamp>' - INTERVAL '<range>' <rangesUnit> AND time < TIMESTAMP '<timestamp>' ORDER BY  time ASC WITH FILL STEP 5 INTERPOLATE ( <sid>, id_station AS id_station );
 with data1 as ( select time, s<sid1> as s_1, s<sid2> as s_2 from <db> WHERE time > TIMESTAMP '<timestamp>' - INTERVAL '<range>' <rangesUnit> AND time < TIMESTAMP '<timestamp>' AND id_station in <stid> ) select data1.time, s_1, s_2, (s_1 + s_2)/2 as avg from data1;
 SELECT corr(s<sid1>, s<sid2>) FROM <db> WHERE id_station in <stid> AND time > TIMESTAMP '<timestamp>' - INTERVAL '<range>' <rangesUnit> AND time < TIMESTAMP '<timestamp>';
-
