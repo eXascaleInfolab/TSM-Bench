@@ -38,20 +38,16 @@ sh install.sh
 - Example: Generate 10 time series with 100K datapoints each: 
 
 ```bash
-   python run_pretrained.py --len_ts 100000 --nb_ts 10 -seed conductivity
+   python run_pretrained.py --len_ts 100000 --nb_ts 10 --seed conductivity
 ```
 
 
-### Option 2: Generation by training the model
+### Option 2: Generation using a custom dataset
 
  
 #### 1. Data Partitioning
 
-- Partition your input data located in `data/` into segments of the same length
-
-```bash
-python ts_seg.py
-```
+- Create a new folder under `data/` under the name of your dataset and place your dataset file inside it under the name `data/{your_dataset_name}/original.txt`.
 
 #### 2. Model Training
 
@@ -59,24 +55,24 @@ python ts_seg.py
 
 ```bash
 cd gan/
-python DCGAN.py
-python encoder_dc.py
+python DCGAN.py --seed {your_dataset_name}
+python encoder_dc.py --seed {your_dataset_name}
 ```
 - Generate new segments using the trained ones 
 ```bash
-python test_dc.py
+python test_dc.py --seed {your_dataset_name}
 ```
 
 #### 3. Data Generation
 
 ```bash
 cd ..
-python gen_ts.py
+python gen_ts.py  --seed {your_dataset_name}
 ```
 - Example: Generate 10 time series with with 100K datapoints each:
 
 ```bash
-python gen_ts.py --len_ts 100000 --nb_ts 10
+python gen_ts.py --len_ts 100000 --nb_ts 10 --seed {your_dataset_name}
 ```
   
 <!--
