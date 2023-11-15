@@ -38,7 +38,7 @@ sh install.sh
 ```bash
    python run_pretrained.py
 ```
-- Customized generation: Generate 10 time series with 20K datapoints each from conductivity dataset: 
+- Customized generation: Generate 10 time series with 20K datapoints each from conductivity dataset 
 
 ```bash
    python run_pretrained.py --len_ts 20000 --nb_ts 10 --seed conductivity
@@ -50,7 +50,7 @@ sh install.sh
 #### Dataset Creation
 
 - Name your dataset as `original.txt`. The file should satisfy the following requirements:
-   - contain one column representing the time series to augment.
+   - contains one column that represents the time series to augment.
    - nrows >= 3000.
 - Create a new folder under `data/` with the name of your dataset and add `original.txt` inside, i.e., `data/{dataset_name}/original.txt`
  
