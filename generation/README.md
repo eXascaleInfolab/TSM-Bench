@@ -45,7 +45,7 @@ sh install.sh
 ### Option 2: Generation using a custom dataset
 
  
-#### 1. Data Partitioning
+#### 1. Create dataset folder 
 
 - Create a new folder under `data/` under the name of your dataset and place your dataset file inside it under the name `data/{your_dataset_name}/original.txt`.
 
