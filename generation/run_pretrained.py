@@ -14,6 +14,12 @@ import math
 from scipy.signal import lfilter
 import csv
 import argparse
+import pandas as pd
+import numpy as np
+from tqdm import tqdm
+import warnings
+import random
+warnings.filterwarnings('ignore')
 
 def sigmoid(x):
     return 1 / (1 + math.exp(-x))
@@ -76,7 +82,7 @@ def filter_segment(df_segments):
     df_segments.iloc[: , :50].plot(subplots=True, layout=(10,6), figsize=(10, 10), legend = True, color = 'b')
 #     plt.show()
     
-def plot_result(data, lsh_res, nb_ts, len_ts):
+def plot_result(data, lsh_res, nb_ts, len_ts, seed):
     print('Plotting the results')
     xi = list(range(len_ts))
     plt.figure(figsize=(60, 30))
@@ -88,36 +94,64 @@ def plot_result(data, lsh_res, nb_ts, len_ts):
     plt.legend(loc="upper left", prop={'size': 36})
     for i in range(2, nb_ts+2):
         plt.subplot(nb_ts+1, 1, i)
-        plt.plot(lsh_res[i-2],color='green',linewidth=4.0, label='LSH')
+        plt.plot(lsh_res[i-2],color='green',linewidth=4.0)
         plt.xlim(0,len(lsh_res[0]))
 #         plt.ylim(8.1,8.7)
         plt.legend(loc="upper left", prop={'size': 36})
+    plt.savefig('results/' + seed + '.png', bbox_inches='tight')
 
+def generate_rand(fseed, fsynth): 
+    data = pd.read_csv(fseed, header=1, sep= ';')
 
+    res_shift_50 = pd.DataFrame()
+    std = data.std()
+    random_numbers = [np.random.normal(scale=std, size=3072)/100 for i in tqdm(range(1000))]
+
+    for i in tqdm(range(0, len(data) - 3072 + 1, 50)): 
+        res_shift_50[res_shift_50.shape[1]]  = (np.array(data.iloc[:,0].tolist()[i:i + 3072]) + np.array(random_numbers[i*j%1000])).tolist()
+
+    res_shift_50 = res_shift_50.T
+    res_shift_50.to_csv(fsynth, sep=',', encoding='utf-8', float_format='%.3f', header=None, index=None)              
 
 parser = argparse.ArgumentParser(description="A script that takes two integer values as input and calls a function with them.")
 parser.add_argument("--len_ts", type=int, default=10000, help="Length of ts")
 parser.add_argument("--nb_ts", type=int, default=3, help="Number of ts")
-parser.add_argument("--fori", type=str, default='data/sample_dataset.csv', help="Link to original dataset")
-parser.add_argument("--fsynth", type=str, default='data/column_23_3072_3072.txt', help="Link to synthetic segments")
-parser.add_argument("--output_to", type=str, default='results/lsh.csv', help="Link to result file")
+parser.add_argument("--seed", type=str, default='conductivity', help="Link to original dataset")
+# parser.add_argument("--fsynth", type=str, default='data/column_23_3072_3072.txt', help="Link to synthetic segments")
 args = parser.parse_args()
+
+# generate_rand(fseed, fsynth)
+
 len_ts = args.len_ts
 nb_ts = args.nb_ts
-fori = args.fori
-fsynth = args.fsynth
-output_to = args.output_to
+seed = args.seed
+fseed = 'data/' + args.seed + '/original.txt'
+fsynth = 'data/' + args.seed + '/synthetic.txt'
 
 window = 3072
+# len_ts = 10000
+# nb_ts = 3
 
-data = pd.read_csv(fori)
-data = data.iloc[:,7].tolist()
-# data = data.iloc[:,0].tolist()
-
-data = moving_avg(data, 200).tolist()
+data = pd.read_csv(fseed)
+data = data.iloc[:,0].tolist()
+data = moving_avg(data, 5).tolist()
 len(data)
-
 df_segments = pd.read_csv(fsynth).T
+
+lsh_res = TS_LSH(data, df_segments, nb_ts, len_ts)
+
+plot_result(data, lsh_res, nb_ts, len_ts, seed)
+lsh_res = pd.DataFrame(lsh_res).T
+lsh_res.to_csv('results/'+seed+'.txt', header = False, index = False, float_format='%.3f')
+
+print('Generated', lsh_res.shape[1], 'time series of length', lsh_res.shape[0])
+
+
+
+# data = data.iloc[:,0].tolist()
+# seed = 'conductivity'
+# fseed = 'data/' + seed + '/original.txt'
+# fsynth = 'data/' + seed + '/synthetic.txt'
 
 # df_segments = [df_segments.iloc[:,i] for i in range(len(df_segments)-1)]
 # segments = [data[i:i + window] + np.random.normal(0,.008, window) for i in range(0, len(data) - window, int(0.1 * window))]
@@ -126,13 +160,3 @@ df_segments = pd.read_csv(fsynth).T
 # # df_segments.iloc[: , :50].plot(subplots=True, layout=(10,6), figsize=(10, 10), legend = True, color = 'b')
 # # plt.show()
 # # df_segments = filter_segment(df_segments)
-
-lsh_res = TS_LSH(data, df_segments, nb_ts, len_ts)
-
-plot_result(data, lsh_res, nb_ts, len_ts)
-lsh_res = pd.DataFrame(lsh_res).T
-lsh_res.to_csv(output_to, header = False, index = False, float_format='%.6f')
-
-print('Generated', lsh_res.shape[1], 'time series of length', lsh_res.shape[0])
-
-
