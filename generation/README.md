@@ -38,7 +38,7 @@ sh install.sh
 - Example: Generate 10 time series with 100K datapoints each: 
 
 ```bash
-   python run_pretrained.py --len_ts 100000 --nb_ts 10 --seed conductivity
+   python run_pretrained.py --len_ts 10000 --nb_ts 3 --seed conductivity
 ```
 
 
