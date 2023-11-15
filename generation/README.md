@@ -23,11 +23,9 @@ sh install.sh
 
 - You can customize the time series generation using the following parameters:
 
-   - `--len_ts` (optional, integer): The length of time series.
-   - `--nb_ts` (optional, integer): The number of time series.
-   - `--fori` (optional, string): A link to the original file.
-   - `--fsynth` (optional, string): A link to the synthetic segments.
-   - `--output_to` (optional, string): A link to the exported generated file.
+   - `--len_ts` (optional, integer): The length of time series; default: 10K datapoints.
+   - `--nb_ts` (optional, integer): The number of time series; default: 3 time series.
+   - `--seed` (optional, string): A link to the original file; default: _bafu_.
 
 ## TS-LSH Usage
 
@@ -40,7 +38,7 @@ sh install.sh
 - Example: Generate 10 time series with 100K datapoints each: 
 
 ```bash
-   python  run_pretrained.py --len_ts 100000 --nb_ts 10
+   python run_pretrained.py --len_ts 100000 --nb_ts 10 -seed conductivity
 ```
 
 
