@@ -56,7 +56,7 @@ sh install.sh
 
 
 
-- Train a GAN model on the original segments and add the generated segments into `results/` (takes ~ 2 days) 
+- Train a GAN model on the original segments and add the generated segments into `results/` (takes ~ 2 days for 80K datapoints time series) 
 
 ```bash
 cd gan/
