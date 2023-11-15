@@ -49,7 +49,7 @@ sh install.sh
 
 #### Dataset Creation
 
-- Name your dataset as `original.txt`. The file should contain one column representing the time series to augment.
+- Name your dataset as `original.txt`. The file should contain one column representing the time series to augment with 3K datapoints.
 - Create a new folder under `data/` with the name of your dataset and add `original.txt` inside, i.e., `data/{dataset_name}/original.txt`
  
 #### 1. Model Training
