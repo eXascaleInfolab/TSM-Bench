@@ -1,7 +1,9 @@
 # TS-LSH: LSH-based Generation Technique for Long Time Series
 
-TS-LSH is a scalable data generator that closely emulates the properties of real-world time series. One of the benefits of this tool is to facilitate data sharing for benchmarking tasks, particularly when datasets are non-public due to privacy issues.  Our method relies on Generative Adversarial Network (GAN) to create large volumes of time series data. 
-You can generate new time series using our pre-trained model (Option 1) or by retraining the model from scratch (Option 2). 
+TS-LSH is a scalable data generator that closely emulates the properties of real-world time series. One of the benefits of this tool is to facilitate data sharing for benchmarking tasks, particularly when datasets are non-public due to privacy issues.  Our method relies on Generative Adversarial Network (GAN) to create large volumes of time series data. The code can be used in two different ways:
+- **Option 1**: You can use our pre-trained model to generate new time series from the list of provided datasets in `data/`
+- **Option 2**: You can add your own dataset and generate new time series by retraining the model from scratch. 
+
 The generated plots and data will be saved in the `generation/results` folder.
 
 ## Generation Examples
@@ -25,49 +27,55 @@ sh install.sh
 
    - `--len_ts` (optional, integer): The length of time series; default: 10K datapoints.
    - `--nb_ts` (optional, integer): The number of time series; default: 3 time series.
-   - `--seed` (optional, string): A link to the original file; default: _bafu_.
+   - `--seed` (optional, string): The name of the seed dataset file; default: _bafu_.
 
 ## TS-LSH Usage
 
-### Option 1: Generation using pre-trained model      
+### Option 1: Generation using a pre-trained model 
 
 
+- Default generation
 ```bash
    python run_pretrained.py
 ```
-- Example: Generate 10 time series with 20K datapoints each: 
+- Customized generation: Generate 10 time series with 20K datapoints each from conductivity dataset: 
 
 ```bash
    python run_pretrained.py --len_ts 20000 --nb_ts 10 --seed conductivity
 ```
 
 
-### Option 2: Generation using a custom dataset
+### Option 2: Generation by retraining the model from scratch 
 
+#### Dataset Creation
+
+- Name your dataset as `original.txt`. The file should fulfill the following requirements:
+    - Each column is a time series 
+    - column separator: empty space, row separator: newline
+    - rows>= 1'000, columns>= 10
+- Create a new folder under `data/` with the name of your dataset and add `original.txt` inside, i.e., `data/{dataset_name}/original.txt`
  
-#### 1. Create dataset folder 
+#### 1. Model Training
 
-- Create a new folder under `data/` under the name of your dataset and place your dataset file inside it such as: `data/{your_dataset_name}/original.txt`.
 
-#### 2. Model Training
 
 - Train a GAN model on the original segments and add the generated segments into `results/` (takes ~ 2 days) 
 
 ```bash
 cd gan/
-python DCGAN.py --seed {your_dataset_name}
-python encoder_dc.py --seed {your_dataset_name}
+python DCGAN.py --seed {dataset_name}
+python encoder_dc.py --seed {dataset_name}
 ```
 - Generate new segments using the trained ones 
 ```bash
-python test_dc.py --seed {your_dataset_name}
+python test_dc.py --seed {dataset_name}
 ```
 
-#### 3. Data Generation
+#### 2. Data Generation
 
 ```bash
 cd ..
-python gen_ts.py  --seed {your_dataset_name}
+python gen_ts.py  --seed {dataset_name}
 ```
 - Example: Generate 10 time series with with 100K datapoints each:
 
