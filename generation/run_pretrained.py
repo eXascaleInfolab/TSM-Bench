@@ -98,20 +98,7 @@ def plot_result(data, lsh_res, nb_ts, len_ts, seed):
         plt.xlim(0,len(lsh_res[0]))
 #         plt.ylim(8.1,8.7)
         plt.legend(loc="upper left", prop={'size': 36})
-    plt.savefig('results/' + seed + '.png', bbox_inches='tight')
-
-def generate_rand(fseed, fsynth): 
-    data = pd.read_csv(fseed, header=1, sep= ';')
-
-    res_shift_50 = pd.DataFrame()
-    std = data.std()
-    random_numbers = [np.random.normal(scale=std, size=3072)/100 for i in tqdm(range(1000))]
-
-    for i in tqdm(range(0, len(data) - 3072 + 1, 50)): 
-        res_shift_50[res_shift_50.shape[1]]  = (np.array(data.iloc[:,0].tolist()[i:i + 3072]) + np.array(random_numbers[i*j%1000])).tolist()
-
-    res_shift_50 = res_shift_50.T
-    res_shift_50.to_csv(fsynth, sep=',', encoding='utf-8', float_format='%.3f', header=None, index=None)              
+    plt.savefig('results/' + seed + '.png', bbox_inches='tight')         
 
 parser = argparse.ArgumentParser(description="A script that takes two integer values as input and calls a function with them.")
 parser.add_argument("--len_ts", type=int, default=10000, help="Length of ts")
@@ -147,16 +134,3 @@ lsh_res.to_csv('results/'+seed+'.txt', header = False, index = False, float_form
 print('Generated', lsh_res.shape[1], 'time series of length', lsh_res.shape[0])
 
 
-
-# data = data.iloc[:,0].tolist()
-# seed = 'conductivity'
-# fseed = 'data/' + seed + '/original.txt'
-# fsynth = 'data/' + seed + '/synthetic.txt'
-
-# df_segments = [df_segments.iloc[:,i] for i in range(len(df_segments)-1)]
-# segments = [data[i:i + window] + np.random.normal(0,.008, window) for i in range(0, len(data) - window, int(0.1 * window))]
-# df_segments = pd.DataFrame(segments)
-# df_segments = df_segments.T
-# # df_segments.iloc[: , :50].plot(subplots=True, layout=(10,6), figsize=(10, 10), legend = True, color = 'b')
-# # plt.show()
-# # df_segments = filter_segment(df_segments)
