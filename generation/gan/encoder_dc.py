@@ -16,6 +16,7 @@ import numpy as np
 from tqdm import tqdm
 import torch.nn.functional as F
 import os
+import argparse
 
 
 class D_Net(nn.Module):
@@ -141,7 +142,12 @@ if __name__ == '__main__':
     #     return out
     #
     #
-    date=np.loadtxt('../data/column_23_3072_3072.txt',delimiter=',')
+    parser = argparse.ArgumentParser(description="A script that takes two integer values as input and calls a function with them.")
+    parser.add_argument("--seed", type=str, default='conductivity', help="Link to original dataset")
+    args = parser.parse_args()
+    date=np.loadtxt('../data/' + args.seed + '/original.txt',delimiter=',')
+    
+    # date=np.loadtxt('../data/column_23_3072_3072.txt',delimiter=',')
     lis = []
     for i in range(3072):
         lis.append(date[i].reshape((3, 32, 32))/10)
