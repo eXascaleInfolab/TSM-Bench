@@ -38,7 +38,7 @@ sh install.sh
 ```bash
    python run_pretrained.py
 ```
-- Customized generation: Generate 10 time series with 20K datapoints each from conductivity dataset 
+- Customized generation: Generate 10 time series with 20K datapoints each from the conductivity dataset 
 
 ```bash
    python run_pretrained.py --len_ts 20000 --nb_ts 10 --seed conductivity
