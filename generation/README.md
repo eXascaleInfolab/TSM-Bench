@@ -47,7 +47,7 @@ sh install.sh
  
 #### 1. Create dataset folder 
 
-- Create a new folder under `data/` under the name of your dataset and place your dataset file inside it under the name `data/{your_dataset_name}/original.txt`.
+- Create a new folder under `data/` under the name of your dataset and place your dataset file inside it such as: `data/{your_dataset_name}/original.txt`.
 
 #### 2. Model Training
 
