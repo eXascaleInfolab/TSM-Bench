@@ -80,7 +80,7 @@ python gen_ts.py  --seed {dataset_name}
 - Example: Generate 10 time series with with 100K datapoints each:
 
 ```bash
-python gen_ts.py --len_ts 100000 --nb_ts 10 --seed {your_dataset_name}
+python gen_ts.py --len_ts 100000 --nb_ts 10 --seed {dataset_name}
 ```
   
 <!--
