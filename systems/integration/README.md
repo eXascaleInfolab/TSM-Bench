@@ -1,7 +1,7 @@
 # System Integration
 
 ## Prerequisites
-- The benchmark needs to be ran once
+- The benchmark needs to be run once
 - The system needs to provide a Python connection
 - The system needs to support csv format for data loading
   
@@ -10,13 +10,14 @@
 
 - Create a folder with the name of your system under `systems/` and install your database inside.
 - Install the Python client library inside the virtual environment (TSMvenv).
-- Load the datasets located under the `datasets/` folder. The column names of the datasets are: time, id_station and `s0 ,s1 ... s99`
+- Load the datasets located under the `datasets/` folder. The column names of the datasets are: `time`, `id_station` and `s0 ,s1 ... s99`
  Examples of loading are provided in `systems/{system}/load.sh`. 
   
 
-- Create a file called `queries.sql`that implements the queries. Make sure to keep the variables \<sid\> ,\<stid\> and \<timestamp\> as placeholders (see example [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/queries.sql)).
+- Create a file called `queries.sql` that implements the queries. Make sure to keep the variables \<sid\> ,\<stid\> and \<timestamp\> as placeholders (see example [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/queries.sql)). Each query should be placed on a single line.
 - Create a script called `launch.sh` to launch the database (see example [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/influx/launch.sh)).
-- Create a python script called  `run_system.py`to run the queries. The script should follow this [template](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/run_system_template.py).
+- Create a Python script called  `run_system.py` to run the queries. The script should follow this [template](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/run_system_template.py).
+    - Note that the timestamp format should be updated according to that of the system (e.g., "YYYY-MM-DDTHH:mm:ss" for MonetDB and "YYYY-MM-DD HH:mm:ss" for QuestDB).
 - Add the name of your system's folder to [config.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/config.py).
 - You can now execute the offline queries and the benchmark should report the runtime of the new system and the existing ones
 - To use the online workload add the additional files:
