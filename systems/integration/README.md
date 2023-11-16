@@ -2,8 +2,8 @@
 
 ## Prerequisites
 - The benchmark needs to be run once
-- The system needs to provide a Python connection
-- The system needs to support csv format for data loading
+- The new system needs to provide a Python client library
+- The new system should support bulk loading using a csv format
   
 
 ## Integration steps
@@ -14,10 +14,10 @@
  Examples of loading are provided in `systems/{system}/load.sh`. 
   
 
-- Create a file called `queries.sql` that implements the queries. Make sure to keep the variables \<sid\> ,\<stid\> and \<timestamp\> as placeholders (see example [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/queries.sql)). Each query should be placed on a single line.
+- Create a file called `queries.sql` that implements the queries. Make sure to keep the variables \<sid\> ,\<stid\> and \<timestamp\> as placeholders (see example [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/monetdb/queries.sql)). Each query should be added as a new line.
 - Create a script called `launch.sh` to launch the database (see example [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/influx/launch.sh)).
 - Create a Python script called  `run_system.py` to run the queries. The script should follow this [template](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/run_system_template.py).
-    - Note that the timestamp format should be updated according to that of the system (e.g., "YYYY-MM-DDTHH:mm:ss" for MonetDB and "YYYY-MM-DD HH:mm:ss" for QuestDB).
+    - **Note**: The timestamp format should be updated according to one of the system (e.g., "YYYY-MM-DDTHH:mm:ss" for MonetDB, "YYYY-MM-DD HH:mm:ss" for QuestDB, etc.).
 - Add the name of your system's folder to [config.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/config.py).
 - You can now execute the offline queries and the benchmark should report the runtime of the new system and the existing ones
 - To use the online workload add the additional files:
