@@ -117,7 +117,7 @@ if __name__ == '__main__':
     parser.add_argument("--seed", type=str, default='conductivity', help="Link to original dataset")
     args = parser.parse_args()
 
-    date=np.loadtxt('../data/' + args.seed + '/original.txt',delimiter=',')
+    date=np.loadtxt('../data/' + args.seed + '/synthetic.txt',delimiter=',')
     lis=[]
     for i in range(3072):
         lis.append(date[i].reshape((3,32,32))/10)
