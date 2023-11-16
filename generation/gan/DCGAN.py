@@ -130,12 +130,10 @@ if __name__ == '__main__':
     try:
             d_net.load_state_dict(
                 torch.load(r"./gand_path"))
-            print('xixi')
             g_net.load_state_dict(
                 torch.load(r"./gang_path"))
-            print('成功')
     except:
-            print('不成功')
+            print('XX')
     loss_fn = nn.BCEWithLogitsLoss()
     d_optimizer = torch.optim.Adam(
             d_net.parameters(), lr=0.0002, betas=(0.5, 0.999))

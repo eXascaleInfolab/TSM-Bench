@@ -119,18 +119,20 @@ window = 3072
 # len_ts = 10000
 # nb_ts = 3
 
-data = pd.read_csv(fseed)
-data = data.iloc[:,0].tolist()
-data = moving_avg(data, 5).tolist()
-len(data)
-df_segments = pd.read_csv(fsynth).T
+try: 
+    data = pd.read_csv(fseed)
+    data = data.iloc[:,0].tolist()
+    data = moving_avg(data, 5).tolist()
+    len(data)
+    df_segments = pd.read_csv(fsynth).T
 
-lsh_res = TS_LSH(data, df_segments, nb_ts, len_ts)
+    lsh_res = TS_LSH(data, df_segments, nb_ts, len_ts)
 
-plot_result(data, lsh_res, nb_ts, len_ts, seed)
-lsh_res = pd.DataFrame(lsh_res).T
-lsh_res.to_csv('results/'+seed+'.txt', header = False, index = False, float_format='%.3f')
+    plot_result(data, lsh_res, nb_ts, len_ts, seed)
+    lsh_res = pd.DataFrame(lsh_res).T
+    lsh_res.to_csv('results/'+seed+'.txt', header = False, index = False, float_format='%.3f')
 
-print('Generated', lsh_res.shape[1], 'time series of length', lsh_res.shape[0])
-
+    print('Generated', lsh_res.shape[1], 'time series of length', lsh_res.shape[0])
+except: 
+    print("Error reading file")
 
