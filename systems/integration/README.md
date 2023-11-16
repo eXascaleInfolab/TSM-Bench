@@ -19,10 +19,10 @@
 - Create a Python script called  `run_system.py` to run the queries. The script should follow this [template](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/run_system_template.py).
     - **Note**: The timestamp format should be updated according to one of the system (e.g., "YYYY-MM-DDTHH:mm:ss" for MonetDB, "YYYY-MM-DD HH:mm:ss" for QuestDB, etc.).
 - Add the name of your system's folder to [config.py](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/config.py).
-- You can now execute the offline queries and the benchmark should report the runtime of the new system and the existing ones
-- To use the online workload add the additional files:
-    - `__init__.py`: script to use your folder as a Python module. The script should follow this [template](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/__init__template.py) and replacing "system" with "your\_system\_name".
-    - `start.py`: script to launch your system. The script should follow this [template](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/integration/start_template.py).
-    - `add_data.py`: script to add and delete data.  The script should follow this [template](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/add_tempalte.py).
+- Execute the [offline worloakd](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/README.md#experiments). The benchmark should report the runtime of the new system
+- To exectute the online workload,  three additional scripts need to be added:
+    - `__init__.py`: script to use your folder as a Python module that should follow this [template](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/__init__template.py). You need to replace "system" with "new\_system\_name".
+    - `start.py`: script to launch your system that should follow this [template](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/systems/integration/start_template.py).
+    - `add_data.py`: script to add and delete data that should follow this [template](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/add_tempalte.py).
 
 
