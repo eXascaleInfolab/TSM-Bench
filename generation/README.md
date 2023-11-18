@@ -60,10 +60,10 @@ sh install.sh
 - Partition your input data located in `data/` into segments of the same length
 
 ```bash
-python ts_seg.py --seed {dataset_name}
+python ts_partition.py --seed {dataset_name}
 ```
 
-#### 1. Model Training
+#### 2. Model Training
 
 
 
@@ -79,7 +79,7 @@ python encoder_dc.py --seed {dataset_name}
 python test_dc.py --seed {dataset_name}
 ```
 
-#### 2. Data Generation
+#### 3. Data Generation
 
 ```bash
 cd ..
