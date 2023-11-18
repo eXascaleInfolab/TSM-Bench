@@ -136,3 +136,16 @@ try:
 except: 
     print("Error reading file")
 
+
+# data = data.iloc[:,0].tolist()
+# seed = 'conductivity'
+# fseed = 'data/' + seed + '/original.txt'
+# fsynth = 'data/' + seed + '/synthetic.txt'
+
+# df_segments = [df_segments.iloc[:,i] for i in range(len(df_segments)-1)]
+# segments = [data[i:i + window] + np.random.normal(0,.008, window) for i in range(0, len(data) - window, int(0.1 * window))]
+# df_segments = pd.DataFrame(segments)
+# df_segments = df_segments.T
+# # df_segments.iloc[: , :50].plot(subplots=True, layout=(10,6), figsize=(10, 10), legend = True, color = 'b')
+# # plt.show()
+# # df_segments = filter_segment(df_segments)

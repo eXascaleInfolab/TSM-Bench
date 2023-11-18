@@ -137,7 +137,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="A script that takes two integer values as input and calls a function with them.")
     parser.add_argument("--seed", type=str, default='conductivity', help="Link to original dataset")
     args = parser.parse_args()
-    date=np.loadtxt('../data/' + args.seed + '/synthetic.txt',delimiter=',')
+    date=np.loadtxt('../data/' + args.seed + '/segments_orig.txt',delimiter=',')
     
     # date=np.loadtxt('../data/column_23_3072_3072.txt',delimiter=',')
     lis = []

@@ -54,6 +54,15 @@ sh install.sh
    - nrows >= 3000.
 - Create a new folder under `data/` with the name of your dataset and add `original.txt` inside, i.e., `data/{dataset_name}/original.txt`
  
+
+#### 1. Data Partitioning
+
+- Partition your input data located in `data/` into segments of the same length
+
+```bash
+python ts_seg.py --seed {dataset_name}
+```
+
 #### 1. Model Training
 
 
