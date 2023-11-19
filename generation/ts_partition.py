@@ -10,10 +10,11 @@ parser = argparse.ArgumentParser(description="A script that takes two integer va
 parser.add_argument("--seed", type=str, default='conductivity', help="Link to original dataset")
 args = parser.parse_args()
 
-data = pd.read_csv("data/" + args.seed + "/original.txt", header=None, sep= ';,')
 
+data = pd.read_csv("/Users/abdel/TSM-Bench/generation/data/bafu/original.txt", header=None, sep= ';,')
+# data.head(3072 * 2)
 window = 3072
-segments = [data[i:i + window] for i in tqdm(range(0, len(data) - window, 50))]
+segments = [data[i:i + window] for i in range(0, len(data) - window, 50)]
 df_segments = pd.DataFrame(np.squeeze(segments))
 df_segments = df_segments.T
 df_segments.to_csv("data/" + args.seed + "/segments_orig.txt", sep=',', encoding='utf-8', header=None, index=None)
