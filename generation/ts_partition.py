@@ -13,7 +13,7 @@ args = parser.parse_args()
 data = pd.read_csv("data/" + args.seed + "/original.txt", header=None, sep= ';,')
 
 window = 3072
-segments = [data[i:i + window] for i in range(0, len(data) - window, 50)]
+segments = [data[i:i + window] for i in tqdm(range(0, len(data) - window, 50))]
 df_segments = pd.DataFrame(np.squeeze(segments))
 df_segments = df_segments.T
 df_segments.to_csv("data/" + args.seed + "/segments_orig.txt", sep=',', encoding='utf-8', header=None, index=None)
