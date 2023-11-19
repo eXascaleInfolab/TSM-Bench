@@ -6,19 +6,24 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
-parser = argparse.ArgumentParser(description="A script that takes two integer values as input and calls a function with them.")
-parser.add_argument("--seed", type=str, default='conductivity', help="Link to original dataset")
-args = parser.parse_args()
-
 
 data = pd.read_csv("/Users/abdel/TSM-Bench/generation/data/bafu/original.txt", header=None, sep= ';,')
 # data.head(3072 * 2)
-window = 3072
-segments = [data[i:i + window] for i in range(0, len(data) - window, 50)]
-df_segments = pd.DataFrame(np.squeeze(segments))
-df_segments = df_segments.T
-df_segments.to_csv("data/" + args.seed + "/segments_orig.txt", sep=',', encoding='utf-8', header=None, index=None)
 
+try: 
+    assert len(data) > 3072
+except: 
+    print("Original time series is too small.")
+    
+shift = min(len(data) // 3072 - 1, 100)
+print("Shift used: ", shift)
+
+res_shift = pd.DataFrame()
+
+for i in tqdm(range(3072)):
+    res_shift[i] = np.array(list(data[0])[shift * i:(shift * i) + 3072])
+
+res_shift
 
 
 # # data.head(3072 * 2)
