@@ -18,7 +18,7 @@ except:
     print("Original time series is too small.")
     
 shift = min(len(data) // 3072 - 1, 100)
-print("Shift used: ", shift)
+# print("Shift used: ", shift)
 res_shift = pd.DataFrame()
 for i in tqdm(range(3072)):
     res_shift[i] = np.array(list(data[0])[shift * i:(shift * i) + 3072])
