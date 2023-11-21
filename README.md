@@ -16,7 +16,7 @@ ___
 ## Prerequisites
 
 - Ubuntu 20 (including Ubuntu derivatives, e.g., Xubuntu); 128 GB RAM
-- Clone this repository (this can take a couple of minutes as it uploads the small dataset)
+- Clone this repository (this can take a couple of minutes as it uploads one of the datasets)
 
 ___
 
