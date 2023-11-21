@@ -3,7 +3,7 @@
 TSM-Bench is a new benchmark that compares seven Time Series Database Systems (TSDBs) using a mixed set of workloads. It can be easily extended with new systems, queries, datasets, and workloads. The benchmark introduces a novel data generation method that augments seed real-world time series datasets, enabling realistic and scalable benchmarking. Technical details can be found in the paper [TSM-Bench: Benchmarking Time Series Database Systems for Monitoring Applications](https://www.vldb.org/pvldb/vol16/p3363-khelifati.pdf), PVLDB'23. 
 
 - List of benchmarked systems: [ClickHouse](https://clickhouse.com/), [Druid](https://druid.apache.org/), [eXtremeDB](https://www.mcobject.com/)*, [InfluxDB](https://docs.influxdata.com/influxdb/v1.7/), [MonetDB](https://www.monetdb.org/easy-setup/), [QuestDB](https://questdb.io/), [TimescaleDB](https://www.timescale.com/).
--  The benchmark evaluates bulk-loading, storage performance, and offline/online query performance. 
+- The benchmark evaluates bulk-loading,  storage performance, offline/online query performance, and the impact of time series features on compression.
 - We use two datasets for the evaluation: *D-LONG [d1] and D-MULTI [d2]*. The evaluated datasets can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/datasets).
 - <sup>*</sup>**Note**: Due to license restrictions, we can only share the evaluation version of extremeDB. The results between the benchmarked and the public version might diverge. 
 
@@ -16,7 +16,7 @@ ___
 ## Prerequisites
 
 - Ubuntu 20 (including Ubuntu derivatives, e.g., Xubuntu); 128 GB RAM
-- Clone this repository (this can take a couple of minutes as it uploades the small dataset)
+- Clone this repository (this can take a couple of minutes as it uploads the small dataset)
 
 ___
 
@@ -165,7 +165,7 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 ### Online Workload
 
 
-This workload requires two servers: the first one serves as a host machine to deploy the systems (similar to above), and the second one runs as a client to generate writes and queries.
+This workload requires two servers: the first serves as a host machine to deploy the systems (similar to above), and the second runs as a client to generate writes and queries.
 
 #### Client Setup
  
