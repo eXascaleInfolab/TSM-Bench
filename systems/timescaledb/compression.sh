@@ -7,12 +7,12 @@ if [ $# -ge 1 ]; then
 fi
 
 
-sudo docker start timescaledb-container
+#docker start timescaledb-container
 
 
 sleep 15
 
-output=$(sudo docker exec -it timescaledb-container psql -U postgres -c "SELECT hypertable_size('$dataset') ;")
+output=$( docker exec -it timescaledb-container psql -U postgres -c "SELECT hypertable_size('$dataset') ;")
 echo "storing"
 echo "$output"
 number=$(echo "$output" | awk 'NR==3 {print $1}')
@@ -28,4 +28,4 @@ echo "result"
 echo "${result}B" 
 
 
-mute=$(sudo docker stop timescaledb-container) 
+#mute=$(sudo docker stop timescaledb-container) 

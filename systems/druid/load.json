@@ -5,7 +5,7 @@
       "type": "index_parallel",
       "inputSource": {
         "type": "local",
-        "baseDir": "/home/luca/test/TSM-Bench/systems/druid/../../datasets/large_outliers_20.csv",
+        "baseDir": "/localdata/TSM-Bench/systems/druid/../../datasets/scarsity_90.csv",
         "filter": "*"
       },
       "inputFormat": {
@@ -27,7 +27,7 @@
       "maxRowsInMemory": 5000000
     },
     "dataSchema": {
-      "dataSource": "large_outliers_20",
+      "dataSource": "scarsity_90",
       "timestampSpec": {
         "column": "time",
         "format": "iso"
