@@ -22,6 +22,13 @@ import os
 import argparse
 
 
+import toml
+
+
+config = toml.load('../config.toml')
+
+n_iterations = int(config['generation']['n_iterations'])
+
 class D_Net(nn.Module):
     def __init__(self,bais=False):
         super(D_Net,self).__init__()
@@ -141,7 +148,7 @@ if __name__ == '__main__':
             g_net.parameters(), lr=0.0002, betas=(0.5, 0.999))
     pbbox=[]
     bbox=[]
-    for epoch in range(1000):
+    for epoch in range(n_iterations):
             for i, img in enumerate(dataloader):
                 for p in d_net.parameters(): p.data.clamp_(-0.01, 0.01)
                 # img = img / 10
@@ -188,7 +195,7 @@ if __name__ == '__main__':
                 if i%10 == 0:
                     print('Epoch [{}/{}], d_loss: {:.3f}, g_loss: {:.3f} '
                           'D real: {:.3f}, D fake: {:.3f}'
-                          .format(epoch, 1000, d_loss, g_loss,
+                          .format(epoch, n_iterations, d_loss, g_loss,
                                   real_scores.data.mean(), fake_scores.data.mean()))
                     print(d_loss_real,d_loss_fake)
                     torch.save(d_net.state_dict(), r"./gand_path")
