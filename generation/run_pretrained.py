@@ -25,7 +25,7 @@ import toml
 config = toml.load('./config.toml')
 
 num_hashtables = int(config['generation']['num_hashtables'])
-n_top = int(config['generation']['n_top'])
+nb_top = int(config['generation']['n_top'])
 hash_length_percentage = int(config['generation']['hash_length_percentage'])
 
 def sigmoid(x):
@@ -45,7 +45,7 @@ def TS_LSH(data, segments, nb_ts, len_ts):
 
     print('Querying LSH...')
     lsh_res = []
-    n_top = n_top
+    n_top = nb_top
     k = int(window * hash_length_percentage / 100)
 
     len_ts = len_ts if len_ts > len(to_query) else len(to_query)
