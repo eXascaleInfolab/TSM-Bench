@@ -22,7 +22,7 @@ import random
 warnings.filterwarnings('ignore')
 
 import toml
-config = toml.load('../config.toml')
+config = toml.load('./config.toml')
 
 num_hashtables = int(config['generation']['num_hashtables'])
 n_top = int(config['generation']['n_top'])
