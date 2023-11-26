@@ -114,6 +114,9 @@ The generated plots and data are stored in the `generation/results` folder.
 -->
 
 
+*Note: Additional parameters for the generation method including the number of iterations for GAN training and LSH configuration can be found in the `config.toml` file.*
+
+
 
 
 
