@@ -18,6 +18,11 @@ import torch.nn.functional as F
 import os
 import argparse
 
+import toml
+config = toml.load('../config.toml')
+
+n_iterations = int(config['generation']['n_iterations'])
+
 
 class D_Net(nn.Module):
     def __init__(self,bais=False):
@@ -167,7 +172,7 @@ if __name__ == '__main__':
     except:
         print('falied')
 
-    for epoch in range(1):
+    for epoch in range(n_iterations):
             for i, img in enumerate(dataloader):
                 for p in d_net.parameters(): p.data.clamp_(-0.01, 0.01)
                 # img = img / 10

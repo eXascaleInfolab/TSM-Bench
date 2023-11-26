@@ -23,8 +23,6 @@ import argparse
 
 
 import toml
-
-
 config = toml.load('../config.toml')
 
 n_iterations = int(config['generation']['n_iterations'])

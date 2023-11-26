@@ -21,6 +21,13 @@ import warnings
 import random
 warnings.filterwarnings('ignore')
 
+import toml
+config = toml.load('../config.toml')
+
+num_hashtables = int(config['generation']['num_hashtables'])
+n_top = int(config['generation']['n_top'])
+hash_length_percentage = int(config['generation']['hash_length_percentage'])
+
 def sigmoid(x):
     return 1 / (1 + math.exp(-x))
 
@@ -30,7 +37,7 @@ def moving_avg(x, len_ts):
 
 def TS_LSH(data, segments, nb_ts, len_ts):
     print('Building LSH...')
-    lsh = lshash.LSHash(8, window, num_hashtables=8)
+    lsh = lshash.LSHash(num_hashtables, window, num_hashtables=num_hashtables)
 
     for i in segments:
         lsh.index(segments[i])
@@ -38,8 +45,8 @@ def TS_LSH(data, segments, nb_ts, len_ts):
 
     print('Querying LSH...')
     lsh_res = []
-    n_top = 10
-    k = int(window * .03)
+    n_top = n_top
+    k = int(window * hash_length_percentage / 100)
 
     len_ts = len_ts if len_ts > len(to_query) else len(to_query)
     for i in tqdm(range(nb_ts)):
@@ -136,3 +143,16 @@ try:
 except: 
     print("Error reading file")
 
+
+# data = data.iloc[:,0].tolist()
+# seed = 'conductivity'
+# fseed = 'data/' + seed + '/original.txt'
+# fsynth = 'data/' + seed + '/synthetic.txt'
+
+# df_segments = [df_segments.iloc[:,i] for i in range(len(df_segments)-1)]
+# segments = [data[i:i + window] + np.random.normal(0,.008, window) for i in range(0, len(data) - window, int(0.1 * window))]
+# df_segments = pd.DataFrame(segments)
+# df_segments = df_segments.T
+# # df_segments.iloc[: , :50].plot(subplots=True, layout=(10,6), figsize=(10, 10), legend = True, color = 'b')
+# # plt.show()
+# # df_segments = filter_segment(df_segments)
