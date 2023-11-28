@@ -1,13 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import json
 import multiprocessing
 import hashing.lsh_main as lsh
-# import graph.graph_main as graph
 import time
 from pathlib import Path
 import pandas as pd
@@ -15,386 +8,151 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
-import graph.random_walk_ori as random_walk
 import pandas as pd
 import lshashpy3 as lshash
 import math 
+from scipy.signal import lfilter
+import csv
+import argparse
+import pandas as pd
+import numpy as np
+from tqdm import tqdm
+import warnings
+import random
+warnings.filterwarnings('ignore')
+
+import toml
+config = toml.load('./config.toml')
+
+num_hashtables = int(config['generation']['num_hashtables'])
+nb_top = int(config['generation']['n_top'])
+hash_length_percentage = int(config['generation']['hash_length_percentage'])
 
 def sigmoid(x):
     return 1 / (1 + math.exp(-x))
 
-
-# In[3]:
-
-
-data = pd.read_csv('data/pH_accuracy.csv')
-data = data['pH'].tolist()
-# data = data[:5000]
-len(data)
-
-#define moving average function
-def moving_avg(x, n):
+def moving_avg(x, len_ts):
     cumsum = np.cumsum(np.insert(x, 0, 0)) 
-    return (cumsum[n:] - cumsum[:-n]) / float(n)
+    return (cumsum[len_ts:] - cumsum[:-len_ts]) / float(len_ts)
 
-#calculate moving average using previous 3 time periods
+def TS_LSH(data, segments, nb_ts, len_ts):
+    print('Building LSH...')
+    lsh = lshash.LSHash(num_hashtables, window, num_hashtables=num_hashtables)
 
-data = moving_avg(data, 200).tolist()
+    for i in segments:
+        lsh.index(segments[i])
+    to_query = [data[i:i + window] for i in range(0, len(data) - window, window)]
 
+    print('Querying LSH...')
+    lsh_res = []
+    n_top = nb_top
+    k = int(window * hash_length_percentage / 100)
 
-# In[4]:
+    len_ts = len_ts if len_ts > len(to_query) else len(to_query)
+    for i in tqdm(range(nb_ts)):
+        for _ in range(5):
+            try:
+                temp = list(random.choice( lsh.query(to_query[0], distance_func="euclidean", num_results=n_top))[0][0])
+                break  
+            except Exception as e:
+                pass
+        else:
+            temp = list(to_query[0] + np.random.normal(0,.008, window))
+        for i in range(1, len_ts // window + 2): 
+            for _ in range(5):
+                try:
+                    s = list(random.choice( lsh.query(to_query[i%len(to_query)], distance_func="euclidean", num_results=n_top))[0][0])
+                    break  
+                except Exception as e:
+                    pass
+            else:
+                s =list(to_query[i%len(to_query)])
+            temp_t = temp[-k:]
+            s_h = s[:k]
+            overlap = []
+            for i in range(-k//2, k//2):
+                overlap.append((1 - sigmoid(i))*temp_t[i + k//2] + sigmoid(i)*s_h[i + k//2])
+            temp[-k:] = overlap
+            temp.extend(s[k:])
+        lsh_res.append(temp[:len_ts])    
+    return lsh_res
 
-
-plt.plot(data)
-plt.show()
-# plt.plot(generated)
-# plt.show()
-
-
-# In[26]:
-
-
-print('Preparing segments...')
-window = 1000
-segments = []
-for i in range(3):
-    segments += [data[i:i + window] + np.random.normal(0,.008, window) for i in range(0, len(data) - window, int(0.1 * window))]
-
-
-# In[8]:
-
-
-df_segments = pd.DataFrame(segments)
-df_segments = df_segments.T
-
-df_segments.iloc[: , :50].plot(subplots=True, layout=(10,6), figsize=(10, 10), legend = True, color = 'b')
-plt.show()
-
-
-# ## Filter GAN generated data
-
-# In[9]:
-
-
-from scipy.signal import lfilter
-print('Filtering GAN generated data...')
-
-# df_segments = df_segments.T
-
-n = 10  # the larger n is, the smoother curve will be
-b = [1.0 / n] * n
-a = 1
-
-for col in tqdm(df_segments):
-#     plt.plot(df_segments[col].tolist())
-    yy = lfilter(b,a,df_segments[col].tolist())
-    yy[:n] = yy[n:n+1]
-    df_segments[col] = yy.tolist()
-#     plt.plot(df_segments[col].tolist())
+def filter_segment(df_segments):
+    print('Filtering GAN generated data...')
+    len_ts = 10  # the larger len_ts is, the smoother curve will be
+    b = [1.0 / len_ts] * len_ts
+    a = 1
+    for col in tqdm(df_segments):
+        yy = lfilter(b,a,df_segments[col].tolist())
+        yy[:len_ts] = yy[len_ts:len_ts+1]
+        df_segments[col] = yy.tolist()
+    df_segments.iloc[: , :50].plot(subplots=True, layout=(10,6), figsize=(10, 10), legend = True, color = 'b')
 #     plt.show()
     
-    
+def plot_result(data, lsh_res, nb_ts, len_ts, seed):
+    print('Plotting the results')
+    xi = list(range(len_ts))
+    plt.figure(figsize=(60, 30))
+    plt.subplot(nb_ts+1, 1, 1)
+    # plt.figure(figsize=(60, 8))
+    plt.plot(data[:len_ts],color='blue',linewidth=4.0, label='Original')
+    plt.xlim(0,len_ts)
+#     plt.ylim(8.1,8.7)
+    plt.legend(loc="upper left", prop={'size': 36})
+    for i in range(2, nb_ts+2):
+        plt.subplot(nb_ts+1, 1, i)
+        plt.plot(lsh_res[i-2],color='green',linewidth=4.0)
+        plt.xlim(0,len(lsh_res[0]))
+#         plt.ylim(8.1,8.7)
+        plt.legend(loc="upper left", prop={'size': 36})
+    plt.savefig('results/' + seed + '.png', bbox_inches='tight')         
+
+parser = argparse.ArgumentParser(description="A script that takes two integer values as input and calls a function with them.")
+parser.add_argument("--len_ts", type=int, default=10000, help="Length of ts")
+parser.add_argument("--nb_ts", type=int, default=3, help="Number of ts")
+parser.add_argument("--seed", type=str, default='conductivity', help="Link to original dataset")
+# parser.add_argument("--fsynth", type=str, default='data/column_23_3072_3072.txt', help="Link to synthetic segments")
+args = parser.parse_args()
+
+# generate_rand(fseed, fsynth)
+
+len_ts = args.len_ts
+nb_ts = args.nb_ts
+seed = args.seed
+fseed = 'data/' + args.seed + '/original.txt'
+fsynth = 'data/' + args.seed + '/synthetic.txt'
+
+window = 3072
+# len_ts = 10000
+# nb_ts = 3
+
+try: 
+    data = pd.read_csv(fseed)
+    data = data.iloc[:,0].tolist()
+    data = moving_avg(data, 5).tolist()
+    len(data)
+    df_segments = pd.read_csv(fsynth).T
+
+    lsh_res = TS_LSH(data, df_segments, nb_ts, len_ts)
+
+    plot_result(data, lsh_res, nb_ts, len_ts, seed)
+    lsh_res = pd.DataFrame(lsh_res).T
+    lsh_res.to_csv('results/'+seed+'.txt', header = False, index = False, float_format='%.3f')
+
+    print('Generated', lsh_res.shape[1], 'time series of length', lsh_res.shape[0])
+except: 
+    print("Error reading file")
+
+
+# data = data.iloc[:,0].tolist()
+# seed = 'conductivity'
+# fseed = 'data/' + seed + '/original.txt'
+# fsynth = 'data/' + seed + '/synthetic.txt'
+
+# df_segments = [df_segments.iloc[:,i] for i in range(len(df_segments)-1)]
+# segments = [data[i:i + window] + np.random.normal(0,.008, window) for i in range(0, len(data) - window, int(0.1 * window))]
 # df_segments = pd.DataFrame(segments)
 # df_segments = df_segments.T
-
-df_segments.iloc[: , :50].plot(subplots=True, layout=(10,6), figsize=(10, 10), legend = True, color = 'b')
-plt.show()
-
-
-# # LSH
-
-# In[10]:
-
-
-print('Launching LSH...')
-lsh = lshash.LSHash(8, len(segments[0]), num_hashtables=8)
-
-for i in segments:
-    lsh.index(i)
-
-
-# In[11]:
-
-
-to_query = [data[i:i + window] for i in range(0, len(data) - window, window)]
-
-# plt.plot(to_query[0])
-# plt.show()
-
-# plt.plot(random.choice( lsh.query(to_query[0], distance_func="euclidean", num_results=10))[0][0])
-# plt.show()
-
-# nn = lsh.query(to_query[0], distance_func="euclidean", num_results=10)
-# for ((vec,extra_data),distance) in nn:
-#     print( distance)
-#     plt.plot(vec)
-#     plt.show()
-#     # len(segments)
-
-
-# In[27]:
-
-
-# lsh_res = []
-# for i in range(3):
-#     results = [lsh.query(to_query[i])[0][0][0] for i in range(len(to_query))]
-#     print(len(results))
-#     res_lsh = []
-#     for l in results: 
-#         res_lsh += l
-#     lsh_res.append(res_lsh)
-
-print('Querying LSH...')
-lsh_res = []
-n_top = 10
-k = int(window * .03)
-for i in tqdm(range(3)):
-    temp = list(random.choice( lsh.query(to_query[0], distance_func="euclidean", num_results=n_top))[0][0])
-    for i in range(1, len(to_query)): 
-        s = list(random.choice( lsh.query(to_query[i], distance_func="euclidean", num_results=n_top))[0][0])
-        temp_t = temp[-k:]
-        s_h = s[:k]
-        overlap = []
-        for i in range(-k//2, k//2):
-            overlap.append((1 - sigmoid(i))*temp_t[i + k//2] + sigmoid(i)*s_h[i + k//2])
-#         for i in range(-1*k , 0):
-#             temp[i]= (1 - sigmoid(i))*temp_t[i] + sigmoid(i)*s_h[i]
-#         for i in range(0, k):
-#             s[i]= (1 - sigmoid(i))*temp_t[i] + sigmoid(i)*s_h[i]
-        temp[-k:] = overlap
-        temp.extend(s[k:])
-    lsh_res.append(temp)
-
-
-# # Graph
-
-# In[29]:
-
-
-#Calculates the distance between two series. Given series A, B returns the Euclidean distance between A and B
-def distance(a, b):
-    return np.sqrt(np.sum((a - b)**2))
-    
-#The probability is converted according to the sorted distances, which adds up to 1
-def distopro(a):
-    a=len(a)
-    if(a==3):
-        b=[0.2,0.3,0.5]
-    elif(a==4):
-        b=[0.1,0.2,0.3,0.4]
-    else:
-        b=[0.04,0.12,0.2,0.28,0.36]
-    return np.array(b)
-        
-
-#Input is the original data matrix, return is the relationship matrix relation_matrix, and probability matrix probability_matrix
-#Data is the matrix of series, the first dimension is the number of series, and the second dimension is each series
-#Window_size is the size of the window to calculate the distance, and k is the number of the nearest neighbors selected. Currently, 3,4,5 are supported
-def transform(data, window_size, k):
-    numOfSeq=data.shape[0]
-    distance_matrix=np.ones([numOfSeq,numOfSeq],dtype = float)
-    for i in range(numOfSeq):
-        for j in range(numOfSeq):
-            distance_matrix[i][j]=distance(data[i,data.shape[1]-window_size:],data[j,0:window_size])
-    relation_matrix=np.ones([numOfSeq,k],dtype = int)
-    subdistance_matrix=np.ones([numOfSeq,k],dtype = float)
-    probability_matrix=np.ones([numOfSeq,k],dtype = float)
-    for i in range(numOfSeq):
-        relation_matrix[i]=distance_matrix[i].argsort()[::-1][data.shape[0]-k:]
-        #print(relation_matrix[i])
-#     print(relation_matrix[i])
-    for i in range(numOfSeq):
-        for j in range(k):
-            subdistance_matrix[i][j]=distance_matrix[i][relation_matrix[i][j]]
-    
-    for i in range(numOfSeq):
-        probability_matrix[i]=distopro(subdistance_matrix[i])
-    
-    
-    return distance_matrix, subdistance_matrix ,relation_matrix, probability_matrix
-            
-      
-#print(transform(np.array([[0,1,1,1],[1,0,1,1],[1,1,0,1],[1,1,1,0]]), 2, 3))
-
-
-#Given the ID of the current series, the ID of the next series is generated randomly according to probability
-def next_step(relation_array, probability_array):
-    value=random.random()
-#     print(value)
-    threshold=[0]
-    sum_value=0
-    for i in range(len(probability_array)):
-        sum_value=sum_value+probability_array[i]
-        threshold.append(sum_value)
-    for i in range(len(threshold)-1):
-        if(value>threshold[i] and value<=threshold[i+1]):
-            return relation_array[i]
-
-#Given a relation matrix and a probability matrix, returns a series of length        
-def random_walk(relation_matrix, probability_matrix, length):
-    seq=[0]
-    temp_id=0
-    for i in range(length-1):
-        temp_id=next_step(relation_matrix[temp_id],probability_matrix[temp_id])
-        seq.append(temp_id)
-        #print(temp_id)
-    return np.array(seq)
-
-
-# In[30]:
-
-
-seq=[0]
-print('Building Graph...')
-a,b,c,d=transform(np.array(segments), 100, 5)
-
-
-# In[31]:
-
-
-print('Generating using Graph...')
-graph_res = []
-for i in range(3):
-    path = random_walk( c, d, int(len(data)/window))
-    print(path)
-    temp=[]
-    for s in path:
-#         print(path[i], i)
-        temp+=list(segments[s])
-    graph_res.append(temp)
-    print(len(graph_res))
-    
-
-
-# In[32]:
-
-
-print(graph_res[0][-3:-1])
-print(graph_res[1][-3:-1])
-print(graph_res[2][-3:-1])
-
-
-# In[19]:
-
-
-# res_lsh = pd.read_csv('example_data.csv')
-# res_lsh = res_lsh['LSH'].tolist()
-
-# res_graph = pd.read_csv('example_data.csv')
-# res_graph = res_graph['Graph'].tolist()
-
-
-# In[45]:
-
-
-xi = list(range(10000))
-# plot the index for the x-values 
-
-plt.figure(figsize=(60, 40))
-plt.subplot(7, 1, 1)
-
-# plt.figure(figsize=(60, 8))
-plt.plot(data,color='blue',linewidth=4.0, label='Original')
-plt.xlim(0,len(data))
-plt.ylim(8.1,8.7)
-plt.legend(loc="upper left", prop={'size': 36})
-
-# plt.show()
-
-plt.subplot(7, 1, 2)
-
-# plt.figure(figsize=(60, 8))
-plt.plot(lsh_res[0],color='green',linewidth=4.0, label='LSH')
-plt.xlim(0,len(lsh_res[0]))
-plt.ylim(8.1,8.7)
-plt.legend(loc="upper left", prop={'size': 36})
-
-plt.subplot(7, 1, 3)
-
-# plt.figure(figsize=(60, 8))
-plt.plot(lsh_res[1],color='green',linewidth=4.0, label='LSH')
-plt.xlim(0,len(lsh_res[1]))
-plt.ylim(8.1,8.7)
-# plt.legend(loc="upper left", prop={'size': 36})
-plt.legend(loc="upper left", prop={'size': 36})
-
-plt.subplot(7, 1, 4)
-
-# plt.figure(figsize=(60, 8))
-plt.plot(lsh_res[2],color='green',linewidth=4.0, label='LSH')
-plt.xlim(0,len(lsh_res[1]))
-plt.ylim(8.1,8.7)
-# plt.legend(loc="upper left", prop={'size': 36})
-plt.legend(loc="upper left", prop={'size': 36})
-
-
-plt.subplot(7, 1, 5)
-
-# plt.figure(figsize=(60, 8))
-plt.plot(graph_res[0],color='red',linewidth=4.0, label='Graph')
-plt.xlim(0,len(graph_res[0]))
-plt.ylim(8.1,8.7)
-plt.legend(loc="upper left", prop={'size': 36})
-
-plt.subplot(7, 1, 6)
-
-# plt.figure(figsize=(60, 8))
-plt.plot(graph_res[1],color='red',linewidth=4.0, label='Graph')
-plt.xlim(0,len(graph_res[1]))
-plt.ylim(8.1,8.7)
-plt.legend(loc="upper left", prop={'size': 36})
-
-
-plt.subplot(7, 1, 7)
-
-# plt.figure(figsize=(60, 8))
-plt.plot(graph_res[2],color='red',linewidth=4.0, label='Graph')
-plt.xlim(0,len(graph_res[2]))
-plt.ylim(8.1,8.7)
-plt.legend(loc="upper left", prop={'size': 36})
-
-# plt.show()
-plt.savefig('results/plot_lsh_graph.pdf',dpi=1600,
-            bbox_inches = 'tight')
-
-
-
-# # Metrics
-
-# In[38]:
-
-plt.figure()
-plt.hist(data, bins=50, alpha=0.5, label ='real')
-plt.hist(lsh_res[0], bins=50, alpha=0.5, label ='lsh')
-plt.hist(graph_res[0], bins=50, alpha=0.5, label ='graph')
-plt.legend()
-# plt.show()
-plt.savefig('results/hist_lsh_graph.pdf',dpi=1600,
-            bbox_inches = 'tight')
-
-
-# In[39]:
-
-
-type(lsh_res[0])
-
-
-# In[42]:
-
-
-import csv
-
-with open('results/lsh.csv', 'w') as myfile:
-    wr = csv.writer(myfile)
-    wr.writerow(lsh_res[0])
-
-with open('results/graph.csv', 'w') as myfile:
-    wr = csv.writer(myfile)
-    wr.writerow(graph_res[0])
-
-
-# In[ ]:
-
-
-
-
+# # df_segments.iloc[: , :50].plot(subplots=True, layout=(10,6), figsize=(10, 10), legend = True, color = 'b')
+# # plt.show()
+# # df_segments = filter_segment(df_segments)

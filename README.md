@@ -1,9 +1,9 @@
  # Comprehensive Benchmark for Time Series Database Systems
 
-TSM-Bench is a new benchmark that compares seven Time Series Database Systems (TSDBs) using a mixed set of workloads. It can be easily extended with new systems, queries, datasets, and workloads. The benchmark introduces a novel data generation method that augments seed real-world time series datasets enabling realistic and scalable benchmarking. Technical details can be found in the paper: [TSM-Bench: Benchmarking Time Series Database Systems for Monitoring Applications](https://www.vldb.org/pvldb/vol16/p3363-khelifati.pdf), PVLDB'23. 
+TSM-Bench is a new benchmark that compares seven Time Series Database Systems (TSDBs) using a mixed set of workloads. It can be easily extended with new systems, queries, datasets, and workloads. The benchmark introduces a novel data generation method that augments seed real-world time series datasets, enabling realistic and scalable benchmarking. Technical details can be found in the paper [TSM-Bench: Benchmarking Time Series Database Systems for Monitoring Applications](https://www.vldb.org/pvldb/vol16/p3363-khelifati.pdf), PVLDB'23. 
 
 - List of benchmarked systems: [ClickHouse](https://clickhouse.com/), [Druid](https://druid.apache.org/), [eXtremeDB](https://www.mcobject.com/)*, [InfluxDB](https://docs.influxdata.com/influxdb/v1.7/), [MonetDB](https://www.monetdb.org/easy-setup/), [QuestDB](https://questdb.io/), [TimescaleDB](https://www.timescale.com/).
--  The benchmark evaluates bulk-loading, storage performance, and offline/online query performance. 
+- The benchmark evaluates bulk-loading,  storage performance, offline/online query performance, and the impact of time series features on compression.
 - We use two datasets for the evaluation: *D-LONG [d1] and D-MULTI [d2]*. The evaluated datasets can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/datasets).
 - <sup>*</sup>**Note**: Due to license restrictions, we can only share the evaluation version of extremeDB. The results between the benchmarked and the public version might diverge. 
 
@@ -16,7 +16,7 @@ ___
 ## Prerequisites
 
 - Ubuntu 20 (including Ubuntu derivatives, e.g., Xubuntu); 128 GB RAM
-- Clone this repository
+- Clone this repository (this can take a couple of minutes as it uploads one of the datasets)
 
 ___
 
@@ -57,7 +57,7 @@ sh load_all.sh d1
 - **Note**: To build and load the larger dataset d2, replace ```d1``` with ```d2```.
 
  <!---  
--  To download, install, setup and load dataset ```d1``` to systems
+-  To download, install, setup, and load dataset ```d1``` to systems
 
     ```bash
     cd systems/
@@ -91,7 +91,7 @@ ___
 -->
 
 ### Offline Workload
-- Activate the virtual enviorement, if not already done:
+- Activate the virtual environment, if not already done:
   
    ```bash
    source systems/TSMvenv/bin/activate
@@ -124,7 +124,7 @@ ___
     - `--nb_sr`: Number of queried sensors when varying other dimensions (Default = 3)
     - `--range`: Query range value when varying other dimensions (Default = 1)
     - `--rangeUnit`: Query range unit when varying other dimensions (Default = day)
-    - `--timeout`: Maximum query time after 5 runs (s) (Default = 20)
+    - `--timeout`: Maximum query time after five runs (s) (Default = 20)
     - `--min_ts`: Minimum query timestamp (Default = "2019-04-01T00:00:00")
     - `--max_ts`: Maximum query timestamp (Default = "2019-04-30T00:00:00")
 
@@ -165,7 +165,7 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 ### Online Workload
 
 
-This workload requires two servers: the first one serves as a host machine to deploy the systems (similar to above) and the second one runs as a client to generate writes and queries.
+This workload requires two servers: the first serves as a host machine to deploy the systems (similar to above), and the second runs as a client to generate writes and queries.
 
 #### Client Setup
  
@@ -189,7 +189,7 @@ This workload requires two servers: the first one serves as a host machine to de
    cd systems/{system}
    sh launch.sh
    ```
-2. If the virtual enviorement is not activated active from the root folder using:
+2. If the virtual environment is not activated from the root folder using:
   
    ```bash
    source systems/TSMvenv/bin/activate
@@ -203,7 +203,7 @@ This workload requires two servers: the first one serves as a host machine to de
 
 **Optional Arguments**:
 - `--host` : remote host machine name (Default = "localhost")
-- `--n_threads` : Number of threads to use. (Default 10)
+- `--n_threads`: Number of threads to use. (Default 10)
 - `--batch_start`: Number data points to be inserted each second (if possible) in each thread (Default = 10000)
 - `--batch_step`: Number data points to be inserted each second (if possible) in each thread (Default = 10000)
 
@@ -216,7 +216,7 @@ This workload requires two servers: the first one serves as a host machine to de
 ```bash 
 python3 tsm_eval_online.py --system clickhouse --queries q1 --host "host_address"
 ```
-2. Run all queries in an online manner on questdb using one thread.  
+2. Run all queries online on questdb using one thread.  
 
 ```bash 
 python3 tsm_eval_online.py --system questdb --queries all --n_threads 1 --host "host_address" 
@@ -258,7 +258,7 @@ ___
 
 ## Benchmark Extension
 
-TSM-Bench allows to integrate new systems in a seamless way. We provide a step-by-step [tutorial](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/) on how 
+TSM-Bench allows the integration of new systems seamlessly. We provide a step-by-step [tutorial](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/) on how 
 to integrate your system as part of the benchmark. 
 
 ___
@@ -267,9 +267,8 @@ ___
 
 ## Time Series Generation 
 
-We provide a [GAN-based generation](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/generation) that allows to augment a seed dataset with more and/or longer time series that
-have akin properties to the seed ones. The tool can be used either directly using a pre-trained model
-or by retraining from scratch the model.
+We provide a [GAN-based generation](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/generation) that allows augmenting a seed dataset with more and/or longer time series that
+have akin properties to the seed ones. The generation can be used either as a pre-trained model or by retraining from scratch the model.
 
 ___
 
@@ -294,16 +293,24 @@ ___
 ## Citation
 
 ```bibtex
-@inproceedings{khelifati2023vldb,
-  author = {Khelifati, Abdelouahab and Khayati, Mourad and Dignös, Anton and Difallah, Djellel and Cudré-Mauroux, Philippe},
-  title = {TSM-Bench: Benchmarking Time Series Database Systems for Monitoring Applications},
-  booktitle = {Proceedings of the VLDB Endowment},
-  volume = {16},
-  number = {11},
-  pages = {3363--3376},
-  year = {2023},
-  doi = {10.14778/3611479.3611532},
-  url = {https://vldb.org/2023/?papers-research}
+@article{DBLP:journals/pvldb/KhelifatiKDDC23,
+  author       = {Abdelouahab Khelifati and
+                  Mourad Khayati and
+                  Anton Dign{\"{o}}s and
+                  Djellel Eddine Difallah and
+                  Philippe Cudr{\'{e}}{-}Mauroux},
+  title        = {TSM-Bench: Benchmarking Time Series Database Systems for Monitoring
+                  Applications},
+  journal      = {Proc. {VLDB} Endow.},
+  volume       = {16},
+  number       = {11},
+  pages        = {3363--3376},
+  year         = {2023},
+  url          = {https://www.vldb.org/pvldb/vol16/p3363-khelifati.pdf},
+  doi          = {10.14778/3611479.3611532},
+  timestamp    = {Mon, 23 Oct 2023 16:16:16 +0200},
+  biburl       = {https://dblp.org/rec/journals/pvldb/KhelifatiKDDC23.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
 }
 ```
 

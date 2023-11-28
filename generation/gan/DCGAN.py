@@ -19,6 +19,13 @@ import numpy as np
 from tqdm import tqdm
 import torch.nn.functional as F
 import os
+import argparse
+
+
+import toml
+config = toml.load('../config.toml')
+
+n_iterations = int(config['generation']['n_iterations'])
 
 class D_Net(nn.Module):
     def __init__(self,bais=False):
@@ -111,7 +118,11 @@ if __name__ == '__main__':
     #     # 限制在一个给定的区间[min, max]内,[0,1]
     #     return out
     #
-    date=np.loadtxt('../data/column_23_3072_3072.txt',delimiter=',')
+    parser = argparse.ArgumentParser(description="A script that takes two integer values as input and calls a function with them.")
+    parser.add_argument("--seed", type=str, default='conductivity', help="Link to original dataset")
+    args = parser.parse_args()
+
+    date=np.loadtxt('../data/' + args.seed + '/segments_orig.txt',delimiter=',')
     lis=[]
     for i in range(3072):
         lis.append(date[i].reshape((3,32,32))/10)
@@ -124,12 +135,10 @@ if __name__ == '__main__':
     try:
             d_net.load_state_dict(
                 torch.load(r"./gand_path"))
-            print('xixi')
             g_net.load_state_dict(
                 torch.load(r"./gang_path"))
-            print('成功')
     except:
-            print('不成功')
+            print('XX')
     loss_fn = nn.BCEWithLogitsLoss()
     d_optimizer = torch.optim.Adam(
             d_net.parameters(), lr=0.0002, betas=(0.5, 0.999))
@@ -137,7 +146,7 @@ if __name__ == '__main__':
             g_net.parameters(), lr=0.0002, betas=(0.5, 0.999))
     pbbox=[]
     bbox=[]
-    for epoch in range(6000):
+    for epoch in range(n_iterations):
             for i, img in enumerate(dataloader):
                 for p in d_net.parameters(): p.data.clamp_(-0.01, 0.01)
                 # img = img / 10
@@ -184,7 +193,7 @@ if __name__ == '__main__':
                 if i%10 == 0:
                     print('Epoch [{}/{}], d_loss: {:.3f}, g_loss: {:.3f} '
                           'D real: {:.3f}, D fake: {:.3f}'
-                          .format(epoch, 6000, d_loss, g_loss,
+                          .format(epoch, n_iterations, d_loss, g_loss,
                                   real_scores.data.mean(), fake_scores.data.mean()))
                     print(d_loss_real,d_loss_fake)
                     torch.save(d_net.state_dict(), r"./gand_path")

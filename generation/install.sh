@@ -27,6 +27,7 @@ python -m pip install sklearn
 python -m pip install future
 python -m pip install torch
 python -m pip install scipy
+python -m pip install toml
 python -m pip install matplotlib
 python -m pip install torch
 python -m pip install torchvision

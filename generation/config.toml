@@ -1,0 +1,8 @@
+# config.toml
+
+[generation]
+n_iterations = 1000
+num_hashtables = 8
+n_top = 10
+hash_length_percentage = 3
+
