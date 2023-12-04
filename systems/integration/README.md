@@ -29,4 +29,4 @@
 
 # Query Addition
 
-To add additional queries to the benchmark, users can simply add the new queries under each system's queries.sql file while respecting their order. 
+To add additional queries to the benchmark, users can simply add the new queries under each system's `{system}/queries.sql` file while respecting their order. 
