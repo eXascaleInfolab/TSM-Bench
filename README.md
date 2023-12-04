@@ -261,6 +261,8 @@ ___
 TSM-Bench allows the integration of new systems seamlessly. We provide a step-by-step [tutorial](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/systems/integration/) on how 
 to integrate your system as part of the benchmark. 
 
+Should users wish, new queries can also be added to the benchmark. They must be added under each system's `{system}/queries.sql` file. Note that the order of the queries should be respected (e.g., q8 is the eighth query in the file).
+
 ___
 
 
