@@ -107,10 +107,10 @@ Apply LSH to generate long time series using ```gen_ts.py```. To use this script
    ```bash
    python gen_ts.py
     ```
-1. Generate 10 time series with 100K datapoints each:
+1. Generate 10 time series with 10K datapoints each:
 
 ```bash
-   python gen_ts.py --len_ts 100000 --nb_ts 10
+   python gen_ts.py --len_ts 10000 --nb_ts 10
 ```
 The generated plots and data are stored in the `generation/results` folder.
 -->
