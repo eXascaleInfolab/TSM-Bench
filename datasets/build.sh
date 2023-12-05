@@ -21,15 +21,14 @@ fi
 if [ "$dataset" = "d2" ];then
 	mkdir d2
 	cd d2
-
-	wget https://zenodo.org/record/7701240/files/d2_p1.tar.gz
-	wget https://zenodo.org/record/7701425/files/d2_p2.tar.gz
-
-	tar -xf d2_p*.tar.gz
-	rm d2_p*.tar.gz
-
-	cat d1.csv d2.csv d3.csv > d2_full.csv
-	rm  d2.csv d3.csv
+	wget -O d2_1_4.csv https://zenodo.org/record/8393992/files/d2_aa?download=1
+	wget -O d2_2_4.csv https://zenodo.org/record/8394000/files/d2_ab?download=1
+	wget -O d2_3_4.csv https://zenodo.org/record/8394002/files/d2_ac?download=1
+	wget -O d2_4_4.csv https://zenodo.org/record/8394004/files/d2_ad?download=1
+	
+	(head -n -1 d2_1_4.csv; head -n -1 d2_2_4.csv; head -n -1 d2_3_4.csv; head -n -1 d2_4_4.csv) > d2.csv
+	
+	rm d2_*
 
 	python3 generate_influx.py d2
 fi
