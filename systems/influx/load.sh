@@ -11,7 +11,7 @@ echo $dataset
 
 cd ../../datasets
 echo "convert the datasetformat (this is not counted in the time measuring)"
-python3 generate_influx.py $dataset
+#python3 generate_influx.py $dataset
 cd ../systems/influx
 
 
@@ -25,7 +25,7 @@ start_time=$(date +%s.%N)
 
 echo "start loading"
 
-# Initialize the last_line variable
+# Initialize the last_line variJasable
 last_line=0
 
 # Continuously monitor the log file for new lines

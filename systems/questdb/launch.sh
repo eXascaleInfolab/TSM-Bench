@@ -1,9 +1,9 @@
 #!/bin/sh
 
+. ../config.env
+
 docker stop clickhouse-container
 
-system_directory="/localdata/.questdb" # change this if needed
-
-./questdb-6.4.1-rt-linux-amd64/bin/questdb.sh start -d "$system_directory"
+./questdb-6.4.1-rt-linux-amd64/bin/questdb.sh start -d "$QuestDBroot"
 
 # http:localhost:9000

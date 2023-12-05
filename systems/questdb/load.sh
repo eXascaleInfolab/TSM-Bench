@@ -1,7 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
 sh launch.sh &
 sleep 30
+
 
 dataset="d1"
 if [ $# -ge 1 ]; then
@@ -11,22 +12,25 @@ echo "loading $dataset"
 
 
 
-#curl -G --data-urlencode "query= DROP TABLE IF EXISTS ${dataset}temp; \
-#                " http://localhost:9000/exec
+curl -G --data-urlencode "query= DROP TABLE IF EXISTS ${dataset}temp; \
+                " http://localhost:9000/exec
 
-#curl -G --data-urlencode "query= DROP TABLE IF EXISTS $dataset; \
-#                " http://localhost:9000/exec
-curl -G --data-urlencode "query=DROP TABLE '$dataset' " http://localhost:9000/exec
+curl -G --data-urlencode "query= DROP TABLE IF EXISTS $dataset; \
+                " http://localhost:9000/exec
 
 start_time=$(date +%s.%N)
 
-columns=()
-for i in {0..99}; do
-  columns+=(", s${i} DOUBLE")
+columns=""
+for i in $(seq 0 99); do
+  if [ "$i" -ne 0 ]; then
+    columns="$columns, "
+  fi
+  columns="${columns}s${i} DOUBLE"
 done
 
 # Construct the CREATE TABLE query
-create_table_query="CREATE TABLE '$dataset' (ts TIMESTAMP, id_station SYMBOL${columns[@]}), INDEX(id_station) TIMESTAMP(ts) PARTITION BY MONTH;"
+create_table_query="CREATE TABLE '$dataset' (ts TIMESTAMP, id_station SYMBOL caca${columns}), INDEX(id_station) TIMESTAMP(ts) PARTITION BY MONTH;"
+echo "$create_table_query"
 
 # Execute the query using curl
 curl -G --data-urlencode "query=$create_table_query" http://localhost:9000/exec
