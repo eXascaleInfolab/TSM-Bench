@@ -16,91 +16,106 @@ import subprocess
 sys.path.append('../../')
 from systems.utils.library import *
 from systems.utils import change_directory , parse_args
-from systems import run_system
+from utils.run_systems import run_system
 
 import exdb
 
-# Generate Random Values
-random.seed(1)
-set_st = [str(random.randint(0,9)) for i in range(500)]
-set_s = [str(random.randint(0,99)) for i in range(500)]
-set_date = [random.random() for i in range(500)]
+options = {"day": 60 * 60 * 24,
+           "week": 60 * 60 * 24 * 7,
+           "minute": 60,
+           "hour": 60 * 60,
+           "second": 1,
+           "month": 60 * 60 * 24 * 30,
+           "year": 60 * 60 * 24 * 30 * 12
+           }
+
+def parse_query(query ,*, date, rangeUnit , rangeL , sensor_list , station_list):
+
+    date = int(time.mktime(datetime.strptime(date, '%Y-%m-%dT%H:%M:%S').timetuple()))
+    temp = query.replace("<timestamp>", str(date))
+    temp = temp.replace("<range>", str(rangeL))
+    temp = temp.replace("<rangesUnit>", str(options[rangeUnit]))
+
+    # stations
+    q = "(" + "'" + station_list[0] + "'"
+    for j in station_list[1:]:
+        q += ', ' + "'" + j + "'"
+    q += ")"
+    temp = temp.replace("<stid>", q)
+
+    # sensors
+
+    sidlist = sensor_list[0]
+    for j in sensor_list[1:]:
+        sidlist += ',' + j
+    li = [ z + "@tt" for z in sensor_list]
+    li_filtered = [ str(z) + "@fe as s" + str(z) for z in sensor_list]
+
+    q = li[0]
+    q_filtered = li_filtered[0]
+    q_seq_group_agg_avg = "seq_group_agg_avg(" + li[0] + " , t@tt/3600) as " + li[0].split('@')[0]
+    q_seq_avg = "seq_avg(" + li[0] + ")"
+    q_seq_stretch = "seq_stretch(ts5,t," + li[0].split('@')[0] + ")"
+    q_filter = "!seq_filter_search(" + li[0] + "> 0.95"
+    q_filterAND = "!seq_filter_search(" + li[0] + "> 0.95"
+
+    for j in range(1, len(li_filtered)):
+        q_filtered += ', ' + li_filtered[j]
+
+    for j in li[1:]:
+        q += ', ' + j
+        q_seq_avg += ", seq_avg(" + j + ")"
+        q_seq_group_agg_avg += ", seq_group_agg_avg(" + j + " , t@tt/3600)" + " as " + j.split('@')[
+            0]  # li[0] + ' > 0.95'
+        q_seq_stretch += ", seq_stretch(ts5,t," + j.split('@')[0] + ")"
+    temp = temp.replace("<sid>", q)
+    temp = temp.replace("<sid1>", sensor_list[0] )
+    sid2 = sensor_list[1] if len(sensor_list) > 1 else "s2"
+    sid3 = sensor_list[2] if len(sensor_list) > 2 else "s3"
+    temp = temp.replace("<sid2>", sid2)
+    temp = temp.replace("<sid3>", sid3)
+    temp = temp.replace("<sidlist>", sidlist)
+    temp = temp.replace("<seq_avg>", q_seq_avg)
+    temp = temp.replace("<sid_filtered>", q_filtered)
+    temp = temp.replace("<seq_group_agg_avg>", q_seq_group_agg_avg)
+    temp = temp.replace("<sfilter>", q_filter + ", tt)")
+    temp = temp.replace("<sfilterAND>", q_filterAND + ", tt)")
+    temp = temp.replace("<seq_stretch>", q_seq_stretch)
+
+    return temp
 
 
-def run_query(query, rangeL , rangeUnit, n_st , n_s , n_it, host="localhost"):
-    options = {"day" : 60 * 60* 24,
-               "week" : 60 * 60* 24 * 7,
-              "minute" : 60,
-               "hour" : 60 * 60,
-               "second" : 1,
-               "month" : 60 * 60 * 24 * 30,
-               "year" :  60 * 60 * 24 * 30 * 12
-    }
+def run_query(query, rangeL , rangeUnit, n_st , n_s , n_it, dataset ,host="localhost"):
     # Connect to the system
     exdb.init_runtime(debug = False, shm = False, disk = False, tmgr = 'mursiw')
     conn = exdb.connect(host, 5001)
     cursor = conn.cursor()
+    random_inputs = get_randomized_inputs(dataset, n_st=n_st, n_s=n_s, n_it=n_it, rangeL=rangeL)
+    random_stations = random_inputs["stations"]
+    random_sensors = random_inputs["sensors"]
+    random_sensors_dates = random_inputs["dates"]
+
     runtimes = []
     full_time = time.time()
+
     for it in tqdm(range(n_it)):
-        date = random_date("2019-04-01T00:00:00", "2019-04-30T00:00:00", set_date[(int(rangeL)*it)%500], dform = '%Y-%m-%dT%H:%M:%S')
-        date = int(time.mktime(datetime.strptime(date, '%Y-%m-%dT%H:%M:%S').timetuple()))
-        temp = query.replace("<timestamp>", str(date))
-        temp = temp.replace("<range>", str(rangeL))
-        temp = temp.replace("<rangesUnit>", str(options[rangeUnit]))
+        date = random_sensors_dates[it]
+        sensor_list = random_sensors[it]
+        station_list = random_stations[it]
 
-        # stations
-        li = ['st' + str(z) for z in random.sample(range(10), n_st)]
-        q = "(" + "'" + li[0] + "'"
-        for j in li[1:]:
-            q += ', ' + "'" + j + "'"
-        q += ")"
-        temp = temp.replace("<stid>", q)
-    
-        # sensors
-    
-        rand = [str(z) for z in random.sample(range(100), n_s)]
-        sidlist = 's' + rand[0]
-        for j in rand[1:]:
-            sidlist += ',' + 's' +  j
-        li = ['s' + str(z) + "@tt" for z in rand]
-        li_filtered = ['s' + str(z) + "@fe as s" + str(z) for z in rand]
-        
-        q = li[0]
-        q_filtered = li_filtered[0] 
-        q_seq_group_agg_avg = "seq_group_agg_avg(" + li[0] + " , t@tt/3600) as " + li[0].split('@')[0]
-        q_seq_avg = "seq_avg(" + li[0] + ")" 
-        q_seq_stretch = "seq_stretch(ts5,t," + li[0].split('@')[0] + ")" 
-        q_filter = "!seq_filter_search(" +li[0] + "> 0.95"
-        q_filterAND = "!seq_filter_search(" +li[0] + "> 0.95"
-        
-        for j in range(1,len(li_filtered)):
-            q_filtered += ', ' + li_filtered[j] 
+        assert len(sensor_list) == n_s
+        assert len(station_list) == n_st
+        assert type(date) == str
 
-        for j in li[1:]:
-            q += ', ' + j
-            q_seq_avg += ", seq_avg(" + j + ")" 
-            q_seq_group_agg_avg += ", seq_group_agg_avg(" + j + " , t@tt/3600)" + " as " +  j.split('@')[0] #        li[0] + ' > 0.95'
-            q_seq_stretch += ", seq_stretch(ts5,t," + j.split('@')[0] + ")" 
-        temp = temp.replace("<sid>", q)
-        temp = temp.replace("<sid1>", str(set_s[(rangeL*it)%500]))
-        temp = temp.replace("<sid2>", str(set_s[(rangeL*(it+1))%500]))
-        temp = temp.replace("<sid3>", str(set_s[(rangeL*(it+2))%500]))
-        temp = temp.replace("<sidlist>", sidlist)
-        temp = temp.replace("<seq_avg>", q_seq_avg)
-        temp = temp.replace("<sid_filtered>", q_filtered)
-        temp = temp.replace("<seq_group_agg_avg>", q_seq_group_agg_avg)
-        temp = temp.replace("<sfilter>", q_filter + ", tt)")
-        temp = temp.replace("<sfilterAND>", q_filterAND + ", tt)")
-        temp = temp.replace("<seq_stretch>", q_seq_stretch)    
-
+        query = parse_query(query, date=date, rangeUnit=rangeUnit, rangeL=rangeL, sensor_list=sensor_list,
+                            station_list=station_list)
 
         start = time.time()
-        #print(temp)
-        cursor.execute(temp)
+
+        cursor.execute(query)
         results_ = cursor.fetchall()
         diff = (time.time()-start)*1000
-        #print(results_)
+
         #  print(temp, diff)
         runtimes.append(diff)
         if time.time() - full_time > 500 and it > 5: 

@@ -4,7 +4,7 @@ import pathlib
 
 @contextmanager
 def change_directory(dir_name_or_module):
-    print(dir_name_or_module)
+    # print(dir_name_or_module)
     new_dir = dir_name_or_module
 
     if not isinstance(dir_name_or_module, str):  # Check if it's a module

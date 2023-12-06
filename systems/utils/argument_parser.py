@@ -11,7 +11,7 @@ def parse_args():
     # Parse Arguments
     parser = argparse.ArgumentParser(description = 'Script for running any eval')
     parser.add_argument('--system', nargs = '*', type = str, help = 'System name', default = '')
-    parser.add_argument('--datasets', nargs = '*', type = str, help = 'Dataset name', default = 'd1')
+    parser.add_argument('--dataset', nargs =  1 , type = str, help = 'Dataset name', default = 'd1')
     parser.add_argument('--queries', nargs = '?', type = str, help = 'List of queries to run (Q1-Q7)', default = ['q' + str(i) for i in range(1,8)])
     parser.add_argument('--nb_st', nargs = '?', type = int, help = 'Number of stations in the dataset', default = 10)
     parser.add_argument('--nb_s', nargs = '?', type = int, help = 'Number of sensors in the dataset', default = 100)
@@ -26,14 +26,14 @@ def parse_args():
     parser.add_argument('--additional_arguments', nargs = '?', type = str, help = 'Additional arguments to be passed to the scripts', default = '')
     args = parser.parse_args()
     
-    if args.max_ts == "infer" or args.min_ts  == "infer":
-        
-        from systems.utils import get_start_and_stop_dates 
-        
-        start, stop = get_start_and_stop_dates(args.datasets[0])
-        if args.min_ts  == "infer":
-             args.min_ts = start
-        if args.max_ts == "infer":
-            args.max_ts = stop
+    # if args.max_ts == "infer" or args.min_ts  == "infer":
+    #
+    #     from systems.utils import get_start_and_stop_dates
+    #
+    #     start, stop = get_start_and_stop_dates(args.datasets[0])
+    #     if args.min_ts  == "infer":
+    #          args.min_ts = start
+    #     if args.max_ts == "infer":
+    #         args.max_ts = stop
             
     return args
