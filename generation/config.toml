@@ -1,5 +1,10 @@
 # config.toml
 
+# n_iterations = number of epoches for GAN training
+# num_hashtables = number of hash tables built for the LSHashing
+# n_top = number of most similar segments output by LSH querying
+# hash_length_percentage = length of the segment hash binary code in relation to original segments length
+
 [generation]
 n_iterations = 1000
 num_hashtables = 8

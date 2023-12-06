@@ -27,7 +27,7 @@ sh install.sh
 
    - `--len_ts` (optional, integer): The length of time series; default: 10K datapoints.
    - `--nb_ts` (optional, integer): The number of time series; default: 3 time series.
-   - `--seed` (optional, string): The name of the seed dataset file; default: _bafu_.
+   - `--seed` (optional, string): The name of the seed dataset file; default: _conductivity_.
 
 *Note: Additional parameters for the generation method, including the number of iterations for GAN training and LSH configuration, can be found in the `config.toml` file.*
 
