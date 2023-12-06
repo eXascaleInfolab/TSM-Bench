@@ -9,15 +9,23 @@ if [ $# -ge 1 ]; then
 fi
 echo $dataset
 
+cd ../../datasets
+echo "convert the datasetformat (this is not counted in the time measuring)"
+#python3 generate_influx.py $dataset
+cd ../systems/influx
+
+
+curl -X POST "http://localhost:8086/query" --data-urlencode "q=DROP DATABASE $dataset"
+
 log_file="influx_startup.txt"
 start_time=$(date +%s.%N)
 
 
-sudo ./influxdb-1.7.10-1/usr/bin/influx -import -path=../../datasets/$dataset-influxdb.csv -precision=ms > "$log_file" 2>&1 &
+./influxdb-1.7.10-1/usr/bin/influx -import -path=../../datasets/$dataset-influxdb.csv -precision=ms > "$log_file" 2>&1 &
 
 echo "start loading"
 
-# Initialize the last_line variable
+# Initialize the last_line variJasable
 last_line=0
 
 # Continuously monitor the log file for new lines
@@ -49,19 +57,13 @@ rm $log_file
 
 end_time=$(date +%s.%N)
 elapsed_time=$(echo "$end_time - $start_time" | bc)
-echo "Loading time: $elapsed_time seconds" > loading_time_$dataset.txt
 echo $elapsed_time
 
+compression=$(sh compression.sh $dataset)
 
-sudo du -sh /var/lib/influxdb/data/$dataset
+echo "Compression: $compression"
+echo "$dataset $compression ${elapsed_time}s" >> time_and_compression.txt
 
-
-
-## uncoment the following for D2 ##
-###################################
-# echo "start loading!"
-#sudo ./influxdb-1.7.10-1/usr/bin/influx -import -path=../../datasets/d2-influxdb.csv -precision=ms #> /dev/null
-#sudo du -sh /var/lib/influxdb/data/d2
 
 
 echo "DONE"

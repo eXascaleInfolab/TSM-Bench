@@ -112,6 +112,10 @@ parser.add_argument("--len_ts", type=int, default=10000, help="Length of ts")
 parser.add_argument("--nb_ts", type=int, default=3, help="Number of ts")
 parser.add_argument("--seed", type=str, default='conductivity', help="Link to original dataset")
 # parser.add_argument("--fsynth", type=str, default='data/column_23_3072_3072.txt', help="Link to synthetic segments")
+
+parser.add_argument("--num_hashtables", "-n_h",  type=int, default=num_hashtables, help="Number of Hashtables")
+parser.add_argument("--nb_top", "-n_t" , type=int, default=nb_top, help="nb top")
+parser.add_argument("--hash_length_percentage", "-h_l", type=int, default=hash_length_percentage, help="Hash lenght percentages")
 args = parser.parse_args()
 
 # generate_rand(fseed, fsynth)

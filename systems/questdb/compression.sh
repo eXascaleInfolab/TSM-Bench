@@ -1,7 +1,13 @@
 #!/bin/sh
 
-# THE FOLLOWING SCRIPT WILL PRINT STORAGE SIZE FOR D1, TO SHOW D2 UNCOMMENT THE LINES BELOW 
+dataset="d1"
+if [ $# -ge 1 ]; then
+    dataset="$1"
+fi
+
+. ../config.env
 
 
-sudo du -sh /root/.questdb/db/d1
-#sudo du -sh /root/.questdb/db/d2
+result=$(du -sk "$QuestDBroot/db/$dataset" | cut -f1)
+echo "${result}KB"
+

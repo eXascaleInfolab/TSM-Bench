@@ -23,6 +23,7 @@ pip3 install sqlalchemy
 pip3 install matplotlib
 pip3 install matplotlib_terminal
 pip3 install pandas
+pip3 install jsonlines
 
 sudo apt-get install  libpq-dev -y
 pip3 install psycopg2
@@ -61,3 +62,7 @@ sudo apt install -y curl
 sudo apt install -y docker.io
 sudo systemctl start docker
 sudo systemctl enable docker
+current_user=$(whoami)
+sudo usermod -aG docker "$current_user"
+newgrp docker
+sudo chmod 666 /var/run/docker.sock

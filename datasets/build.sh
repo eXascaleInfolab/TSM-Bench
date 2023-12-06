@@ -14,7 +14,7 @@ if [ "$dataset" = "d1" ];then
 	rm datasets -r
 	rm datasets.tar.gz
 
-	python3 generate_influx.py d1
+	#python3 generate_influx.py d1
 fi 
 
 
@@ -30,7 +30,7 @@ if [ "$dataset" = "d2" ];then
 	
 	rm d2_*
 
-	python3 generate_influx.py d2
+	#python3 generate_influx.py d2
 fi
 
 head -n 1 $dataset.csv > ${dataset}_tail.csv && tail -n 1 ${dataset}.csv >> ${dataset}_tail.csv

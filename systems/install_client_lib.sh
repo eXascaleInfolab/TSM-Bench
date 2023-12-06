@@ -3,7 +3,7 @@
 cd extremedb
 
 #### exdb module for python isntallation
- tar xvzf extremedb_8.3_fusion_linux_x86_64_sql_lua_eval.tar.gz
+tar xvzf extremedb_8.3_fusion_linux_x86_64_sql_lua_eval.tar.gz
 
 # export MCO_ROOT="$current"/eXtremeDB/
 export MCO_LIBRARY_PATH="$current"/eXtremeDB/target/bin.so
