@@ -47,4 +47,6 @@ sudo monetdb create mydb
 sudo monetdb release mydb
 sudo monetdb set embedpy3=yes mydb
 sudo monetdbd set listenaddr=0.0.0.0 master_db
+
+sleep 30
 sudo chown -R $USER:$USER master_db
