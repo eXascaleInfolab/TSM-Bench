@@ -26,7 +26,6 @@ def run_system(args, system_name, run_query_f, insertion_speed , query_filters=(
  
     results = {} # query -> time_start , time_stop , mean_runtime , var_runtime
     try:
-        for dataset in args.datasets:
             for i, query in enumerate(queries):
                 try:
                     if all([f in query.upper() for f in query_filters]) and "q" + str(i+1) in args.queries:
@@ -65,7 +64,7 @@ def save_online(results, system , dataset = "d1"):
     .png file putting all .txt files into one plot
     
     """
-    result_folder = "../../results"
+    result_folder = "results"
     online_folder = f"{result_folder}/online"
     data_set_folder =  f"{online_folder}/{dataset}"
     
