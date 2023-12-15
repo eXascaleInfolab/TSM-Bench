@@ -129,9 +129,8 @@ main_process = None
 
 def launch():
     global main_process
-    print('launching system extremdb')
+    print('launching system extremedb')
     with change_directory(__file__):
-        
         # first load envioerment variables
         command = '/bin/bash -c "source variables.sh; env"'
         # Run the command as a subprocess, capturing the output
@@ -141,7 +140,7 @@ def launch():
         #Parse the output to extract the environment variables
         env_lines = [line.decode("utf-8").split('=', 1) for line in output.splitlines() if b'=' in line]
         env = dict(env_lines)
-        
+        print(f"variables to be added to venv {env}" )
         # Merge the extracted environment variables with the current environment
         new_env = os.environ.copy()
         new_env.update(env)
