@@ -1,47 +1,72 @@
-import os
-import sys
-root_dir = f"{os.getcwd().split('TSM-Bench')[0]}/TSM-Bench"
-os.chdir(root_dir)
-print(os.getcwd())
-sys.path.append(root_dir)
 import pandas
+import os
 
-from systems import (clickhouse, questdb , extremedb, druid, timescaledb, influx , monetdb)
+import sys
 
-def load_query_file(system):
-    path = os.path.dirname(system.__file__)
-    with open(f'{path}/queries.sql') as file: 
-        queries = [line.rstrip() for line in file]
-    return queries
+sys.path.append(os.getcwd())
 
-# settings
-n_sensors = [1,10,20,30,40,50,60,70,80,90,100]
-n_stations =  [1,2,3,4,5,6,7,8,9,10] 
-time_ranges = ["minute","hour","day","week","month"]
+from utils.system_modules import system_module_map
+from utils.query_template_loader import load_query_tempaltes
+import argparse
+
+parser = argparse.ArgumentParser(description='Script for running any eval')
+
+parser.add_argument('--system', nargs="?",
+                    type=lambda x: str(x) if str(x) in system_module_map.keys()
+                    else exit(f"system {x} not valid must be one of {list(system_module_map.keys())}"),
+                    help='system name', required=True)
+
+parser.add_argument('--it', nargs="?", type=int, help='n_iterationss', default=100)
+
+args = parser.parse_args()
+
+system = args.system
+print(system)
+
 dataset = "d1"
 
-n_iter = 2000
-timeout = 5000
+result_path = f"utils/full_results/{dataset}"
+os.makedirs(result_path, exist_ok=True)
+output_file = f"{result_path}/{system}.csv"
+log_file = f"{result_path}/{system}_log.csv"
 
-scenarios  = [(sensor, station, time_range) for sensor in n_sensors for station in n_stations for time_range in time_ranges]
+with open(output_file, "w") as file:
+    file.write("")
 
-systems = ( influx ,questdb, clickhouse , extremedb, timescaledb, monetdb)
-output_file = "results/parameters.txt"
+with open(log_file, "w") as file:
+    file.write("")
 
-for system in systems:
-    system.launch()
-    system_name = system.__file__.split("/")[-2]
-    queries = load_query_file(system)
-    print(queries)
-    for i ,query in enumerate(queries):
+n_iter = 2 #args.it
+timeout = 1500
+n_sensors = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+n_stations = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+time_ranges = ["minute", "hour", "day", "week", "month"]
+
+scenarios = [(sensor, station, time_range) for sensor in n_sensors for station in n_stations for time_range in
+             time_ranges]
+
+system_module = system_module_map[system]
+
+query_templates = load_query_tempaltes(system)
+
+try:
+    system_module.launch()
+    for i, query in enumerate(query_templates):
+        if "select" not in query.lower():
+            continue
         query = query.replace("<db>", dataset)
         for n_s, n_st, time_range in scenarios:
             try:
-                time , var = system.run_query(query , rangeUnit=time_range , rangeL = 1 , n_s=n_s , n_it=n_iter , n_st = n_st) 
+                time, var = system_module.run_query(query, rangeUnit=time_range, rangeL=1, n_s=n_s, n_it=n_iter, n_st=n_st,
+                                                    dataset=dataset)
+                with open(output_file, "a") as file:
+                    line = f"{time} , {var}  , q{i + 1} , {n_s} , {n_st} , {time_range}\n"
+                    file.write(line)
             except Exception as E:
+                with open(output_file, "a") as file:
+                    line = f"{E}"
+                    file.write(line)
                 print(E)
-                time , var = "fail" , str(E)
-            with open(output_file, "a") as file:
-                line = f"{time} , {var}  , {i} , {n_s} , {n_st} , {time_range} , {system_name} \n"
-                file.write(line)
-    system.stop()
+
+finally:
+    system_module.stop()
