@@ -8,6 +8,9 @@ echo "loading $dataset"
 
 cd ../systems
 
+sh stop_all.sh
+
+
 # TimescaleDB
 echo "loading data into TimescaleDB"
 cd  timescaledb
