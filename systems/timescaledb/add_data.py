@@ -22,7 +22,7 @@ def input_data(t_n, event, data, results , batch_size, host="localhost", dataset
             cur.execute(sql)
                   
             diff = time.time() - start
-            results["insertions"].append( (start,batch_size) )     
+            results["insertions"].append( (start,batch_size))
             if diff < 1:
                 time.sleep(1-diff)
             else:
@@ -31,13 +31,14 @@ def input_data(t_n, event, data, results , batch_size, host="localhost", dataset
         results["status"] = "failed"
 
 
-def delete_data(date= "2019-04-1 00:00:00", host = "localhost", dataset = "d1"):
+def delete_data(date="2019-04-1 00:00:00", host = "localhost", dataset = "d1"):
     CONNECTION = f"postgres://postgres:postgres@{host}:5432/postgres"
     conn = psycopg2.connect(CONNECTION)
     conn.autocommit = True
     print("cleaning up the timescale database")
     start = time.time()
     sql = f"SELECT drop_chunks('{dataset}', newer_than => '{date}');"
+    print(sql)
     cur = conn.cursor()
-    time.sleep(5)
-    cur.execute(sql)
+    result = cur.execute(sql)
+    print(result)
