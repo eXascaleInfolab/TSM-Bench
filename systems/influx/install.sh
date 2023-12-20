@@ -18,6 +18,7 @@ wget https://dl.influxdata.com/influxdb/releases/influxdb-1.7.10_linux_amd64.tar
 tar xvfz influxdb-1.7.10_linux_amd64.tar.gz
 rm influxdb-1.7.10_linux_amd64.tar.gz
 #sudo ./influxdb-1.7.10-1/usr/bin/influxd &
+cp influxdb.conf influxdb-1.7.10-1/etc/influxdb/influxdb.conf 
 
 sudo chmod -R 777 /var/lib/influxdb
 
