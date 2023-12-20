@@ -1,3 +1,5 @@
+import datetime
+
 import pandas
 import os
 
@@ -30,8 +32,12 @@ os.makedirs(result_path, exist_ok=True)
 output_file = f"{result_path}/{system}.csv"
 log_file = f"{result_path}/{system}_log.csv"
 
-with open(output_file, "w") as file:
-    file.write("")
+
+if os.path.exists(output_file):
+    pass
+else:
+    with open(output_file, "w") as file:
+        file.write( f"runtime, var  , query , n_s , n_st , timerange \n")
 
 with open(log_file, "w") as file:
     file.write("")
@@ -45,9 +51,20 @@ time_ranges = ["minute", "hour", "day", "week", "month"]
 scenarios = [(sensor, station, time_range) for sensor in n_sensors for station in n_stations for time_range in
              time_ranges]
 
-system_module = system_module_map[system]
+from systems import timescaledb
+system_module : timescaledb =  system_module_map[system]
 
 query_templates = load_query_tempaltes(system)
+
+already_computed_results = set()
+with open(output_file, "r") as file:
+    for line in file.readlines()[1:]:
+        if line == "":
+            continue
+        r_ , v_ , q , n_s , n_st , time_range = line.split(",")
+        already_computed_results.add( (q.strip(),int(n_s),int(n_st),time_range.strip()))
+
+print(already_computed_results)
 
 try:
     system_module.launch()
@@ -56,14 +73,17 @@ try:
             continue
         query = query.replace("<db>", dataset)
         for n_s, n_st, time_range in scenarios:
+            if (f"q{i + 1}",n_s,n_st,time_range) in already_computed_results:
+                print("already computed")
+                continue
             try:
                 time, var = system_module.run_query(query, rangeUnit=time_range, rangeL=1, n_s=n_s, n_it=n_iter, n_st=n_st,
                                                     dataset=dataset)
                 with open(output_file, "a") as file:
-                    line = f"{time} , {var}  , q{i + 1} , {n_s} , {n_st} , {time_range}\n"
+                    line = f"{time} , {var} , q{i + 1} , {n_s} , {n_st} , {time_range}\n"
                     file.write(line)
             except Exception as E:
-                with open(output_file, "a") as file:
+                with open(log_file, "a") as file:
                     line = f"{E}"
                     file.write(line)
                 print(E)
