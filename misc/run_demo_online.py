@@ -1,9 +1,9 @@
-import datetime
-
 import pandas
 import os
 
 import sys
+
+from systems.utils.online_library import generate_continuing_data
 
 sys.path.append(os.getcwd())
 
@@ -27,26 +27,22 @@ print(system)
 
 dataset = "d1"
 
-result_path = f"utils/full_results/{dataset}"
+result_path = f"utils/online_queries/{dataset}"
 os.makedirs(result_path, exist_ok=True)
 output_file = f"{result_path}/{system}.csv"
 log_file = f"{result_path}/{system}_log.csv"
 
-
-if os.path.exists(output_file):
-    pass
-else:
-    with open(output_file, "w") as file:
-        file.write( f"runtime, var  , query , n_s , n_st , timerange \n")
+with open(output_file, "w") as file:
+    file.write("")
 
 with open(log_file, "w") as file:
     file.write("")
 
-n_iter = 2 #args.it
+n_iter = 10 #args.it
 timeout = 1500
-n_sensors = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-n_stations = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-time_ranges = ["minute", "hour", "day", "week", "month"]
+n_sensors = [10, 20, 40, 60, 80, 100]
+n_stations = [1, 5, 10]
+time_ranges = ["minute", "hour", "day", "week"]
 
 scenarios = [(sensor, station, time_range) for sensor in n_sensors for station in n_stations for time_range in
              time_ranges]
@@ -54,33 +50,35 @@ scenarios = [(sensor, station, time_range) for sensor in n_sensors for station i
 from systems import timescaledb
 system_module : timescaledb =  system_module_map[system]
 
+
+batch_sizes = [10]#,20,50,100]
+
+system_module.launch()
+
 query_templates = load_query_tempaltes(system)
+query_template = query_templates[0]
+query = "q1"
 
-already_computed_results = set()
-with open(output_file, "r") as file:
-    for line in file.readlines()[1:]:
-        if line == "":
-            continue
-        r_ , v_ , q , n_s , n_st , time_range = line.split(",")
-        already_computed_results.add( (q.strip(),int(n_s),int(n_st),time_range.strip()))
+for batch_size in batch_sizes:
 
-print(already_computed_results)
+    system_module.run_query()
+    data = generate_continuing_data(args.batch_start + batch_size * 100, dataset)
+    start_date = data["start_date"]
+    print(start_date)
+    #start insertion
+    system_module.add_data(data, dataset)
 
-try:
-    system_module.launch()
-    for i, query in enumerate(query_templates):
-        if "select" not in query.lower():
-            continue
-        query = query.replace("<db>", dataset)
+    time, var = system_module.run_query(query, rangeUnit=time_range, rangeL=1, n_s=n_s, n_it=n_iter, n_st=n_st,
+                                        dataset=dataset)
+
+
+     query = query.replace("<db>", dataset)
         for n_s, n_st, time_range in scenarios:
-            if (f"q{i + 1}",n_s,n_st,time_range) in already_computed_results:
-                print("already computed")
-                continue
             try:
                 time, var = system_module.run_query(query, rangeUnit=time_range, rangeL=1, n_s=n_s, n_it=n_iter, n_st=n_st,
                                                     dataset=dataset)
                 with open(output_file, "a") as file:
-                    line = f"{time} , {var} , q{i + 1} , {n_s} , {n_st} , {time_range}\n"
+                    line = f"{time} , {var}  , q{i + 1} , {n_s} , {n_st} , {time_range}\n"
                     file.write(line)
             except Exception as E:
                 with open(log_file, "a") as file:

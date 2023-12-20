@@ -1,7 +1,7 @@
 import psycopg2
 import time
 
-def input_data(t_n,event, data, results , batch_size, host="localhost", dataset = "d1"):
+def input_data(t_n, event, data, results , batch_size, host="localhost", dataset = "d1"):
     try:
         CONNECTION = f"postgres://postgres:postgres@{host}:5432/postgres"
         conn = psycopg2.connect(CONNECTION)

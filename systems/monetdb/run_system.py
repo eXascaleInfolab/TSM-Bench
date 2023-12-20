@@ -97,7 +97,6 @@ def run_query(query, rangeL, rangeUnit, n_st, n_s, n_it, dataset, host="localhos
         query = parse_query(query, date=date, rangeUnit=rangeUnit, rangeL=rangeL, sensor_list=sensor_list,
                             station_list=station_list)
 
-        print(query)
         start = time.time()
         cursor.execute(query)
         results_ = cursor.fetchall()

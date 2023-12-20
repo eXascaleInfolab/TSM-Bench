@@ -81,7 +81,7 @@ def parse_query(query ,*, date, rangeUnit , rangeL , sensor_list , station_list)
     temp = temp.replace("<sfilter>", q_filter + ", tt)")
     temp = temp.replace("<sfilterAND>", q_filterAND + ", tt)")
     temp = temp.replace("<seq_stretch>", q_seq_stretch)
-
+    print(temp)
     return temp
 
 

@@ -117,16 +117,16 @@ def stop():
 
     
 if __name__ == "__main__":
+    pass
     
-    launch()
-    
-    args = parse_args() 
-    
-    def query_f(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
-        return run_query(query, rangeL=rangeL, rangeUnit = rangeUnit ,n_st = n_st , n_s = n_s , n_it = n_it)
-    
-    run_system(args,"clickhouse",query_f)
-
-    stop()
-    
+    # launch()
+    #
+    # args = parse_args()
+    #
+    # def query_f(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
+    #     return run_query(query, rangeL=rangeL, rangeUnit = rangeUnit ,n_st = n_st , n_s = n_s , n_it = n_it)
+    #
+    #
+    # stop()
+    #
   
