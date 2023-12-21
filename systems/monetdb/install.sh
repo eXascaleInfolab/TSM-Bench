@@ -51,3 +51,5 @@ sudo monetdbd set listenaddr=0.0.0.0 master_db
 sudo monetdbd stop master_db
 sleep 20
 sudo chown -R $USER:$USER master_db
+
+cp monetdbd.conf MonetDB-11.35.19/buildtools/conf/
