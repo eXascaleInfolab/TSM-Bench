@@ -26,6 +26,10 @@ from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
 
 def parse_query(query ,*, date, rangeUnit , rangeL , sensor_list , station_list):
     temp = query.replace("<timestamp>", date)
+    if rangeUnit == "month":
+        rangeL = rangeL * 30
+        rangeUnit = "day"
+
     temp = temp.replace("<range>", str(rangeL))
     temp = temp.replace("<rangesUnit>", str(rangeUnit[0]))
     # stations

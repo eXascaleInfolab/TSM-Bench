@@ -7,24 +7,20 @@ if [ $# -ge 1 ]; then
 fi
 
 
-#docker start timescaledb-container
+docker start timescaledb-container
 
 
 sleep 15
 
 output=$( docker exec -it timescaledb-container psql -U postgres -c "SELECT hypertable_size('$dataset') ;")
-echo "storing"
-echo "$output"
 number=$(echo "$output" | awk 'NR==3 {print $1}')
 number=$((number))
 
-echo "$number"
 
 #divisor=1000000
 #result=$(echo "scale=2; $number / $divisor" | bc)
 result=$number
 
-echo "result"
 echo "${result}B" 
 
 

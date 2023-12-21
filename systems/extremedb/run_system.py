@@ -30,6 +30,13 @@ options = {"day": 60 * 60 * 24,
            }
 
 def parse_query(query ,*, date, rangeUnit , rangeL , sensor_list , station_list):
+    #query : query_template containing places holders
+    #date : date of the query
+    #rangeUnit : unit of the range
+    #rangeL : length of the range (mostly 1)
+    #sensor_list : list of sensors e.g [s1,s2,s2]
+    #station_list : list of stations e.g [st1,st2,st3]
+
 
     date = int(time.mktime(datetime.strptime(date, '%Y-%m-%dT%H:%M:%S').timetuple()))
     temp = query.replace("<timestamp>", str(date))
@@ -81,7 +88,7 @@ def parse_query(query ,*, date, rangeUnit , rangeL , sensor_list , station_list)
     temp = temp.replace("<sfilter>", q_filter + ", tt)")
     temp = temp.replace("<sfilterAND>", q_filterAND + ", tt)")
     temp = temp.replace("<seq_stretch>", q_seq_stretch)
-
+    print(temp)
     return temp
 
 
