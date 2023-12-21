@@ -42,10 +42,10 @@ else:
 with open(log_file, "w") as file:
     file.write("")
 
-n_iter = 2 #args.it
+n_iter = 10 #args.it
 timeout = 1500
-n_sensors = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-n_stations = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+n_sensors = [1, 20,40, 60, 80, 100]
+n_stations = [2, 4, 6, 8, 10]
 time_ranges = ["minute", "hour", "day", "week", "month"]
 
 scenarios = [(sensor, station, time_range) for sensor in n_sensors for station in n_stations for time_range in
