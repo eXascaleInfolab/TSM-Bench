@@ -27,7 +27,7 @@ docker exec -it clickhouse-container clickhouse-client --query "CREATE TABLE IF 
 
 #cat "../../datasets/$dataset.csv" | sudo docker exec -i clickhouse-container clickhouse-client --format_csv_delimiter="," --query="INSERT INTO $dataset FORMAT CSVWithNames"
 
-sudo docker exec -i clickhouse-container clickhouse-client --format_csv_delimiter="," -q "INSERT INTO $dataset FORMAT CSV" < ../../datasets/$dataset.csv
+docker exec -i clickhouse-container clickhouse-client --format_csv_delimiter="," -q "INSERT INTO $dataset FORMAT CSV" < ../../datasets/$dataset.csv
 
 end_time=$(date +%s.%N)
 elapsed_time="$(echo "$end_time - $start_time" | bc)"
