@@ -65,7 +65,7 @@ query = "q1"
 try:
     for batch_size in batch_sizes:
 
-        ingestor = DataIngestor(system_module, dataset, batch_size=batch_size, host=host,
+        ingestor = DataIngestor(system_module, dataset, n_rows_s=batch_size, max_runtime=2000 ,  host=host,
                                 n_threads=n_threads)
         with ingestor:
             for n_s, n_st, time_range in scenarios:
@@ -81,7 +81,6 @@ try:
                         line = f"{E}"
                         file.write(line)
                     print(E)
-        print(ingestor.insertion_stats)
 
 
 finally:
