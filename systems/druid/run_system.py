@@ -21,11 +21,11 @@ from pydruid.utils.filters import *
 # setting path
 sys.path.append('../../')
 from systems.utils.library import *
-from systems.utils import change_directory , parse_args
+from systems.utils import change_directory, parse_args
 
 
-
-def parse_query(query ,*,  date, rangeUnit , rangeL , sensor_list , station_list):
+def parse_query(query, *, date, rangeUnit, rangeL, sensor_list, station_list):
+    date = date.replace("T", " ")
     temp = query.replace("<timestamp>", date)
     temp = temp.replace("<range>", str(rangeL))
     temp = temp.replace("<rangesUnit>", rangeUnit)
@@ -46,22 +46,21 @@ def parse_query(query ,*,  date, rangeUnit , rangeL , sensor_list , station_list
         q_avg += ', ' + 'avg(' + j + ')'
 
     temp = temp.replace("<sid>", q)
-    temp = temp.replace("<sid1>",sensor_list[0] )
+    temp = temp.replace("<sid1>", sensor_list[0])
     sid2 = sensor_list[1] if len(sensor_list) > 1 else "s2"
     sid3 = sensor_list[2] if len(sensor_list) > 2 else "s3"
-    temp = temp.replace("<sid2>", sid2 )
-    temp = temp.replace("<sid3>", sid3 )
+    temp = temp.replace("<sid2>", sid2)
+    temp = temp.replace("<sid3>", sid3)
     temp = temp.replace("<sfilter>", q_filter + ')')
     temp = temp.replace("<avg_s>", q_avg)
 
     return temp
 
 
-def run_query(query, rangeL ,rangeUnit ,n_st ,n_s ,n_it ,dataset, host="localhost"):
-
-    if rangeUnit in ["week","w","Week"]:
+def run_query(query, rangeL, rangeUnit, n_st, n_s, n_it, dataset, host="localhost"):
+    if rangeUnit in ["week", "w", "Week"]:
         rangeUnit = "day"
-        rangeL = rangeL*7
+        rangeL = rangeL * 7
 
     # Connect to the system
     conn = connect(host=host, port=8082, path='/druid/v2/sql/', scheme='http')
@@ -86,39 +85,38 @@ def run_query(query, rangeL ,rangeUnit ,n_st ,n_s ,n_it ,dataset, host="localhos
                             station_list=station_list)
         print("query")
         start = time.time()
-        
+
         cursor.execute(query)
         results_ = cursor.fetchall()
-        diff = (time.time()-start)*1000
+        diff = (time.time() - start) * 1000
         #  print(temp, diff)
         runtimes.append(diff)
-        if time.time() - full_time > args.timeout and it > 5: 
-            break  
-            
+        if time.time() - full_time > 500 and it > 2:
+            break
+
     conn.close()
     return stats.mean(runtimes), stats.stdev(runtimes)
 
 
 def launch():
-    
     print("launching druid")
 
     with change_directory(__file__):
         process = Popen(['sh', 'launch.sh', '&'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-        stdout, stderr = process.communicate() #launch.sh  from druid has to sleep for long itself
-    
+        stdout, stderr = process.communicate()  # launch.sh  from druid has to sleep for long itself
+
     print("druid launched")
-    
+
+
 def stop():
-   
     with change_directory(__file__):
         process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
         stdout, stderr = process.communicate()
 
-    
+
 if __name__ == "__main__":
     pass
-    
+
     # launch()
     #
     # args = parse_args()
@@ -129,4 +127,3 @@ if __name__ == "__main__":
     #
     # stop()
     #
-  
