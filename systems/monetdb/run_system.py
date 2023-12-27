@@ -34,7 +34,7 @@ def parse_query(query, *, date, rangeUnit, rangeL, sensor_list, station_list):
 
     temp = temp.replace("<stid>", q)
     stid1 = station_list[0]
-    stid2 = "'" + station_list[1] + "'" if len(station_list) > 1 else "'st0'"
+    stid2 = "" + station_list[1] + "" if len(station_list) > 1 else "st0"
     temp = temp.replace("<stid1>", stid1)
     temp = temp.replace("<stid2>", stid2)
 
@@ -98,6 +98,7 @@ def run_query(query, rangeL, rangeUnit, n_st, n_s, n_it, dataset, host="localhos
                             station_list=station_list)
 
         start = time.time()
+        print(query)
         cursor.execute(query)
         results_ = cursor.fetchall()
 
@@ -131,11 +132,8 @@ if __name__ == "__main__":
     args = parse_args()
 
     launch()
-
-
     def query_f(query, rangeL=args.range, rangeUnit=args.rangeUnit, n_st=args.def_st, n_s=args.def_s, n_it=args.n_it):
         return run_query(query, rangeL=rangeL, rangeUnit=rangeUnit, n_st=n_st, n_s=n_s, n_it=n_it)
-
 
     run_system(args, "monetdb", query_f)
 
