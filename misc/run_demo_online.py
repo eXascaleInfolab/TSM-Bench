@@ -21,6 +21,10 @@ parser.add_argument('--host', nargs="?",
                     type=str,
                     help='host address', required=True)
 
+parser.add_argument('--query', nargs="?",
+                    type=str,
+                    help='host address', default="q1")
+
 parser.add_argument('--it', nargs="?", type=int, help='n_iterationss', default=100)
 
 args = parser.parse_args()
@@ -36,19 +40,13 @@ os.makedirs(result_path, exist_ok=True)
 output_file = f"{result_path}/{system}.csv"
 log_file = f"{result_path}/{system}_log.csv"
 
-# with open(output_file, "w") as file:
-#     file.write("")
-#
-# with open(log_file, "w") as file:
-#     file.write("")
-
 n_iter = 100  # args.it
 timeout = 1500
 n_sensors = [10, 20, 40, 60, 80, 100]
 n_stations = [1, 5, 10]
 time_ranges = ["minute", "hour", "day", "week"]
 
-
+query = args.query
 
 from systems import timescaledb
 
@@ -59,7 +57,7 @@ system_module: timescaledb = system_module_map[system]
 system_module.launch()
 
 query_templates = load_query_tempaltes(system)
-query_template = query_templates[0]
+query_template = query_templates[int(query[1:])-1]
 query_template = query_template.replace("<db>", dataset)
 query = "q1"
 
