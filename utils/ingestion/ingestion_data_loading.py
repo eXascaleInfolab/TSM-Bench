@@ -45,7 +45,6 @@ def ingestion_queries_generator(system,*,n_rows_s, t_n):
     """
 
     folder_path = f"utils/ingestion/ingestion_queries"
-    os.makedirs(folder_path, exist_ok=True)
     file_path = f"{folder_path}/queries_{system}_{n_rows_s}_{t_n}.txt"
     queries_line_indices = []
     with open(file_path, 'r') as file:
@@ -75,6 +74,8 @@ def generate_ingestion_queries(*, n_threads, n_rows_s, max_runtime, dataset, sys
 
     insertion_queries_generators = [-1] * n_threads
     for t_n in range(n_threads):
+        folder_path = f"utils/ingestion/ingestion_queries"
+        os.makedirs(folder_path, exist_ok=True)
         file_path = f"utils/ingestion/ingestion_queries/queries_{system}_{n_rows_s}_{t_n}.txt"
         skip = False
         if os.path.isfile(file_path):
