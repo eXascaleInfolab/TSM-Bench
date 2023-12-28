@@ -1,11 +1,3 @@
-from datetime import datetime
-from tqdm import tqdm
-import argparse
-import os
-import time
-import statistics as stats
-import numpy as np
-import random
 import sys
 import pandas as pd
 import json
@@ -22,6 +14,10 @@ import pymonetdb
 
 
 def parse_query(query, *, date, rangeUnit, rangeL, sensor_list, station_list):
+    if rangeUnit in ["week", "w", "WEEK"]:
+        rangeUnit = "day"
+        rangeL = rangeL * 7
+
     temp = query.replace("<timestamp>", date)
     temp = temp.replace("<range>", str(rangeL))
     temp = temp.replace("<rangesUnit>", rangeUnit)
@@ -70,10 +66,6 @@ def parse_query(query, *, date, rangeUnit, rangeL, sensor_list, station_list):
 
 
 def run_query(query, rangeL, rangeUnit, n_st, n_s, n_it, dataset, host="localhost"):
-    if rangeUnit in ["week", "w", "WEEK"]:
-        rangeUnit = "day"
-        rangeL = rangeL * 7
-
     # Connect to the system
     conn = pymonetdb.connect(username="monetdb", port=54320, password="monetdb", hostname=host, database="mydb")
     cursor = conn.cursor()
@@ -112,7 +104,6 @@ def run_query(query, rangeL, rangeUnit, n_st, n_s, n_it, dataset, host="localhos
 
 def launch():
     print("launching monetdb")
-
     with change_directory(__file__):
         process = Popen(['sh', 'launch.sh', '&'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
         stdout, stderr = process.communicate()

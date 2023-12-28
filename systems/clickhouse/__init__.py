@@ -6,7 +6,7 @@ abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
     
-from systems.clickhouse.run_system import run_query , launch , stop
+from systems.clickhouse.run_system import run_query , launch , stop , get_query_exec_f_and_conn_close_f
 from systems.clickhouse.add_data import input_data , delete_data , generate_insertion_query
 
 os.chdir(curr_dir)

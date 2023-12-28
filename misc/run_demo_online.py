@@ -1,10 +1,9 @@
-import pandas
 import os
 print(os.getcwd())
 import sys
 sys.path.append(os.getcwd())
 
-from utils.online_computer import DataIngestor
+from utils.ingestion.online_computer import DataIngestor
 
 
 from utils.system_modules import system_module_map
@@ -17,12 +16,16 @@ parser.add_argument('--system', nargs="?",
                     type=lambda x: str(x) if str(x) in system_module_map.keys()
                     else exit(f"system {x} not valid must be one of {list(system_module_map.keys())}"),
                     help='system name', required=True)
+parser.add_argument('--host', nargs="?",
+                    type=str,
+                    help='host address', required=True)
 
 parser.add_argument('--it', nargs="?", type=int, help='n_iterationss', default=100)
 
 args = parser.parse_args()
 
 system = args.system
+host = args.host
 print(system)
 
 dataset = "d1"
@@ -32,26 +35,25 @@ os.makedirs(result_path, exist_ok=True)
 output_file = f"{result_path}/{system}.csv"
 log_file = f"{result_path}/{system}_log.csv"
 
-with open(output_file, "w") as file:
-    file.write("")
+# with open(output_file, "w") as file:
+#     file.write("")
+#
+# with open(log_file, "w") as file:
+#     file.write("")
 
-with open(log_file, "w") as file:
-    file.write("")
-
-n_iter = 10  # args.it
+n_iter = 100  # args.it
 timeout = 1500
-n_sensors = [10]#, 20, 40, 60, 80, 100]
-n_stations = [1]#, 5, 10]
-time_ranges = ["minute"]#, "hour", "day", "week"]
+n_sensors = [10, 20, 40, 60, 80, 100]
+n_stations = [1, 5 , 10]
+time_ranges = ["minute" , "hour", "day", "week"]
 
 scenarios = [(sensor, station, time_range) for sensor in n_sensors for station in n_stations for time_range in
              time_ranges]
 
 from systems import timescaledb
 
-batch_sizes = [10,100,1000]
-host = "localhost"
-n_threads = 2
+n_rows = [10,20,60,100,140] # *100 for the batch size
+n_threads = 10
 
 system_module: timescaledb = system_module_map[system]
 system_module.launch()
@@ -63,25 +65,31 @@ query = "q1"
 
 
 try:
-    for batch_size in batch_sizes:
-
-        ingestor = DataIngestor(system_module, dataset, n_rows_s=batch_size, max_runtime=2000 ,  host=host,
+    for n_rows in n_rows:
+        ingestor = DataIngestor(system , system_module, dataset, n_rows_s=n_rows, max_runtime=2000 ,  host=host,
                                 n_threads=n_threads)
-        with ingestor:
-            for n_s, n_st, time_range in scenarios:
-                try:
-                    time, var = system_module.run_query(query_template, rangeUnit=time_range, rangeL=1, n_s=n_s, n_it=n_iter,
-                                                        n_st=n_st,
-                                                        dataset=dataset)
-                    with open(output_file, "a") as file:
-                        line = f"{time} , {var}  , query, {n_s} , {n_st} , {time_range}\n"
-                        file.write(line)
-                except Exception as E:
-                    with open(log_file, "a") as file:
-                        line = f"{E}"
-                        file.write(line)
-                    print(E)
-
+        try:
+            with ingestor:
+                for n_s, n_st, time_range in scenarios:
+                    if not ingestor.check_ingestion_rate():
+                        raise Exception(f"ingestion failed")
+                    try:
+                        time, var = system_module.run_query(query_template, rangeUnit=time_range, rangeL=1, n_s=n_s, n_it=n_iter,
+                                                            n_st=n_st,
+                                                            dataset=dataset)
+                        with open(output_file, "a") as file:
+                            line = f"{time} , {var}  , query, {n_s} , {n_st} , {time_range} , {n_rows*n_threads*100}\n"
+                            file.write(line)
+                    except Exception as E:
+                        with open(log_file, "a") as file:
+                            line = f"{E}\n"
+                            file.write(line)
+                        print(E)
+        except Exception as E:
+            with open(log_file, "a") as file:
+                line = f"{E}\n"
+                file.write(line)
+            print(E)
 
 finally:
     print("stopping system")
