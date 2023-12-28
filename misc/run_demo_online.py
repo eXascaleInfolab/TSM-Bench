@@ -54,13 +54,12 @@ n_rows = [10, 20, 60, 100, 140]  # *100 for the batch size
 n_threads = 10
 
 system_module: timescaledb = system_module_map[system]
-#system_module.launch()
+# system_module.launch()
 
 query_templates = load_query_tempaltes(system)
-query_template = query_templates[int(query[1:])-1]
+query_template = query_templates[int(query[1:]) - 1]
 query_template = query_template.replace("<db>", dataset)
 query = "q1"
-
 
 try:
     for n_rows in n_rows:
@@ -70,11 +69,13 @@ try:
         while len(scenarios) > 0:
             ingestor = DataIngestor(system, system_module, dataset, n_rows_s=n_rows, max_runtime=2000, host=host,
                                     n_threads=n_threads)
-            while True and len(scenarios) > 0:
-                n_s, n_st, time_range = scenarios.pop(0)
-                try:
-                    with ingestor:
+
+            try:
+                with ingestor:
+                    while len(scenarios) > 0:
+                        n_s, n_st, time_range = scenarios.pop(0)
                         if not ingestor.check_ingestion_rate():
+                            break
                             raise Exception(f"ingestion failed")
                         try:
                             time, var = system_module.run_query(query_template, rangeUnit=time_range, rangeL=1, n_s=n_s,
@@ -89,12 +90,12 @@ try:
                                 line = f"{E}\n"
                                 file.write(line)
                             print(E)
-                except Exception as E:
-                    with open(log_file, "a") as file:
-                        line = f"{E}\n"
-                        file.write(line)
+            except Exception as E:
+                with open(log_file, "a") as file:
+                    line = f"{E}\n"
+                    file.write(line)
                     print(E)
 
 finally:
     print("stopping system")
-    system_module.stop()
+system_module.stop()
