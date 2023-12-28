@@ -54,7 +54,7 @@ n_rows = [10, 20, 60, 100, 140]  # *100 for the batch size
 n_threads = 10
 
 system_module: timescaledb = system_module_map[system]
-system_module.launch()
+#system_module.launch()
 
 query_templates = load_query_tempaltes(system)
 query_template = query_templates[int(query[1:])-1]
@@ -80,7 +80,7 @@ try:
                             time, var = system_module.run_query(query_template, rangeUnit=time_range, rangeL=1, n_s=n_s,
                                                                 n_it=n_iter,
                                                                 n_st=n_st,
-                                                                dataset=dataset)
+                                                                dataset=dataset, host=host)
                             with open(output_file, "a") as file:
                                 line = f"{time} , {var}  , query, {n_s} , {n_st} , {time_range} , {n_rows * n_threads * 100}\n"
                                 file.write(line)
