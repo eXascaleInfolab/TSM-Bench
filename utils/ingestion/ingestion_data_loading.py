@@ -44,7 +44,9 @@ def ingestion_queries_generator(system,*,n_rows_s, t_n):
     :return: list of ingestion queries
     """
 
-    file_path = f"utils/ingestion/ingestion_queries/queries_{system}_{n_rows_s}_{t_n}.txt"
+    folder_path = f"utils/ingestion/ingestion_queries"
+    os.makedirs(folder_path, exist_ok=True)
+    file_path = f"{folder_path}/queries_{system}_{n_rows_s}_{t_n}.txt"
     queries_line_indices = []
     with open(file_path, 'r') as file:
         offset = 0
