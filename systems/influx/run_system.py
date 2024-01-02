@@ -18,11 +18,28 @@ from systems.utils.library import random_date
 
 from systems.utils.library import *
 
-from systems.utils import change_directory , parse_args
+from systems.utils import change_directory , parse_args , connection_class
 from utils.run_systems import run_system
 
 from influxdb import InfluxDBClient
 from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
+
+
+
+def get_connection(host="localhost", dataset=None , **kwargs):
+    client = InfluxDBClient(host=host, port=8086, username='name')
+    def execute_query_f(sql):
+        return client.query(sql)
+
+    def write_points_f(points ,dataset=dataset):
+        #input: "sensor,id_station=st99 s0=<>,s1=0.256154,s2=0.353368,s3=0.264800,s4=0.340716 ....
+
+        assert dataset is not None, "influx requires the dataset to be specified"
+        return client.write_points(points, database=dataset, time_precision="ms", batch_size=5000 ,protocol='line')
+
+    conn_close_f = lambda : client.close()
+    return connection_class.Connection(conn_close_f, execute_query_f, write_points_f)
+
 
 def parse_query(query ,*, date, rangeUnit , rangeL , sensor_list , station_list):
     temp = query.replace("<timestamp>", date)

@@ -1,8 +1,9 @@
 import json
 import os
-path_to_data_folder = "../../datasets" if os.path.isdir("../../datasets") else "datasets"
 
 def get_dataset_infos(dataset):
+    path_to_data_folder = "../../datasets" if os.path.isdir("../../datasets") else "datasets"
+
     with open(f"{path_to_data_folder}/dataset_config.json") as f:
         dataset_config = json.load(f)[dataset]
 

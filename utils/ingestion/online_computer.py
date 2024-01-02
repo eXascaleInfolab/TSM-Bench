@@ -91,7 +91,7 @@ class DataIngestor:
 
         time_stop = get_dataset_infos(self.dataset)["time_stop"]
         print(f"cleaning database from {time_stop}")
-        self.system_module.delete_data(date=time_stop, host=self.host, dataset=self.dataset)
+        #self.system_module.delete_data(date=time_stop, host=self.host, dataset=self.dataset)
         if exc_type is not None:
             print(f"Exception caught: {exc_value}, {exc_type} , {exc_value} continuing...")
             print(traceback)
@@ -100,22 +100,21 @@ class DataIngestor:
         print(*[ingestion_result.insertions for ingestion_result in self.ingestion_results], sep="\n")
 
     def input_data(self, insertion_queries , ingestion_logger , dataset=None):
+        from systems.utils.connection_class import Connection
         ingestion_logger.set_evaluated()
+        connection: Connection = self.system_module.get_connection(host=self.host, dataset=self.dataset)
         try:
-            execute_f, conn_close_f = self.system_module.get_query_exec_f_and_conn_close_f(host=self.host ,
-                                                                                           datasets=self.dataset)
             for sql in insertion_queries:
                 if self.event.is_set():
                     "setting event"
                     break
                 start = time.time()
-                execute_f(sql)
+                connection.write(sql)
                 diff = time.time() - start
                 ingestion_logger.add_times(start, time.time())
                 if diff <= 1:
                     assert diff > 0
                     time.sleep(1 - diff)
-                    #print(f"insertion succeded in {diff}s")
                 else:
                     print(f"insertion to slow took {diff}s")
             if not self.event.is_set():

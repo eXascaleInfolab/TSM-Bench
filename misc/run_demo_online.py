@@ -40,17 +40,17 @@ os.makedirs(result_path, exist_ok=True)
 output_file = f"{result_path}/{system}.csv"
 log_file = f"{result_path}/{system}_log.csv"
 
-n_iter = 100  # args.it
+n_iter = 10000000  # args.it
 timeout = 1500
-n_sensors = [10, 20, 40, 60, 80, 100]
-n_stations = [1, 5, 10]
-time_ranges = ["minute", "hour", "day", "week"]
+n_sensors = [10]#, 20, 40, 60, 80, 100]
+n_stations = [1]#, 5, 10]
+time_ranges = ["minute"]#, "hour", "day", "week"]
 
 query = args.query
 
 from systems import timescaledb
 
-n_rows = [10, 20, 60, 100, 140]  # *100 for the batch size
+n_rows = [100] #, [10, 20, 60, 100, 140]  # *100 for the batch size
 n_threads = 10
 
 system_module: timescaledb = system_module_map[system]

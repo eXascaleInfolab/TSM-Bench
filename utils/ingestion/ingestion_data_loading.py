@@ -5,7 +5,6 @@ import pandas as pd
 import os
 import numpy as np
 
-from utils.dataset_config_reader import get_dataset_infos
 
 
 def generate_continuing_data(batch_size, dataset, stop_date_pd=None):
@@ -18,6 +17,7 @@ def generate_continuing_data(batch_size, dataset, stop_date_pd=None):
     stations are randomly chosen from the number of available stations
     time_stamps are 10 seconds apart
     """
+    from utils.dataset_config_reader import get_dataset_infos
 
     dataset_config = get_dataset_infos(dataset)
 
@@ -57,7 +57,11 @@ def ingestion_queries_generator(system,*,n_rows_s, t_n):
     for offset in queries_line_indices:
         with open(file_path, 'r') as file:
             file.seek(offset)
-            yield file.readline().strip()
+            if system == "influx" or system == "influxdb":
+                points = file.readline().strip().split(";")
+                yield points
+            else:
+                yield file.readline().strip()
 
 
 def generate_ingestion_queries(*, n_threads, n_rows_s, max_runtime, dataset, system, insertion_query_f):
@@ -121,15 +125,16 @@ def generate_ingestion_queries(*, n_threads, n_rows_s, max_runtime, dataset, sys
 # python3 utils/ingestion/ingestion_data_loading.py
 if __name__ == "__main__":
     sys.path.append(os.getcwd())
+    print(os.getcwd())
 
-    system = "clickhouse"
+    system = "influx"
     dataset = "d1"
     n_threads = 2
-    n_rows_s = 1000
-    max_runtime = 1000
-    from systems import clickhouse
+    n_rows_s = 10
+    max_runtime = 10
+    from systems import influx
 
-    insertion_query_f = clickhouse.generate_insertion_query
+    insertion_query_f = influx.generate_insertion_query
     insertion_queries_generators = generate_ingestion_queries(n_threads=n_threads, n_rows_s=n_rows_s,
                                                               max_runtime=max_runtime, dataset=dataset,
                                                               system=system,
@@ -137,5 +142,6 @@ if __name__ == "__main__":
     for t_n in range(n_threads):
         print(f"thread {t_n}")
         for i, query in enumerate(insertion_queries_generators[t_n]):
+            print(query)
             if i == 100 or i == 101:
                 print(query[-10:])

@@ -10,8 +10,18 @@ from subprocess import Popen, PIPE, STDOUT, DEVNULL
 # setting path
 sys.path.append('../..')
 from systems.utils.library import get_randomized_inputs
-from systems.utils import change_directory , parse_args
+from systems.utils import change_directory , parse_args , connection_class
 from utils.run_systems import run_system
+
+def get_connection(host="localhost", **kwargs):
+    conn = connect_ClickHouse(f"clickhouse://{host}")
+    cur = conn.cursor()
+    def execute_query_f(sql):
+        cur.execute(sql)
+        return cur.fetchall()
+
+    conn_close_f = lambda : conn.close()
+    return connection_class.Connection(conn_close_f, execute_query_f,)
 
 def launch():
     with change_directory(__file__):
@@ -26,15 +36,8 @@ def stop():
         process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
         stdout, stderr = process.communicate()
 
-def get_query_exec_f_and_conn_close_f(host="localhost", **kwargs):
-    conn = connect_ClickHouse(f"clickhouse://{host}")
-    cur = conn.cursor()
-    def execute_query_f(sql):
-        cur.execute(sql)
-        return cur.fetchall()
 
-    conn_close_f = lambda : conn.close()
-    return execute_query_f, conn_close_f
+
 
 
 def parse_query(query ,*,  date, rangeUnit , rangeL , sensor_list , station_list):
