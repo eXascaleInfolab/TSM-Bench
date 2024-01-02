@@ -11,7 +11,7 @@ else:
 
 print(f"transofrming {dataset}")
 
-data_src = open(f'../../{dataset}.csv')
+data_src = open(f'../../datasets/{dataset}.csv')
 data_target= open(f'{dataset}-influxdb.csv','a')
 head_line=f"# DDL\n CREATE DATABASE {dataset}\n"
 head_line2=f"# DML\n# CONTEXT-DATABASE: {dataset}\n"
