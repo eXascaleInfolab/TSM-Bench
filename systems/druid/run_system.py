@@ -21,7 +21,22 @@ from pydruid.utils.filters import *
 # setting path
 sys.path.append('../../')
 from systems.utils.library import *
-from systems.utils import change_directory, parse_args
+from systems.utils import change_directory, parse_args, connection_class
+
+
+def get_connection(host="localhost", dataset=None , **kwargs):
+    conn = connect(host=host, port=8082, path='/druid/v2/sql/', scheme='http')
+    cursor = conn.cursor()
+    def execute_query_f(sql):
+        cursor.execute(sql)
+        return cursor.fetchall()
+
+    def write_points_f(points ,dataset=dataset):
+        raise NotImplementedError("druid does not support insertion")
+
+    conn_close_f = lambda : conn.close()
+    return connection_class.Connection(conn_close_f, execute_query_f, write_points_f)
+
 
 
 def parse_query(query, *, date, rangeUnit, rangeL, sensor_list, station_list):

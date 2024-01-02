@@ -15,7 +15,7 @@ import subprocess
 # setting path
 sys.path.append('../../')
 from systems.utils.library import *
-from systems.utils import change_directory , parse_args
+from systems.utils import change_directory, parse_args, connection_class
 from utils.run_systems import run_system
 
 import exdb
@@ -28,6 +28,25 @@ options = {"day": 60 * 60 * 24,
            "month": 60 * 60 * 24 * 30,
            "year": 60 * 60 * 24 * 30 * 12
            }
+
+
+def get_connection(host="localhost", dataset=None , **kwargs):
+    exdb.init_runtime(debug = False, shm = False, disk = False, tmgr = 'mursiw')
+
+    conn = exdb.connect(host, 5001)
+    cursor = conn.cursor()
+    def execute_query_f(sql):
+        cursor.execute(sql)
+        return cursor.fetchall()
+
+    def write_points_f(sql ,dataset=dataset):
+        cursor.execute("set append_mode true")
+        cursor.execute(sql)
+        return cursor.fetchall()
+
+    conn_close_f = lambda : conn.close()
+    return connection_class.Connection(conn_close_f, execute_query_f, write_points_f)
+
 
 def parse_query(query ,*, date, rangeUnit , rangeL , sensor_list , station_list):
     #query : query_template containing places holders
