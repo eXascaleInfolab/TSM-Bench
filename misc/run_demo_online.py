@@ -5,17 +5,14 @@ import sys
 
 sys.path.append(os.getcwd())
 
-from utils.ingestion.online_computer import DataIngestor
+from utils.ingestion.data_ingestion import DataIngestor
 from utils.system_modules import system_module_map
 from utils.query_template_loader import load_query_templates
 import argparse
 
-
 # questdb requieres dataset path to be rebuild
 HOST_DATASET_PATH = "home/luca/TSM/TSM-BENCH/datasets"
 dataset = "d1"
-
-
 
 parser = argparse.ArgumentParser(description='Script for running any eval')
 
@@ -31,15 +28,19 @@ parser.add_argument('--query', nargs="?",
                     type=str,
                     help='host address', default="q1")
 
+parser.add_argument('-oc', action='store_true')
+
 parser.add_argument('--it', nargs="?", type=int, help='n_iterationss', default=100)
 
 args = parser.parse_args()
+
+clean_database = args.oc
 
 system = args.system
 host = args.host
 print(system)
 
-HOST_DATASET_PATH = os.path.join(HOST_DATASET_PATH,dataset+".csv")
+HOST_DATASET_PATH = os.path.join(HOST_DATASET_PATH, dataset + ".csv")
 os.environ["HOST_DATASET_PATH"] = HOST_DATASET_PATH
 
 result_path = f"utils/online_queries/{dataset}"
@@ -49,23 +50,22 @@ log_file = f"{result_path}/{system}_log.csv"
 
 n_iter = 200  # args.it
 timeout = 1500
-n_sensors = [10] #, 20, 40, 60, 80, 100]
-n_stations = [1]#, 5, 10]
-time_ranges = ["minute"]#, "hour", "day", "week"]
+n_sensors = [10]  # , 20, 40, 60, 80, 100]
+n_stations = [1]  # , 5, 10]
+time_ranges = ["minute"]  # , "hour", "day", "week"]
 
 query = args.query
 
 from systems import timescaledb
 
-n_rows = [10, 20 , 100 ]  # *100 for the batch size * 10 for the threads
+n_rows = [10, 20, 100]  # *100 for the batch size * 10 for the threads
 n_threads = 10
 
 #  quest db does not support multi threading for insertion
 if system == "questdb":
     print("questdb does not support multi threading for insertion")
     n_threads = 1
-    n_rows = [i*10 for i in n_rows]
-
+    n_rows = [i * 10 for i in n_rows]
 
 system_module: timescaledb = system_module_map[system]
 # system_module.launch()
@@ -75,7 +75,6 @@ query_template = query_templates[int(query[1:]) - 1]
 query_template = query_template.replace("<db>", dataset)
 query = "q1"
 
-
 try:
     for n_rows in n_rows:
         scenarios = [(sensor, station, time_range) for sensor in n_sensors for station in n_stations for time_range in
@@ -83,7 +82,7 @@ try:
 
         while len(scenarios) > 0:
             ingestor = DataIngestor(system, system_module, dataset, n_rows_s=n_rows, max_runtime=2000, host=host,
-                                    n_threads=n_threads)
+                                    n_threads=n_threads , clean_database=clean_database)
             try:
                 with ingestor:
                     while len(scenarios) > 0:

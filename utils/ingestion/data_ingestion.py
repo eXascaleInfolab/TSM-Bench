@@ -34,7 +34,7 @@ class IngestionResult:
 
 class DataIngestor:
     def __init__(self, system: str, system_module, dataset: str, *, n_rows_s, max_runtime, host, n_threads,
-                 warmup_time=10):
+                 warmup_time=10 , clean_database=True):
         self.n_threads = n_threads
         self.n_rows_s = n_rows_s
         self.host = host
@@ -45,6 +45,7 @@ class DataIngestor:
         self.max_runtime = max_runtime  # seconds
         self.warmup_time = warmup_time
         self.system = system
+        self.clean_database = clean_database
 
     def check_ingestion_rate(self):
         if self.threads is None:
@@ -90,8 +91,9 @@ class DataIngestor:
             thread.join()
 
         time_stop = get_dataset_infos(self.dataset)["time_stop"]
-        print(f"cleaning database from {time_stop}")
-        #self.system_module.delete_data(date=time_stop, host=self.host, dataset=self.dataset)
+        if self.clean_database:
+            print(f"cleaning database from {time_stop}")
+            self.system_module.delete_data(date=time_stop, host=self.host, dataset=self.dataset)
         if exc_type is not None:
             print(f"Exception caught: {exc_value}, {exc_type} , {exc_value} continuing...")
             print(traceback)
