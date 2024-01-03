@@ -28,7 +28,7 @@ parser.add_argument('--query', nargs="?",
                     type=str,
                     help='host address', default="q1")
 
-parser.add_argument('-oc', action='store_true')
+parser.add_argument('-oc', action='store_false', help='omit cleaning database')
 
 parser.add_argument('--it', nargs="?", type=int, help='n_iterationss', default=100)
 
