@@ -50,7 +50,7 @@ query = args.query
 
 from systems import timescaledb
 
-n_rows = [1, 2, 20, 60, 100, 140]  # *100 for the batch size * 10 for the threads
+n_rows = [10, 20, 200, 600, 1000, 1400]  # *100 for the batch size * 10 for the threads
 n_threads = 10
 
 system_module: timescaledb = system_module_map[system]
