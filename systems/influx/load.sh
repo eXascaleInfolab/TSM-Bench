@@ -9,10 +9,8 @@ if [ $# -ge 1 ]; then
 fi
 echo $dataset
 
-cd ../../datasets
-echo "convert the datasetformat (this is not counted in the time measuring)"
-#python3 generate_influx.py $dataset
-cd ../systems/influx
+echo "convert the datase tformat (this takes a while and is not counted in the time measuring)"
+python3 generate_influx_line_protocol.py $dataset
 
 
 curl -X POST "http://localhost:8086/query" --data-urlencode "q=DROP DATABASE $dataset"
@@ -21,7 +19,7 @@ log_file="influx_startup.txt"
 start_time=$(date +%s.%N)
 
 
-./influxdb-1.7.10-1/usr/bin/influx -import -path=../../datasets/$dataset-influxdb.csv -precision=ms > "$log_file" 2>&1 &
+./influxdb-1.7.10-1/usr/bin/influx -import -path=$dataset-influxdb.csv -precision=ms > "$log_file" 2>&1 &
 
 echo "start loading"
 

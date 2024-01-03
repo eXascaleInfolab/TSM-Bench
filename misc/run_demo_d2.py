@@ -8,7 +8,7 @@ import sys
 sys.path.append(os.getcwd())
 
 from utils.system_modules import system_module_map
-from utils.query_template_loader import load_query_tempaltes
+from utils.query_template_loader import load_query_templates
 import argparse
 
 parser = argparse.ArgumentParser(description='Script for running any eval')
@@ -53,7 +53,7 @@ from systems import timescaledb
 
 system_module: timescaledb = system_module_map[system]
 
-query_templates = load_query_tempaltes(system)
+query_templates = load_query_templates(system)
 
 already_computed_results = set()
 with open(output_file, "r") as file:

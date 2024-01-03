@@ -12,31 +12,52 @@ import json
 
 import os
 import subprocess
+
 # setting path
 sys.path.append('../../')
 from systems.utils.library import *
-from systems.utils import change_directory , parse_args
+from systems.utils import change_directory, parse_args, connection_class
 from utils.run_systems import run_system
 
 import exdb
 
-options = {"day": 60 * 60 * 24,
-           "week": 60 * 60 * 24 * 7,
-           "minute": 60,
-           "hour": 60 * 60,
-           "second": 1,
-           "month": 60 * 60 * 24 * 30,
-           "year": 60 * 60 * 24 * 30 * 12
-           }
 
-def parse_query(query ,*, date, rangeUnit , rangeL , sensor_list , station_list):
-    #query : query_template containing places holders
-    #date : date of the query
-    #rangeUnit : unit of the range
-    #rangeL : length of the range (mostly 1)
-    #sensor_list : list of sensors e.g [s1,s2,s2]
-    #station_list : list of stations e.g [st1,st2,st3]
+def get_connection(host="localhost", dataset=None, **kwargs):
+    load_env_variables()
+    exdb.init_runtime(debug=False, shm=False, disk=False, tmgr='mursiw')
 
+    conn = exdb.connect(host, 5001)
+    cursor = conn.cursor()
+
+    def execute_query_f(sql):
+        cursor.execute(sql)
+        return cursor.fetchall()
+
+    def write_points_f(sql, dataset=dataset):
+        cursor.execute("set append_mode true")
+        cursor.execute(sql)
+        return cursor.fetchall()
+
+    conn_close_f = lambda: conn.close()
+    return connection_class.Connection(conn_close_f, execute_query_f, write_points_f)
+
+
+def parse_query(query, *, date, rangeUnit, rangeL, sensor_list, station_list):
+    # query : query_template containing places holders
+    # date : date of the query
+    # rangeUnit : unit of the range
+    # rangeL : length of the range (mostly 1)
+    # sensor_list : list of sensors e.g [s1,s2,s2]
+    # station_list : list of stations e.g [st1,st2,st3]
+
+    options = {"day": 60 * 60 * 24,
+               "week": 60 * 60 * 24 * 7,
+               "minute": 60,
+               "hour": 60 * 60,
+               "second": 1,
+               "month": 60 * 60 * 24 * 30,
+               "year": 60 * 60 * 24 * 30 * 12
+               }
 
     date = int(time.mktime(datetime.strptime(date, '%Y-%m-%dT%H:%M:%S').timetuple()))
     temp = query.replace("<timestamp>", str(date))
@@ -55,8 +76,8 @@ def parse_query(query ,*, date, rangeUnit , rangeL , sensor_list , station_list)
     sidlist = sensor_list[0]
     for j in sensor_list[1:]:
         sidlist += ',' + j
-    li = [ z + "@tt" for z in sensor_list]
-    li_filtered = [ str(z) + "@fe as s" + str(z) for z in sensor_list]
+    li = [z + "@tt" for z in sensor_list]
+    li_filtered = [str(z) + "@fe as s" + str(z) for z in sensor_list]
 
     q = li[0]
     q_filtered = li_filtered[0]
@@ -76,7 +97,7 @@ def parse_query(query ,*, date, rangeUnit , rangeL , sensor_list , station_list)
             0]  # li[0] + ' > 0.95'
         q_seq_stretch += ", seq_stretch(ts5,t," + j.split('@')[0] + ")"
     temp = temp.replace("<sid>", q)
-    temp = temp.replace("<sid1>", sensor_list[0] )
+    temp = temp.replace("<sid1>", sensor_list[0])
     sid2 = sensor_list[1] if len(sensor_list) > 1 else "s2"
     sid3 = sensor_list[2] if len(sensor_list) > 2 else "s3"
     temp = temp.replace("<sid2>", sid2)
@@ -92,9 +113,9 @@ def parse_query(query ,*, date, rangeUnit , rangeL , sensor_list , station_list)
     return temp
 
 
-def run_query(query, rangeL , rangeUnit, n_st , n_s , n_it, dataset ,host="localhost"):
+def run_query(query, rangeL, rangeUnit, n_st, n_s, n_it, dataset, host="localhost"):
     # Connect to the system
-    exdb.init_runtime(debug = False, shm = False, disk = False, tmgr = 'mursiw')
+    exdb.init_runtime(debug=False, shm=False, disk=False, tmgr='mursiw')
     conn = exdb.connect(host, 5001)
     cursor = conn.cursor()
     random_inputs = get_randomized_inputs(dataset, n_st=n_st, n_s=n_s, n_it=n_it, rangeL=rangeL)
@@ -121,18 +142,32 @@ def run_query(query, rangeL , rangeUnit, n_st , n_s , n_it, dataset ,host="local
 
         cursor.execute(query)
         results_ = cursor.fetchall()
-        diff = (time.time()-start)*1000
+        diff = (time.time() - start) * 1000
 
         #  print(temp, diff)
         runtimes.append(diff)
-        if time.time() - full_time > 500 and it > 5: 
-            break  
+        if time.time() - full_time > 500 and it > 5:
+            break
 
     conn.close()
     return stats.mean(runtimes), stats.stdev(runtimes)
 
 
 main_process = None
+
+
+def load_env_variables():
+    """
+    current="$(pwd)"
+    echo "MCO_ROOT=$current"
+    echo "MCO_LIBRARY_PATH=$current/eXtremeDB/target/bin.so"
+    echo "LD_LIBRARY_PATH=$current/eXtremeDB/target/bin.so"
+    """
+    os.environ["MCO_ROOT"] = "systems/extremedb"
+    os.environ["MCO_LIBRARY_PATH"] = "systems/extremedb/eXtremeDB/target/bin.so"
+    os.environ["LD_LIBRARY_PATH"] = "systems/extremedb/eXtremeDB/target/bin.so"
+
+
 
 def launch():
     global main_process
@@ -143,42 +178,41 @@ def launch():
         # Run the command as a subprocess, capturing the output
         proc = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
         output, error = proc.communicate()
-        
-        #Parse the output to extract the environment variables
+
+        # Parse the output to extract the environment variables
         env_lines = [line.decode("utf-8").split('=', 1) for line in output.splitlines() if b'=' in line]
         env = dict(env_lines)
-        print(f"variables to be added to venv {env}" )
+        print(f"variables to be added to venv {env}")
         # Merge the extracted environment variables with the current environment
         new_env = os.environ.copy()
         new_env.update(env)
 
         new_env["OLDPWD"] = os.getcwd()
         os.environ.update(new_env)
-        
-        main_process = subprocess.Popen(['sh', 'launch.sh'], env=new_env, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
+        main_process = subprocess.Popen(['sh', 'launch.sh'], env=new_env, stdin=subprocess.PIPE,
+                                        stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
-        process = subprocess.Popen(['sleep', '10'], env=new_env, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+        process = subprocess.Popen(['sleep', '10'], env=new_env, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL,
+                                   stderr=subprocess.STDOUT)
         process.communicate()
-    
+
+
 def stop():
     global main_process
     main_process.communicate()
-    
-    
+
+
 if __name__ == "__main__":
-    
     launch()
-    
-    args = parse_args() 
 
-    def query_f(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
-        return run_query(query, rangeL=rangeL, rangeUnit = rangeUnit ,n_st = n_st , n_s = n_s , n_it = n_it)
-    
-    run_system(args,"extremedb",query_f)
-    
+    args = parse_args()
+
+
+    def query_f(query, rangeL=args.range, rangeUnit=args.rangeUnit, n_st=args.def_st, n_s=args.def_s, n_it=args.n_it):
+        return run_query(query, rangeL=rangeL, rangeUnit=rangeUnit, n_st=n_st, n_s=n_s, n_it=n_it)
+
+
+    run_system(args, "extremedb", query_f)
+
     stop()
-    
-
-
-

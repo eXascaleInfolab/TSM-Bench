@@ -1,32 +1,37 @@
 import psycopg2
 import time
 
-def input_data(t_n, event, data, results , batch_size, host="localhost", dataset = "d1"):
+
+
+def generate_insertion_query(time_stamps : list , station_ids : list , sensors_values , dataset):
+    template_start = f"insert into {dataset} (time, id_station ," + ",".join(["s" + str(i) for i in range(100)]) + ")" + "VALUES "
+
+    values = [ f"('{time_stamps[i]}' , '{station_ids[i]}' , {', '.join([str(s_n) for s_n in sensors_values[i]])})"
+        for i,_ in enumerate(time_stamps)]
+
+    sql = template_start + ",".join(values)
+    return sql
+
+
+
+def input_data(insertion_queries, event , ingestion_logger , host = "localhost" , dataset = None ):
+    ingestion_logger.set_evaluated()
     try:
         CONNECTION = f"postgres://postgres:postgres@{host}:5432/postgres"
         conn = psycopg2.connect(CONNECTION)
         conn.autocommit = True
         cur = conn.cursor()
-        data = data
-        insertion_sql_head = "insert into "+dataset+" (time, id_station ," + ",".join(["s"+str(i) for i in range(100)]) + ")"
-        values = [f"('{data['time_stamps'][i]}', '{data['stations'][i]}', {', '.join([str(s_n) for s_n in data['sensors'][i]])})" for i in range(batch_size)]
-        sql = insertion_sql_head + " VALUES " + ",".join(values)
-        sql = sql.replace("<st_id>",str(t_n % 10))
-        
-        while True:
+        for sql in insertion_queries:
             if event.is_set():
                 break
-                  
             start = time.time()
-                  
             cur.execute(sql)
-                  
             diff = time.time() - start
-            results["insertions"].append( (start,batch_size))
+            ingestion_logger.add(100, start, time.time())
             if diff < 1:
                 time.sleep(1-diff)
             else:
-                print(f"insertion of {batch_size} points took to long ({diff}s)")
+                print(f"insertion to slow took {diff}s")
     except:
         results["status"] = "failed"
 

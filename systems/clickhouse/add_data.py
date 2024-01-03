@@ -1,45 +1,47 @@
-import psycopg2
+from threading import Event
+
 import time
 
-
-from clickhouse_driver import Client
 from clickhouse_driver import connect as connect_ClickHouse
+from utils.ingestion.online_computer import IngestionResult
+
+def generate_insertion_query(time_stamps: list, station_ids: list, sensors_values, dataset):
+    template_start = f"insert into {dataset} (time, id_station ," + ",".join(
+        ["s" + str(i) for i in range(100)]) + ")" + " VALUES "
+
+    values = [f"('{time_stamps[i]}' , '{station_ids[i]}' , {', '.join([str(s_n) for s_n in sensors_values[i]])})"
+              for i, _ in enumerate(time_stamps)]
+
+    sql = template_start + ",".join(values)
+    return sql
 
 
-def input_data(t_n, event, data , results,  batch_size = 1000, host = "localhost" , dataset = "d1"):
-    results["evaluated"] = True
+def input_data(insertion_queries, event: Event(), ingestion_logger: IngestionResult, host="localhost", dataset=None):
+    ingestion_logger.set_evaluated()
     try:
         conn = connect_ClickHouse(f"clickhouse://{host}")
         cur = conn.cursor()
-        data = data
-        insertion_sql_head = "insert into "+dataset+" (time, id_station ," + ",".join(["s"+str(i) for i in range(100)]) + ")"
-        values = [f"('{data['time_stamps'][i]}', '{data['stations'][i]}', {', '.join([str(s_n) for s_n in data['sensors'][i]])})" for i in range(batch_size)]
-        sql = insertion_sql_head + " VALUES " + ",".join(values)
-        sql = sql.replace("<st_id>",str(t_n % 10))
-        print(sql)
-        while True:
+        for sql in insertion_queries:
             if event.is_set():
                 break
             start = time.time()
             cur.execute(sql)
             diff = time.time() - start
-            results["insertions"].append( (start,batch_size) )   
+            ingestion_logger.add_times(start, time.time())
             if diff <= 1:
-                time.sleep(1-diff)
+                time.sleep(1 - diff)
+                print("insertion succeded")
             else:
                 print(f"insertion to slow took {diff}s")
-             
+            ingestion_logger.set_fail(Exception("no more data to insert"))
     except Exception as e:
-        results["status"] = "failed"
+        ingestion_logger.set_fail(e)
         raise e
-              
 
 
-def delete_data(date= "2019-04-30T00:00:00", host="localhost" , dataset = "d1"):
+def delete_data(date="2019-04-30T00:00:00", host="localhost", dataset="d1"):
     conn = connect_ClickHouse(f"clickhouse://{host}")
     print("cleaning up clickhouse database")
     cur = conn.cursor()
-    time.sleep(4)
     res = cur.execute(f"ALTER TABLE {dataset} DELETE where time > TIMESTAMP '{date}';")
-    time.sleep(10)
     print(res)

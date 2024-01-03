@@ -8,9 +8,8 @@ if [ $# -ge 1 ]; then
 fi
 echo "loading $dataset into extremedb"
 
-
 current="$(pwd)"
-
+. variables.sh
 export MCO_ROOT="$current"
 export MCO_LIBRARY_PATH="$current"/eXtremeDB/target/bin.so
 export LD_LIBRARY_PATH="$current"/eXtremeDB/target/bin.so
