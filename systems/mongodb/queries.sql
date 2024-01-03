@@ -1,0 +1,7 @@
+db.d1.find({"id_station": {$in: <sid>}, "time": {$gt: new Date("<timstamp_from>"), $lt: new Date("<timstamp>")}, "<sid1>": {$gt: 0.95}}, {"time": 1, "id_station": 1, <sid_proj>})
+db.weather.findOne({ "timestamp": ISODate("2021-05-18T00:00:00.000Z") })
+db.weather.findOne({ "timestamp": ISODate("2021-05-18T00:00:00.000Z") })
+db.weather.findOne({ "timestamp": ISODate("2021-05-18T00:00:00.000Z") })
+db.weather.findOne({ "timestamp": ISODate("2021-05-18T00:00:00.000Z") })
+db.weather.findOne({ "timestamp": ISODate("2021-05-18T00:00:00.000Z") })
+db.weather.findOne({ "timestamp": ISODate("2021-05-18T00:00:00.000Z") })
