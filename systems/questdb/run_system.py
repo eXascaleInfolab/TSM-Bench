@@ -31,12 +31,13 @@ options = {
     "year": 60 * 60 * 24 * 30 * 12
 }
 
-def get_connection(host="localhost", **kwargs):
+def get_connection(host="localhost", dataset=None , **kwargs):
+    assert dataset is None , "please specifiy questdb dataset/database"
     conn = psycopg2.connect(user="admin",
                             password="quest",
                             host=host,
                             port="8812",
-                            database="d1")
+                            database=dataset)
     cursor = conn.cursor()
 
     def execute_query_f(sql):
