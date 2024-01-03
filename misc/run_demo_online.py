@@ -6,10 +6,16 @@ import sys
 sys.path.append(os.getcwd())
 
 from utils.ingestion.online_computer import DataIngestor
-
 from utils.system_modules import system_module_map
 from utils.query_template_loader import load_query_templates
 import argparse
+
+
+# questdb requieres dataset path to be rebuild
+HOST_DATASET_PATH = "home/luca/TSM/TSM-BENCH/datasets"
+dataset = "d1"
+
+
 
 parser = argparse.ArgumentParser(description='Script for running any eval')
 
@@ -33,7 +39,8 @@ system = args.system
 host = args.host
 print(system)
 
-dataset = "d1"
+HOST_DATASET_PATH = os.path.join(HOST_DATASET_PATH,dataset+".csv")
+os.environ["HOST_DATASET_PATH"] = HOST_DATASET_PATH
 
 result_path = f"utils/online_queries/{dataset}"
 os.makedirs(result_path, exist_ok=True)
@@ -50,8 +57,15 @@ query = args.query
 
 from systems import timescaledb
 
-n_rows = [10, 20, 200, 600, 1000, 1400]  # *100 for the batch size * 10 for the threads
+n_rows = [10, 20 , 100 ]  # *100 for the batch size * 10 for the threads
 n_threads = 10
+
+#  quest db does not support multi threading for insertion
+if system == "questdb":
+    print("questdb does not support multi threading for insertion")
+    n_threads = 1
+    n_rows = [i*10 for i in n_rows]
+
 
 system_module: timescaledb = system_module_map[system]
 # system_module.launch()

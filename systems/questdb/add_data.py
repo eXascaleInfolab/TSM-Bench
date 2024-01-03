@@ -3,7 +3,7 @@ import time
 
 
 def generate_insertion_query(time_stamps: list, station_ids: list, sensors_values, dataset):
-    template_start = f"insert into {dataset} (time, id_station ," + ",".join(
+    template_start = f"insert into {dataset} (ts, id_station ," + ",".join(
         ["s" + str(i) for i in range(100)]) + ")" + " VALUES "
 
     values = [f"('{time_stamps[i]}' , '{station_ids[i]}' , {', '.join([str(s_n) for s_n in sensors_values[i]])})"
