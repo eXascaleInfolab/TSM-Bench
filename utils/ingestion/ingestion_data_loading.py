@@ -47,6 +47,8 @@ def ingestion_queries_generator(system,*,n_rows_s, t_n):
     folder_path = f"utils/ingestion/ingestion_queries"
     file_path = f"{folder_path}/queries_{system}_{n_rows_s}_{t_n}.txt"
     queries_line_indices = []
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+    print(os.getcwd())
     with open(file_path, 'r') as file:
         offset = 0
         for line in file:

@@ -3,7 +3,7 @@ import os
 from systems.utils import run_online
 
 from systems import influx, extremedb, timescaledb, questdb, monetdb, clickhouse
-from utils.query_template_loader import load_query_tempaltes
+from utils.query_template_loader import load_query_templates
 
 system_module_map = {"influx": influx,
                      "extremedb": extremedb,
@@ -83,7 +83,7 @@ for dataset in args.datasets:
         print(f"###{system}###")
 
         system_module = system_module_map[system]
-        query_templates = load_query_tempaltes(system)
+        query_templates = load_query_templates(system)
 
         if args.host == "localhost":
             system_module.launch()

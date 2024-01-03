@@ -8,7 +8,7 @@ import time
 def generate_insertion_query(time_stamps: list, station_ids: list, sensors_values, dataset):
     # using append mode
     id_station = station_ids[0]
-    template_start = (f"INSERT or UPDATE INTO {dataset} + (id_station , " +
+    template_start = (f"INSERT or UPDATE INTO {dataset} (id_station , " +
                       ",".join(["s" + str(i) for i in range(len(sensors_values[0]))]) + ")") + " VALUES "
 
     values = [f"('{station_ids[i]}' , {', '.join([str(s_n) for s_n in sensors_values[i]])})"

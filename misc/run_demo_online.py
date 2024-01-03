@@ -8,7 +8,7 @@ sys.path.append(os.getcwd())
 from utils.ingestion.online_computer import DataIngestor
 
 from utils.system_modules import system_module_map
-from utils.query_template_loader import load_query_tempaltes
+from utils.query_template_loader import load_query_templates
 import argparse
 
 parser = argparse.ArgumentParser(description='Script for running any eval')
@@ -50,16 +50,18 @@ query = args.query
 
 from systems import timescaledb
 
-n_rows = [100] #, [10, 20, 60, 100, 140]  # *100 for the batch size
+n_rows = [20] #, [10, 20, 60, 100, 140]  # *100 for the batch size
 n_threads = 10
 
 system_module: timescaledb = system_module_map[system]
 # system_module.launch()
 
-query_templates = load_query_tempaltes(system)
+query_templates = load_query_templates(system)
 query_template = query_templates[int(query[1:]) - 1]
 query_template = query_template.replace("<db>", dataset)
 query = "q1"
+
+print("DIRECTORY1", os.getcwd())
 
 try:
     for n_rows in n_rows:
@@ -69,9 +71,10 @@ try:
         while len(scenarios) > 0:
             ingestor = DataIngestor(system, system_module, dataset, n_rows_s=n_rows, max_runtime=2000, host=host,
                                     n_threads=n_threads)
-
             try:
                 with ingestor:
+                    print("DIRECTORY3", os.getcwd())
+
                     while len(scenarios) > 0:
                         n_s, n_st, time_range = scenarios.pop(0)
                         if not ingestor.check_ingestion_rate():

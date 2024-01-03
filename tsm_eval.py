@@ -6,7 +6,7 @@ import pandas as pd
 
 from systems.config import system_names
 from utils.plotting.plot_query_dir import plot_query_directory
-from utils.query_template_loader import load_query_tempaltes
+from utils.query_template_loader import load_query_templates
 from utils.tsm_eval_parser import init_main_parser
 from utils.system_modules import system_module_map
 
@@ -35,7 +35,7 @@ for dataset in datasets:
         try:
             system_module.launch()
 
-            queries = load_query_tempaltes(system)
+            queries = load_query_templates(system)
 
             for i, query in enumerate(queries):
                 if "q" + str(i + 1) in args.queries and "select" in query.lower():
