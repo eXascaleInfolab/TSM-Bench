@@ -21,7 +21,7 @@ def get_connection(host="localhost", **kwargs):
         return cur.fetchall()
 
     conn_close_f = lambda : conn.close()
-    return connection_class.Connection(conn_close_f, execute_query_f,)
+    return connection_class.Connection(conn_close_f, execute_query_f)
 
 def launch():
     with change_directory(__file__):

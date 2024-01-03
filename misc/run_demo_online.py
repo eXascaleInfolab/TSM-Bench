@@ -40,9 +40,9 @@ os.makedirs(result_path, exist_ok=True)
 output_file = f"{result_path}/{system}.csv"
 log_file = f"{result_path}/{system}_log.csv"
 
-n_iter = 10000000  # args.it
+n_iter = 200  # args.it
 timeout = 1500
-n_sensors = [10]#, 20, 40, 60, 80, 100]
+n_sensors = [10] #, 20, 40, 60, 80, 100]
 n_stations = [1]#, 5, 10]
 time_ranges = ["minute"]#, "hour", "day", "week"]
 
@@ -50,7 +50,7 @@ query = args.query
 
 from systems import timescaledb
 
-n_rows = [20] #, [10, 20, 60, 100, 140]  # *100 for the batch size
+n_rows = [10,20 , 60, 100, 140]  # *100 for the batch size
 n_threads = 10
 
 system_module: timescaledb = system_module_map[system]
@@ -61,7 +61,6 @@ query_template = query_templates[int(query[1:]) - 1]
 query_template = query_template.replace("<db>", dataset)
 query = "q1"
 
-print("DIRECTORY1", os.getcwd())
 
 try:
     for n_rows in n_rows:
@@ -73,8 +72,6 @@ try:
                                     n_threads=n_threads)
             try:
                 with ingestor:
-                    print("DIRECTORY3", os.getcwd())
-
                     while len(scenarios) > 0:
                         n_s, n_st, time_range = scenarios.pop(0)
                         if not ingestor.check_ingestion_rate():
@@ -101,4 +98,4 @@ try:
 
 finally:
     print("stopping system")
-system_module.stop()
+    system_module.stop()

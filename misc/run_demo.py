@@ -67,7 +67,7 @@ with open(output_file, "r") as file:
 print(already_computed_results)
 
 try:
-    #system_module.launch()
+    system_module.launch()
     for i, query in enumerate(query_templates):
         if "select" not in query.lower():
             continue

@@ -109,17 +109,19 @@ class DataIngestor:
                     "setting event"
                     break
                 start = time.time()
-                connection.write(sql)
+                print(connection.write(sql))
                 diff = time.time() - start
-                ingestion_logger.add_times(start, time.time())
+                ingestion_logger.add_times(start, diff)
                 if diff <= 1:
                     assert diff > 0
                     time.sleep(1 - diff)
+                    print("insertion suceeded")
                 else:
                     print(f"insertion to slow took {diff}s")
             if not self.event.is_set():
                 ingestion_logger.set_fail(Exception("no more data to insert"))
         except Exception as e:
             ingestion_logger.set_fail(e)
+            print("ingestion failed")
             raise e
 
