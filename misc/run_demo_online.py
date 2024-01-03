@@ -50,7 +50,7 @@ query = args.query
 
 from systems import timescaledb
 
-n_rows = [10,20 , 60, 100, 140]  # *100 for the batch size
+n_rows = [1, 2, 20, 60, 100, 140]  # *100 for the batch size * 10 for the threads
 n_threads = 10
 
 system_module: timescaledb = system_module_map[system]
@@ -83,7 +83,7 @@ try:
                                                                 n_st=n_st,
                                                                 dataset=dataset, host=host)
                             with open(output_file, "a") as file:
-                                line = f"{time} , {var}  , query, {n_s} , {n_st} , {time_range} , {n_rows * n_threads * 100}\n"
+                                line = f"{time} , {var}  , {query} , {n_s} , {n_st} , {time_range} , {n_rows * n_threads * 100}\n"
                                 file.write(line)
                         except Exception as E:
                             with open(log_file, "a") as file:

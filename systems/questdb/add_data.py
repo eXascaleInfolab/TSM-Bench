@@ -1,6 +1,8 @@
 import psycopg2
 import time
 
+
+
 def input_data(t_n, event, data , results , batch_size = 1000, host = "localhost", dataset = "d1"):
     try:
         conn = psycopg2.connect(user="admin",
