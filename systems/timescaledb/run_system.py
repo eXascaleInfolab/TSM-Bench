@@ -4,11 +4,25 @@ from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
 # setting path
 sys.path.append('../../')
 from systems.utils.library import *
-from systems.utils import change_directory , parse_args
+from systems.utils import change_directory, parse_args, connection_class
 from utils.run_systems import run_system
 
 
 import psycopg2
+
+
+
+def get_connection(host="localhost", **kwargs):
+    CONNECTION = f"postgres://postgres:postgres@{host}:5432/postgres"
+    conn = psycopg2.connect(CONNECTION)
+    cursor = conn.cursor()
+    def execute_query_f(sql):
+        cursor.execute(sql)
+        return cursor.fetchall()
+
+    conn_close_f = lambda : conn.close()
+    return connection_class.Connection(conn_close_f, execute_query_f)
+
 
 def parse_query(query ,*, date, rangeUnit , rangeL , sensor_list , station_list):
     temp = query.replace("<timestamp>", date)
