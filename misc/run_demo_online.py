@@ -112,6 +112,7 @@ try:
                     line = f"{E}\n"
                     file.write(line)
                     print(E)
+                raise E
 
 finally:
     print("stopping system")

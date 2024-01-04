@@ -32,6 +32,8 @@ def decrease_date(date, rangeL, rangeUnit):
         date -= timedelta(days=rangeL)
     elif rangeUnit == "week":
         date -= timedelta(weeks=rangeL)
+    elif rangeUnit == "month":
+        date -= timedelta(weeks=rangeL*4)
     else:
         raise Exception("rangeUnit not supported")
     return date.strftime('%Y-%m-%dT%H:%M:%S')
@@ -67,7 +69,7 @@ def parse_query(query, date, rangeL, rangeUnit, sensor_list, station_list):
     """
 
     # replace <stid> with [ commaserperated station ids]
-    stations = "[" + ",".join(station_list) + "]"
+    stations = "[" + ",".join( [f'"{station_id}"' for station_id in station_list]) + "]"
     query = query.replace("<stid>", stations)
 
     # replace sensor list with [ commaserperated sensor ids]
@@ -79,12 +81,24 @@ def parse_query(query, date, rangeL, rangeUnit, sensor_list, station_list):
 
     # compute the from_time and replace <from_time>
     from_time = decrease_date(date, rangeL, rangeUnit)
-    query = query.replace("<from_time>", from_time)
+    query = query.replace("<timestamp_from>", from_time)
 
     ## add the sensor projection filte
     sensor_proj = ",".join([f"'{s}' : 1" for s in sensor_list])
     query = query.replace("<sid_proj>", sensor_proj)
 
+
+    query = query.replace("<sid1>", "s1")
+    query = query.replace(">sid2>", "s2")
+
+    # convert query to json
+    import json
+    print(query)
+    # query = '{"id_station": {"$in": ["st1","st2"]}, "time": {"$gt": "2019-02-28T00:17:40", "$lt": "2019-03-01T00:17:40"}, "s1": {"$gt": 0.95}}'
+    # print(query)
+    query = json.loads(query)
+    print(query)
+    print("AAAAAAA")
     return query
 
 
@@ -105,8 +119,10 @@ def get_connection(host="localhost", dataset=None, **kwargs):
 
     def execute_query_f(query):
         """ queries as parsed by parse_query """
-        cursor = collection.find(query)
-        return cursor.fetchall()
+        print("running mongodb query")
+        result = collection.find(query)
+        print(result)
+        return result
 
     def insert_f(data):
         """ sting  parsed by generate_insertion_query  """

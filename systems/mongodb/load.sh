@@ -14,7 +14,7 @@ start_time=$(date +%s.%N)
 
 sudo docker cp ../../datasets/d1.csv mongo:/tmp/d1.csv
 
-docker exec -it mongo mongoimport -d db -c $dataset --type csv --file /tmp/$dataset.csv --headerline
+docker exec -it mongo mongoimport -d $dataset -c $dataset --type csv --file /tmp/$dataset.csv --headerline
 
 end_time=$(date +%s.%N)
 elapsed_time=$(echo "$end_time - $start_time" | bc)

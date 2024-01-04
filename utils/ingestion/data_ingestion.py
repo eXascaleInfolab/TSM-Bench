@@ -99,6 +99,7 @@ class DataIngestor:
             print(f"Exception caught: {exc_value}, {exc_type} , {exc_value} continuing...")
             print(traceback)
             # Handle or log the exception here if needed
+            raise exc_value
             return True  # Suppresses the exception
         print(*[ingestion_result.insertions for ingestion_result in self.ingestion_results], sep="\n")
 
@@ -118,7 +119,7 @@ class DataIngestor:
                 if diff <= 1:
                     assert diff > 0
                     time.sleep(1 - diff)
-                    print("insertion suceeded")
+                    #print("insertion suceeded")
                 else:
                     print(f"insertion to slow took {diff}s")
             if not self.event.is_set():
