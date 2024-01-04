@@ -49,9 +49,9 @@ log_file = f"{result_path}/{system}_log.csv"
 
 n_iter = 200  # args.it
 timeout = 1500
-n_sensors = [10]  # , 20, 40, 60, 80, 100]
-n_stations = [3]  # , 5, 10]
-time_ranges = ["minute"]  # , "hour", "day", "week"]
+n_sensors = [3]  # , 20, 40, 60, 80, 100]
+n_stations = [1]  # , 5, 10]
+time_ranges = ["day"]  # , "hour", "day", "week"]
 
 query = args.query
 
