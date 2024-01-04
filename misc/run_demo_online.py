@@ -57,7 +57,7 @@ query = args.query
 
 from systems import timescaledb
 
-n_rows = [10, 20, 100 , 140]  # *100 for the batch size * 10 for the threads
+n_rows = [10, 20, 100 , 1000, 1400]  # *100 for the batch size * 10 for the threads
 n_threads = 10
 
 #  quest db does not support multi threading for insertion

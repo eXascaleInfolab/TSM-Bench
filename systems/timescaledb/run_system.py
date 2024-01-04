@@ -10,8 +10,6 @@ from utils.run_systems import run_system
 
 import psycopg2
 
-
-
 def get_connection(host="localhost", **kwargs):
     CONNECTION = f"postgres://postgres:postgres@{host}:5432/postgres"
     conn = psycopg2.connect(CONNECTION)
