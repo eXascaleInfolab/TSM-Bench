@@ -34,7 +34,7 @@ class IngestionResult:
 
 class DataIngestor:
     def __init__(self, system: str, system_module, dataset: str, *, n_rows_s, max_runtime, host, n_threads,
-                 warmup_time=10 , clean_database=True):
+                 warmup_time=20, clean_database=True):
         self.n_threads = n_threads
         self.n_rows_s = n_rows_s
         self.host = host
@@ -86,8 +86,9 @@ class DataIngestor:
     def __exit__(self, exc_type, exc_value, traceback):
         self.event.set()
         time.sleep(10)
+
+        print("joining threads")
         for thread in self.threads:
-            print("joining threads")
             thread.join()
 
         time_stop = get_dataset_infos(self.dataset)["time_stop"]

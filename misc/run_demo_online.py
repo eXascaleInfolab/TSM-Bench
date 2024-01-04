@@ -50,14 +50,14 @@ log_file = f"{result_path}/{system}_log.csv"
 n_iter = 200  # args.it
 timeout = 1500
 n_sensors = [10]  # , 20, 40, 60, 80, 100]
-n_stations = [1]  # , 5, 10]
+n_stations = [3]  # , 5, 10]
 time_ranges = ["minute"]  # , "hour", "day", "week"]
 
 query = args.query
 
 from systems import timescaledb
 
-n_rows = [10, 20, 100]  # *100 for the batch size * 10 for the threads
+n_rows = [10, 20, 100 , 140]  # *100 for the batch size * 10 for the threads
 n_threads = 10
 
 #  quest db does not support multi threading for insertion
@@ -84,8 +84,13 @@ try:
                                     n_threads=n_threads , clean_database=clean_database)
             try:
                 with ingestor:
+                    first = True
                     while len(scenarios) > 0:
-                        n_s, n_st, time_range = scenarios.pop(0)
+                        if first:
+                            first = False
+                            n_s, n_st, time_range = scenarios[0]
+                        else:
+                            n_s, n_st, time_range = scenarios.pop(0)
                         if not ingestor.check_ingestion_rate():
                             break
                             raise Exception(f"ingestion failed")

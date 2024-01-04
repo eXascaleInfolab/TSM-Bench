@@ -13,7 +13,7 @@ current="$(pwd)"
 start_time=$(date +%s.%N)
 
 sudo docker cp ../../datasets/d1.csv mongo:/tmp/d1.csv
-#sudo docker exec -it mongoimport -d $dataset -c $dataset --file /tmp/$dataset.csv7
+
 docker exec -it mongo mongoimport -d db -c $dataset --type csv --file /tmp/$dataset.csv --headerline
 
 end_time=$(date +%s.%N)
