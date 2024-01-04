@@ -21,7 +21,8 @@ def get_connection(host="localhost", **kwargs):
         return cursor.fetchall()
 
     def write_query_f(sql):
-        return cursor.execute(sql)
+        cursor.execute(sql)
+        return conn.commit()
 
 
     conn_close_f = lambda : conn.close()
