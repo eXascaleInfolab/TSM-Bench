@@ -109,11 +109,13 @@ class DataIngestor:
         connection: Connection = self.system_module.get_connection(host=self.host, dataset=self.dataset)
         try:
             for sql in insertion_queries:
+                n_rows = str(sql).count("(")-1
+                print("number of rows to insert", n_rows)
                 if self.event.is_set():
                     "setting event"
                     break
                 start = time.time()
-                print(connection.write(sql))
+                connection.write(sql)
                 diff = time.time() - start
                 ingestion_logger.add_times(start, diff)
                 if diff <= 1:
