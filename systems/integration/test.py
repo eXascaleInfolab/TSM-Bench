@@ -48,16 +48,14 @@ if __name__ == "__main__":
         mongo_uri = "mongodb://" + host + ":27017/"
         client = MongoClient(mongo_uri)
         print("server info" , client.server_info())
-        db = client["db"]
+        db = client["d1"]
         collection = db[dataset]
 
-        # query_result = collection.find(parsed_query_template)
+        query_result = collection.find(parsed_query_template)
 
-
-
-        # print("query result:\n" )
-        # for result in query_result:
-        #     print(result)
+        print("query result:\n" )
+        for result in query_result:
+            print(result)
 
 
         # query_result = run_query(system_module, query_template, rangeL, rangeUnit, n_st, n_s, 4, dataset, host="localhost" , log=True)
