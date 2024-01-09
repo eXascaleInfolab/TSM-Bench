@@ -60,7 +60,6 @@ class DataIngestor:
         self.ingestion_results = [IngestionResult(tn, self.n_rows_s) for tn in range(self.n_threads)]
 
         print("generating data")
-        insertion_queries = [-1] * self.n_threads
         insertion_query_f = self.system_module.generate_insertion_query
 
         insertion_queries_generators = generate_ingestion_queries(n_threads=self.n_threads,
