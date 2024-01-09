@@ -32,7 +32,7 @@ def generate_continuing_data(batch_size, dataset, stop_date_pd=None):
 
     for i, t_s in enumerate(new_time_stamps):
         yield {"time_stamp": t_s.strftime('%Y-%m-%dT%H:%M:%S'),
-               "station": f"st{np.random.choice(n_stations_total)}",
+               "station": f"st{np.around(np.random.choice(n_stations_total),decimals=4)}",
                "sensor_values": list(np.random.random(n_sensors_total)),
                }
 
