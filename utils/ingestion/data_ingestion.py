@@ -34,7 +34,7 @@ class IngestionResult:
 
 class DataIngestor:
     def __init__(self, system: str, system_module, dataset: str, *, n_rows_s, max_runtime, host, n_threads,
-                 warmup_time=20, clean_database=True):
+                 warmup_time=None, clean_database=True):
         self.n_threads = n_threads
         self.n_rows_s = n_rows_s
         self.host = host
@@ -43,7 +43,7 @@ class DataIngestor:
         self.system_module = system_module
         self.dataset = dataset
         self.max_runtime = max_runtime  # seconds
-        self.warmup_time = warmup_time
+        self.warmup_time = 3600*24*3/n_rows_s*2 if warmup_time is None else warmup_time
         self.system = system
         self.clean_database = clean_database
 
@@ -122,7 +122,7 @@ class DataIngestor:
                     time.sleep(1 - diff)
                     #print("insertion suceeded")
                 else:
-                    print(f"insertion to slow took {diff}s")
+                    print(f"insertion too slow; took {diff}s")
             if not self.event.is_set():
                 ingestion_logger.set_fail(Exception("no more data to insert"))
         except Exception as e:

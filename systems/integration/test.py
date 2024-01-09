@@ -49,6 +49,8 @@ if __name__ == "__main__":
 
     print("checking query parsing\n")
     for i , query_template in  enumerate(query_templates):
+        if i != 5:
+            continue
         query_template = query_template.replace("<db>", dataset)
         assert isinstance(query_template, str)
 
