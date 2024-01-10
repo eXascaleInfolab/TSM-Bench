@@ -22,11 +22,11 @@ def get_connection(host="localhost", **kwargs):
         cursor.execute(sql)
         return cursor.fetchall()
 
-    def execute_query_f(sql):
+    def write_query_f(sql):
         return cursor.execute(sql)
 
     conn_close_f = lambda : conn.close()
-    return connection_class.Connection(conn_close_f, execute_query_f)
+    return connection_class.Connection(conn_close_f, execute_query_f,write_query_f)
 
 
 def parse_query(query, *, date, rangeUnit, rangeL, sensor_list, station_list):
