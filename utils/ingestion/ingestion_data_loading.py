@@ -80,6 +80,7 @@ def generate_ingestion_queries(*, n_threads, n_rows_s, max_runtime, dataset, sys
 
     insertion_queries_generators = [-1] * n_threads
     for t_n in range(n_threads):
+        print(f"generating data for {t_n} threads")
         folder_path = f"utils/ingestion/ingestion_queries"
         os.makedirs(folder_path, exist_ok=True)
         file_path = f"utils/ingestion/ingestion_queries/queries_{system}_{n_rows_s}_{t_n}.txt"
