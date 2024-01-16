@@ -27,6 +27,10 @@ parser.add_argument('--query', nargs="?",
                     type=str,
                     help='host address', default="q1")
 
+parser.add_argument('--batch_size', "-bs", nargs="?",
+                    type=int,
+                    help='number of datapoints  to insert', default=10000)
+
 parser.add_argument('-oc', action='store_false', help='omit cleaning database')
 
 parser.add_argument('--it', nargs="?", type=int, help='n_iterationss', default=100)
@@ -37,6 +41,7 @@ clean_database = args.oc
 
 system = args.system
 host = args.host
+batch_size = args.batch_size
 print(system)
 
 HOST_DATASET_PATH = os.path.join(HOST_DATASET_PATH, dataset + ".csv")
@@ -57,7 +62,7 @@ query = args.query
 
 from systems import timescaledb
 
-n_rows = [1000]  # *100 for the batch size * 10 for the threads
+n_rows = [batch_size / 100 / 10]  # *100 for the batch size * 10 for the threads
 n_threads = 10
 
 #  quest db does not support multi threading for insertion
@@ -78,7 +83,7 @@ try:
 
         while len(scenarios) > 0:
             ingestor = DataIngestor(system, system_module, dataset, n_rows_s=n_rows, max_runtime=200, host=host,
-                                    n_threads=n_threads , clean_database=clean_database)
+                                    n_threads=n_threads, clean_database=clean_database)
             try:
                 with ingestor:
                     first = True
@@ -92,14 +97,14 @@ try:
                             break
                             raise Exception(f"ingestion failed")
 
-                        for query_i , query_template in enumerate(query_templates):
-                            query_name = "q"+str(query_i+1)
+                        for query_i, query_template in enumerate(query_templates):
+                            query_name = "q" + str(query_i + 1)
                             if query.lower() == "empty":
                                 continue
-                                query_template = sysem_module.parse()
-
+                            query_template = query_template.replace("<db>", dataset)
                             try:
-                                time, var = system_module.run_query(query_template, rangeUnit=time_range, rangeL=1, n_s=n_s,
+                                time, var = system_module.run_query(query_template, rangeUnit=time_range, rangeL=1,
+                                                                    n_s=n_s,
                                                                     n_it=n_iter,
                                                                     n_st=n_st,
                                                                     dataset=dataset, host=host)
