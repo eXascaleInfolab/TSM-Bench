@@ -57,7 +57,7 @@ query = args.query
 
 from systems import timescaledb
 
-n_rows = [10, 20, 100 , 1000]  # *100 for the batch size * 10 for the threads
+n_rows = [1000]  # *100 for the batch size * 10 for the threads
 n_threads = 10
 
 #  quest db does not support multi threading for insertion
@@ -67,12 +67,9 @@ if system == "questdb":
     n_rows = [i * 10 for i in n_rows]
 
 system_module: timescaledb = system_module_map[system]
-# system_module.launch()
 
+# system_module.launch()
 query_templates = load_query_templates(system)
-query_template = query_templates[int(query[1:]) - 1]
-query_template = query_template.replace("<db>", dataset)
-query = "q1"
 
 try:
     for n_rows in n_rows:
@@ -94,19 +91,26 @@ try:
                         if not ingestor.check_ingestion_rate():
                             break
                             raise Exception(f"ingestion failed")
-                        try:
-                            time, var = system_module.run_query(query_template, rangeUnit=time_range, rangeL=1, n_s=n_s,
-                                                                n_it=n_iter,
-                                                                n_st=n_st,
-                                                                dataset=dataset, host=host)
-                            with open(output_file, "a") as file:
-                                line = f"{time} , {var}  , {query} , {n_s} , {n_st} , {time_range} , {n_rows * n_threads * 100}\n"
-                                file.write(line)
-                        except Exception as E:
-                            with open(log_file, "a") as file:
-                                line = f"{E}\n"
-                                file.write(line)
-                            print(E)
+
+                        for query_i , query_template in enumerate(query_templates):
+                            query_name = "q"+str(query_i+1)
+                            if query.lower() == "empty":
+                                continue
+                                query_template = sysem_module.parse()
+
+                            try:
+                                time, var = system_module.run_query(query_template, rangeUnit=time_range, rangeL=1, n_s=n_s,
+                                                                    n_it=n_iter,
+                                                                    n_st=n_st,
+                                                                    dataset=dataset, host=host)
+                                with open(output_file, "a") as file:
+                                    line = f"{time} , {var}  , {query_name} , {n_s} , {n_st} , {time_range} , {n_rows * n_threads * 100}\n"
+                                    file.write(line)
+                            except Exception as E:
+                                with open(log_file, "a") as file:
+                                    line = f"{E}\n"
+                                    file.write(line)
+                                print(E)
             except Exception as E:
                 with open(log_file, "a") as file:
                     line = f"{E}\n"
