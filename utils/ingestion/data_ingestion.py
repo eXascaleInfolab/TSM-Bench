@@ -110,7 +110,10 @@ class DataIngestor:
         try:
             for sql in insertion_queries:
                 n_rows = str(sql).count("(")-1
-                print("number of rows to insert", n_rows)
+                min_time = sql.split("VALUES")[1].split(",")[0].replace("(","").replace("'","")
+                max_time = sql.split("VALUES")[1].split(",")[-1].replace(")","").replace("'","")
+
+                print("number of rows to insert", n_rows,min_time , max_time)
                 if self.event.is_set():
                     "setting event"
                     break

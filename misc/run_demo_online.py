@@ -57,7 +57,7 @@ query = args.query
 
 from systems import timescaledb
 
-n_rows = [10, 20, 100 , 1000, 1400]  # *100 for the batch size * 10 for the threads
+n_rows = [10, 20, 100 , 1000]  # *100 for the batch size * 10 for the threads
 n_threads = 10
 
 #  quest db does not support multi threading for insertion
@@ -80,7 +80,7 @@ try:
                      time_ranges]
 
         while len(scenarios) > 0:
-            ingestor = DataIngestor(system, system_module, dataset, n_rows_s=n_rows, max_runtime=2000, host=host,
+            ingestor = DataIngestor(system, system_module, dataset, n_rows_s=n_rows, max_runtime=200, host=host,
                                     n_threads=n_threads , clean_database=clean_database)
             try:
                 with ingestor:
