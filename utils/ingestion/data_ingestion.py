@@ -43,7 +43,8 @@ class DataIngestor:
         self.system_module = system_module
         self.dataset = dataset
         self.max_runtime = max_runtime  # seconds
-        self.warmup_time = 360*24*3/n_rows_s if warmup_time is None else warmup_time
+        self.warmup_time = min(100,360*24*3/n_rows_s if warmup_time is None else warmup_time)
+        assert  self.warmup_time > max_runtime
         self.system = system
         self.clean_database = clean_database
 
