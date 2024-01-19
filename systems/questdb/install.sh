@@ -6,16 +6,16 @@
 sudo kill -9 `sudo lsof -t -i:9000`
 sleep 2
 
-wget https://github.com/questdb/questdb/releases/download/6.4.1/questdb-6.4.1-rt-linux-amd64.tar.gz
+wget https://github.com/questdb/questdb/releases/download/6.2.1/questdb-6.2.1-rt-linux-amd64.tar.gz
 
 
-tar -xf questdb-6.4.1-rt-linux-amd64.tar.gz
-rm questdb-6.4.1-rt-linux-amd64.tar.gz
+tar -xf questdb-6.2.1-rt-linux-amd64.tar.gz
+rm questdb-6.2.1-rt-linux-amd64.tar.gz
 
 mkdir "$QuestDBroot"
 mkdir "$QuestDBroot/conf/"
 cp server.conf "$QuestDBroot/conf/"
 
-./questdb-6.4.1-rt-linux-amd64/bin/questdb.sh start -d "$QuestDBroot"
+./questdb-6.2.1-rt-linux-amd64/bin/questdb.sh start -d "$QuestDBroot"
 
 sleep 25
