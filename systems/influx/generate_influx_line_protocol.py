@@ -31,7 +31,7 @@ while True:
         date_str = str(int(datetime.datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S").timestamp()) * 1000)
         id_station = columns[1]
         influx_line = "sensor,id_station="+id_station + " "
-        influx_line += ",".join([ f"s{i}={v}" for i,v in enumerate(columns[2:102]) ] )
+        influx_line += ",".join([ f"s{i}={v}" for i,v in enumerate(columns[2:102]) if (v is not None and v != "") ] )
         influx_line = influx_line[:-1] + " " + date_str + '\n'
         #print(influx_line)
         data_target.write(influx_line)

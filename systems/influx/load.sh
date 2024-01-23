@@ -10,7 +10,7 @@ fi
 echo $dataset
 
 echo "convert the datase tformat (this takes a while and is not counted in the time measuring)"
-python3 generate_influx_line_protocol.py $dataset
+#python3 generate_influx_line_protocol.py $dataset
 
 
 curl -X POST "http://localhost:8086/query" --data-urlencode "q=DROP DATABASE $dataset"
