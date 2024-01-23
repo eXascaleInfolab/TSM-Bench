@@ -7,10 +7,11 @@ import pandas as pd
 from systems.config import system_names
 from utils.plotting.plot_query_dir import plot_query_directory
 from utils.query_template_loader import load_query_templates
+from utils.run_query import run_query
 from utils.tsm_eval_parser import init_main_parser
 from utils.system_modules import system_module_map
 
-datasets = ['d1', 'd2', 'TEST', "test"]
+datasets = ['d1', 'd2']
 
 scenario = {
     "n_stations": [1, 2, 3, 8, 9, 10],
@@ -20,7 +21,7 @@ scenario = {
     "timeout": 600,
 }
 
-args = init_main_parser(system_names, datasets)
+args = init_main_parser(system_names, datasets  , scenario["n_runs"])
 
 systems = args.systems
 datasets = args.datasets
@@ -44,9 +45,8 @@ for dataset in datasets:
 
                     query = query.replace("<db>", dataset)
 
-
                     def default_query_f(rangeUnit=args.rangeUnit, n_st=args.n_st, n_s=args.n_s):
-                        return system_module.run_query(query, rangeUnit=rangeUnit, n_st=n_st, n_s=n_s,
+                        return run_query(system_module , query, rangeUnit=rangeUnit, n_st=n_st, n_s=n_s,
                                                        n_it=args.n_it, dataset=dataset, rangeL=1, host="localhost")
 
 
