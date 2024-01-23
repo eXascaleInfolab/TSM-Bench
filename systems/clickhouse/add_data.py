@@ -3,7 +3,7 @@ from threading import Event
 import time
 
 from clickhouse_driver import connect as connect_ClickHouse
-from utils.ingestion.online_computer import IngestionResult
+from utils.ingestion.data_ingestion import IngestionResult
 
 def generate_insertion_query(time_stamps: list, station_ids: list, sensors_values, dataset):
     template_start = f"insert into {dataset} (time, id_station ," + ",".join(

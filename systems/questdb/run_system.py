@@ -1,6 +1,4 @@
-from datetime import datetime
 from tqdm import tqdm
-import argparse
 import os
 import time
 import statistics as stats
@@ -15,7 +13,7 @@ from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
 # setting path
 sys.path.append('../../')
 from systems.utils.library import *
-from systems.utils import change_directory , parse_args
+from systems.utils import change_directory, parse_args, connection_class
 from utils.run_systems import run_system
 
 
@@ -33,6 +31,24 @@ options = {
     "year": 60 * 60 * 24 * 30 * 12
 }
 
+def get_connection(host="localhost", dataset=None , **kwargs):
+    assert dataset is not None , "please specifiy questdb dataset/database"
+    conn = psycopg2.connect(user="admin",
+                            password="quest",
+                            host=host,
+                            port="8812",
+                            database=dataset)
+    cursor = conn.cursor()
+    def execute_query_f(sql):
+        #query parsed by parse_query
+        cursor.execute(sql)
+        return cursor.fetchall()
+
+    def write_query_f(sql):
+        return cursor.execute(sql)
+
+    conn_close_f = lambda : conn.close()
+    return connection_class.Connection(conn_close_f, execute_query_f, write_query_f )
 
 def parse_query(query ,*,  date, rangeUnit , rangeL , sensor_list , station_list):
     temp = query.replace("<timestamp>", date)
@@ -98,7 +114,7 @@ def run_query(query, rangeL , rangeUnit, n_st , n_s , n_it ,dataset, host="local
 
         query = parse_query(query, date=date, rangeUnit=rangeUnit, rangeL=rangeL, sensor_list=sensor_list,
                             station_list=station_list)
-        print("query")
+
         start = time.time()
         
         cursor.execute(query)

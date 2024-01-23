@@ -7,7 +7,7 @@ import numpy as np
 
 
 
-def generate_continuing_data(batch_size, dataset, stop_date_pd=None):
+def generate_continuing_data(batch_size, dataset, stop_date_pd=None , station_id = None):
     """
     :param batch_size: number of data rows to generate
     :param dataset: dataset name
@@ -30,9 +30,10 @@ def generate_continuing_data(batch_size, dataset, stop_date_pd=None):
 
     new_time_stamps = [pd.to_datetime(stop_date_pd) + pd.Timedelta(seconds=10 * i) for i in range(1, batch_size + 1)]
 
+    station_id = f"st{np.around(np.random.choice(n_stations_total),decimals=4)}" if station_id is None else station_id
     for i, t_s in enumerate(new_time_stamps):
         yield {"time_stamp": t_s.strftime('%Y-%m-%dT%H:%M:%S'),
-               "station": f"st{np.random.choice(n_stations_total)}",
+               "station": station_id,
                "sensor_values": list(np.random.random(n_sensors_total)),
                }
 
@@ -47,7 +48,6 @@ def ingestion_queries_generator(system,*,n_rows_s, t_n):
     folder_path = f"utils/ingestion/ingestion_queries"
     file_path = f"{folder_path}/queries_{system}_{n_rows_s}_{t_n}.txt"
     queries_line_indices = []
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     print(os.getcwd())
     with open(file_path, 'r') as file:
         offset = 0
@@ -80,6 +80,7 @@ def generate_ingestion_queries(*, n_threads, n_rows_s, max_runtime, dataset, sys
 
     insertion_queries_generators = [-1] * n_threads
     for t_n in range(n_threads):
+        print(f"generating data for {t_n} threads")
         folder_path = f"utils/ingestion/ingestion_queries"
         os.makedirs(folder_path, exist_ok=True)
         file_path = f"utils/ingestion/ingestion_queries/queries_{system}_{n_rows_s}_{t_n}.txt"
@@ -98,7 +99,7 @@ def generate_ingestion_queries(*, n_threads, n_rows_s, max_runtime, dataset, sys
 
         if not skip:
             print(f"generating ingestion file queries_{system}_{n_rows_s}_{t_n}.txt")
-            data_generator = generate_continuing_data(n_rows_s * max_runtime, dataset)
+            data_generator = generate_continuing_data(n_rows_s * max_runtime, dataset ,station_id=f"st{t_n}")
             for i in range(max_runtime):
                 time_stamps = []
                 stations = []

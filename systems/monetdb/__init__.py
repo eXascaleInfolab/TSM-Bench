@@ -6,6 +6,6 @@ abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
-from systems.monetdb.run_system import run_query , launch , stop
-from systems.monetdb.add_data import (input_data , delete_data)
+from systems.monetdb.run_system import run_query , launch , stop , get_connection
+from systems.monetdb.add_data import delete_data , generate_insertion_query
 os.chdir(curr_dir)

@@ -29,7 +29,8 @@ from subprocess import Popen, PIPE, STDOUT, DEVNULL # py3k
 def get_connection(host="localhost", dataset=None , **kwargs):
     client = InfluxDBClient(host=host, port=8086, username='name')
     def execute_query_f(sql):
-        return client.query(sql)
+        return client.query(sql)[0]
+
 
     def write_points_f(points ,dataset=dataset):
         #input: "sensor,id_station=st99 s0=<>,s1=0.256154,s2=0.353368,s3=0.264800,s4=0.340716 ....

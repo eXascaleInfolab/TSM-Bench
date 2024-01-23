@@ -43,11 +43,15 @@ with open(log_file, "w") as file:
 n_iter = args.it
 
 n_sensors = [1, 20, 40, 60, 80, 100]
-n_stations = [1, 400, 800, 1200, 1600, 2000]
+n_stations = [1, 10 , 50 , 100 , 400, 800, 1200, 1600, 2000]
 time_ranges = ["minute", "hour", "day", "week"]
 
-scenarios = [(sensor, station, time_range) for sensor in n_sensors for station in n_stations for time_range in
-             time_ranges]
+# scenarios = [(sensor, station, time_range) for sensor in n_sensors for station in n_stations for time_range in
+#              time_ranges]
+
+# stations last
+scenarios = [(sensor, time_range, station) for sensor in n_sensors for time_range in time_ranges for station in
+             n_stations]
 
 from systems import timescaledb
 
@@ -71,10 +75,11 @@ try:
         if "select" not in query.lower():
             continue
         query = query.replace("<db>", dataset)
-        for n_s, n_st, time_range in scenarios:
+        for n_s, time_range, n_st in scenarios:
             if (f"q{i + 1}", n_s, n_st, time_range) in already_computed_results:
                 print("already computed")
                 continue
+            print(f"running query {i + 1} with {n_s} sensors and {n_st} stations and {time_range}")
             try:
                 time, var = system_module.run_query(query, rangeUnit=time_range, rangeL=1, n_s=n_s, n_it=n_iter,
                                                     n_st=n_st,

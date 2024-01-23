@@ -77,7 +77,7 @@ def parse_query(query, *, date, rangeUnit, rangeL, sensor_list, station_list):
     for j in sensor_list[1:]:
         sidlist += ',' + j
     li = [z + "@tt" for z in sensor_list]
-    li_filtered = [str(z) + "@fe as s" + str(z) for z in sensor_list]
+    li_filtered = [str(z) + "@fe as " + str(z) for z in sensor_list]
 
     q = li[0]
     q_filtered = li_filtered[0]
