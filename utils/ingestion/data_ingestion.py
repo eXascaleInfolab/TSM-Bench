@@ -145,4 +145,6 @@ class DataIngestor:
             ingestion_logger.set_fail(e)
             print("ingestion failed")
             raise e
+        finally:
+            connection.close()
 
