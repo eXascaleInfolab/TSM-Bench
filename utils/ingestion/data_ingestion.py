@@ -42,7 +42,7 @@ class DataIngestor:
 
         if system == "questdb":
             self.diff_threshold = 1/4
-            self.n_rows_s = n_rows_s/4
+            self.n_rows_s = int(n_rows_s/4)
             self.max_runtime = max_runtime*4
 
 
