@@ -25,7 +25,7 @@ dataset_folder = "datasets"
 
 repeats_percentages = [10, 30,70, 90]
 scarsity_percentages = [10, 30, 60 , 80]
-mean_deltas  = [0.1, 0.5 ,1 , 5 ]
+mean_deltas  = [1 , 3 ,  5  , 10]
 outliers_n = [10, 30, 60, 80]
 
 parser = argparse.ArgumentParser(description='Script for running any eval')
@@ -109,6 +109,7 @@ for repeats_percentage in repeats_percentages:
     plt.savefig(f"{plot_folder}/repeats_{repeats_percentage}.png")
     plt.clf()
 
+
 for mean_delta in mean_deltas:
     new_df = df.copy()
     for i in range(2, 100 + 2):
@@ -121,6 +122,7 @@ for mean_delta in mean_deltas:
     new_df.iloc[station_indices[:2000], i].plot(title=f"delta_{mean_delta}")
     plt.savefig(f"{plot_folder}/delta_{mean_delta}.png")
     plt.clf()
+
 
 for scarsity_percentage in scarsity_percentages:
     new_df = df.copy()
