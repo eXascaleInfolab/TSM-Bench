@@ -108,6 +108,9 @@ class DataIngestor:
         from systems.utils.connection_class import Connection
         ingestion_logger.set_evaluated()
         connection: Connection = self.system_module.get_connection(host=self.host, dataset=self.dataset)
+
+        diff_threshold = 0.5
+
         try:
             for sql in insertion_queries:
                 n_rows = str(sql).count("(")-1
@@ -121,10 +124,9 @@ class DataIngestor:
                 connection.write(sql)
                 diff = time.time() - start
                 ingestion_logger.add_times(start, diff)
-                if diff <= 1:
+                if diff <= diff_threshold:
                     assert diff > 0
-                    time.sleep(1 - diff)
-                    #print("insertion suceeded")
+                    time.sleep(diff_threshold - diff)
                 else:
                     print(f"insertion too slow; took {diff}s")
             if not self.event.is_set():
