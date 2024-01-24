@@ -127,11 +127,12 @@ class DataIngestor:
                     n_rows = str(sql).count("(") - 1
                     min_time = sql.split("VALUES")[1].split(",")[0].replace("(","").replace("'","")
                     print("number of rows to insert", n_rows,min_time )
-                if self.system == "influx": #influx  get a list of points to insert
+                elif self.system == "influx": #influx  get a list of points to insert
                     n_rows = len(sql)
                     min_time = sql[0].split(" ")[-1]
                     print("number of rows to insert", n_rows, min_time)
-
+                else:
+                    print("could not infer number of rows and last time stamp")
 
                 if self.event.is_set():
                     "setting event"

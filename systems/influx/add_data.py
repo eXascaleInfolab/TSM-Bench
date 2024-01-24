@@ -51,6 +51,7 @@ def delete_data(date= "2019-04-1T00:00:00", host = "localhost", dataset = "d1"):
     client = InfluxDBClient(host=host, port=8086, username='user', database=dataset)
     
     result = client.query(f"""DELETE FROM "sensor" where time > '{date}Z' """)
+    client.close()
     print(result)
     client.close()
     time.sleep(5)
