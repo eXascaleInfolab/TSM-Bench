@@ -12,7 +12,7 @@ import argparse
 # questdb requieres dataset path to be rebuild
 HOST_DATASET_PATH = "home/luca/TSM/TSM-BENCH/datasets"
 dataset = "d1"
-n_threads = 100
+n_threads = 10
 
 parser = argparse.ArgumentParser(description='Script for running any eval')
 
@@ -63,6 +63,7 @@ query = args.query
 
 from systems import timescaledb
 
+# threads 10, 100 , 1000 , 10000
 n_rows = [int(batch_size / 100 / n_threads)]  # *100 for the batch size * 10 for the threads
 
 #  quest db does not support multi threading for insertion
@@ -82,7 +83,7 @@ try:
                      time_ranges]
 
         while len(scenarios) > 0:
-            ingestor = DataIngestor(system, system_module, dataset, n_rows_s=n_rows, max_runtime=200, host=host,
+            ingestor = DataIngestor(system, system_module, dataset, n_rows_s=n_rows, max_runtime=500, host=host,
                                     n_threads=n_threads, clean_database=clean_database)
             try:
                 with ingestor:

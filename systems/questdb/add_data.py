@@ -1,7 +1,6 @@
 import psycopg2
 import time
 
-
 def generate_insertion_query(time_stamps: list, station_ids: list, sensors_values, dataset):
     template_start = f"insert into {dataset} (ts, id_station ," + ",".join(
         ["s" + str(i) for i in range(100)]) + ")" + " VALUES "
