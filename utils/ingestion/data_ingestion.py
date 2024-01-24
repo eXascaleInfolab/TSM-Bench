@@ -76,6 +76,7 @@ class DataIngestor:
         for t_n in range(self.n_threads):
             thread = Thread(target=self.input_data, args=(
                 insertion_queries_generators[t_n],  self.ingestion_results[t_n], self.dataset))
+            thread.setDaemon(True)
             thread.start()
             self.threads.append(thread)
 
