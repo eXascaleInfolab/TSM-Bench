@@ -56,8 +56,8 @@ def parse_query(query ,*,  date, rangeUnit , rangeL , sensor_list , station_list
     query = query.replace("<sid>", q)
     query = query.replace("<sfilter>", q_filter)
     query = query.replace("<avg_s>", q_avg)
-    query = query.replace("<sid1>", "1")
-    query = query.replace("<sid2>", "2")
+    query = query.replace("<sid1>", "s1")
+    query = query.replace("<sid2>", "s2")
 
     if "fill step" in query.lower():
         if len(station_list) == 1:

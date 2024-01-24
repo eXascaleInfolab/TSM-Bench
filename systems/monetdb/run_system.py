@@ -13,7 +13,7 @@ from utils.run_systems import run_system
 import pymonetdb
 
 def get_connection(host="localhost", **kwargs):
-    conn = pymonetdb.connect(username="monetdb", port=54320, password="monetdb", hostname=host, database="mydb")
+    conn = pymonetdb.connect(username="monetdb", port=54320, password="monetdb", hostname=host, database="mydb" , autocommit=True)
     cursor = conn.cursor()
     # isolation_level = "SERIALIZABLE"  # For the online queries
     # cursor.execute(f"SET TRANSACTION ISOLATION LEVEL {isolation_level}")

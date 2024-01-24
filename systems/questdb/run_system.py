@@ -80,8 +80,8 @@ def parse_query(query, *, date, rangeUnit, rangeL, sensor_list, station_list):
 
     temp = temp.replace("<sid>", q)
     temp = temp.replace("<sid1>", sensor_list[0])
-    sid2 = sensor_list[1] if len(sensor_list) > 1 else "sid2"
-    sid3 = sensor_list[2] if len(sensor_list) > 2 else "sid3"
+    sid2 = sensor_list[1] if len(sensor_list) > 1 else "sid1"
+    sid3 = sensor_list[2] if len(sensor_list) > 2 else "sid2"
 
     temp = temp.replace("<sid2>", sid2)
     temp = temp.replace("<sid3>", sid3)

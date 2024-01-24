@@ -25,11 +25,11 @@ import exdb
 def get_connection(host="localhost", dataset=None, **kwargs):
     load_env_variables()
     exdb.init_runtime(debug=False, shm=False, disk=False, tmgr='mursiw')
-
     conn = exdb.connect(host, 5001)
     cursor = conn.cursor()
 
     def execute_query_f(sql):
+        print(sql[:600])
         cursor.execute(sql)
         return cursor.fetchall()
 
