@@ -71,7 +71,7 @@ if system == "questdb":
     print("questdb does not support multi threading for insertion setting number of threads to 1")
     n_threads = 1
     n_rows = [i * n_threads for i in n_rows]
-    assert n_rows[0] == batch_size / 100
+    assert n_rows[0] == batch_size / 100 , ( batch_size , n_rows[0] , n_threads )
 
 system_module: timescaledb = system_module_map[system]
 
