@@ -63,14 +63,15 @@ query = args.query
 
 from systems import timescaledb
 
-# threads 10, 100 , 1000 , 10000
+# threads 10
 n_rows = [int(batch_size / 100 / n_threads)]  # *100 for the batch size * 10 for the threads
 
 #  quest db does not support multi threading for insertion
 if system == "questdb":
-    print("questdb does not support multi threading for insertion")
+    print("questdb does not support multi threading for insertion setting number of threads to 1")
     n_threads = 1
     n_rows = [i * n_threads for i in n_rows]
+    assert n_rows == [batch_size / 100]
 
 system_module: timescaledb = system_module_map[system]
 
