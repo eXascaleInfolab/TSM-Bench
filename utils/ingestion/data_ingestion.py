@@ -35,14 +35,24 @@ class IngestionResult:
 class DataIngestor:
     def __init__(self, system: str, system_module, dataset: str, *, n_rows_s, max_runtime, host, n_threads,
                  warmup_time=None, clean_database=True):
-        self.n_threads = n_threads
+
+        self.diff_threshold = 1
         self.n_rows_s = n_rows_s
+        self.max_runtime = max_runtime  # seconds
+
+        if system == "questdb":
+            self.diff_threshold = 1/4
+            self.n_rows_s = n_rows_s/4
+            self.max_runtime = max_runtime*4
+
+
+
+        self.n_threads = n_threads
         self.host = host
         self.threads = None
         self.event = None
         self.system_module = system_module
         self.dataset = dataset
-        self.max_runtime = max_runtime  # seconds
         self.warmup_time = min(100,360*24*3/n_rows_s if warmup_time is None else warmup_time)
         assert self.warmup_time < max_runtime
         self.system = system
@@ -109,7 +119,7 @@ class DataIngestor:
         ingestion_logger.set_evaluated()
         connection: Connection = self.system_module.get_connection(host=self.host, dataset=self.dataset)
 
-        diff_threshold = 0.5
+
 
         try:
             for sql in insertion_queries:
@@ -124,9 +134,9 @@ class DataIngestor:
                 connection.write(sql)
                 diff = time.time() - start
                 ingestion_logger.add_times(start, diff)
-                if diff <= diff_threshold:
+                if diff <= self.diff_threshold:
                     assert diff > 0
-                    time.sleep(diff_threshold - diff)
+                    time.sleep(self.diff_threshold - diff)
                 else:
                     print(f"insertion too slow; took {diff}s")
             if not self.event.is_set():
