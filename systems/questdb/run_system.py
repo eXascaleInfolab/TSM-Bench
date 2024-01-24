@@ -45,6 +45,7 @@ def get_connection(host="localhost", dataset=None , **kwargs):
         return cursor.fetchall()
 
     def write_query_f(sql):
+        conn.autocommit = True
         cursor.execute(sql)
         return cursor.commit()
 
