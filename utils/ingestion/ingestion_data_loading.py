@@ -1,4 +1,5 @@
 import json
+import random
 import sys
 
 import pandas as pd
@@ -99,7 +100,12 @@ def generate_ingestion_queries(*, n_threads, n_rows_s, max_runtime, dataset, sys
 
         if not skip:
             print(f"generating ingestion file queries_{system}_{n_rows_s}_{t_n}.txt")
-            data_generator = generate_continuing_data(n_rows_s * max_runtime, dataset ,station_id=f"st{t_n}")
+
+            station_id = f"st{t_n}"
+            if t_n == 1:
+                station_id = f"st{random.randint(0,9)}"
+
+            data_generator = generate_continuing_data(n_rows_s * max_runtime, dataset ,station_id=station_id)
             for i in range(max_runtime):
                 time_stamps = []
                 stations = []
