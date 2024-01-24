@@ -73,7 +73,7 @@ if system == "questdb":
 
 
 if system == "monetdb":
-    n_threads = 2
+    n_threads = 1
 
 
 n_rows = [int(batch_size / 100 / n_threads)]
