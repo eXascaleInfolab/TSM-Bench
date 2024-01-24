@@ -45,7 +45,8 @@ def get_connection(host="localhost", dataset=None , **kwargs):
         return cursor.fetchall()
 
     def write_query_f(sql):
-        return cursor.execute(sql)
+        cursor.execute(sql)
+        return cursor.execute()
 
     conn_close_f = lambda : conn.close()
     return connection_class.Connection(conn_close_f, execute_query_f, write_query_f )
