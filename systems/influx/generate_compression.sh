@@ -11,11 +11,6 @@ for delta in 1 3 5 10; do
     sh load.sh ${file_name}_delta_$delta
 done
 
-for scarsity in 10 30 60 80; do
-    echo "scarsity: $scarsity"
-    python3 generate_influx_line_protocol.py ${file_name}_scarsity_$scarsity
-    sh load.sh ${file_name}_scarsity_$scarsity
-done
 
 
 for repeats in 10 30 70 90; do
@@ -24,3 +19,8 @@ for repeats in 10 30 70 90; do
     sh load.sh ${file_name}_repeats_$repeats
 done
 
+for scarsity in 10 30 60 80; do
+    echo "scarsity: $scarsity"
+    python3 generate_influx_line_protocol.py ${file_name}_scarsity_$scarsity
+    sh load.sh ${file_name}_scarsity_$scarsity
+done
