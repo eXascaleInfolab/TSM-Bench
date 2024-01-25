@@ -96,6 +96,7 @@ plot_folder = "results/compression_plots"
 os.makedirs(plot_folder, exist_ok=True)
 
 
+
 for repeats_percentage in repeats_percentages:
     new_df = df.copy()
     for i in range(2, 100 + 2):
@@ -104,9 +105,9 @@ for repeats_percentage in repeats_percentages:
             ts = new_df.iloc[station_indices, i].values
             new_df.iloc[station_indices, i] = generate_repeats(ts, repeats_percentage).round(decimals=6)
 
-    new_df.to_csv(f"{dataset_folder}/repeats_{repeats_percentage}.csv", index=False, header=True)
-    new_df.iloc[station_indices[:2000], i].plot(title=f"repeats_{repeats_percentage}")
-    plt.savefig(f"{plot_folder}/repeats_{repeats_percentage}.png")
+    new_df.to_csv(f"{dataset_folder}/{dataset}_repeats_{repeats_percentage}.csv", index=False, header=True)
+    new_df.iloc[station_indices[:2000], i].plot(title=f"{dataset}_repeats_{repeats_percentage}")
+    plt.savefig(f"{plot_folder}/{dataset}_repeats_{repeats_percentage}.png")
     plt.clf()
 
 
@@ -118,9 +119,9 @@ for mean_delta in mean_deltas:
             ts = new_df.iloc[station_indices, i].values
             new_df.iloc[station_indices, i] = generate_delta(ts, mean_delta).round(decimals=6)
 
-    new_df.to_csv(f"{dataset_folder}/delta_{mean_delta}.csv", index=False, header=True)
-    new_df.iloc[station_indices[:2000], i].plot(title=f"delta_{mean_delta}")
-    plt.savefig(f"{plot_folder}/delta_{mean_delta}.png")
+    new_df.to_csv(f"{dataset_folder}/{dataset}_delta_{mean_delta}.csv", index=False, header=True)
+    new_df.iloc[station_indices[:2000], i].plot(title=f"{dataset}_delta_{mean_delta}")
+    plt.savefig(f"{plot_folder}/{dataset}_delta_{mean_delta}.png")
     plt.clf()
 
 
@@ -132,7 +133,7 @@ for scarsity_percentage in scarsity_percentages:
             ts = new_df.iloc[station_indices, i].values
             new_df.iloc[station_indices, i] = generate_scarsity(ts, scarsity_percentage).round(decimals=6)
 
-    new_df.to_csv(f"{dataset_folder}/scarsity_{scarsity_percentage}.csv", index=False, header=True)
-    new_df.iloc[station_indices[:2000], i].plot(title=f"scarsity_{scarsity_percentage}")
-    plt.savefig(f"{plot_folder}/scarsity_{scarsity_percentage}.png")
+    new_df.to_csv(f"{dataset_folder}/{dataset}_scarsity_{scarsity_percentage}.csv", index=False, header=True)
+    new_df.iloc[station_indices[:2000], i].plot(title=f"{dataset}_scarsity_{scarsity_percentage}")
+    plt.savefig(f"{plot_folder}/{dataset}_scarsity_{scarsity_percentage}.png")
     plt.clf()
