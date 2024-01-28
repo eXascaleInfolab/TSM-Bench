@@ -33,11 +33,9 @@ while True:
         influx_line = "sensor,id_station="+id_station + " "
         influx_line += ",".join([ f"s{i}={v}" for i,v in enumerate(columns[2:102]) if (v is not None and v != "") ] )
         influx_line = influx_line[:-1] + " " + date_str + '\n'
-        #print(influx_line)
         data_target.write(influx_line)
         if(index%10000==0):
             print(index, end="\r")
-            #print(influx_line)
         index=index+1
 print()
 data_target.close()

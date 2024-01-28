@@ -26,7 +26,7 @@ dataset_folder = "datasets"
 repeats_percentages = [10, 30,70, 90]
 scarsity_percentages = [10, 30, 60 , 80]
 mean_deltas  = [1 , 3 ,  5  , 10]
-outliers_n = [10, 30, 60, 80]
+outliers_percentages = [1, 2, 5, 10]
 
 parser = argparse.ArgumentParser(description='Script for running any eval')
 parser.add_argument('--dataset', "-d", nargs="?",
@@ -71,6 +71,8 @@ def generate_outliers(ts, outliers_percentage):
 def generate_scarsity(ts, scarsity_percentage):
     scarsity_percentage = max(0, min(100, scarsity_percentage))
     for i in range(len(ts)):
+        if i == 0:
+            continue
         if random.randint(0, 99) < scarsity_percentage:
             ts[i] = None
     return ts
@@ -163,3 +165,25 @@ def insert_noise_subsequences(time_series, noise_percentage):
     return time_series
 
 
+def generate_oultiers(ts, outliers_percentage):
+    new_ts = ts.copy()
+    for i, _ in enumerate(ts):
+        if i == 0:
+            continue
+        if random.randint(0, 99) < outliers_percentage:
+            new_ts[i] = new_ts[i] + np.random.normal((new_ts[i] - new_ts[i - 1])*5 , 1)
+    return new_ts
+
+
+for outliers_percentage in outliers_percentages:
+    new_df = df.copy()
+    for i in range(2, 100 + 2):
+        for station_id in station_ids:
+            station_indices = np.arange(df.shape[0])[new_df.iloc[:, 1] == station_id]
+            ts = new_df.iloc[station_indices, i].values
+            new_df.iloc[station_indices, i] = generate_oultiers(ts, outliers_percentage).round(decimals=6)
+
+    new_df.to_csv(f"{dataset_folder}/{dataset}_outliers_{outliers_percentage}.csv", index=False, header=True)
+    new_df.iloc[station_indices[:2000], i].plot(title=f"{dataset}_outliers_{outliers_percentage}")
+    plt.savefig(f"{plot_folder}/{dataset}_outliers_{outliers_percentage}.png")
+    plt.clf()
