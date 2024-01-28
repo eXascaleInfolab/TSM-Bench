@@ -137,3 +137,29 @@ for scarsity_percentage in scarsity_percentages:
     new_df.iloc[station_indices[:2000], i].plot(title=f"{dataset}_scarsity_{scarsity_percentage}")
     plt.savefig(f"{plot_folder}/{dataset}_scarsity_{scarsity_percentage}.png")
     plt.clf()
+
+
+def insert_noise_subsequences(time_series, noise_percentage):
+    length = len(time_series)
+
+    noise_length = int(length * noise_percentage / 100)
+
+    # Randomly select a starting index for the noise subsequence
+
+    start_index = random.randint(0, length - noise_length)
+
+    # Generate random values for the noise subsequence
+
+    noise_subsequence = np.random.uniform(0, 0.1, size=noise_length)
+
+    # Insert the noise subsequence into the time series
+
+    time_series[start_index:start_index + noise_length] += noise_subsequence
+
+    # Ensure the values stay within [0, 1] range
+
+    time_series = np.clip(time_series, 0, 1)
+
+    return time_series
+
+

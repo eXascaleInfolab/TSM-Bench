@@ -5,6 +5,8 @@ import os
 
 import sys
 
+from utils.run_query import run_query
+
 sys.path.append(os.getcwd())
 
 from utils.system_modules import system_module_map
@@ -81,7 +83,7 @@ try:
                 continue
             print(f"running query {i + 1} with {n_s} sensors and {n_st} stations and {time_range}")
             try:
-                time, var = system_module.run_query(query, rangeUnit=time_range, rangeL=1, n_s=n_s, n_it=n_iter,
+                time, var = run_query(system_module, query, rangeUnit=time_range, rangeL=1, n_s=n_s, n_it=n_iter,
                                                     n_st=n_st,
                                                     dataset=dataset)
                 with open(output_file, "a") as file:
