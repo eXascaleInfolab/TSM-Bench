@@ -5,10 +5,10 @@ import os
 
 import sys
 
-from utils.run_query import run_query
 
 sys.path.append(os.getcwd())
 
+from utils.run_query import run_query
 from utils.system_modules import system_module_map
 from utils.query_template_loader import load_query_templates
 import argparse
