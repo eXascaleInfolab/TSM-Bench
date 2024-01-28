@@ -44,8 +44,8 @@ with open(log_file, "w") as file:
 
 n_iter = args.it
 
-n_sensors = [1, 20, 40, 60, 80, 100]
-n_stations = [1, 10 , 50 , 100 , 400, 800, 1200, 1600, 2000]
+n_sensors = [1,3, 20, 40, 60, 80, 100]
+n_stations = [1, 10 , 50 , 100 ]#, 400, 800, 1200, 1600, 2000]
 time_ranges = ["minute", "hour", "day", "week"]
 
 # scenarios = [(sensor, station, time_range) for sensor in n_sensors for station in n_stations for time_range in
