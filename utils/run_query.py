@@ -5,7 +5,7 @@ from systems.utils.connection_class import Connection
 from tqdm import tqdm
 
 
-def run_query(system_module, query_template,  rangeL, rangeUnit, n_st, n_s, n_it, dataset, host="localhost",log=True):
+def run_query(system_module, query_template,  rangeL, rangeUnit, n_st, n_s, n_it, dataset, host="localhost",log=False , warmup=2):
     ## specify the dataset in the query templae the query tempalte
     query_template = query_template.replace("<db>", dataset) # replace the dataset name in the query template
 
@@ -14,7 +14,7 @@ def run_query(system_module, query_template,  rangeL, rangeUnit, n_st, n_s, n_it
 
 
     # get the randomized inputs
-    random_inputs = get_randomized_inputs(dataset, n_st=n_st, n_s=n_s, rangeL=rangeL, n_it=n_it)
+    random_inputs = get_randomized_inputs(dataset, n_st=n_st, n_s=n_s, rangeL=rangeL, n_it=n_it+warmup)
     random_stations = random_inputs["stations"]
     random_sensors = random_inputs["sensors"]
     random_sensors_dates = random_inputs["dates"]
@@ -22,7 +22,7 @@ def run_query(system_module, query_template,  rangeL, rangeUnit, n_st, n_s, n_it
     runtimes = []
     full_time = time.time()
 
-    for it in tqdm(range(n_it+2)):
+    for it in tqdm(range(n_it+warmup)):
         date = random_sensors_dates[it]
         sensor_list = random_sensors[it]
         station_list = random_stations[it]

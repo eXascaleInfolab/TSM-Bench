@@ -43,7 +43,7 @@ try:
         index += 1
     args.rangeUnit = args.range[index:]
     args.range = int(args.range[:index])
-    assert args.rangeUnit.upper() in ['S', 'M', 'H', 'D', 'W']
+    assert args.rangeUnit.upper() in ['M', 'H', 'D', 'W']
 except:
     print("Input string does not conform to the expected format.", args.rangeUnit.upper())
     args.range = 1
@@ -61,7 +61,7 @@ if args.datasets == 'all':
 args.queries = args.queries if "," not in args.queries else args.queries.split(",")
 
 try:
-    systems = args.system.split()
+    systems = args.system.split(",")
 except:
     systems = args.system
 
