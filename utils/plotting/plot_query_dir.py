@@ -46,3 +46,6 @@ def plot_query_directory(query_dir):
     plt.title(f"{selected_query} varying query range")
     plt.savefig(f"{plot_dir}/time_range.png")
     plt.close()
+
+
+# def plot_query_directory_online(query_dir):

@@ -30,7 +30,7 @@ parser.add_argument('--queries', nargs="+",
 
 parser.add_argument('--batch_size', "-bs", nargs="+",
                     type=int,
-                    help='number of datapoints  to insert', default=[10000])
+                    help='number of datapoints  to insert', default=[10000,20000,50000])
 
 parser.add_argument('-oc', action='store_false', help='omit cleaning database')
 
@@ -122,7 +122,7 @@ try:
                                 line = f"{E}\n"
                                 file.write(line)
                             print(E)
-                plot_query_directory(query_path_path)
+                #plot_query_directory(query_path_path)
         except Exception as E:
             with open(log_file, "a") as file:
                 line = f"{E}\n"
