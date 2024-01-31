@@ -7,12 +7,10 @@ from utils.system_modules import system_module_map
 from utils.query_template_loader import load_query_templates
 import argparse
 
-
 # questdb requieres dataset path to be rebuild
-HOST_DATASET_PATH = None # "home/luca/TSM/TSM-BENCH/datasets"
+HOST_DATASET_PATH = None  # "home/luca/TSM/TSM-BENCH/datasets"
 dataset = "d1"
 n_threads = 10
-
 
 parser = argparse.ArgumentParser(description='Script to run the online queries')
 
@@ -32,8 +30,6 @@ parser.add_argument('--batch_size', "-bs", nargs="+",
                     type=int,
                     help='number of datapoints  to insert', default=[10000])
 
-
-
 parser.add_argument('-oc', action='store_false', help='omit cleaning database')
 
 parser.add_argument('--it', nargs="?", type=int, help='n_iterationss', default=100)
@@ -45,14 +41,13 @@ clean_database = args.oc
 system = args.system
 host = args.host
 batch_sizes = args.batch_size
-print(system)
+print("running online evaluation on:", system)
 
-result_path = f"utils/online_queries/{dataset}"
+result_path = f"results/online/{dataset}"
 os.makedirs(result_path, exist_ok=True)
-output_file = f"{result_path}/{system}.csv"
 log_file = f"{result_path}/{system}_log.csv"
 
-n_iter = 100  # args.it
+n_iter = 10  # args.it
 timeout = 1500
 n_sensors = [3]  # , 20, 40, 60, 80, 100]
 n_stations = [1]  # , 5, 10]
@@ -82,47 +77,52 @@ n_rows = [int(batch_size / 100 / n_threads) for batch_size in batch_sizes]
 
 system_module: timescaledb = system_module_map[system]
 
-if host=="localhost":
+if host == "localhost":
     system_module.launch()
 
 query_templates = load_query_templates(system)
 
 try:
     for n_rows in n_rows:
-        scenarios = [(sensor, station, time_range , query ) for sensor in n_sensors for station in n_stations for time_range in
+        scenarios = [(sensor, station, time_range, query) for sensor in n_sensors for station in n_stations for
+                     time_range in
                      time_ranges for query in queries]
 
         ingestor = DataIngestor(system, system_module, dataset, n_rows_s=n_rows, max_runtime=1500, host=host,
-                                n_threads=n_threads, clean_database=clean_database , warmup_time=20)
+                                n_threads=n_threads, clean_database=clean_database, warmup_time=20)
         try:
             with ingestor:
                 first = True
-                for n_s , n_st , time_range , query in scenarios:
-                    for query_i, query_template in enumerate(query_templates):
-                        query_name = "q" + str(query_i + 1)
-                        if query.lower() == "empty":
-                            continue
-                        query_template = query_template.replace("<db>", dataset)
-                        try:
-                            time, var = system_module.run_query(query_template, rangeUnit=time_range, rangeL=1,
-                                                                n_s=n_s,
-                                                                n_it=n_iter,
-                                                                n_st=n_st,
-                                                                dataset=dataset, host=host)
-                            with open(output_file, "a") as file:
-                                line = f"{time} , {var}  , {query_name} , {n_s} , {n_st} , {time_range} , {n_rows * n_threads * 100}\n"
-                                file.write(line)
-                        except Exception as E:
-                            with open(log_file, "a") as file:
-                                line = f"{E}\n"
-                                file.write(line)
-                            print(E)
+                for n_s, n_st, time_range, query in scenarios:
+                    print("running query:", query, "with", n_s, "sensors", n_st, "stations", time_range, "time range")
+                    query_path_path = f"results/online/{dataset}/{query}"
+                    os.makedirs(f"{result_path}/runtimes", exist_ok=True)
+                    output_file = f"{query_path_path}/runtimes/{system}.csv"
+                    query_template = query_templates[int(query[1:]) - 1]
+                    if query.lower() == "empty":
+                        print("skipping empty query")
+                        continue
+                    query_template = query_template.replace("<db>", dataset)
+                    try:
+                        time, var = system_module.run_query(query_template, rangeUnit=time_range, rangeL=1,
+                                                            n_s=n_s,
+                                                            n_it=n_iter,
+                                                            n_st=n_st,
+                                                            dataset=dataset, host=host)
+                        with open(output_file, "a") as file:
+                            line = f"{time} , {var}  , {query} , {n_s} , {n_st} , {time_range} , {n_rows * n_threads * 100}\n"
+                            file.write(line)
+                    except Exception as E:
+                        with open(log_file, "a") as file:
+                            line = f"{E}\n"
+                            file.write(line)
+                        print(E)
+
         except Exception as E:
             with open(log_file, "a") as file:
                 line = f"{E}\n"
                 file.write(line)
                 print(E)
             raise E
-
 finally:
-    system_module.close()
+    pass

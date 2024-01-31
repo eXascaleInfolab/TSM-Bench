@@ -7,6 +7,7 @@ from utils.ingestion.ingestion_data_loading import generate_ingestion_queries
 
 
 class IngestionResult:
+    """ class passed to each thread to log the ingestion results and the status of the ingestion"""
     def __init__(self, tn, n_rows_s):
         self.status = "ok"
         self.tn = tn
@@ -36,16 +37,14 @@ class DataIngestor:
     def __init__(self, system: str, system_module, dataset: str, *, n_rows_s, max_runtime, host, n_threads,
                  warmup_time=None, clean_database=True):
 
-        self.diff_threshold = 1
+        self.diff_threshold = 1 # we try to insert once every second
         self.n_rows_s = n_rows_s
-        self.max_runtime = max_runtime  # seconds
+        self.max_runtime = max_runtime  # max runtime in seconds to compute the required ingestion data
 
         if system == "questdb":
             self.diff_threshold = 1/4
             self.n_rows_s = int(n_rows_s/4)
             self.max_runtime = max_runtime*4
-
-
 
         self.n_threads = n_threads
         self.host = host
@@ -54,9 +53,9 @@ class DataIngestor:
         self.system_module = system_module
         self.dataset = dataset
         self.warmup_time = min(100,360*24*3/n_rows_s if warmup_time is None else warmup_time)
-        assert self.warmup_time < max_runtime
+        assert self.warmup_time < max_runtime-100 , "warmup time should be smaller than max runtime and leave some space for the queries to finish"
         self.system = system
-        self.clean_database = clean_database
+        self.clean_database = clean_database # if true the database will be cleaned after the ingestion
 
     def check_ingestion_rate(self):
         if self.threads is None:
@@ -73,6 +72,8 @@ class DataIngestor:
         print("generating data")
         insertion_query_f = self.system_module.generate_insertion_query
 
+
+        ## generate the queries to insert the data
         insertion_queries_generators = generate_ingestion_queries(n_threads=self.n_threads,
                                                                   n_rows_s=self.n_rows_s,
                                                                   max_runtime=self.max_runtime,
@@ -112,14 +113,23 @@ class DataIngestor:
             # Handle or log the exception here if needed
             raise exc_value
             return True  # Suppresses the exception
-        print(*[ingestion_result.insertions for ingestion_result in self.ingestion_results], sep="\n")
+        #print(*[ingestion_result.insertions for ingestion_result in self.ingestion_results], sep="\n")
+
+
+
 
     def input_data(self, insertion_queries , ingestion_logger , dataset=None):
+        """
+        :param insertion_queries: list or generator containing the query to pass to the write/write_query  function
+        :param ingestion_logger:  IngestionResult object to log the ingestion results
+        :param dataset: dataset name , some systems  need it)
+        """
+
         from systems.utils.connection_class import Connection
         ingestion_logger.set_evaluated()
+
+        ## establisch connection
         connection: Connection = self.system_module.get_connection(host=self.host, dataset=self.dataset)
-
-
 
         try:
             for sql in insertion_queries:
@@ -134,11 +144,13 @@ class DataIngestor:
                 else:
                     print("could not infer number of rows and last time stamp")
 
+                # stop if the event is set (e.g. the ingestion is finished)
                 if self.event.is_set():
                     "setting event"
                     break
+
                 start = time.time()
-                connection.write(sql)
+                connection.write(sql) # ingestion is done here
                 diff = time.time() - start
                 ingestion_logger.add_times(start, diff)
                 if diff <= self.diff_threshold:
