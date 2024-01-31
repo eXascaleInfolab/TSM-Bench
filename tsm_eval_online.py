@@ -3,6 +3,7 @@ import os
 import sys
 
 from utils.ingestion.data_ingestion import DataIngestor
+from utils.run_query import run_query
 from utils.system_modules import system_module_map
 from utils.query_template_loader import load_query_templates
 import argparse
@@ -104,7 +105,7 @@ try:
                         continue
                     query_template = query_template.replace("<db>", dataset)
                     try:
-                        time, var = system_module.run_query(query_template, rangeUnit=time_range, rangeL=1,
+                        time, var = run_query(system_module,query_template, rangeUnit=time_range, rangeL=1,
                                                             n_s=n_s,
                                                             n_it=n_iter,
                                                             n_st=n_st,
