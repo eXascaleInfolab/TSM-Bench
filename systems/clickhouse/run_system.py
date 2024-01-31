@@ -1,7 +1,3 @@
-from datetime import datetime
-from tqdm import tqdm
-import time
-import statistics as stats
 import random
 import sys
 from clickhouse_driver import connect as connect_ClickHouse
@@ -9,11 +5,19 @@ from subprocess import Popen, PIPE, STDOUT, DEVNULL
 
 # setting path
 sys.path.append('../..')
-from systems.utils.library import get_randomized_inputs
-from systems.utils import change_directory , parse_args
-from utils.run_systems import run_system
+from systems.utils import change_directory , parse_args , connection_class
 
-def launch():    
+def get_connection(host="localhost", **kwargs):
+    conn = connect_ClickHouse(f"clickhouse://{host}")
+    cur = conn.cursor()
+    def execute_query_f(sql):
+        cur.execute(sql)
+        return cur.fetchall()
+
+    conn_close_f = lambda : conn.close()
+    return connection_class.Connection(conn_close_f, execute_query_f)
+
+def launch():
     with change_directory(__file__):
         process = Popen(['sh', 'launch.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
         stdout, stderr = process.communicate()
@@ -25,6 +29,10 @@ def stop():
     with change_directory(__file__):
         process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
         stdout, stderr = process.communicate()
+
+
+
+
 
 def parse_query(query ,*,  date, rangeUnit , rangeL , sensor_list , station_list):
     query = query.replace("<timestamp>", date)
@@ -42,8 +50,8 @@ def parse_query(query ,*,  date, rangeUnit , rangeL , sensor_list , station_list
     query = query.replace("<sid>", q)
     query = query.replace("<sfilter>", q_filter)
     query = query.replace("<avg_s>", q_avg)
-    query = query.replace("<sid1>", "1")
-    query = query.replace("<sid2>", "2")
+    query = query.replace("<sid1>", "s1")
+    query = query.replace("<sid2>", "s2")
 
     if "fill step" in query.lower():
         if len(station_list) == 1:
@@ -65,53 +73,3 @@ def parse_query(query ,*,  date, rangeUnit , rangeL , sensor_list , station_list
 
     return query
 
-
-def run_query(query, rangeL ,rangeUnit ,n_st ,n_s ,n_it , dataset,  host="localhost"):
-
-    # Connect to the system
-    conn = connect_ClickHouse(f"clickhouse://{host}",port=9000)
-    cursor = conn.cursor()#cursor = Client(host='localhost',port=9001)
-
-    random_inputs = get_randomized_inputs(dataset ,n_st = n_st ,n_s = n_s , n_it =  n_it , rangeL = rangeL )
-    random_stations = random_inputs["stations"]
-    random_sensors = random_inputs["sensors"]
-    random_sensors_dates = random_inputs["dates"]
-
-    runtimes = []
-    full_time = time.time()
-    for it in tqdm(range(n_it)):
-        date = random_sensors_dates[it]
-        sensor_list = random_sensors[it]
-        station_list = random_stations[it]
-
-        assert len(sensor_list) == n_s
-        assert len(station_list) == n_st
-        assert type(date) == str
-
-        query = parse_query(query, date=date, rangeUnit = rangeUnit , rangeL = rangeL , sensor_list = sensor_list ,station_list=station_list)
-        print("query")
-        start = time.time()
-        
-        cursor.execute(query)
-        cursor.fetchall()
-        
-        diff = (time.time()-start)*1000
-        runtimes.append(diff)
-        if time.time() - full_time > 200 and it > 5:
-            break  
-
-    conn.close()
-    return stats.mean(runtimes), stats.stdev(runtimes)
-
-if __name__ == "__main__":
-    launch()
-    
-    args = parse_args() 
-    
-    def query_f(query, rangeL = args.range, rangeUnit = args.rangeUnit,
-                n_st = args.def_st, n_s = args.def_s, n_it = args.n_it, dataset = args.dataset):
-        return run_query(query, rangeL=rangeL, rangeUnit = rangeUnit ,n_st = n_st , n_s = n_s , n_it = n_it , dataset = dataset)
-    
-    run_system(args,"clickhouse",query_f)
-
-    stop()

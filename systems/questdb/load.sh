@@ -10,6 +10,15 @@ fi
 echo "loading $dataset"
 
 
+# dataset != d2
+if [ $dataset != "d2" ]; then
+    echo "start loading!"
+
+    curl -G --data-urlencode "query= DROP TABLE IF EXISTS ${dataset}temp; \
+                    " http://localhost:9000/exec
+
+    curl -G --data-urlencode "query= DROP TABLE IF EXISTS $dataset; \
+                    " http://localhost:9000/exec
 
 curl -G --data-urlencode "query= DROP TABLE IF EXISTS ${dataset}temp; \
                 " http://localhost:9000/exec
@@ -32,12 +41,40 @@ curl -G --data-urlencode "query= DROP TABLE ${dataset}temp; \
                 " http://localhost:9000/exec
 
 
+
+else
+    echo "start loading!"
+
+    curl -G --data-urlencode "query= DROP TABLE IF EXISTS d2temp; \
+                    " http://localhost:9000/exec
+
+    curl -G --data-urlencode "query= DROP TABLE IF EXISTS d2; \
+                    " http://localhost:9000/exec
+
+
+    ## insert it in bacthes with d2_1_4, d2_2_4 , d2_3_4, d2_4_4
+    ## d2_1_4
+    ABSOLUTE_PATH=$(readlink -f "../../datasets")
+    #ABSOLUTE_PATH=$(echo $ABSOLUTE_PATH | sed 's/\//\\\//g')
+
+    curl -G --data-urlencode "query= COPY d2temp FROM '$ABSOLUTE_PATH/d2_1_4.csv'; \
+                    " http://localhost:9000/exec
+
+    curl -G --data-urlencode "query= CREATE TABLE d2 AS ( SELECT cast(time AS timestamp) ts, cast(id_station AS symbol) id_station, s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 FROM 'd2temp' ), index (id_station) timestamp(ts) PARTITION BY MONTH; \
+                    " http://localhost:9000/exec
+
+
+
+fi # end if dataset != d2
+
 end_time=$(date +%s.%N)
 elapsed_time=$(echo "$end_time - $start_time" | bc)
 echo "Loading time: $elapsed_time seconds" > loading_time_$dataset.txt
 echo $elapsed_time
 echo "database compression"
 sh compression.sh
+
+
 
 ## uncoment the following for D2 ##
 ###################################

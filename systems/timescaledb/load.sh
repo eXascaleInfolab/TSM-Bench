@@ -27,7 +27,6 @@ sleep 5
 
 docker exec -it timescaledb-container psql -U postgres -c  "DROP TABLE IF EXISTS $dataset CASCADE;"
 
-
 sleep 5
 
 start_time=$(date +%s.%N)
