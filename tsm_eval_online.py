@@ -30,7 +30,8 @@ parser.add_argument('--queries', nargs="+",
 
 parser.add_argument('--batch_size', "-bs", nargs="+",
                     type=int,
-                    help='number of datapoints  to insert', default=["10000"])
+                    help='number of datapoints  to insert', default=[10000])
+
 
 
 parser.add_argument('-oc', action='store_false', help='omit cleaning database')
