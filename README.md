@@ -205,8 +205,7 @@ This workload requires two servers: the first serves as a host machine to deploy
 **Optional Arguments**:
 - `--host` : remote host machine name (Default = "localhost")
 - `--n_threads`: Number of threads to use. (Default 10)
-- `--batch_start`: Number data points to be inserted each second (if possible) in each thread (Default = 10000)
-- `--batch_step`: Number data points to be inserted each second (if possible) in each thread (Default = 10000)
+- `--batch_size`: Number data points to be inserted each second (if possible)  (Default = 10000)
 
 
   
@@ -215,14 +214,18 @@ This workload requires two servers: the first serves as a host machine to deploy
 1. Run query q1 in an online manner on clickhouse.
 
 ```bash 
-python3 tsm_eval_online.py --system clickhouse --queries q1 --host "host_address"
+python3 tsm_eval_online.py --system clickhouse --queries q1 --host "host_address" --batch_size 10000
 ```
-2. Run all queries online on questdb using one thread.  
 
+2. Run all queries online on influx using different batch sizes.
+```bash 
+python3 tsm_eval_online.py --system influx --queries all --host "host_address" --batch_size 10000 20000 1000000
+```
+
+3. Run all queries online on questdb using one thread.
 ```bash 
 python3 tsm_eval_online.py --system questdb --queries all --n_threads 1 --host "host_address" 
 ```
-
 
 **Notes**:
 
