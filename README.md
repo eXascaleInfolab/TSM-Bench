@@ -10,8 +10,6 @@ TSM-Bench is a new benchmark that compares seven Time Series Database Systems (T
 [**Prerequisites**](#prerequisites) | [**Installation**](#systems-setup) | [**Datasets Loading**](#datasets-loading) | [**Experiments**](#experiments) | [**Benchmark Extension**](#benchmark-extension) | [**Technical Report**](#technical-report) | [**Data Generation**](#time-series-generation) | [**Contributors**](#contributors)
 
 
-
-
 ___
 ## Prerequisites
 

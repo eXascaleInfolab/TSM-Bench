@@ -26,7 +26,7 @@ parser.add_argument('--host', nargs="?",
 
 parser.add_argument('--queries', nargs="+",
                     type=str,
-                    help='host address', default=["q1"])
+                    help='queries to run', default=["q1"])
 
 parser.add_argument('--batch_size', "-bs", nargs="+",
                     type=int,
@@ -46,9 +46,6 @@ host = args.host
 batch_sizes = args.batch_size
 print(system)
 
-HOST_DATASET_PATH = os.path.join(HOST_DATASET_PATH, dataset + ".csv")
-os.environ["HOST_DATASET_PATH"] = HOST_DATASET_PATH
-
 result_path = f"utils/online_queries/{dataset}"
 os.makedirs(result_path, exist_ok=True)
 output_file = f"{result_path}/{system}.csv"
@@ -60,7 +57,7 @@ n_sensors = [3]  # , 20, 40, 60, 80, 100]
 n_stations = [1]  # , 5, 10]
 time_ranges = ["day"]  # , "hour", "day", "week"]
 
-query = args.query
+queries = args.queries
 
 from systems import timescaledb
 
@@ -72,6 +69,9 @@ if system == "questdb":
     print("questdb does not support multi threading for insertion setting number of threads to 1")
     if HOST_DATASET_PATH is None:
         raise Exception("questdb requires the host datasetpath tto be set to clear up the database")
+
+    HOST_DATASET_PATH = os.path.join(HOST_DATASET_PATH, dataset + ".csv")
+    os.environ["HOST_DATASET_PATH"] = HOST_DATASET_PATH
     n_threads = 1
 
 if system == "monetdb":
@@ -81,29 +81,22 @@ n_rows = [int(batch_size / 100 / n_threads) for batch_size in batch_sizes]
 
 system_module: timescaledb = system_module_map[system]
 
-# system_module.launch()
+if host=="localhost":
+    system_module.launch()
+
 query_templates = load_query_templates(system)
 
 try:
     for n_rows in n_rows:
-        scenarios = [(sensor, station, time_range) for sensor in n_sensors for station in n_stations for time_range in
-                     time_ranges]
+        scenarios = [(sensor, station, time_range , query ) for sensor in n_sensors for station in n_stations for time_range in
+                     time_ranges for query in queries]
 
         ingestor = DataIngestor(system, system_module, dataset, n_rows_s=n_rows, max_runtime=1500, host=host,
                                 n_threads=n_threads, clean_database=clean_database , warmup_time=20)
         try:
             with ingestor:
                 first = True
-                while len(scenarios) > 0:
-                    if first:
-                        first = False
-                        n_s, n_st, time_range = scenarios[0]
-                    else:
-                        n_s, n_st, time_range = scenarios.pop(0)
-                    if not ingestor.check_ingestion_rate():
-                        break
-                        raise Exception(f"ingestion failed")
-
+                for n_s , n_st , time_range , query in scenarios:
                     for query_i, query_template in enumerate(query_templates):
                         query_name = "q" + str(query_i + 1)
                         if query.lower() == "empty":
@@ -131,5 +124,4 @@ try:
             raise E
 
 finally:
-    print("stopping system")
-    system_module.stop()
+    system_module.close()

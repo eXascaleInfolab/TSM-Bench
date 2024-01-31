@@ -108,7 +108,6 @@ def parse_query(query, *, date, rangeUnit, rangeL, sensor_list, station_list):
     temp = temp.replace("<sfilter>", q_filter + ", tt)")
     temp = temp.replace("<sfilterAND>", q_filterAND + ", tt)")
     temp = temp.replace("<seq_stretch>", q_seq_stretch)
-    print(temp)
     return temp
 
 
@@ -157,17 +156,3 @@ def stop():
     global main_process
     main_process.communicate()
 
-
-if __name__ == "__main__":
-    launch()
-
-    args = parse_args()
-
-
-    def query_f(query, rangeL=args.range, rangeUnit=args.rangeUnit, n_st=args.def_st, n_s=args.def_s, n_it=args.n_it):
-        return run_query(query, rangeL=rangeL, rangeUnit=rangeUnit, n_st=n_st, n_s=n_s, n_it=n_it)
-
-
-    run_system(args, "extremedb", query_f)
-
-    stop()
