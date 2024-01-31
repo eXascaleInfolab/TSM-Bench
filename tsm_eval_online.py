@@ -1,182 +1,135 @@
-import argparse
 import os
-from systems.utils import run_online
 
-from systems import influx, extremedb, timescaledb, questdb, monetdb, clickhouse
+import sys
+
+from utils.ingestion.data_ingestion import DataIngestor
+from utils.system_modules import system_module_map
 from utils.query_template_loader import load_query_templates
+import argparse
 
-system_module_map = {"influx": influx,
-                     "extremedb": extremedb,
-                     "clickhouse": clickhouse,
-                     "questdb": questdb,
-                     "monetdb": monetdb,
-                     "timescaledb": timescaledb
-                     }
 
-datasets_choices = ['d1']
+# questdb requieres dataset path to be rebuild
+HOST_DATASET_PATH = None # "home/luca/TSM/TSM-BENCH/datasets"
+dataset = "d1"
+n_threads = 10
 
-parser = argparse.ArgumentParser(description='Script for running any eval')
-parser.add_argument('--system', nargs='+', type=str, help='Systems name', default=['clickhouse'])
-parser.add_argument('--datasets', nargs='*', type=str, help='Dataset name', default=['d1'])
-parser.add_argument('--queries', nargs='*', type=str, help='List of queries to run (Q1-Q7)',
-                    default="q1 q2 q3 q4 q5 q6 q7")
-parser.add_argument('--n_st', nargs='?', type=int, help='Number of stations in the dataset', default=10)
-parser.add_argument('--n_s', nargs='?', type=int, help='Number of sensors in the dataset', default=100)
-parser.add_argument('--nb_st', nargs='?', type=int, help='Default number of queried stations', default=1)
-parser.add_argument('--nb_sr', nargs='?', type=int, help='Default number of queried sensors', default=3)
-parser.add_argument('--range', nargs='?', type=str, help='Query range', default="1d")
-parser.add_argument('--max_ts', nargs='?', type=str, help='Maximum query timestamp', default="2019-04-30T00:00:00")
-parser.add_argument('--min_ts', nargs='?', type=str, help='Minimum query timestamp', default="2019-04-01T00:00:00")
-parser.add_argument('--timeout', nargs='?', type=str, help='Query execution timeout in seconds', default=20)
-parser.add_argument('--additional_arguments', nargs='?', type=str,
-                    help='Additional arguments to be passed to the scripts', default='')
 
-parser.add_argument('--host', nargs='?', type=str, help='Query execution timeout in seconds', default="localhost")
-parser.add_argument('--batch_start', nargs='?', type=int, help='Query execution timeout in seconds', default=10)
-parser.add_argument('--batch_step', nargs='?', type=int, help='Query execution timeout in seconds', default=100)
-parser.add_argument('--n_threads', nargs='?', type=int, help='Query execution timeout in seconds', default=10)
+parser = argparse.ArgumentParser(description='Script to run the online queries')
+
+parser.add_argument('--system', nargs="?",
+                    type=lambda x: str(x) if str(x) in system_module_map.keys()
+                    else exit(f"system {x} not valid must be one of {list(system_module_map.keys())}"),
+                    help='system name', required=True)
+parser.add_argument('--host', nargs="?",
+                    type=str,
+                    help='host address', required=True)
+
+parser.add_argument('--queries', nargs="+",
+                    type=str,
+                    help='host address', default=["q1"])
+
+parser.add_argument('--batch_size', "-bs", nargs="+",
+                    type=int,
+                    help='number of datapoints  to insert', default=["10000"])
+
+
+parser.add_argument('-oc', action='store_false', help='omit cleaning database')
+
+parser.add_argument('--it', nargs="?", type=int, help='n_iterationss', default=100)
+
 args = parser.parse_args()
 
+clean_database = args.oc
+
+system = args.system
+host = args.host
+batch_sizes = args.batch_size
+print(system)
+
+HOST_DATASET_PATH = os.path.join(HOST_DATASET_PATH, dataset + ".csv")
+os.environ["HOST_DATASET_PATH"] = HOST_DATASET_PATH
+
+result_path = f"utils/online_queries/{dataset}"
+os.makedirs(result_path, exist_ok=True)
+output_file = f"{result_path}/{system}.csv"
+log_file = f"{result_path}/{system}_log.csv"
+
+n_iter = 100  # args.it
+timeout = 1500
+n_sensors = [3]  # , 20, 40, 60, 80, 100]
+n_stations = [1]  # , 5, 10]
+time_ranges = ["day"]  # , "hour", "day", "week"]
+
+query = args.query
+
+from systems import timescaledb
+
+# threads 10
+# *100 for the batch size * 10 for the threads
+
+#  quest db does not support multi threading for insertion
+if system == "questdb":
+    print("questdb does not support multi threading for insertion setting number of threads to 1")
+    if HOST_DATASET_PATH is None:
+        raise Exception("questdb requires the host datasetpath tto be set to clear up the database")
+    n_threads = 1
+
+if system == "monetdb":
+    n_threads = 1
+
+n_rows = [int(batch_size / 100 / n_threads) for batch_size in batch_sizes]
+
+system_module: timescaledb = system_module_map[system]
+
+# system_module.launch()
+query_templates = load_query_templates(system)
+
 try:
-    index = 0
-    while index < len(args.range) and args.range[index].isdigit():
-        index += 1
-    args.rangeUnit = args.range[index:]
-    args.range = int(args.range[:index])
-    assert args.rangeUnit.upper() in ['M', 'H', 'D', 'W']
-except:
-    print("Input string does not conform to the expected format.", args.rangeUnit.upper())
-    args.range = 1
-    args.rangeUnit = "day"
+    for n_rows in n_rows:
+        scenarios = [(sensor, station, time_range) for sensor in n_sensors for station in n_stations for time_range in
+                     time_ranges]
 
-if args.system[0] == "all":
-    args.system = ['clickhouse', 'influx', 'monetdb', 'questdb', 'timescaledb', 'extremedb']
+        ingestor = DataIngestor(system, system_module, dataset, n_rows_s=n_rows, max_runtime=1500, host=host,
+                                n_threads=n_threads, clean_database=clean_database , warmup_time=20)
+        try:
+            with ingestor:
+                first = True
+                while len(scenarios) > 0:
+                    if first:
+                        first = False
+                        n_s, n_st, time_range = scenarios[0]
+                    else:
+                        n_s, n_st, time_range = scenarios.pop(0)
+                    if not ingestor.check_ingestion_rate():
+                        break
+                        raise Exception(f"ingestion failed")
 
-if "all" in args.queries:
-    args.queries = "q1,q2,q3,q4,q5,q6,q7"
+                    for query_i, query_template in enumerate(query_templates):
+                        query_name = "q" + str(query_i + 1)
+                        if query.lower() == "empty":
+                            continue
+                        query_template = query_template.replace("<db>", dataset)
+                        try:
+                            time, var = system_module.run_query(query_template, rangeUnit=time_range, rangeL=1,
+                                                                n_s=n_s,
+                                                                n_it=n_iter,
+                                                                n_st=n_st,
+                                                                dataset=dataset, host=host)
+                            with open(output_file, "a") as file:
+                                line = f"{time} , {var}  , {query_name} , {n_s} , {n_st} , {time_range} , {n_rows * n_threads * 100}\n"
+                                file.write(line)
+                        except Exception as E:
+                            with open(log_file, "a") as file:
+                                line = f"{E}\n"
+                                file.write(line)
+                            print(E)
+        except Exception as E:
+            with open(log_file, "a") as file:
+                line = f"{E}\n"
+                file.write(line)
+                print(E)
+            raise E
 
-if args.datasets == 'all':
-    args.datasets = ['d1', 'd2']
-
-args.queries = args.queries if "," not in args.queries else args.queries.split(",")
-
-try:
-    systems = args.system.split(",")
-except:
-    systems = args.system
-
-system_paths = {system: os.path.join(os.getcwd(), "systems", system) for system in systems}
-
-from threading import Thread
-from threading import Event
-from systems.utils.online_library import generate_continuing_data
-import time
-from subprocess import Popen, PIPE, STDOUT, DEVNULL
-
-curr_wd = os.getcwd()
-
-for dataset in args.datasets:
-    data = generate_continuing_data(args.batch_start + args.batch_step * 100, dataset)
-    start_date = data["start_date"]
-
-    for system in systems:
-        print(f"###{system}###")
-
-        system_module = system_module_map[system]
-        query_templates = load_query_templates(system)
-
-        if args.host == "localhost":
-            system_module.launch()
-
-        elif system == "extremedb":
-            system_module.launch(True)  # only set the env variables
-
-        print("starting insertion")
-        batch_size = args.batch_start
-        insertion_results = {}  # run -> results
-        query_results = {}
-        for batch_iteration in [1,10]:
-            event = Event()
-            threads = []
-            insertion_results[batch_iteration] = [{"status": "ok", "insertions": []} for _ in range(args.n_threads)]
-            try:
-                for t_n in range(args.n_threads):
-                    batch_size_ = batch_size
-                    if system in ["questdb"]:  # ,"monetdb"
-                        batch_size_ = batch_size * (args.n_threads)
-                        if t_n > 0:
-                            print("system can not handle multiple insertions")
-                            break
-
-                    try:
-                        thread = Thread(target=system_module.input_data, args=(
-                            t_n, event, data, insertion_results[batch_iteration][t_n], batch_size_, args.host, dataset))
-                        thread.start()
-                        threads.append(thread)
-                    except Exception as e:
-                        if t_n > 0:
-                            print(e)
-                            print(f"{system} can only use a single thread for insertion, skipping additonal threads")
-                            break
-                        else:
-                            raise e
-            except Exception as e:
-                print(e)
-                print(f"{system} is not running or insertion rate not supported by system or aviable ressources")
-                break
-            time.sleep(10)
-
-            ### run system queries
-            try:
-                query_runtimes = {}
-                print("evaluating queries")
-                for i, query in enumerate(query_templates):
-                    if all([f in query.upper() for f in ("SELECT",)]) and "q" + str(i + 1) in args.queries:
-                        print(f"{i+1}")
-                        query = query.replace("<db>", dataset)
-                        time_start = time.time()
-                        runtime_mean, runtime_var = system_module.run_query(query, n_s=10, n_it=100, n_st=1,
-                                                                            rangeL=1,
-                                                                            rangeUnit="day", dataset=dataset,host=args.host)
-                        time_stop = time.time()
-                        query_runtimes["q" + str(i + 1)] = (time_start, time_stop, runtime_mean, runtime_var)
-                query_results[batch_iteration] = query_runtimes
-            except Exception as e:
-                raise e
-
-            finally:
-                event.set()
-                time.sleep(10)
-                for thread in threads:
-                    thread.join()
-                try:
-                    system_module.delete_data(date=start_date, host=args.host, dataset=dataset)
-                except Exception as e:
-                    print(e)
-                    print("problem in data deletion")
-
-
-
-            batch_size = batch_size + args.batch_step
-
-
-        final_result = {}
-        for batch_iteration, thread_results_full in insertion_results.items():
-            for query, (start, stop, mean, var) in query_results[batch_iteration].items():
-                final_result[query] = final_result.get(query, {})
-                diff, insertion_rate = stop - (start - 1), 0
-                # print(query)
-                for t_n, thread_results in enumerate(thread_results_full):
-                    insertions = thread_results["insertions"]
-                    insertion_rate += sum(
-                        [rate for time, rate in insertions if time >= start - 1 and time <= stop]) / diff
-                    if insertion_rate == 0:
-                        print("insertions failed")
-                    print(insertion_rate)
-                final_result[query][batch_iteration] = (mean, var, insertion_rate)
-        print("storing results")
-        run_online.save_online(final_result, system, dataset)
-
-
-        if args.host == "localhost":
-            system_module.stop()
+finally:
+    print("stopping system")
+    system_module.stop()

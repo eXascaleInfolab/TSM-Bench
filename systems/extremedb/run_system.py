@@ -29,7 +29,6 @@ def get_connection(host="localhost", dataset=None, **kwargs):
     cursor = conn.cursor()
 
     def execute_query_f(sql):
-        print(sql[:600])
         cursor.execute(sql)
         return cursor.fetchall()
 
@@ -113,55 +112,11 @@ def parse_query(query, *, date, rangeUnit, rangeL, sensor_list, station_list):
     return temp
 
 
-def run_query(query, rangeL, rangeUnit, n_st, n_s, n_it, dataset, host="localhost"):
-    # Connect to the system
-    exdb.init_runtime(debug=False, shm=False, disk=False, tmgr='mursiw')
-    conn = exdb.connect(host, 5001)
-    cursor = conn.cursor()
-    random_inputs = get_randomized_inputs(dataset, n_st=n_st, n_s=n_s, n_it=n_it, rangeL=rangeL)
-    random_stations = random_inputs["stations"]
-    random_sensors = random_inputs["sensors"]
-    random_sensors_dates = random_inputs["dates"]
-
-    runtimes = []
-    full_time = time.time()
-
-    for it in tqdm(range(n_it)):
-        date = random_sensors_dates[it]
-        sensor_list = random_sensors[it]
-        station_list = random_stations[it]
-
-        assert len(sensor_list) == n_s
-        assert len(station_list) == n_st
-        assert type(date) == str
-
-        query = parse_query(query, date=date, rangeUnit=rangeUnit, rangeL=rangeL, sensor_list=sensor_list,
-                            station_list=station_list)
-
-        start = time.time()
-
-        cursor.execute(query)
-        results_ = cursor.fetchall()
-        diff = (time.time() - start) * 1000
-
-        #  print(temp, diff)
-        runtimes.append(diff)
-        if time.time() - full_time > 500 and it > 5:
-            break
-
-    conn.close()
-    return stats.mean(runtimes), stats.stdev(runtimes)
-
-
 main_process = None
-
 
 def load_env_variables():
     """
-    current="$(pwd)"
-    echo "MCO_ROOT=$current"
-    echo "MCO_LIBRARY_PATH=$current/eXtremeDB/target/bin.so"
-    echo "LD_LIBRARY_PATH=$current/eXtremeDB/target/bin.so"
+    extremedb needs environment variables to be set before running
     """
     os.environ["MCO_ROOT"] = "systems/extremedb"
     os.environ["MCO_LIBRARY_PATH"] = "systems/extremedb/eXtremeDB/target/bin.so"

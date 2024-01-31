@@ -28,7 +28,6 @@ def get_connection(host="localhost", **kwargs):
     conn_close_f = lambda : conn.close()
     return connection_class.Connection(conn_close_f, execute_query_f,write_query_f)
 
-
 def parse_query(query, *, date, rangeUnit, rangeL, sensor_list, station_list):
     if rangeUnit in ["week", "w", "WEEK"]:
         rangeUnit = "day"
@@ -79,44 +78,6 @@ def parse_query(query, *, date, rangeUnit, rangeL, sensor_list, station_list):
         temp = temp.replace(equality_missmatch, res)
 
     return temp
-
-
-def run_query(query, rangeL, rangeUnit, n_st, n_s, n_it, dataset, host="localhost"):
-    # Connect to the system
-    conn = pymonetdb.connect(username="monetdb", port=54320, password="monetdb", hostname=host, database="mydb")
-    cursor = conn.cursor()
-
-    random_inputs = get_randomized_inputs(dataset, n_st=n_st, n_s=n_s, n_it=n_it, rangeL=rangeL)
-    random_stations = random_inputs["stations"]
-    random_sensors = random_inputs["sensors"]
-    random_sensors_dates = random_inputs["dates"]
-
-    runtimes = []
-    full_time = time.time()
-    for it in tqdm(range(n_it)):
-        date = random_sensors_dates[it]
-        sensor_list = random_sensors[it]
-        station_list = random_stations[it]
-
-        assert len(sensor_list) == n_s
-        assert len(station_list) == n_st
-        assert type(date) == str
-
-        query = parse_query(query, date=date, rangeUnit=rangeUnit, rangeL=rangeL, sensor_list=sensor_list,
-                            station_list=station_list)
-
-        start = time.time()
-        cursor.execute(query)
-        cursor.fetchall()
-
-        diff = (time.time() - start) * 1000
-        runtimes.append(diff)
-        if time.time() - full_time > 200 and it > 5:
-            break
-
-    conn.close()
-    return stats.mean(runtimes), stats.stdev(runtimes)
-
 
 def launch():
     print("launching monetdb")

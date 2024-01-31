@@ -1,16 +1,4 @@
-from datetime import datetime
-from tqdm import tqdm
-import argparse
-import os
-import time
-import statistics as stats
-import numpy as np
-import random
 import sys
-import pandas as pd
-import json
-
-import subprocess
 from subprocess import Popen, PIPE, STDOUT, DEVNULL
 
 from pydruid.client import *
@@ -21,7 +9,7 @@ from pydruid.utils.filters import *
 # setting path
 sys.path.append('../../')
 from systems.utils.library import *
-from systems.utils import change_directory, parse_args, connection_class
+from systems.utils import change_directory, connection_class
 
 
 def get_connection(host="localhost", dataset=None , **kwargs):
@@ -128,17 +116,3 @@ def stop():
         process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
         stdout, stderr = process.communicate()
 
-
-if __name__ == "__main__":
-    pass
-
-    # launch()
-    #
-    # args = parse_args()
-    #
-    # def query_f(query, rangeL = args.range, rangeUnit = args.rangeUnit, n_st = args.def_st, n_s = args.def_s, n_it = args.n_it):
-    #     return run_query(query, rangeL=rangeL, rangeUnit = rangeUnit ,n_st = n_st , n_s = n_s , n_it = n_it)
-    #
-    #
-    # stop()
-    #

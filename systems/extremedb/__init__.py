@@ -8,5 +8,5 @@ os.chdir(dname)
 
 
 from systems.extremedb.run_system import run_query , launch , stop ,get_connection , parse_query
-from systems.extremedb.add_data import input_data , delete_data , generate_insertion_query
+from systems.extremedb.online_utils import input_data , delete_data , generate_insertion_query
 os.chdir(curr_dir)
