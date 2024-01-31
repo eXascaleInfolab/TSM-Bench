@@ -3,6 +3,7 @@ import os
 import sys
 
 from utils.ingestion.data_ingestion import DataIngestor
+from utils.plotting.plot_query_dir import plot_query_directory
 from utils.run_query import run_query
 from utils.system_modules import system_module_map
 from utils.query_template_loader import load_query_templates
@@ -85,40 +86,43 @@ query_templates = load_query_templates(system)
 
 try:
     for n_rows in n_rows:
-        scenarios = [(sensor, station, time_range, query) for sensor in n_sensors for station in n_stations for
+        scenarios = [(sensor, station, time_range) for sensor in n_sensors for station in n_stations for
                      time_range in
-                     time_ranges for query in queries]
+                     time_ranges]
 
         ingestor = DataIngestor(system, system_module, dataset, n_rows_s=n_rows, max_runtime=1500, host=host,
-                                n_threads=n_threads, clean_database=clean_database, warmup_time=20)
+                                n_threads=n_threads, clean_database=clean_database, warmup_time=10)
         try:
             with ingestor:
                 first = True
-                for n_s, n_st, time_range, query in scenarios:
-                    print("running query:", query, "with", n_s, "sensors", n_st, "stations", time_range, "time range")
+                for query in queries:
                     query_path_path = f"results/online/{dataset}/{query}"
-                    os.makedirs(f"{result_path}/runtimes", exist_ok=True)
-                    output_file = f"{query_path_path}/runtimes/{system}.csv"
+                    os.makedirs(f"{query_path_path}/runtimes", exist_ok=True)
+                    output_file = f"{query_path_path}/runtimes/{system}.txt"
                     query_template = query_templates[int(query[1:]) - 1]
-                    if query.lower() == "empty":
-                        print("skipping empty query")
-                        continue
-                    query_template = query_template.replace("<db>", dataset)
-                    try:
-                        time, var = run_query(system_module,query_template, rangeUnit=time_range, rangeL=1,
-                                                            n_s=n_s,
-                                                            n_it=n_iter,
-                                                            n_st=n_st,
-                                                            dataset=dataset, host=host)
-                        with open(output_file, "a") as file:
-                            line = f"{time} , {var}  , {query} , {n_s} , {n_st} , {time_range} , {n_rows * n_threads * 100}\n"
-                            file.write(line)
-                    except Exception as E:
-                        with open(log_file, "a") as file:
-                            line = f"{E}\n"
-                            file.write(line)
-                        print(E)
+                    for n_s, n_st, time_range in scenarios:
+                        if query.lower() == "empty":
+                            print("skipping empty query")
+                            continue
+                        print("running query:", query, "with", n_s, "sensors", n_st, "stations", time_range,
+                              "time range")
 
+                        query_template = query_template.replace("<db>", dataset)
+                        try:
+                            time, var = run_query(system_module, query_template, rangeUnit=time_range, rangeL=1,
+                                                  n_s=n_s,
+                                                  n_it=n_iter,
+                                                  n_st=n_st,
+                                                  dataset=dataset, host=host)
+                            with open(output_file, "a") as file:
+                                line = f"{time} , {var}  , {query} , {n_s} , {n_st} , {time_range} , {n_rows * n_threads * 100}\n"
+                                file.write(line)
+                        except Exception as E:
+                            with open(log_file, "a") as file:
+                                line = f"{E}\n"
+                                file.write(line)
+                            print(E)
+                plot_query_directory(query_path_path)
         except Exception as E:
             with open(log_file, "a") as file:
                 line = f"{E}\n"
