@@ -20,7 +20,7 @@ res_shift_50 = pd.DataFrame()
 # for i in tqdm(range(1024)):
 for i in tqdm(range(3072)):
     # res_shift_1[i] = np.array(list(data[2])[i:i + 3072])
-    res_shift_50[i] = np.array(list(data[0])[40 * i:(40 * i) + 3072])
+    res_shift_50[i] = np.array(list(data)[40 * i:(40 * i) + 3072])
     # res_shift_50[i] = np.array(list(data[0])[50 * i:(50 * i) + 1536])
     # res_shift_1800[i] = np.array(list(data[2])[1800 * i:(1800 * i) + 3072])
 
