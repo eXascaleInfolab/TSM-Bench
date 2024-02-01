@@ -9,7 +9,7 @@ warnings.filterwarnings('ignore')
 parser = argparse.ArgumentParser(description="A script that takes two integer values as input and calls a function with them.")
 parser.add_argument("--seed", type=str, default='conductivity', help="Link to original dataset")
 args = parser.parse_args()
-data = pd.read_csv("data/" + args.seed + "/original.txt", header=None, sep= ';')
+data = pd.read_csv("data/" + args.seed + "/original.txt", header=None)
 data = data.iloc[:,1].tolist()
 # data.head(3072 * 2)
 
