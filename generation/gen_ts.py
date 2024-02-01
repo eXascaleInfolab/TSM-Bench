@@ -128,7 +128,7 @@ window = 3072
 
 try: 
     data = pd.read_csv(fseed)
-    data = data.iloc[:,0].tolist()
+    data = data.iloc[:,1].tolist()
     data = moving_avg(data, 5).tolist()
     len(data)
     df_segments = pd.read_csv(fsynth).T

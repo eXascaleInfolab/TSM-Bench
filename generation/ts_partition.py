@@ -10,7 +10,7 @@ parser = argparse.ArgumentParser(description="A script that takes two integer va
 parser.add_argument("--seed", type=str, default='conductivity', help="Link to original dataset")
 args = parser.parse_args()
 data = pd.read_csv("data/" + args.seed + "/original.txt", header=None, sep= ';')
-
+data = data.iloc[:,1].tolist()
 # data.head(3072 * 2)
 
 # res_shift_1 = pd.DataFrame()
@@ -20,7 +20,7 @@ res_shift_50 = pd.DataFrame()
 # for i in tqdm(range(1024)):
 for i in tqdm(range(3072)):
     # res_shift_1[i] = np.array(list(data[2])[i:i + 3072])
-    res_shift_50[i] = np.array(list(data[0])[50 * i:(50 * i) + 3072])
+    res_shift_50[i] = np.array(list(data[0])[40 * i:(40 * i) + 3072])
     # res_shift_50[i] = np.array(list(data[0])[50 * i:(50 * i) + 1536])
     # res_shift_1800[i] = np.array(list(data[2])[1800 * i:(1800 * i) + 3072])
 
