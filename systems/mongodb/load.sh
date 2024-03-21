@@ -10,7 +10,6 @@ dataset="d1"
 
 current="$(pwd)"
 
-
 # we need the file without header to specify the types
 
 if [ -f "../../datasets/${dataset}_no_header.csv" ]; then
