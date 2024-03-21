@@ -7,5 +7,5 @@ pip3 install pymongo
 sudo docker stop mongo
 
 sudo docker start mongo
-
+sudo docker stop mongo
 sudo docker restart mongo
