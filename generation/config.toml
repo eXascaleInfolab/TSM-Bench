@@ -6,7 +6,7 @@
 # hash_length_percentage = length of the segment hash binary code in relation to original segments length
 
 [generation]
-n_iterations = 1000
+n_iterations = 6000
 num_hashtables = 8
 n_top = 10
 hash_length_percentage = 3
