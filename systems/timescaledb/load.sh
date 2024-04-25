@@ -40,7 +40,7 @@ docker exec -it timescaledb-container psql -U postgres -c  "SELECT create_hypert
 current="$(pwd)"
 
 sleep 10
-docker exec -u 0 -it timescaledb-container psql -U postgres -c "COPY $dataset FROM '/var/lib/postgresql/data/TSM-Bench/datasets/$dataset.csv' DELIMITER ',' CSV HEADER;";
+docker exec -u 0 -it timescaledb-container psql -U postgres -c "\copy $dataset FROM '/var/lib/postgresql/data/TSM-Bench/datasets/$dataset.csv' DELIMITER ',' CSV HEADER;";
 
 sleep 10
 docker exec -it timescaledb-container psql -U postgres -c "ALTER TABLE $dataset SET (timescaledb.compress, timescaledb.compress_segmentby='id_station');
