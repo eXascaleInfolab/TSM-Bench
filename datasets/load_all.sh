@@ -44,22 +44,22 @@ cd ..
 sh stop_all.sh
 
 
-# TimescaleDB
-echo "loading data into TimescaleDB"
-cd  timescaledb
-sh ./load.sh $dataset
-cd ..
+# # TimescaleDB
+# echo "loading data into TimescaleDB"
+# cd  timescaledb
+# sh ./load.sh $dataset
+# cd ..
 
-echo "loading data into Influx"
-# Influx
-cd influx
-sh ./load.sh $dataset
-cd ..
+# echo "loading data into Influx"
+# # Influx
+# cd influx
+# sh ./load.sh $dataset
+# cd ..
 
-sh stop_all.sh
+# sh stop_all.sh
 
-echo "loading data into Druid"
-# Druid
-cd druid
-sh ./load.sh $dataset
-cd ..
+# echo "loading data into Druid"
+# # Druid
+# cd druid
+# sh ./load.sh $dataset
+# cd ..
