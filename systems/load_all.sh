@@ -8,11 +8,11 @@ echo "loading $dataset"
 
 
 
-
 # ClickHouse
 cd clickhouse
 sh ./load.sh $dataset
 cd ..
+
 
 sh stop_all.sh
 
@@ -26,6 +26,7 @@ cd ..
 cd extremedb
 sh ./load.sh $dataset
 cd ..
+
 
 
 # Influx
@@ -46,6 +47,7 @@ sh ./load.sh $dataset
 cd ..
 
 sh stop_all.sh
+
 
 # TimescaleDB
 cd  timescaledb
