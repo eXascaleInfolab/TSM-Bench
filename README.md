@@ -13,7 +13,7 @@ TSM-Bench is a new benchmark that compares seven Time Series Database Systems (T
 ___
 ## Prerequisites
 
-- Ubuntu 20 (including Ubuntu derivatives, e.g., Xubuntu); 128 GB RAM
+- Ubuntu 22 (including Ubuntu derivatives, e.g., Xubuntu); 128 GB RAM
 - Clone this repository (this can take a couple of minutes as it uploads one of the datasets)
 
 ___
