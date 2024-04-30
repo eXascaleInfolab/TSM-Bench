@@ -17,6 +17,12 @@ cd extremedb
 sh ./install.sh
 cd ..
 
+#Influx
+cd influx
+sh ./install.sh
+cd ..
+
+
 # MonetDB
 cd monetdb
 sh ./install.sh
@@ -28,23 +34,12 @@ cd questdb
 sh install.sh
 cd ..
 
-cd extremedb
-sh ./install.sh
-cd ..
-
-cd questdb
-sh install.sh
-cd ..
 
 # TimescaleDB
 cd  timescaledb
 sh ./install.sh
 cd ..
 
-#Influx
-cd influx
-sh ./install.sh
-cd ..
 
 
 
