@@ -230,7 +230,7 @@ python3 tsm_eval_online.py --system questdb --queries all --n_threads 1 --host "
 **Notes**:
 
 - We launch each system separately on the host machine and execute the online query on the client machine using the --host flag.
-- The maximal batchsize depends on your architecture and the selected TSDB.
+- The maximal batch_size depends on your architecture and the selected TSDB.
 - Druid supports ingestion and queries concurrently, while QuestDB does not support multithreading.
 - If you stop the program before its termination or shut down the system, the database might not be set into its initial state properly; you need to reload the dataset in the host machine:
     ```bash
