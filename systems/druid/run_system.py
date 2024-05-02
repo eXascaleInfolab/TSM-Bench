@@ -1,10 +1,14 @@
 import sys
+import time
+import statistics as stats
+from tqdm import tqdm
 from subprocess import Popen, PIPE, STDOUT, DEVNULL
 
 from pydruid.client import *
 from pydruid.db import connect
 from pydruid.utils.aggregators import *
 from pydruid.utils.filters import *
+from pydruid.db.exceptions import ProgrammingError
 
 # setting path
 sys.path.append('../../')
@@ -89,8 +93,14 @@ def run_query(query, rangeL, rangeUnit, n_st, n_s, n_it, dataset, host="localhos
         print("query")
         start = time.time()
 
-        cursor.execute(query)
-        results_ = cursor.fetchall()
+        try:
+            cursor.execute(query)
+            results_ = cursor.fetchall()
+        except ProgrammingError as e:
+            print("Exception:", e)
+            print("Skipping this query due to resource limit exceeded.")
+            continue
+
         diff = (time.time() - start) * 1000
         #  print(temp, diff)
         runtimes.append(diff)
@@ -115,4 +125,3 @@ def stop():
     with change_directory(__file__):
         process = Popen(['sh', 'stop.sh'], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
         stdout, stderr = process.communicate()
-
