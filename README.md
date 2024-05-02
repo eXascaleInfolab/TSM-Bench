@@ -52,6 +52,13 @@ sh build.sh d1
 sh load_all.sh d1
 ```
 
+- Or load Dataset 1 into a specific system: 
+
+```bash
+cd systems/{system}
+sh load.sh d1
+```
+    
 - **Note**: To build and load the larger dataset d2, replace ```d1``` with ```d2```.
 
  <!---  
