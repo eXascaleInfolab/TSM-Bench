@@ -14,19 +14,25 @@ from pydruid.db.exceptions import ProgrammingError
 sys.path.append('../../')
 from systems.utils.library import *
 from systems.utils import change_directory, connection_class
+from pydruid.db.exceptions import ProgrammingError
 
-
-def get_connection(host="localhost", dataset=None , **kwargs):
+def get_connection(host="localhost", dataset=None, **kwargs):
     conn = connect(host=host, port=8082, path='/druid/v2/sql/', scheme='http')
     cursor = conn.cursor()
+    
     def execute_query_f(sql):
-        cursor.execute(sql)
-        return cursor.fetchall()
+        try:
+            cursor.execute(sql)
+            return cursor.fetchall()
+        except ProgrammingError as e:
+            print("Exception:", e)
+            print("Skipping this query due to resource limit exceeded.")
+            return []  # Return an empty result set if the query encounters an exception
 
-    def write_points_f(points ,dataset=dataset):
-        raise NotImplementedError("druid does not support insertion")
+    def write_points_f(points, dataset=dataset):
+        raise NotImplementedError("Druid does not support insertion")
 
-    conn_close_f = lambda : conn.close()
+    conn_close_f = lambda: conn.close()
     return connection_class.Connection(conn_close_f, execute_query_f, write_points_f)
 
 
