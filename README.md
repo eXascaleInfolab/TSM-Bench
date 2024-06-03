@@ -300,8 +300,8 @@ ___
 
 
 - Abdelouahab Khelifati (abdel@exascale.info)
-- Mourad Khayati
-- Luca Althaus.
+- [Mourad Khayati](https://exascale.info/members/mourad-khayati/)
+- Luca Althaus
 
 ___
 
