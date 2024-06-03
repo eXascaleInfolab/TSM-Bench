@@ -18,8 +18,6 @@ ___
 
 ___
 
-
-
 ## Systems Setup
 
 - Install the dependencies and activate the created virtual environment 
@@ -36,7 +34,7 @@ source TSMvenv/bin/activate
 sh install_all_sys.sh
 ```
 
-## Datasets Loading 
+## Dataset Loading 
 
 - Download and decompress Dataset 1 (takes ~ 3 mins)
 
@@ -52,7 +50,7 @@ sh build.sh d1
 sh load_all.sh d1
 ```
 
-- Or load Dataset 1 into a specific system: 
+- In case you want to load Dataset 1 into a specific system: 
 
 ```bash
 cd systems/{system}
@@ -254,11 +252,9 @@ python3 tsm_eval_online.py --system questdb --queries all --n_threads 1 --host "
 
 
 
-
-
 ### Storage Performance 
 
-- To compute the storage performance for a given system: 
+- To compute the storage performance of a given system: 
     ```bash
     cd systems/{system}
     sh compression.sh
