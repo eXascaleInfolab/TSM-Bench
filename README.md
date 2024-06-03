@@ -299,7 +299,9 @@ ___
 ## Contributors
 
 
-Abdelouahab Khelifati (abdel@exascale.info), Mourad Khayati (mkhayati@exascale.info) and Luca Althaus.
+- Abdelouahab Khelifati (abdel@exascale.info)
+- Mourad Khayati
+- Luca Althaus.
 
 ___
 
