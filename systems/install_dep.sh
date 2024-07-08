@@ -1,6 +1,7 @@
 #!/bin/sh
 
 sudo apt-get update
+sudo apt-get install -y python3-venv
 sudo apt-get install -y python3.8-venv
 sudo apt-get install -y libpython3.8-dev
 sudo apt-get install -y python3-dev
