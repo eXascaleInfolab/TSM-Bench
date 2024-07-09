@@ -42,6 +42,12 @@ cd ../datasets
 sh build.sh d1
 ```
 
+- Load Dataset 1 into all the systems (takes ~ 2 hours)
+
+```bash
+sh load_all.sh d1
+```
+
 
 - Download and decompress Dataset 2 (takes ~ 4 hours)
 
@@ -50,21 +56,23 @@ cd ../datasets
 sh build.sh d2
 ```
 
+- Load Dataset 2 into the systems that can support it (takes ~ 36 hours)
+
+```bash
+sh load_all.sh d2
+```
+
 
 ## Data Bulk Loading & Compression (Table 3 in paper):
 
 To reproduce the data bulk loading results, run the following command:
 
-- Load Dataset 1 into all the systems (takes ~ 2 hours)
 
-```bash
-sh load_all.sh d1
-```
 
-- To compute the storage performance of a given system: 
+
+- To generate Table 3: 
 ```bash
-cd systems/{system}
-sh compression.sh
+sh repro_table3.sh
 ```
     
 ## Offline Workloads D-LONG Q1-Q7 (Figures 3, 4, and 5):
