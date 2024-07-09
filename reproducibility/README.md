@@ -85,7 +85,7 @@ To reproduce the compression performance results, run the following command:
 [command]
 
 
-## Reproducing Results for D-MULTI (Longer Runtime)
+## Reproducing results for D-MULTI (Longer Runtime)
 
 Run the following commands to produce the results for the larger dataset D-MULTI.
 
