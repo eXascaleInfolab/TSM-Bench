@@ -65,12 +65,8 @@ sh load_all.sh d2
 
 ## Data Bulk Loading & Compression (Table 3 in paper):
 
-To reproduce the data bulk loading results, run the following command:
+- To reproduce the data bulk loading results in Table 3, run the following command:
 
-
-
-
-- To generate Table 3: 
 ```bash
 sh repro_table3.sh
 ```
