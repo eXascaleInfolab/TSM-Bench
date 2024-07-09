@@ -46,20 +46,6 @@ sh load_all.sh d1
 ```
 
 
-- Download and decompress Dataset 2 (takes ~ 4 hours)
-
-```bash
-cd ../datasets
-sh build.sh d2
-```
-
-- Load Dataset 2 into the systems that can support it (takes ~ 36 hours)
-
-```bash
-sh load_all.sh d2
-```
-
-
 ## Data Bulk Loading & Compression (Table 3 in paper):
 
 - To reproduce the data bulk loading results in Table 3, run the following command:
@@ -74,14 +60,6 @@ To reproduce the offline workloads D-LONG Q1-Q7 results, execute the following c
 
 ```bash
 python3 tsm_eval.py --systems all --queries all --datasets d1 
-```
-
-## Offline Workloads D-MULTI Q1-Q5 (Figure 6):
-
-To reproduce the offline workloads D-MULTI Q1-Q5 results, run the following command:
-
-```bash
-python3 tsm_eval.py --systems all --queries all --datasets d2
 ```
 
 
@@ -105,6 +83,39 @@ To reproduce the data generation performance results, execute the following comm
 To reproduce the compression performance results, run the following command:
 
 [command]
+
+
+## Reproducing Results for D-MULTI (Longer Runtime)
+
+Run the following commands to produce the results for the larger dataset D-MULTI.
+
+- Download and decompress Dataset 2 (takes ~ 4 hours)
+
+```bash
+cd ../datasets
+sh build.sh d2
+```
+
+- Load Dataset 2 into the systems that can support it (takes ~ 36 hours)
+
+```bash
+sh load_all.sh d2
+```
+
+- To reproduce the data bulk loading results in Table 3 for D-MULTI, run the following command:
+
+```bash
+sh repro_table3.sh
+```
+
+- To reproduce the offline workloads D-MULTI Q1-Q5 results (Figure 6), run the following command:
+
+```bash
+python3 tsm_eval.py --systems all --queries all --datasets d2
+```
+
+
+
 
 
 ___
