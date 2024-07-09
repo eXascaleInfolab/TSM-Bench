@@ -80,7 +80,9 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 
 To reproduce the offline workloads D-MULTI Q1-Q5 results, run the following command:
 
-[command]
+```bash
+python3 tsm_eval.py --systems all --queries all --datasets d2
+```
 
 
 ## Online Workloads D-LONG Q1-Q5 (Figure 8):
