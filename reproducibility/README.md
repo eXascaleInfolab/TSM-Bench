@@ -6,11 +6,8 @@
 - **Workloads**: This code evaluates the workloads performed in the paper including: Data Bulk Loading, Offline Queries, Online Queries, Generation Performance and Feature Evaluation.
 - <sup>*</sup>**Note**: Due to license restrictions, we can only share the evaluation version of extremeDB. The results between the benchmarked and the public version might diverge. 
 
-[**Prerequisites**](#prerequisites) | [**Installation**](#systems-setup) | [**Datasets Loading**](#datasets-loading) | [**Experiments**](#experiments) | [**Benchmark Extension**](#benchmark-extension) | [**Technical Report**](#technical-report) | [**Data Generation**](#time-series-generation) | [**Contributors**](#contributors)
+[**Prerequisites**](#prerequisites) | [**Installation**](#systems-setup) | [**Datasets Loading**](#datasets-loading) | [**Experiments**](#experiments) | [**Benchmark Extension**](#benchmark-extension) | [**Technical Report**](#technical-report) | [**Data Generation**](#time-series-generation)
 
-
-___
-## Prerequisites
 
 - Ubuntu 22 (including Ubuntu derivatives, e.g., Xubuntu); 128 GB RAM
 - Clone this repository (this can take a couple of minutes as it uploads one of the datasets)
@@ -75,8 +72,9 @@ sh repro_table3.sh
 
 To reproduce the offline workloads D-LONG Q1-Q7 results, execute the following command:
 
-[command]
-
+```bash
+python3 tsm_eval.py --systems all --queries all --datasets d1 
+```
 
 ## Offline Workloads D-MULTI Q1-Q5 (Figure 6):
 
