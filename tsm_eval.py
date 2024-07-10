@@ -16,7 +16,7 @@ datasets = ['d1', 'd2']
 scenario = {
     "n_stations": [1, 2, 3, 8, 9, 10],
     "n_sensors": [1, 10, 70, 90, 100],
-    "n_time_ranges": ["minute", "hour", "day", "week", "month"],  # ["minute", "hour", "day", "week", "month"],
+    "n_time_ranges": ["minute", "hour", "day", "week", "month"],  # ["minute", "hour", "day",
     "n_runs": 5,
     "timeout": 600,
 }
