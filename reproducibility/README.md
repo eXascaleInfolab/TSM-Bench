@@ -51,8 +51,10 @@ sh load_all.sh d1
 - To reproduce the data bulk loading results in Table 3, run the following command:
 
 ```bash
-sh repro_table3.sh
+sh repro_loading.sh 
 ```
+
+Results will be outputted to the `results` folder. 
     
 ## Offline Workloads D-LONG Q1-Q7 (Figures 3, 4, and 5):
 
@@ -61,6 +63,10 @@ To reproduce the offline workloads D-LONG Q1-Q7 results, execute the following c
 ```bash
 python3 tsm_eval.py --systems all --queries all --datasets d1 
 ```
+
+- **Results**: All the runtimes and plots will be added to the `results` folder.
+  
+    - The runtime results of the systems for a given dataset and query will be added to: `results/offline/{dataset}/{query}/runtime/`. The runtime plots will be added to the folder `results/offline/{dataset}/{query}/plots/`.
 
 
 ## Online Workloads D-LONG Q1-Q5 (Figure 8):
