@@ -6,6 +6,13 @@ systems="clickhouse druid extremedb influx monetdb questdb timescaledb"
 # Base directory containing system directories
 base_dir=$(dirname "$0")  # Get the directory of the script (assuming script is in systems/)
 
+# Output file path
+output_file="$base_dir/../results/loading.txt"
+
+# Ensure the output directory exists, create if not
+mkdir -p "$base_dir/../results"
+touch "$output_file"
+
 # Function to read and parse data from each system's file
 parse_results() {
     system_dir="$base_dir/$1"
@@ -17,8 +24,8 @@ parse_results() {
             storage=$(echo "$line" | awk '{print $2}')
             loading_time=$(echo "$line" | awk '{print $3}')
             
-            # Print formatted output for each line
-            echo "$dataset_name,$1,$storage,$loading_time"
+            # Append formatted output for each line to the output file
+            echo "$dataset_name,$1,$storage,$loading_time" >> "$output_file"
         done < "$file_path"
     fi
 }
