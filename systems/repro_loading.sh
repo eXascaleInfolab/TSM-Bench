@@ -26,6 +26,7 @@ parse_results() {
             
             # Append formatted output for each line to the output file
             echo "$dataset_name,$1,$storage,$loading_time" >> "$output_file"
+            echo "$dataset_name,$1,$storage,$loading_time"
         done < "$file_path"
     fi
 }
