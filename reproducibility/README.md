@@ -56,7 +56,7 @@ sh repro_table3.sh
     
 ## Offline Workloads D-LONG Q1-Q7 (Figures 3, 4, and 5):
 
-To reproduce the offline workloads D-LONG Q1-Q7 results, execute the following command (takes ~ 3hours):
+To reproduce the offline workloads D-LONG Q1-Q7 results, execute the following command (takes ~ 7hours):
 
 ```bash
 python3 tsm_eval.py --systems all --queries all --datasets d1 
