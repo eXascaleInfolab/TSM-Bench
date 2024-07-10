@@ -89,7 +89,7 @@ To reproduce the compression performance results, run the following command:
 
 Run the following commands to produce the results for the larger dataset D-MULTI.
 
-- Download and decompress Dataset 2 (takes ~ 4 hours)
+- Download and decompress Dataset 2 (takes ~ 90 minutes)
 
 ```bash
 cd ../datasets
