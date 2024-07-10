@@ -88,7 +88,12 @@ To reproduce the data generation performance results, execute the following comm
 
 To reproduce the compression performance results, run the following command:
 
-[command]
+```bash
+sh repro_characteristics.sh 
+```
+
+Results will be outputted to the `results/compression/` folder. 
+
 
 
 ## Reproducing results for D-MULTI (Longer Runtime)
