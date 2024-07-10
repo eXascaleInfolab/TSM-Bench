@@ -32,14 +32,14 @@ sh install_all_sys.sh
 ```
 
 
-- Download and decompress Dataset 1 (takes ~ 3 mins)
+- Download and decompress Dataset 1 (takes ~ 3mins)
 
 ```bash
 cd ../datasets
 sh build.sh d1
 ```
 
-- Load Dataset 1 into all the systems (takes ~ 2 hours)
+- Load Dataset 1 into all the systems (takes ~ 2hours)
 
 ```bash
 sh load_all.sh d1
@@ -56,7 +56,7 @@ sh repro_table3.sh
     
 ## Offline Workloads D-LONG Q1-Q7 (Figures 3, 4, and 5):
 
-To reproduce the offline workloads D-LONG Q1-Q7 results, execute the following command (takes ~ 3 hours):
+To reproduce the offline workloads D-LONG Q1-Q7 results, execute the following command (takes ~ 3hours):
 
 ```bash
 python3 tsm_eval.py --systems all --queries all --datasets d1 
@@ -89,14 +89,14 @@ To reproduce the compression performance results, run the following command:
 
 Run the following commands to produce the results for the larger dataset D-MULTI.
 
-- Download and decompress Dataset 2 (takes ~ 90 minutes)
+- Download and decompress Dataset 2 (takes ~90minutes)
 
 ```bash
 cd ../datasets
 sh build.sh d2
 ```
 
-- Load Dataset 2 into the systems that can support it (takes ~ 36 hours)
+- Load Dataset 2 into the systems that can support it (takes ~ 36hours)
 
 ```bash
 sh load_all.sh d2
