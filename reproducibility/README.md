@@ -116,7 +116,7 @@ sh load_all.sh d2
 - To reproduce the data bulk loading results in Table 3 for D-MULTI, run the following command:
 
 ```bash
-sh repro_table3.sh
+sh repro_loading.sh
 ```
 
 - To reproduce the offline workloads D-MULTI Q1-Q5 results (Figure 6), run the following command:
