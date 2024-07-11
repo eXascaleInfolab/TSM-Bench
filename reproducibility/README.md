@@ -6,7 +6,8 @@
 - **Workloads**: This code evaluates the workloads performed in the paper including: Data Bulk Loading, Offline Queries, Online Queries, Generation Performance and Feature Evaluation.
 - <sup>*</sup>**Note**: Due to license restrictions, we can only share the evaluation version of extremeDB. The results between the benchmarked and the public version might diverge. 
 
-[**Prerequisites**](#prerequisites) | [**Installation**](#systems-setup) | [**Datasets Loading**](#datasets-loading) | [**Experiments**](#experiments) | [**Benchmark Extension**](#benchmark-extension) | [**Technical Report**](#technical-report) | [**Data Generation**](#time-series-generation)
+
+## Prerequisites
 
 
 - Ubuntu 22 (including Ubuntu derivatives, e.g., Xubuntu); 128 GB RAM
