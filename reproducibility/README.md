@@ -11,8 +11,6 @@
 
 - Ubuntu 22 (including Ubuntu derivatives, e.g., Xubuntu); 128 GB RAM
 - Clone this repository (this can take a couple of minutes as it uploads one of the datasets)
-- Mono: Install mono from https://www.mono-project.com/download/stable/ (takes a few minutes).
-
 ___
 
 ## Systems Setup
@@ -96,7 +94,7 @@ Results will be outputted to the `results/compression/` folder.
 
 
 
-## Reproducing results for D-MULTI (Longer Runtime)
+## Reproducing results for D-MULTI 
 
 Run the following commands to produce the results for the larger dataset D-MULTI.
 
