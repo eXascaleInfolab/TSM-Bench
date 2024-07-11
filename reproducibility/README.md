@@ -52,6 +52,7 @@ sh load_all.sh d1
 ```bash
 sh repro_loading.sh 
 ```
+**Results**: 
 
 Results will be outputted to the `results` folder. 
     
@@ -70,9 +71,86 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 
 ## Online Workloads D-LONG Q1-Q5 (Figure 8):
 
-To reproduce the online workloads Q1-Q5 results, use the following command:
+Two servers are required to reproduce the online workloads Q1-Q5 results: the first serves as a host machine to deploy the systems (similar to above), and the second runs as a client to generate writes and queries.
 
-[command]
+#### Client Setup
+ 
+- Clone this repo
+- Install dependencies:
+
+    ```bash
+    cd systems/
+    sh install_dep.sh
+    source TSMvenv/bin/activate
+    ```
+- Install the system libraries
+   
+    ```bash
+    sh install_client_lib.sh
+    ```
+    
+#### Host Setup
+1. Run the system on the host side 
+
+   ```bash
+   cd systems/{system}
+   sh launch.sh
+   ```
+   
+2. If the virtual environment is not activated from the root folder using:
+  
+   ```bash
+   source systems/TSMvenv/bin/activate
+   ```
+   
+3.  Execute the online query on the client side using the --host flag (see examples below).
+   
+4. Stop the system on the host server
+   ```bash
+   sh stop.sh
+   ```   
+
+**Optional Arguments**:
+- `--host` : remote host machine name (Default = "localhost")
+- `--n_threads`: Number of threads to use. (Default 10)
+- `--batch_size`: Number data points to be inserted each second (if possible)  (Default = 10000)
+
+  
+**Examples**:
+
+1. Run query q1 in an online manner on clickhouse.
+
+```bash 
+python3 tsm_eval_online.py --system clickhouse --queries q1 --host "host_address" --batch_size 10000
+```
+
+2. Run all queries online on influx using different batch sizes.
+```bash 
+python3 tsm_eval_online.py --system influx --queries all --host "host_address" --batch_size 10000 20000 1000000
+```
+
+3. Run all queries online on questdb using one thread.
+```bash 
+python3 tsm_eval_online.py --system questdb --queries all --n_threads 1 --host "host_address" 
+```
+
+**Notes**:
+
+- We launch each system separately on the host machine and execute the online query on the client machine using the --host flag.
+- The maximal batch_size depends on your architecture and the selected TSDB.
+- Druid supports ingestion and queries concurrently, while QuestDB does not support multithreading.
+- If you stop the program before its termination or shut down the system, the database might not be set into its initial state properly; you need to reload the dataset in the host machine:
+    ```bash
+   cd systems/{system}
+   sh load.sh
+   ```   
+  
+
+**Results**: 
+
+- The runtime results of the systems will be added to: `results/online/{dataset}/{query}/runtime/`. 
+- The runtime plots will be added to the folder `results/online/{dataset}/{query}/plots/`.
+- All the queries return the runtimes by varying the ingestion rate.
 
 
 
@@ -123,8 +201,6 @@ sh repro_loading.sh
 ```bash
 python3 tsm_eval.py --systems all --queries all --datasets d2
 ```
-
-
 
 
 
