@@ -13,7 +13,7 @@ fi
 echo "loading datasets from $folder_path"
 
 # Ensure the results folder exists
-results_dir="../results/compression"
+results_dir="../../results/compression"
 mkdir -p "$results_dir"
 output_file="$results_dir/time_and_compression.txt"
 
