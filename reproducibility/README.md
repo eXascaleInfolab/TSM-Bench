@@ -134,8 +134,10 @@ Two servers are required to reproduce the online workloads Q1-Q5 results: the fi
 
 To reproduce the data generation performance results, execute the following command:
 
-[command]
 
+```bash
+sh repro_generation_performance.sh 
+```
 
 ## Compression Performance (Figure 10):
 
