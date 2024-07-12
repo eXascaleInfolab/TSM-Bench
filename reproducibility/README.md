@@ -73,66 +73,42 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 
 Two servers are required to reproduce the online workloads Q1-Q5 results: the first serves as a host machine to deploy the systems (similar to above), and the second runs as a client to generate writes and queries.
 
-#### Client Setup
- 
-- Clone this repo
-- Install dependencies:
+#### Host Setup 
 
-    ```bash
-    cd systems/
-    sh install_dep.sh
-    source TSMvenv/bin/activate
-    ```
-- Install the system libraries
-   
-    ```bash
-    sh install_client_lib.sh
-    ```
-    
-#### Host Setup
-1. Run the system on the host side 
+1. Launch systems on the host side 
 
    ```bash
    cd systems/{system}
-   sh launch.sh
+   sh launch_all_online.sh
    ```
-   
-2. If the virtual environment is not activated from the root folder using:
-  
+
+#### Client Setup 
+
+ - Clone this repo
+ - Install dependencies:
+
+  ```bash
+  cd systems/
+  sh install_dep.sh
+  source TSMvenv/bin/activate
+  ```
+- Install the system libraries
+
+  ```bash
+  sh install_client_lib.sh
+  ```
+
+- Execute the online query on the client side using the --host flag (see examples below).
+
    ```bash
-   source systems/TSMvenv/bin/activate
+   python3 tsm_eval_online.py --system all --queries all --host "host_address" --batch_size 10000 20000 200000 600000 1000000 1400000
    ```
-   
-3.  Execute the online query on the client side using the --host flag (see examples below).
-   
-4. Stop the system on the host server
+
+
+- Stop systems on the host server
    ```bash
-   sh stop.sh
+   sh stop_all.sh
    ```   
-
-**Optional Arguments**:
-- `--host` : remote host machine name (Default = "localhost")
-- `--n_threads`: Number of threads to use. (Default 10)
-- `--batch_size`: Number data points to be inserted each second (if possible)  (Default = 10000)
-
-  
-**Examples**:
-
-1. Run query q1 in an online manner on clickhouse.
-
-```bash 
-python3 tsm_eval_online.py --system clickhouse --queries q1 --host "host_address" --batch_size 10000
-```
-
-2. Run all queries online on influx using different batch sizes.
-```bash 
-python3 tsm_eval_online.py --system influx --queries all --host "host_address" --batch_size 10000 20000 1000000
-```
-
-3. Run all queries online on questdb using one thread.
-```bash 
-python3 tsm_eval_online.py --system questdb --queries all --n_threads 1 --host "host_address" 
-```
 
 **Notes**:
 
