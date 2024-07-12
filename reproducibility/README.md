@@ -71,18 +71,18 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 
 ## Online Workloads D-LONG Q1-Q5 (Figure 8):
 
-Two servers are required to reproduce the online workloads Q1-Q5 results: the first serves as a host machine to deploy the systems (similar to above), and the second runs as a client to generate writes and queries.
+Two servers are required to reproduce the online workloads Q1-Q5 results: the first serves as a host machine to deploy the systems (similar to above), and the second runs as a client to generate writes and queries. ``{system}`` should be replaced with the system's name.
 
-#### Host Setup 
+#### Step 1: Launch the system on the host machine
 
-Launch systems on the host side 
+Launch the system on the host side 
 
    ```bash
    cd systems/{system}
-   sh launch_all_online.sh
+   sh launch.sh
    ```
 
-#### Client Setup 
+#### Step 2: Query the system from the client machine
 
  - Clone this repo
  - Install dependencies:
@@ -101,13 +101,14 @@ Launch systems on the host side
 - Execute the online query on the client side using the --host flag (see examples below).
 
    ```bash
-   python3 tsm_eval_online.py --system all --queries all --host "host_address" --batch_size 10000 20000 200000 600000 1000000 1400000
+   python3 tsm_eval_online.py --system {system} --queries all --host "host_address" --batch_size 10000 20000 200000 600000 1000000 1400000
    ```
 
+#### Step 3: Interrupt the system on the host machine
 
 - Stop systems on the host server
    ```bash
-   sh stop_all.sh
+   sh stop.sh
    ```   
 
 **Notes**:
