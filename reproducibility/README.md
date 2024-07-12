@@ -71,7 +71,9 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 
 ## Online Workloads D-LONG Q1-Q5 (Figure 8):
 
-Two servers are required to reproduce the online workloads Q1-Q5 results: the first serves as a host machine to deploy the systems (similar to above), and the second runs as a client to generate writes and queries. ``{system}`` should be replaced with the system's name.
+Two servers are required to reproduce the online workloads Q1-Q5 results: the first serves as a host machine to deploy the systems (similar to above), and the second runs as a client to generate writes and queries. 
+
+``{system}`` should be replaced with the system's name.
 
 #### Step 1: Launch the system on the host machine
 
