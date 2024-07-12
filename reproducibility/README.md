@@ -52,9 +52,7 @@ sh load_all.sh d1
 ```bash
 sh repro_loading.sh 
 ```
-**Results**: 
-
-Results will be outputted to the `results` folder. 
+- **Results**: Results will be outputted to the `results` folder. 
     
 ## Offline Workloads D-LONG Q1-Q7 (Figures 3, 4, and 5):
 
@@ -141,6 +139,8 @@ To reproduce the data generation performance results, execute the following comm
 ```bash
 sh repro_generation_performance.sh 
 ```
+
+- **Results**: The runtimes and plots will be added to the `results/generation/` folder.
 
 ## Compression Performance (Figure 10):
 
