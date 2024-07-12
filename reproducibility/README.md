@@ -150,7 +150,7 @@ To reproduce the compression performance results, run the following command:
 sh repro_characteristics.sh 
 ```
 
-Results will be outputted to the `results/compression/` folder. 
+- **Results**: Results will be outputted to the `results/compression/` folder. 
 
 
 
