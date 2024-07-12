@@ -6,40 +6,34 @@ if [ $# -ge 1 ]; then
 fi
 echo "loading $dataset"
 
-
-
 # ClickHouse
 cd clickhouse
 sh ./load.sh $dataset
 cd ..
 
-
 sh stop_all.sh
 
-# Druid
-cd druid
-sh ./load.sh $dataset
-cd ..
+if [ "$dataset" != "d2" ]; then
+    # Druid
+    cd druid
+    sh ./load.sh $dataset
+    cd ..
 
+    # Influx
+    cd influx
+    sh ./load.sh $dataset
+    cd ..
+fi
 
 # ExtremeDB
 cd extremedb
 sh ./load.sh $dataset
 cd ..
 
-
-
-# Influx
-cd influx
-sh ./load.sh $dataset
-cd ..
-
-
 # MonetDB
 cd monetdb
 sh ./load.sh $dataset
 cd ..
-
 
 # QuestDB
 cd questdb
@@ -48,9 +42,7 @@ cd ..
 
 sh stop_all.sh
 
-
 # TimescaleDB
-cd  timescaledb
+cd timescaledb
 sh ./load.sh $dataset
 cd ..
-
