@@ -19,4 +19,4 @@ sed '1d;$d' d2_2_4.csv >> d2.csv
 sed '1d;$d' d2_3_4.csv >> d2.csv
 sed '1d;$d' d2_4_4.csv >> d2.csv
 
-#rm d2_*
+rm d2_*
