@@ -75,7 +75,7 @@ Two servers are required to reproduce the online workloads Q1-Q5 results: the fi
 
 #### Host Setup 
 
-1. Launch systems on the host side 
+Launch systems on the host side 
 
    ```bash
    cd systems/{system}
