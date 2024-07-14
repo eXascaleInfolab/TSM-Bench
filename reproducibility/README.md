@@ -133,7 +133,7 @@ Launch the system on the host side
 
 ## Data Generation Performance (Figure 9):
 
-To reproduce the data generation performance results, execute the following command:
+To reproduce the data generation performance results, execute the following command  (takes ~ 9hours):
 
 
 ```bash
