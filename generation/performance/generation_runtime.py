@@ -26,8 +26,6 @@ import os
 output_dir = Path("../../results/generation")
 output_dir.mkdir(parents=True, exist_ok=True)
 
-
-
 def moving_avg(x, n):
     cumsum = np.cumsum(np.insert(x, 0, 0)) 
     return (cumsum[n:] - cumsum[:-n]) / float(n)
@@ -211,11 +209,18 @@ for nSeg in tqdm(range(100, 1000 + 1, 100)):
     a, b, c, d = transform(np.array(segments), 100, 5)
     graph_const[nSeg] = time.time() - start
 
-pd.DataFrame([lsh_const, graph_const]).T.plot()
+# Plot I
+plt.figure()
+df_const = pd.DataFrame([lsh_const, graph_const]).T
+df_const.columns = ['LSH', 'Graph']
+df_const.plot()
+plt.title('Experiment I: Construction Runtime')
+plt.xlabel('Seed Data Size')
+plt.ylabel('Runtime (s)')
+plt.legend(['LSH', 'Graph'])
 plt.savefig('../../results/generation/experiment_I.png')
 plt.close()
-pd.DataFrame([lsh_const, graph_const]).T.to_csv('../../results/experiment1_construction_runtime.csv')
-
+df_const.to_csv('../../results/experiment1_construction_runtime.csv')
 
 lsh_input = {}
 graph_input = {}
@@ -228,26 +233,27 @@ for nSeg in tqdm(range(1000, 10000 + 1, 1000)):
     graph_res, _ = Graph_update(data, segments, window, nTS=10)
     graph_input[nSeg] = time.time() - start
 
-print(lsh_input, graph_input)
-pd.DataFrame([lsh_input, graph_input]).T.plot()
+# Plot II
+plt.figure()
+df_input = pd.DataFrame([lsh_input, graph_input]).T
+df_input.columns = ['LSH', 'Graph']
+df_input.plot()
+plt.title('Experiment II: Input Segments Runtime')
+plt.xlabel('Data Size')
+plt.ylabel('Runtime (s)')
+plt.legend(['LSH', 'Graph'])
 plt.savefig('../../results/generation/experiment_II.png')
 plt.close()
-pd.DataFrame([lsh_input, graph_input]).T.to_csv('../../results/experiment2_input_segments_runtime.csv')
+df_input.to_csv('../../results/experiment2_input_segments_runtime.csv')
 
 print(lsh_input, graph_input)
 
 nTS = 1000
 
 lsh_res, lsh_output = LSH_update(data, long_seg, window, nTS=nTS, num_hashtables=3, n_top=1)
-lsh_output
+print(lsh_output)
 
 graph_res, graph_output = Graph_update(data, long_seg, window, nTS=nTS)
-graph_output
+print(graph_output)
 
 print(lsh_output, graph_output)
-
-pd.DataFrame([lsh_output, graph_output]).T.plot()
-plt.savefig('../../results/generation/experiment_III.png')
-plt.close()
-pd.DataFrame([lsh_output, graph_output]).T.to_csv('../../results/experiment3_output_segments_runtime.csv')
-
