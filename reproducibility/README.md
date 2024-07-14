@@ -73,18 +73,9 @@ Two servers are required to reproduce the online workloads Q1-Q5 results: the fi
 
 ``{system}`` should be replaced with the system's name.
 
-#### Step 1: Launch the system on the host machine
+#### Step 1: Install dependencies on the client machine 
 
-Launch the system on the host side 
-
-   ```bash
-   cd systems/{system}
-   sh launch.sh
-   ```
-
-#### Step 2: Query the system from the client machine
-
- - Clone this repo
+- Clone this repo
  - Install dependencies:
 
   ```bash
@@ -98,13 +89,26 @@ Launch the system on the host side
   sh install_client_lib.sh
   ```
 
+
+#### Step 2: Launch the system on the host machine
+
+Launch the system on the host side 
+
+   ```bash
+   cd systems/{system}
+   sh launch.sh
+   ```
+
+#### Step 3: Query the system from the client machine
+
+ 
 - Execute the online query on the client side using the --host flag (see examples below).
 
    ```bash
    python3 tsm_eval_online.py --system {system} --queries all --host "host_address" --batch_size 10000 20000 200000 600000 1000000 1400000
    ```
 
-#### Step 3: Interrupt the system on the host machine
+#### Step 4: Interrupt the system on the host machine
 
 - Stop systems on the host server
    ```bash
