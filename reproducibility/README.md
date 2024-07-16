@@ -63,7 +63,7 @@ sh repro_loading.sh
 ```
 - **Note**: The results will be written in the `results` folder. 
     
-## [Figures 3, 4, and 5] Offline Workloads D-LONG Q1-Q7 (takes ~ 7hours):
+## [Figures 3, 4, and 5] Offline Workloads D-LONG Q1-Q7 (takes ~ 7 hours):
 
 - To reproduce the results in Figures 3, 4, and 5, execute the following command:
 
@@ -71,7 +71,7 @@ sh repro_loading.sh
 python3 tsm_eval.py --systems all --queries all --datasets d1 
 ```
 - **Notes**:
-   - The runtime results of the systems for a query will be added to: `results/offline/d1/{query}/runtime/`.
+   - The runtime results of the systems for each query will be added to: `results/offline/d1/{query}/runtime/`.
    - The runtime plots will be added to the folder `results/offline/d1/{query}/plots/`.
 
 
@@ -84,7 +84,7 @@ python3 tsm_eval.py --systems all --queries all --datasets d2
 ```
 
 - **Notes**:
-   - The runtime results of the systems for a given query will be added to: `results/offline/d2/{query}/runtime/`.
+   - The runtime results of the systems for each query will be added to: `results/offline/d2/{query}/runtime/`.
    - The runtime plots will be added to the folder `results/offline/d2/{query}/plots/`.
 
 
