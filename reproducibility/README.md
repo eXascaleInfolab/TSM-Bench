@@ -93,16 +93,38 @@ python3 tsm_eval.py --systems all --queries all --datasets d2
 -  This experiment involves a manual configuration of the insertion rates, which is hard to automate.
 
 
-## [Figure 8] Online Workloads D-LONG Q1-Q5 (takes XXX):
 
-Two servers are required to reproduce the online workloads Q1-Q5 results: the first serves as a host machine to deploy the systems (similar to above), and the second runs as a client to generate writes and queries. 
+## [Figure 9] Data Generation Performance
 
-``{system}`` should be replaced with the system's name.
+- To reproduce the data generation performance results, execute the following command  (takes ~ 9hours):
 
-#### Step 1: Install dependencies on the client machine 
+```bash
+sh repro_generation_performance.sh 
+```
 
-- Clone this repo
-- Install dependencies:
+- **Results**: The runtimes and plots will be written to the `results/generation/` folder.
+
+## [Figure 10] Compression Performance
+
+- To reproduce the compression performance results, run the following command:
+
+```bash
+sh repro_characteristics.sh 
+```
+
+- **Results**: Results will be written to the `results/compression/` folder. 
+
+
+## [Figure 8] Online Workloads D-LONG Q1-Q5 (takes XXX)
+
+### Requirements: 
+
+- Two servers are required in this experiment: the first serves as a host machine to deploy the systems (similar to above), and the second runs as a client to generate writes and queries. 
+
+### Setup
+
+- Clone this repo **Wasn't this already done?**
+- Install the dependencies:
 
   ```bash
   cd systems/
@@ -115,8 +137,10 @@ Two servers are required to reproduce the online workloads Q1-Q5 results: the fi
   sh install_client_lib.sh
   ```
 
+### Execution
+- Repeat the following for each system by replacing ``{system}`` with any name from this list: {xx, yy, zzz, vvv}
 
-#### Step 2: Launch the system on the host machine
+#### 1. Launch the system on the host machine
 
 Launch the system on the host side 
 
@@ -125,7 +149,7 @@ Launch the system on the host side
    sh launch.sh
    ```
 
-#### Step 3: Query the system from the client machine
+#### 2. Query the system from the client machine
 
  
 - Execute the online query on the client side using the --host flag (see examples below).
@@ -134,7 +158,7 @@ Launch the system on the host side
    python3 tsm_eval_online.py --system {system} --queries all --host "host_address" --batch_size 10000 20000 200000 600000 1000000 1400000
    ```
 
-#### Step 4: Interrupt the system on the host machine
+#### 3. Interrupt the system on the host machine
 
 - Stop systems on the host server
    ```bash
@@ -143,10 +167,10 @@ Launch the system on the host side
 
 **Notes**:
 
-- We launch each system separately on the host machine and execute the online query on the client machine using the --host flag.
-- The maximal batch_size depends on your architecture and the selected TSDB.
-- Druid supports ingestion and queries concurrently, while QuestDB does not support multithreading.
-- If you stop the program before its termination or shut down the system, the database might not be set into its initial state properly; you need to reload the dataset in the host machine:
+- We launch each system separately on the host machine and execute the online query on the client machine using the --host flag. **What does the reviewer need to do?**
+- The maximal batch_size depends on your architecture and the selected TSDB. **What does the reviewer need to do?**
+- Druid supports ingestion and queries concurrently, while QuestDB does not support multithreading. **What does the reviewer need to do?**
+- If you stop the program before its termination or shut down the system, the database might not be set into its initial state properly; you need to reload the dataset in the host machine: **What does the reviewer need to do?**
     ```bash
    cd systems/{system}
    sh load.sh
@@ -157,31 +181,8 @@ Launch the system on the host side
 
 - The runtime results of the systems will be added to: `results/online/{dataset}/{query}/runtime/`. 
 - The runtime plots will be added to the folder `results/online/{dataset}/{query}/plots/`.
-- All the queries return the runtimes by varying the ingestion rate.
 
-
-
-## Data Generation Performance (Figure 9):
-
-To reproduce the data generation performance results, execute the following command  (takes ~ 9hours):
-
-
-```bash
-sh repro_generation_performance.sh 
-```
-
-- **Results**: The runtimes and plots will be added to the `results/generation/` folder.
-
-## Compression Performance (Figure 10):
-
-To reproduce the compression performance results, run the following command:
-
-```bash
-sh repro_characteristics.sh 
-```
-
-- **Results**: Results will be outputted to the `results/compression/` folder. 
-
+<!---
 
 
 ## Reproducing results for D-MULTI 
@@ -213,7 +214,7 @@ sh repro_loading.sh
 python3 tsm_eval.py --systems all --queries all --datasets d2
 ```
 
-
+-->
 
 ___
 
