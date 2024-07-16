@@ -53,16 +53,19 @@ sh build.sh d2 && sh load_all.sh d2
 sh load_all.sh d1
 ```
 -->
-
-## [Table 3] Data Loading and Compression Results (takes < 1min):
+___
+## [Table 3] Data Loading and Compression Results (takes ~ XXX hours):
 
 - To reproduce the results in Table 3, execute the following command:
 
 ```bash
 sh repro_loading.sh 
 ```
-- **Note**: The results will be written in the `results` folder. 
-    
+
+- The results will be written to the `results` folder. 
+
+
+___
 ## [Figures 3, 4, and 5] Offline Workloads D-LONG Q1-Q7 (takes ~ 7 hours):
 
 - To reproduce the results in Figures 3, 4, and 5, execute the following command:
@@ -70,11 +73,10 @@ sh repro_loading.sh
 ```bash
 python3 tsm_eval.py --systems all --queries all --datasets d1 
 ```
-- **Notes**:
-   - The runtime results of the systems for each query will be added to: `results/offline/d1/{query}/runtime/`.
-   - The runtime plots will be added to the folder `results/offline/d1/{query}/plots/`.
+- The runtime results of the systems for each query will be added to: `results/offline/d1/{query}/runtime/`.
+- The runtime plots will be added to the folder `results/offline/d1/{query}/plots/`.
 
-
+___
 ## [Figure 6] Offline Workloads D-MULTI Q1-Q5 (takes ~ XXX hours)
 
 - To reproduce the offline workloads D-MULTI Q1-Q5 results in Figure 6, run the following command:
@@ -83,28 +85,28 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 python3 tsm_eval.py --systems all --queries all --datasets d2
 ```
 
-- **Notes**:
-   - The runtime results of the systems for each query will be added to: `results/offline/d2/{query}/runtime/`.
-   - The runtime plots will be added to the folder `results/offline/d2/{query}/plots/`.
+- The runtime results of the systems for each query will be added to: `results/offline/d2/{query}/runtime/`.
+- The runtime plots will be added to the folder `results/offline/d2/{query}/plots/`.
 
-
-## [Figure 7] Insertion Latency
+___
+## [Figure 7] Insertion Latency  (takes ~ XXX hours)
  
 -  This experiment involves a manual configuration of the insertion rates, which is hard to automate.
 
 
+___
+## [Figure 9] Data Generation Performance  (takes ~ 9hours)
 
-## [Figure 9] Data Generation Performance
-
-- To reproduce the data generation performance results, execute the following command  (takes ~ 9hours):
+- To reproduce the data generation performance results, execute the following command:
 
 ```bash
 sh repro_generation_performance.sh 
 ```
 
-- **Results**: The runtimes and plots will be written to the `results/generation/` folder.
+- The runtimes and plots will be written to the `results/generation/` folder.
 
-## [Figure 10] Compression Performance
+___
+## [Figure 10] Compression Performance (takes ~ XXX hours)
 
 - To reproduce the compression performance results, run the following command:
 
@@ -112,14 +114,14 @@ sh repro_generation_performance.sh
 sh repro_characteristics.sh 
 ```
 
-- **Results**: Results will be written to the `results/compression/` folder. 
+- The results will be written to the `results/compression/` folder. 
 
-
+___
 ## [Figure 8] Online Workloads D-LONG Q1-Q5 (takes XXX)
 
 ### Requirements: 
 
-- Two servers are required in this experiment: the first serves as a host machine to deploy the systems (similar to above), and the second runs as a client to generate writes and queries. 
+- Two connected machines are required in this experiment: the first serves as a host server to deploy the systems (similar to above), and the second runs as a client to generate writes and queries. 
 
 ### Setup
 
@@ -138,49 +140,53 @@ sh repro_characteristics.sh
   ```
 
 ### Execution
-- Repeat the following for each system by replacing ``{system}`` with any name from this list: {xx, yy, zzz, vvv}
-
-#### 1. Launch the system on the host machine
-
-Launch the system on the host side 
+- We launch each system separately on the host machine and execute the online query on the client machine using the --host flag.
+- The runtime results of the systems will be added to: `results/online/d1/{query}/runtime/`. 
+- The runtime plots will be added to the folder `results/online/d1/{query}/plots/`.
+- To get the results of **system 1**
+  -  Launch the system on the host machine 
 
    ```bash
-   cd systems/{system}
+   cd systems/system1
    sh launch.sh
    ```
-
-#### 2. Query the system from the client machine
-
- 
-- Execute the online query on the client side using the --host flag (see examples below).
+  - Execute the online query on the client machine
 
    ```bash
-   python3 tsm_eval_online.py --system {system} --queries all --host "host_address" --batch_size 10000 20000 200000 600000 1000000 1400000
+   python3 tsm_eval_online.py --system system1 --queries all --host "host_address" --batch_size 10000 20000 200000 600000 1000000 1400000
    ```
 
-#### 3. Interrupt the system on the host machine
+   - Stop the system on the host machine
+    ```bash
+   sh stop.sh
+   ```   
 
-- Stop systems on the host server
+
+- To get the results of **system 2**
+  -  Launch the system on the host machine 
+
    ```bash
+   cd ../systems/system2
+   sh launch.sh
+   ```
+  - Execute the online query on the client machine
+
+   ```bash
+   python3 tsm_eval_online.py --system system2 --queries all --host "host_address" --batch_size 10000 20000 200000 600000 1000000 1400000
+   ```
+
+   - Stop the system on the host machine
+    ```bash
    sh stop.sh
    ```   
 
 **Notes**:
 
-- We launch each system separately on the host machine and execute the online query on the client machine using the --host flag. **What does the reviewer need to do?**
 - The maximal batch_size depends on your architecture and the selected TSDB. **What does the reviewer need to do?**
 - Druid supports ingestion and queries concurrently, while QuestDB does not support multithreading. **What does the reviewer need to do?**
 - If you stop the program before its termination or shut down the system, the database might not be set into its initial state properly; you need to reload the dataset in the host machine: **What does the reviewer need to do?**
-    ```bash
-   cd systems/{system}
-   sh load.sh
-   ```   
+
   
-
-**Results**: 
-
-- The runtime results of the systems will be added to: `results/online/{dataset}/{query}/runtime/`. 
-- The runtime plots will be added to the folder `results/online/{dataset}/{query}/plots/`.
 
 <!---
 
