@@ -35,7 +35,14 @@ sh install_all_sys.sh
 
 ```bash
 cd ../datasets
-sh build.sh d1 && load_all.sh d1
+sh build.sh d1 && sh load_all.sh d1
+```
+
+- Download, decompress, amd load Dataset 2 (takes ~38 hours)
+
+```bash
+cd ../datasets
+sh build.sh d2 && sh load_all.sh d2
 ```
 
 <!---
@@ -47,7 +54,7 @@ sh load_all.sh d1
 ```
 -->
 
-## [Table 3] Data Loading and Compression Results:
+## [Table 3] Data Loading and Compression Results (takes < 1min):
 
 - To reproduce the results in Table 3, execute the following command:
 
@@ -66,6 +73,19 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 - **Notes**:
    - The runtime results of the systems for a given dataset and query will be added to: `results/offline/{dataset}/{query}/runtime/`.
    - The runtime plots will be added to the folder `results/offline/{dataset}/{query}/plots/`.
+
+
+## [Figure 6] offline workloads D-MULTI Q1-Q5 (takes ~ XXX hours)
+
+- To reproduce the offline workloads D-MULTI Q1-Q5 results in Figure 6, run the following command:
+
+```bash
+python3 tsm_eval.py --systems all --queries all --datasets d2
+```
+
+## [Figure 7] Insertion Latency
+ 
+-  This experiment involves a manual configuration of the insertion rates, which is hard to automate.
 
 
 ## [Figure 8] Online Workloads D-LONG Q1-Q5 (takes XXX):
