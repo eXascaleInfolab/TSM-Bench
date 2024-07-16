@@ -45,29 +45,27 @@ sh load_all.sh d1
 ```
 
 
-## Data Bulk Loading & Compression (Table 3 in paper):
+## [Table 3] Data Loading and Compression Results:
 
-- To reproduce the data bulk loading results in Table 3, run the following command:
 
 ```bash
 sh repro_loading.sh 
 ```
-- **Results**: Results will be outputted to the `results` folder. 
+- **Note**: The results will be written in the `results` folder. 
     
-## Offline Workloads D-LONG Q1-Q7 (Figures 3, 4, and 5):
+## [Figures 3, 4, and 5] Offline Workloads D-LONG Q1-Q7 (takes ~ 7hours):
 
-To reproduce the offline workloads D-LONG Q1-Q7 results, execute the following command (takes ~ 7hours):
+To reproduce the offline workload results, execute the following command:
 
 ```bash
 python3 tsm_eval.py --systems all --queries all --datasets d1 
 ```
+- **Notes**:
+   - The runtime results of the systems for a given dataset and query will be added to: `results/offline/{dataset}/{query}/runtime/`.
+   - The runtime plots will be added to the folder `results/offline/{dataset}/{query}/plots/`.
 
-- **Results**: All the runtimes and plots will be added to the `results` folder.
-  
-    - The runtime results of the systems for a given dataset and query will be added to: `results/offline/{dataset}/{query}/runtime/`. The runtime plots will be added to the folder `results/offline/{dataset}/{query}/plots/`.
 
-
-## Online Workloads D-LONG Q1-Q5 (Figure 8):
+## [Figure 8] Online Workloads D-LONG Q1-Q5 (takes XXX):
 
 Two servers are required to reproduce the online workloads Q1-Q5 results: the first serves as a host machine to deploy the systems (similar to above), and the second runs as a client to generate writes and queries. 
 
