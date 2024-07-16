@@ -31,14 +31,14 @@ sh install_all_sys.sh
 ```
 
 
-- Download, decompress, amd load Dataset 1 (takes ~2 hours)
+- Download, decompress, and load Dataset 1 (takes ~2 hours)
 
 ```bash
 cd ../datasets
 sh build.sh d1 && sh load_all.sh d1
 ```
 
-- Download, decompress, amd load Dataset 2 (takes ~38 hours)
+- Download, decompress, and load Dataset 2 (takes ~38 hours)
 
 ```bash
 cd ../datasets
@@ -71,17 +71,22 @@ sh repro_loading.sh
 python3 tsm_eval.py --systems all --queries all --datasets d1 
 ```
 - **Notes**:
-   - The runtime results of the systems for a given dataset and query will be added to: `results/offline/{dataset}/{query}/runtime/`.
-   - The runtime plots will be added to the folder `results/offline/{dataset}/{query}/plots/`.
+   - The runtime results of the systems for a query will be added to: `results/offline/d1/{query}/runtime/`.
+   - The runtime plots will be added to the folder `results/offline/d1/{query}/plots/`.
 
 
-## [Figure 6] offline workloads D-MULTI Q1-Q5 (takes ~ XXX hours)
+## [Figure 6] Offline Workloads D-MULTI Q1-Q5 (takes ~ XXX hours)
 
 - To reproduce the offline workloads D-MULTI Q1-Q5 results in Figure 6, run the following command:
 
 ```bash
 python3 tsm_eval.py --systems all --queries all --datasets d2
 ```
+
+- **Notes**:
+   - The runtime results of the systems for a given query will be added to: `results/offline/d2/{query}/runtime/`.
+   - The runtime plots will be added to the folder `results/offline/d2/{query}/plots/`.
+
 
 ## [Figure 7] Insertion Latency
  
