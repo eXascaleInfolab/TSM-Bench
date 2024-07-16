@@ -49,6 +49,7 @@ sh load_all.sh d1
 
 ## [Table 3] Data Loading and Compression Results:
 
+- To reproduce the results in Table 3, execute the following command:
 
 ```bash
 sh repro_loading.sh 
@@ -57,7 +58,7 @@ sh repro_loading.sh
     
 ## [Figures 3, 4, and 5] Offline Workloads D-LONG Q1-Q7 (takes ~ 7hours):
 
-To reproduce the offline workload results, execute the following command:
+- To reproduce the results in Figures 3, 4, and 5, execute the following command:
 
 ```bash
 python3 tsm_eval.py --systems all --queries all --datasets d1 
@@ -76,7 +77,7 @@ Two servers are required to reproduce the online workloads Q1-Q5 results: the fi
 #### Step 1: Install dependencies on the client machine 
 
 - Clone this repo
- - Install dependencies:
+- Install dependencies:
 
   ```bash
   cd systems/
