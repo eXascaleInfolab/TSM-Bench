@@ -95,7 +95,7 @@ ___
 
 
 ___
-## [Figure 9] Data Generation Performance  (takes ~ 9hours)
+## [Figure 9] Data Generation Performance  (takes ~ 9 hours)
 
 - To reproduce the data generation performance results, execute the following command:
 
@@ -117,7 +117,7 @@ sh repro_characteristics.sh
 - The results will be written to the `results/compression/` folder. 
 
 ___
-## [Figure 8] Online Workloads D-LONG Q1-Q5 (takes XXX)
+## [Figure 8] Online Workloads D-LONG Q1-Q5 (takes XXX hours)
 
 ### Requirements: 
 
@@ -126,18 +126,15 @@ ___
 ### Setup
 
 - Clone this repo **Wasn't this already done?**
-- Install the dependencies:
+- Install the dependencies and system libraries:
 
   ```bash
   cd systems/
   sh install_dep.sh
   source TSMvenv/bin/activate
-  ```
-- Install the system libraries
-
-  ```bash
   sh install_client_lib.sh
   ```
+
 
 ### Execution
 - We launch each system separately on the host machine and execute the online query on the client machine using the --host flag.
@@ -180,16 +177,12 @@ ___
    sh stop.sh
    ```   
 
+<!---
 **Notes**:
 
 - The maximal batch_size depends on your architecture and the selected TSDB. **What does the reviewer need to do?**
 - Druid supports ingestion and queries concurrently, while QuestDB does not support multithreading. **What does the reviewer need to do?**
 - If you stop the program before its termination or shut down the system, the database might not be set into its initial state properly; you need to reload the dataset in the host machine: **What does the reviewer need to do?**
-
-  
-
-<!---
-
 
 ## Reproducing results for D-MULTI 
 
