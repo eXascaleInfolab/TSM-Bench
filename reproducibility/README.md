@@ -121,12 +121,10 @@ ___
 
 ### Requirements: 
 
-- Two connected machines are required in this experiment: the first serves as a host server to deploy the systems (similar to above), and the second runs as a client to generate writes and queries. 
-
-### Setup
-
-- Clone this repo on the second machine 
-- Install the dependencies and system libraries:
+- For this experiment, we need a second machine, which runs as a client to generate writes and queries. 
+- In this machine, do the following:
+    - Clone this repo
+    - Install the dependencies and system libraries:
 
   ```bash
   cd systems/
