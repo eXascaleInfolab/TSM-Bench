@@ -125,7 +125,7 @@ ___
 
 ### Setup
 
-- Clone this repo **Wasn't this already done?**
+- Clone this repo on the second machine 
 - Install the dependencies and system libraries:
 
   ```bash
