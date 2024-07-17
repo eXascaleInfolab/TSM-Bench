@@ -89,7 +89,7 @@ python3 tsm_eval.py --systems all --queries all --datasets d2
 - The runtime plots will be added to the folder `results/offline/d2/{query}/plots/`.
 
 ___
-## [Figure 7] Insertion Latency  (takes ~ XXX hours)
+## [Figure 7] Insertion Latency 
  
 -  This experiment involves a manual configuration of the insertion rates, which is hard to automate.
 
