@@ -57,6 +57,7 @@ time_ranges = ["day"]  # , "hour", "day", "week"]
 
 queries = args.queries
 
+print(queries)
 if queries == 'all': 
   queries = ['q1', 'q2', 'q3', 'q4', 'q5'] 
 
