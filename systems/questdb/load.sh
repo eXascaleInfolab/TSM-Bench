@@ -69,7 +69,7 @@ fi # end if dataset != d2
 
 end_time=$(date +%s.%N)
 elapsed_time=$(echo "$end_time - $start_time" | bc)
-echo "Loading time: $elapsed_time seconds" > loading_time_$dataset.txt
+echo "$dataset $compression ${elapsed_time}s" >> time_and_compression.txt
 echo $elapsed_time
 echo "database compression"
 sh compression.sh
