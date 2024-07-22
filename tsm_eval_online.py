@@ -99,7 +99,7 @@ try:
                     query_path_path = f"results/online/{dataset}/{query}"
                     os.makedirs(f"{query_path_path}/runtimes", exist_ok=True)
                     output_file = f"{query_path_path}/runtimes/{system}.txt"
-                    print(query[1:])
+                    print('y', query)
                     query_template = query_templates[int(query[1:]) - 1]
                     for n_s, n_st, time_range in scenarios:
                         if query.lower() == "empty":
