@@ -35,7 +35,7 @@ sh install_all_sys.sh
 
 ```bash
 cd ../datasets
-sh build.sh d1 && sh load_all.sh d1
+sh build.sh d1; sh load_all.sh d1
 ```
 
 - Download, decompress, and load Dataset 2 (takes ~38 hours)
@@ -130,7 +130,7 @@ ___
   cd systems/
   sh install_dep.sh
   source TSMvenv/bin/activate
-  sh install_client_lib.sh
+  time sh install_client_lib.sh
   ```
 
 
