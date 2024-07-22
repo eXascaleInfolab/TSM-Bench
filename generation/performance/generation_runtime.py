@@ -220,7 +220,7 @@ plt.ylabel('Runtime (s)')
 plt.legend(['LSH', 'Graph'])
 plt.savefig('../../results/generation/experiment_I.png')
 plt.close()
-df_const.to_csv('../../results/experiment1_construction_runtime.csv')
+df_const.to_csv('../../results/generation/experiment1_construction_runtime.csv')
 
 lsh_input = {}
 graph_input = {}
@@ -244,7 +244,7 @@ plt.ylabel('Runtime (s)')
 plt.legend(['LSH', 'Graph'])
 plt.savefig('../../results/generation/experiment_II.png')
 plt.close()
-df_input.to_csv('../../results/experiment2_input_segments_runtime.csv')
+df_input.to_csv('../../results/generation/experiment2_input_segments_runtime.csv')
 
 print(lsh_input, graph_input)
 
