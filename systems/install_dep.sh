@@ -26,6 +26,7 @@ pip3 install matplotlib
 pip3 install matplotlib_terminal
 pip3 install pandas
 pip3 install jsonlines
+pip3 install lshashpy3
 
 sudo apt-get install  libpq-dev -y
 pip3 install psycopg2
