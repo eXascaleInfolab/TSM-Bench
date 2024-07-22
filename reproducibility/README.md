@@ -38,11 +38,11 @@ cd ../datasets
 sh build.sh d1; sh load_all.sh d1
 ```
 
-- Download, decompress, and load Dataset 2 (takes ~38 hours)
+- Download, decompress, and load Dataset 2 (takes ~78 hours)
 
 ```bash
 cd ../datasets
-sh build.sh d2 && sh load_all.sh d2
+sh build.sh d2; sh load_all.sh d2
 ```
 
 <!---
@@ -117,7 +117,7 @@ sh repro_characteristics.sh
 - The results will be written to the `results/compression/` folder. 
 
 ___
-## [Figure 8] Online Workloads D-LONG Q1-Q5 (takes XXX hours)
+## [Figure 8] Online Workloads D-LONG Q1-Q5 (takes 7 hours)
 
 ### Requirements: 
 
@@ -130,7 +130,7 @@ ___
   cd systems/
   sh install_dep.sh
   source TSMvenv/bin/activate
-  time sh install_client_lib.sh
+  sh install_client_lib.sh
   ```
 
 
@@ -138,17 +138,74 @@ ___
 - We launch each system separately on the host machine and execute the online query on the client machine using the --host flag.
 - The runtime results of the systems will be added to: `results/online/d1/{query}/runtime/`. 
 - The runtime plots will be added to the folder `results/online/d1/{query}/plots/`.
-- To get the results of **system 1**
+- Druid and eXtremeDB do not properly support this workload.
+
+- To get the results of **ClickHouse**
   -  Launch the system on the host machine 
 
    ```bash
-   cd systems/system1
+   cd systems/clickhouse
    sh launch.sh
    ```
-  - Execute the online query on the client machine
+  - Execute the online query on the client machine, replace 'localhost' with the server machine address
 
    ```bash
-   python3 tsm_eval_online.py --system system1 --queries all --host "host_address" --batch_size 10000 20000 200000 600000 1000000 1400000
+   python3 tsm_eval_online.py --system clickhouse --queries all --host "localhost" --batch_size 10000 20000 200000 600000 1000000 1400000
+   ```
+
+   - Stop the system on the host machine
+    ```bash
+   sh stop.sh
+   ```
+
+- To get the results of **InfluxDB**
+  -  Launch the system on the host machine 
+
+   ```bash
+   cd systems/influx
+   sh launch.sh
+   ```
+  - Execute the online query on the client machine, replace 'localhost' with the server machine address
+
+   ```bash
+   python3 tsm_eval_online.py --system influx --queries all --host "localhost" --batch_size 10000 20000 200000 600000 1000000 1400000
+   ```
+
+   - Stop the system on the host machine
+    ```bash
+   sh stop.sh
+   ```
+
+- To get the results of **MonetDB**
+  -  Launch the system on the host machine 
+
+   ```bash
+   cd systems/monetdb
+   sh launch.sh
+   ```
+  - Execute the online query on the client machine, replace 'localhost' with the server machine address
+
+   ```bash
+   python3 tsm_eval_online.py --system monetdb --queries all --host "localhost" --batch_size 10000 20000 200000 600000 1000000 1400000
+   ```
+
+   - Stop the system on the host machine
+    ```bash
+   sh stop.sh
+   ```
+
+    
+- To get the results of **QuestDB**
+  -  Launch the system on the host machine 
+
+   ```bash
+   cd systems/questdb
+   sh launch.sh
+   ```
+  - Execute the online query on the client machine, replace 'localhost' with the server machine address
+
+   ```bash
+   python3 tsm_eval_online.py --system questdb --queries all --host "localhost" --batch_size 10000 20000 200000 
    ```
 
    - Stop the system on the host machine
@@ -156,18 +213,35 @@ ___
    sh stop.sh
    ```   
 
-
-- To get the results of **system 2**
+- To get the results of **TimescaleDB**
   -  Launch the system on the host machine 
 
    ```bash
-   cd ../systems/system2
+   cd systems/timescaledb
    sh launch.sh
    ```
-  - Execute the online query on the client machine
+  - Execute the online query on the client machine, replace 'localhost' with the server machine address
 
    ```bash
-   python3 tsm_eval_online.py --system system2 --queries all --host "host_address" --batch_size 10000 20000 200000 600000 1000000 1400000
+   python3 tsm_eval_online.py --system timescaledb --queries all --host "localhost" --batch_size 10000 20000 200000 600000 1000000 1400000
+   ```
+
+   - Stop the system on the host machine
+    ```bash
+   sh stop.sh
+   ```   
+
+- To get the results of **eXtremeDB**
+  -  Launch the system on the host machine 
+
+   ```bash
+   cd systems/extremedb
+   sh launch.sh
+   ```
+  - Execute the online query on the client machine, replace 'localhost' with the server machine address
+
+   ```bash
+   python3 tsm_eval_online.py --system extremedb --queries all --host "localhost" --batch_size 10000 20000
    ```
 
    - Stop the system on the host machine
