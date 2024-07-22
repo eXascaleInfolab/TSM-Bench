@@ -11,7 +11,7 @@ cd clickhouse
 sh ./load.sh $dataset
 cd ..
 
-sh stop_all.sh
+#sh stop_all.sh
 
 if [ "$dataset" != "d2" ]; then
     # Druid
