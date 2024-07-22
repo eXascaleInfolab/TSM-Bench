@@ -10,7 +10,7 @@ from utils.query_template_loader import load_query_templates
 import argparse
 
 # questdb requieres dataset path to be rebuild
-HOST_DATASET_PATH = None  # "home/luca/TSM/TSM-BENCH/datasets"
+HOST_DATASET_PATH = "./datasets"
 dataset = "d1"
 n_threads = 10
 
