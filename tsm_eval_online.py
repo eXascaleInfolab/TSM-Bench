@@ -57,6 +57,9 @@ time_ranges = ["day"]  # , "hour", "day", "week"]
 
 queries = args.queries
 
+if queries == 'all': 
+  queries = ['q1', 'q2', 'q3', 'q4', 'q5'] 
+
 from systems import timescaledb
 
 # threads 10
