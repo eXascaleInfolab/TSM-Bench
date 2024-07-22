@@ -20,6 +20,7 @@ def delete_data(date= "2019-04-30T00:00:00", host = "localhost", dataset = "d1")
           database="d1")
     start = time.time()
     cur = conn.cursor()
+    sql = f"""drop table if exists table_copy; """
     sql = f"""create table table_copy as (select * from {dataset} where ts < '{date}') timestamp (ts) PARTITION BY DAY; """
     cur.execute(sql)
     cur.execute(f"drop table {dataset};")
