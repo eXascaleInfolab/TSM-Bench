@@ -10,7 +10,7 @@
 ## Prerequisites
 
 
-- Ubuntu 22 (including Ubuntu derivatives, e.g., Xubuntu); 128 GB RAM
+- Ubuntu 22 (including Ubuntu derivatives, e.g., Xubuntu); 128 GB RAM, 2TB free disk space. 
 - Clone this repository (this can take a couple of minutes as it uploads one of the datasets)
 ___
 
