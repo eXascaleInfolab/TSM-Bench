@@ -16,7 +16,7 @@ ___
 
 ## Systems Setup
 
-- The execution time estimate for the total workload on a 32-core 6 Gbps CPU is 6 to 7 days.
+- The execution time estimate for the total workload on a 32-core 6 Gbps CPU is 6-7 days.
 - Install the dependencies and activate the created virtual environment 
   
 ```bash
