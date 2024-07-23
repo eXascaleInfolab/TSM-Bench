@@ -55,7 +55,7 @@ sh load_all.sh d1
 ```
 -->
 ___
-## [Table 3] Data Loading and Compression Results (takes ~ XXX hours):
+## [Table 3] Data Loading and Compression Results (Instant):
 
 - To reproduce the results in Table 3, execute the following command:
 
@@ -67,9 +67,9 @@ sh repro_loading.sh
 
 
 ___
-## [Figures 3, 4, and 5] Offline Workloads D-LONG Q1-Q7:
+## [Figures 3, 4, and 5] Offline Workloads D-LONG Q1-Q7 (takes ~ 7 hours):
 
-- To reproduce the results in Figures 3, 4, and 5, execute the following command (takes ~ 7 hours):
+- To reproduce the results in Figures 3, 4, and 5, execute the following command:
 
 ```bash
 python3 tsm_eval.py --systems all --queries all --datasets d1 
