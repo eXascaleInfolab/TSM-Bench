@@ -32,14 +32,14 @@ sh install_all_sys.sh
 ```
 
 
-- Download, decompress, and load Dataset 1 (takes ~2 hours)
+- Download, decompress, and load Dataset 1 (takes ~ 2 hours)
 
 ```bash
 cd ../datasets
 sh build.sh d1; sh load_all.sh d1
 ```
 
-- Download, decompress, and load Dataset 2 (takes ~78 hours)
+- Download, decompress, and load Dataset 2 (takes ~ 78 hours)
 
 ```bash
 cd ../datasets
@@ -48,7 +48,7 @@ sh build.sh d2; sh load_all.sh d2
 
 <!---
 
-- Load Dataset 1 into all the systems (takes ~ 2hours)
+- Load Dataset 1 into all the systems (takes ~ 2 hours)
 
 ```bash
 sh load_all.sh d1
@@ -118,7 +118,7 @@ sh repro_characteristics.sh
 - The results will be written to the `results/compression/` folder. 
 
 ___
-## [Figure 8] Online Workloads D-LONG Q1-Q5 (takes 7 hours)
+## [Figure 8] Online Workloads D-LONG Q1-Q5 (takes ~ 7 hours)
 
 ### Requirements: 
 
