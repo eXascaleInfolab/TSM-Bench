@@ -16,6 +16,7 @@ ___
 
 ## Systems Setup
 
+- The execution time estimate for the total workload on a 32-core 6 Gbps CPU is 6 to 7 days.
 - Install the dependencies and activate the created virtual environment 
   
 ```bash
@@ -66,9 +67,9 @@ sh repro_loading.sh
 
 
 ___
-## [Figures 3, 4, and 5] Offline Workloads D-LONG Q1-Q7 (takes ~ 7 hours):
+## [Figures 3, 4, and 5] Offline Workloads D-LONG Q1-Q7:
 
-- To reproduce the results in Figures 3, 4, and 5, execute the following command:
+- To reproduce the results in Figures 3, 4, and 5, execute the following command (takes ~ 7 hours):
 
 ```bash
 python3 tsm_eval.py --systems all --queries all --datasets d1 
@@ -77,7 +78,7 @@ python3 tsm_eval.py --systems all --queries all --datasets d1
 - The runtime plots will be added to the folder `results/offline/d1/{query}/plots/`.
 
 ___
-## [Figure 6] Offline Workloads D-MULTI Q1-Q5 (takes ~ XXX hours)
+## [Figure 6] Offline Workloads D-MULTI Q1-Q5 (takes ~ 42 hours)
 
 - To reproduce the offline workloads D-MULTI Q1-Q5 results in Figure 6, run the following command:
 
@@ -106,7 +107,7 @@ sh repro_generation_performance.sh
 - The runtimes and plots will be written to the `results/generation/` folder.
 
 ___
-## [Figure 10] Compression Performance (takes ~ XXX hours)
+## [Figure 10] Compression Performance (takes ~ 6 hours)
 
 - To reproduce the compression performance results, run the following command:
 
