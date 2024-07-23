@@ -139,7 +139,7 @@ ___
 - We launch each system separately on the host machine and execute the online query on the client machine using the --host flag.
 - The runtime results of the systems will be added to: `results/online/d1/{query}/runtime/`. 
 - The runtime plots will be added to the folder `results/online/d1/{query}/plots/`.
-- Druid and eXtremeDB do not properly support this workload.
+- Druid and eXtremeDB do not fully support this workload.
 
 - To get the results of **ClickHouse**
   -  Launch the system on the host machine 
@@ -225,24 +225,6 @@ ___
 
    ```bash
    python3 tsm_eval_online.py --system timescaledb --queries all --host "localhost" --batch_size 10000 20000 200000 600000 1000000 1400000
-   ```
-
-   - Stop the system on the host machine
-    ```bash
-   sh stop.sh
-   ```   
-
-- To get the results of **eXtremeDB**
-  -  Launch the system on the host machine 
-
-   ```bash
-   cd systems/extremedb
-   sh launch.sh
-   ```
-  - Execute the online query on the client machine, replace 'localhost' with the server machine address
-
-   ```bash
-   python3 tsm_eval_online.py --system extremedb --queries all --host "localhost" --batch_size 10000 20000
    ```
 
    - Stop the system on the host machine
