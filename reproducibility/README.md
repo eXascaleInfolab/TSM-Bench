@@ -105,7 +105,7 @@ ___
 sh repro_generation_performance.sh 
 ```
 
-- The runtimes and plots will be written to the `results/generation/` folder.
+- The runtimes and plots will be written to `results/generation/experiment_{i}.png`.
 
 ___
 ## [Figure 10] Compression Performance (takes ~ 6 hours)
