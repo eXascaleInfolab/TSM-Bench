@@ -3,7 +3,6 @@
 **Paper**: Abdelouahab Khelifati, Mourad Khayati, Anton Dignös, Djellel Difallah, and Philippe Cudré-Mauroux: [TSM-Bench: Benchmarking Time Series Database Systems for Monitoring Applications](https://www.vldb.org/pvldb/vol16/p3363-khelifati.pdf). PVLDB 2023.
 - **Systems**: The benchmark evaluates all the systems mentioned in the paper: TSM-Bench, [ClickHouse](https://clickhouse.com/), [Druid](https://druid.apache.org/), [eXtremeDB](https://www.mcobject.com/)*, [InfluxDB](https://docs.influxdata.com/influxdb/v1.7/), [MonetDB](https://www.monetdb.org/easy-setup/), [QuestDB](https://questdb.io/), [TimescaleDB](https://www.timescale.com/).
 - **Datasets**: The benchmark evaluates the two datasets for the evaluation: *D-LONG [d1] and D-MULTI [d2]*. The evaluated datasets can be found [here](https://github.com/eXascaleInfolab/TSM-Bench/tree/main/datasets).
-- **Workloads**: This code evaluates the workloads performed in the paper including: Data Bulk Loading, Offline Queries, Online Queries, Generation Performance and Feature Evaluation.
 - <sup>*</sup>**Note**: Due to license restrictions, we can only share the evaluation version of extremeDB. The results between the benchmarked and the public version might diverge. 
 
 
@@ -12,7 +11,7 @@
 
 - Ubuntu 22 (including Ubuntu derivatives, e.g., Xubuntu); 128 GB RAM; 2TB free disk space. 
 - Clone this repository (this can take a couple of minutes as it uploads one of the datasets).
-- The estimated execution time for the whole reproducibility on a 32-core 6 Gbps CPU is 7 days.
+- The estimated execution time for the whole reproducibility on a 32-core 6 Gbps CPU is ~7 days.
 
 ___
 
@@ -56,7 +55,7 @@ sh load_all.sh d1
 ```
 -->
 ___
-## [Table 3] Data Loading and Compression Results (Instant):
+## [Table 3] Data Loading and Compression Results 
 
 - To reproduce the results in Table 3, execute the following command:
 
@@ -68,7 +67,7 @@ sh repro_loading.sh
 
 
 ___
-## [Figures 3, 4, and 5] Offline Workloads D-LONG Q1-Q7 (takes ~ 7 hours):
+## [Figures 3, 4, and 5] Offline Workloads D-LONG Q1-Q7 (takes ~ 7 hours)
 
 - To reproduce the results in Figures 3, 4, and 5, execute the following command:
 
@@ -105,7 +104,7 @@ ___
 sh repro_generation_performance.sh 
 ```
 
-- The runtimes and plots will be written to `results/generation/experiment_{i}` corresponding to the respective subplots.
+- The runtimes and plots will be written to `results/generation/experiment_{i}`, where `{i}` refers to the corresponding subfigure.
 
 ___
 ## [Figure 10] Compression Performance (takes ~ 6 hours)
@@ -138,9 +137,8 @@ ___
 ### Notes
 
 - We launch each system separately on the host machine and execute the online query on the client machine using the --host flag.
-- The runtime results of the systems will be added to: `results/online/d1/{query}/runtime/`. 
-- The runtime plots will be added to the folder `results/online/d1/{query}/plots/`.
-- eXtremeDB requires a custom configuration for insertion mode that interferes with other workloads, making it difficult to automatically reproduce for online queries.
+- The runtime results of the systems will be added to: `results/online/d1/{query}/runtime/`. The runtime plots will be added to the folder `results/online/d1/{query}/plots/`.
+- eXtremeDB requires a manual configuration, which is hard to automate.
 
 ### Execution
 
@@ -271,7 +269,6 @@ sh repro_loading.sh
 python3 tsm_eval.py --systems all --queries all --datasets d2
 ```
 
--->
 
 ___
 
@@ -298,6 +295,7 @@ ___
   bibsource    = {dblp computer science bibliography, https://dblp.org}
 }
 ```
+-->
 
 
 
