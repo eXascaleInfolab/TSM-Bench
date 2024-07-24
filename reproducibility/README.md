@@ -11,12 +11,13 @@
 
 
 - Ubuntu 22 (including Ubuntu derivatives, e.g., Xubuntu); 128 GB RAM; 2TB free disk space. 
-- Clone this repository (this can take a couple of minutes as it uploads one of the datasets)
+- Clone this repository (this can take a couple of minutes as it uploads one of the datasets).
+- The estimated execution time for the whole reproducibility on a 32-core 6 Gbps CPU is 7 days.
+
 ___
 
 ## Systems Setup
 
-- The execution time estimate for the total workload on a 32-core 6 Gbps CPU is 6-7 days.
 - Install the dependencies and activate the created virtual environment 
   
 ```bash
@@ -122,7 +123,7 @@ ___
 
 ### Requirements: 
 
-- For this experiment, we need a second machine, which runs as a client to generate writes and queries. 
+- To execute this experiment, you need a second machine, which runs as a client to generate writes and queries. 
 - In this machine, do the following:
     - Clone this repo
     - Install the dependencies and system libraries:
@@ -134,12 +135,14 @@ ___
   sh install_client_lib.sh
   ```
 
+### Notess
 
-### Execution
 - We launch each system separately on the host machine and execute the online query on the client machine using the --host flag.
 - The runtime results of the systems will be added to: `results/online/d1/{query}/runtime/`. 
 - The runtime plots will be added to the folder `results/online/d1/{query}/plots/`.
 - Druid and eXtremeDB do not fully support this workload.
+
+### Execution
 
 - To get the results of **ClickHouse**
   -  Launch the system on the host machine 
@@ -159,7 +162,7 @@ ___
    sh stop.sh
    ```
 
-- To get the results of **InfluxDB**
+- To produce the results of **InfluxDB**
   -  Launch the system on the host machine 
 
    ```bash
@@ -177,7 +180,7 @@ ___
    sh stop.sh
    ```
 
-- To get the results of **MonetDB**
+- To produce the results of **MonetDB**
   -  Launch the system on the host machine 
 
    ```bash
@@ -196,7 +199,7 @@ ___
    ```
 
     
-- To get the results of **QuestDB**
+- To produce the results of **QuestDB**
   -  Launch the system on the host machine 
 
    ```bash
@@ -214,7 +217,7 @@ ___
    sh stop.sh
    ```   
 
-- To get the results of **TimescaleDB**
+- To produce the results of **TimescaleDB**
   -  Launch the system on the host machine 
 
    ```bash
