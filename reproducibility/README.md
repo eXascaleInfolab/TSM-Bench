@@ -135,7 +135,7 @@ ___
   sh install_client_lib.sh
   ```
 
-### Notess
+### Notes
 
 - We launch each system separately on the host machine and execute the online query on the client machine using the --host flag.
 - The runtime results of the systems will be added to: `results/online/d1/{query}/runtime/`. 
@@ -144,7 +144,7 @@ ___
 
 ### Execution
 
-- To get the results of **ClickHouse**
+- To produce the results of **ClickHouse**
   -  Launch the system on the host machine 
 
    ```bash
