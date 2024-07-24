@@ -140,7 +140,7 @@ ___
 - We launch each system separately on the host machine and execute the online query on the client machine using the --host flag.
 - The runtime results of the systems will be added to: `results/online/d1/{query}/runtime/`. 
 - The runtime plots will be added to the folder `results/online/d1/{query}/plots/`.
-- Druid and eXtremeDB do not fully support this workload.
+- eXtremeDB requires a specific configuration for insertion mode that interferes with other workloads, making it difficult to reproduce for online queries.
 
 ### Execution
 
