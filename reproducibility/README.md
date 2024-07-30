@@ -148,7 +148,7 @@ ___
    cd systems/clickhouse
    sh launch.sh
    ```
-  - Execute the online query on the client machine, replace 'localhost' with the server machine address
+  - Execute the online query on the client machine, replace "localhost" with the ip address of the server machine
 
    ```bash
    python3 tsm_eval_online.py --system clickhouse --queries all --host "localhost" --batch_size 10000 20000 200000 600000 1000000 1400000
@@ -166,7 +166,7 @@ ___
    cd systems/influx
    sh launch.sh
    ```
-  - Execute the online query on the client machine, replace 'localhost' with the server machine address
+  - Execute the online query on the client machine, replace 'localhost' with the ip address of the server machine
 
    ```bash
    python3 tsm_eval_online.py --system influx --queries all --host "localhost" --batch_size 10000 20000 200000 600000 1000000 1400000
@@ -184,7 +184,7 @@ ___
    cd systems/monetdb
    sh launch.sh
    ```
-  - Execute the online query on the client machine, replace 'localhost' with the server machine address
+  - Execute the online query on the client machine, replace "localhost" with the ip address of the server machine
 
    ```bash
    python3 tsm_eval_online.py --system monetdb --queries all --host "localhost" --batch_size 10000 20000 200000 600000 1000000 1400000
@@ -203,7 +203,7 @@ ___
    cd systems/questdb
    sh launch.sh
    ```
-  - Execute the online query on the client machine, replace 'localhost' with the server machine address
+  - Execute the online query on the client machine, replace "localhost" with the ip address of the server machine
 
    ```bash
    python3 tsm_eval_online.py --system questdb --queries all --host "localhost" --batch_size 10000 20000 200000 
@@ -221,7 +221,7 @@ ___
    cd systems/timescaledb
    sh launch.sh
    ```
-  - Execute the online query on the client machine, replace 'localhost' with the server machine address
+  - Execute the online query on the client machine, replace "localhost" with the ip address of the server machine
 
    ```bash
    python3 tsm_eval_online.py --system timescaledb --queries all --host "localhost" --batch_size 10000 20000 200000 600000 1000000 1400000
