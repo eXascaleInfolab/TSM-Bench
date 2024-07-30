@@ -138,7 +138,8 @@ ___
 
 - We launch each system separately on the host machine and execute the online query on the client machine using the --host flag.
 - The runtime results of the systems will be added to: `results/online/d1/{query}/runtime/`. The runtime plots will be added to the folder `results/online/d1/{query}/plots/`.
-- eXtremeDB requires a manual configuration, which is hard to automate.
+- eXtremeDB requires manual configuration, which is difficult to automate. As we are using a different version of eXtremeDB due to license restrictions, we could not achieve the same insertion rates reported in the paper.
+
 
 ### Execution
 
