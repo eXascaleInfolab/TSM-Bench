@@ -6,7 +6,7 @@ python generate_datasets.py
 
 sleep 120
 
-python generate_influx.py datasets
+# python generate_influx.py datasets
 
 sleep 20
 
