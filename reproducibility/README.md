@@ -9,12 +9,17 @@
 
 
 - Ubuntu 22 (including Ubuntu derivatives, e.g., Xubuntu); 128 GB RAM; 2TB free disk space. 
-- Clone this repository (this can take a couple of minutes as it uploads one of the datasets).
 - The estimated execution time for the whole reproducibility on a 32-core 6 Gbps CPU is ~7 days.
 
 ___
 
 ## Systems Setup
+
+- Clone this repository (this can take a couple of minutes as it uploads one of the datasets).
+
+```bash
+git clone https://github.com/eXascaleInfolab/TSM-Bench TSM-Bench
+```
 
 - Install the dependencies and activate the created virtual environment 
   
