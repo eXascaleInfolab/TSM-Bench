@@ -24,7 +24,7 @@ git clone https://github.com/eXascaleInfolab/TSM-Bench TSM-Bench
 - Install the dependencies and activate the created virtual environment 
   
 ```bash
-cd systems/
+cd TSM-Bench/systems/
 sh install_dep.sh
 source TSMvenv/bin/activate
 ```
