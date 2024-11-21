@@ -15,7 +15,7 @@ ___
 
 ## Systems Setup
 
-- Clone this repository (this can take a couple of minutes as it uploads one of the datasets).
+- Clone this repository (takes a couple of minutes as it uploads one of the datasets).
 
 ```bash
 git clone https://github.com/eXascaleInfolab/TSM-Bench TSM-Bench
