@@ -18,7 +18,7 @@ ___
 - Clone this repository (takes a couple of minutes as it uploads one of the datasets).
 
 ```bash
-git clone https://github.com/eXascaleInfolab/TSM-Bench TSM-Bench
+git clone https://github.com/eXascaleInfolab/TSM-Bench
 ```
 
 - Install the dependencies and activate the created virtual environment 
