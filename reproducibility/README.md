@@ -64,6 +64,7 @@ ___
 - To reproduce the results in Table 3, execute the following command:
 
 ```bash
+cd ../systems
 sh repro_loading.sh 
 ```
 
