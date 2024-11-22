@@ -67,7 +67,7 @@ cd ../systems
 sh repro_loading.sh 
 ```
 
-- The results will be written to the `results` folder. 
+- The results will be written to `results` in the root folder.
 
 
 ___
