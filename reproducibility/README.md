@@ -29,7 +29,7 @@ sh install_dep.sh
 source TSMvenv/bin/activate
 ```
 
-- Install all the systems (takes ~15mins)
+- Install all the systems 
 
 ```bash
 sh install_all_sys.sh
@@ -46,7 +46,6 @@ sh build.sh d1; sh load_all.sh d1
 - Download, decompress, and load Dataset 2 (takes ~ 78 hours)
 
 ```bash
-cd ../datasets
 sh build.sh d2; sh load_all.sh d2
 ```
 
