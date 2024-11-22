@@ -76,6 +76,7 @@ ___
 - To reproduce the results in Figures 3, 4, and 5, execute the following command:
 
 ```bash
+cd ..
 python3 tsm_eval.py --systems all --queries all --datasets d1 
 ```
 - The runtime results of the systems for each query will be added to: `results/offline/d1/{query}/runtime/`.
