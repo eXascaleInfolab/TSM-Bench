@@ -53,14 +53,16 @@ while : ; do
 done
 rm $log_file
 
+
 end_time=$(date +%s.%N)
 elapsed_time=$(echo "$end_time - $start_time" | bc)
+elapsed_time=$(printf "%.2f" "$elapsed_time")
 echo $elapsed_time
 
 compression=$(sh compression.sh $dataset)
 
 echo "Compression: $compression"
-echo "$dataset $compression ${elapsed_time}s" >> time_and_compression.txt
+echo "$dataset ${elapsed_time}s ${compression}GB" >> time_and_compression.txt
 
 
 

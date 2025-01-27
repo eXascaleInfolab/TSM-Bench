@@ -13,6 +13,14 @@ fi
 # Container name for TimescaleDB
 container_name="timescaledb-container"
 
+
+    # Append compression results to output file
+results_dir="../../results/compression"
+mkdir -p "$results_dir"
+output_file="$results_dir/time_and_compression.txt"
+echo "### TimescaleDB" >> "$output_file"
+
+
 # Function to restart TimescaleDB container
 restart_timescaledb() {
     # Stop TimescaleDB container if it is running
@@ -77,10 +85,6 @@ load_dataset() {
     # Print compression information
     echo "$compression_output"
 
-    # Append compression results to output file
-    results_dir="../../results/compression"
-    mkdir -p "$results_dir"
-    output_file="$results_dir/time_and_compression.txt"
     echo "$compression_output" >> "$output_file"
 }
 

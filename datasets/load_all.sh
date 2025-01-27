@@ -41,6 +41,22 @@ cd questdb
 sh ./load.sh $dataset
 cd ..
 
+
+if [ "$dataset" != "d2" ]; then
+
+	echo "loading data into Influx"
+	# Influx
+	cd influx
+	sh ./load.sh $dataset
+	cd ..
+
+
+	echo "loading data into Druid"
+	# Druid
+	cd druid
+	sh ./load.sh $dataset
+	cd ..
+fi
 sh stop_all.sh
 
 

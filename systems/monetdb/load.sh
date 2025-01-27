@@ -23,15 +23,25 @@ mclient -p54320 -d mydb --interactive --timer=performance -s "DROP TABLE IF EXIS
 	select sum(columnsize)/1024/1024/1024 from storage where table='$dataset'; "
 
 
+
+
+
+
+
+
+
+
 end_time=$(date +%s.%N)
 elapsed_time=$(echo "$end_time - $start_time" | bc)
+elapsed_time=$(printf "%.2f" "$elapsed_time")
 #echo "Loading time: $elapsed_time seconds" > loading_time_$dataset.txt
 
 
 echo "compression"
-compression=$(sh compression.sh)
+compression=$(sh compression.sh $dataset)
+compression=$(echo "$compression" | grep -o '[0-9]*') # Extract the numeric part
+compression=$(printf "%.2f" "$(echo "$compression / 1024 / 1024" | bc -l)") # Convert to GB
 echo "$compression"
 
-echo "$dataset $compression ${elapsed_time}s"
+echo "$dataset ${elapsed_time}s ${compression}GB" >> time_and_compression.txt
 
-echo "$dataset $compression ${elapsed_time}s" >> time_and_compression.txt

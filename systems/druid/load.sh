@@ -76,12 +76,17 @@ while : ; do
 done
 rm $log_file
 
+
 end_time=$(date +%s.%N)
 elapsed_time=$(echo "$end_time - $start_time" | bc)
+elapsed_time=$(printf "%.2f" "$elapsed_time")
 
 compression="$(sh compression.sh $dataset | tail -n 1)"
-echo "$dataset $compression ${elapsed_time}s" >> time_and_compression.txt
+compression=$(echo "$compression" | grep -o '[0-9]*') # Extract the numeric part
+compression=$(printf "%.2f" "$(echo "$compression / 1024 / 1024" | bc -l)") # Convert to GB
+
+
+echo "$dataset ${elapsed_time}s ${compression}GB" >> time_and_compression.txt
 
 echo "load database"
-
 

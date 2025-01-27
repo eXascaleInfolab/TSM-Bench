@@ -8,7 +8,7 @@
 ## Prerequisites
 
 
-- Ubuntu 22 (including Ubuntu derivatives, e.g., Xubuntu); 128 GB RAM; 2TB free disk space. 
+- Ubuntu 24 (including Ubuntu derivatives, e.g., Xubuntu); 128 GB RAM; 2TB free disk space. 
 - The estimated execution time for the whole reproducibility on a 32-core 6 Gbps CPU is ~7 days.
 
 ___
@@ -21,7 +21,7 @@ ___
 git clone https://github.com/eXascaleInfolab/TSM-Bench
 ```
 
-- Install the dependencies and activate the created virtual environment 
+- Install the dependencies and activate the created virtual environment (takes ~ 3 minutes)
   
 ```bash
 cd TSM-Bench/systems/
@@ -29,7 +29,7 @@ sh install_dep.sh
 source TSMvenv/bin/activate
 ```
 
-- Install all the systems 
+- Install all the systems (takes ~ 30 minutes)
 
 ```bash
 sh install_all_sys.sh
@@ -88,7 +88,7 @@ ___
 - To reproduce the offline workloads D-MULTI Q1-Q5 results in Figure 6, run the following command:
 
 ```bash
-python3 tsm_eval.py --systems all --queries all --datasets d2
+python3 tsm_eval_d2.py --systems all --queries q1 q2 q3 q4 q5 --datasets d2
 ```
 
 - The runtime results of the systems for each query will be added to: `results/offline/d2/{query}/runtime/`.
@@ -114,13 +114,13 @@ sh repro_generation_performance.sh
 ___
 ## [Figure 10] Compression Performance (takes ~ 6 hours)
 
-- To reproduce the compression performance results, run the following command:
+- To reproduce the compression performance results for ClickHouse, InfluxDB and TimescaleDB, run the following command. The results will be written to the `results/compression/` folder.
 
 ```bash
 sh repro_characteristics.sh 
 ```
 
-- The results will be written to the `results/compression/` folder. 
+- To reproduce the compression performance results for Druid, follow the following [tutorial](https://github.com/eXascaleInfolab/TSM-Bench/blob/main/reproducibility/druid.md). 
 
 ___
 ## [Figure 8] Online Workloads D-LONG Q1-Q5 (takes ~ 7 hours)
@@ -141,7 +141,7 @@ ___
 
 ### Notes
 
-- We launch each system separately on the host machine and execute the online query on the client machine using the --host flag.
+- We launch each system separately on the host machine and execute the online query on the client machine using the ```--host``` flag.
 - The runtime results of the systems will be added to: `results/online/d1/{query}/runtime/`. The runtime plots will be added to the folder `results/online/d1/{query}/plots/`.
 - We cannot reproduce the results of eXtremeDB, as it requires manual configuration.
 
@@ -301,6 +301,7 @@ ___
 }
 ```
 -->
+
 
 
 

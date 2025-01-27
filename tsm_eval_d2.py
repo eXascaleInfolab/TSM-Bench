@@ -14,11 +14,11 @@ from utils.system_modules import system_module_map
 datasets = ['d1', 'd2']
 
 scenario = {
-    "n_stations": [1, 2, 3, 8, 9, 10],
+    "n_stations": [1, 10, 50, 100],
     "n_sensors": [1, 10, 70, 90, 100],
     "n_time_ranges": ["minute", "hour", "day"], #["hour", "day", "week", "month"], 
-    "n_runs": 20,
-    "timeout": 600,
+    "n_runs": 20 ,
+    "timeout": 60,
 }
 
 args = init_main_parser(system_names, datasets  , scenario["n_runs"])
@@ -49,32 +49,6 @@ for dataset in datasets:
                         return run_query(system_module , query, rangeUnit=rangeUnit, n_st=n_st, n_s=n_s,
                                                        n_it=args.n_it, dataset=dataset, rangeL=1, host="localhost")
 
-
-                    print("vary range:")
-                    for range_unit in scenario["n_time_ranges"]:
-                        print(range_unit)
-                        index_.append(f" {range_unit}")
-                        try:
-                            runtimes.append(default_query_f(rangeUnit=range_unit))
-                        except Exception as E:
-                            import traceback
-                            # raise(E)
-                            print(E)
-                            runtimes.append((-1, -1))
-                            break
-
-                    print("vary sensors:")
-                    for sensors in scenario["n_sensors"]:
-                        print(sensors)
-                        index_.append(f" s_{sensors}")
-                        try:
-                            runtimes.append(default_query_f(n_s=sensors))
-                        except Exception as E:
-                            import traceback
-
-                            print(E)
-                            runtimes.append((-1, -1))
-                            break
 
                     print("vary station:")
                     for stations in scenario["n_stations"]:

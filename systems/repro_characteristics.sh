@@ -2,16 +2,21 @@
 
 cd ../compression/
 
-python generate_datasets.py
+python3 generate_datasets.py
 
 sleep 120
 
-# python generate_influx.py datasets
+python3 generate_influx.py datasets
 
 sleep 20
 
-cd ../systems/clickhouse 
+cd ../systems/clickhouse
 sh load_compression.sh ../../compression/datasets
+
+cd ../influx
+sh load_compression.sh ../../compression/datasets_influx/
 
 cd ../timescaledb
 sh load_compression.sh ../../compression/datasets
+
+

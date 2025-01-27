@@ -59,20 +59,39 @@ else
 
     curl -G --data-urlencode "query= COPY d2temp FROM '$ABSOLUTE_PATH/d2_1_4.csv'; \
                     " http://localhost:9000/exec
-
-    curl -G --data-urlencode "query= CREATE TABLE d2 AS ( SELECT cast(time AS timestamp) ts, cast(id_station AS symbol) id_station, s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 FROM 'd2temp' ), index (id_station) timestamp(ts) PARTITION BY MONTH; \
+    curl -G --data-urlencode "query= COPY d2temp FROM '$ABSOLUTE_PATH/d2_2_4.csv'; \
+                    " http://localhost:9000/exec
+    curl -G --data-urlencode "query= COPY d2temp FROM '$ABSOLUTE_PATH/d2_3_4.csv'; \
+                    " http://localhost:9000/exec
+    curl -G --data-urlencode "query= COPY d2temp FROM '$ABSOLUTE_PATH/d2_4_4.csv'; \
                     " http://localhost:9000/exec
 
+    #curl -G --data-urlencode "query= CREATE TABLE d2 AS ( SELECT cast(time AS timestamp) ts, cast(id_station AS symbol) id_station, s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 FROM 'd2temp' ), index (id_station) timestamp(ts) PARTITION BY MONTH; \
+     #               " http://localhost:9000/exec
+
+	curl -G --data-urlencode "query= CREATE TABLE d2 AS ( SELECT cast(f0 AS timestamp) ts, cast(f1 AS symbol) id_station, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, f16, f17, f18, f19, f20, f21, f22, f23, f24, f25, f26, f27, f28, f29, f30, f31, f32, f33, f34, f35, f36, f37, f38, f39, f40, f41, f42, f43, f44, f45, f46, f47, f48, f49, f50, f51, f52, f53, f54, f55, f56, f57, f58, f59, f60, f61, f62, f63, f64, f65, f66, f67, f68, f69, f70, f71, f72, f73, f74, f75, f76, f77, f78, f79, f80, f81, f82, f83, f84, f85, f86, f87, f88, f89, f90, f91, f92, f93, f94, f95, f96, f97, f98, f99, f100, f101 FROM 'd2temp' ), index (id_station) timestamp(ts) PARTITION BY DAY; \
+                    " http://localhost:9000/exec
+
+
+	curl -G --data-urlencode "query= DROP TABLE d2temp; \
+                " http://localhost:9000/exec
 
 
 fi # end if dataset != d2
 
 end_time=$(date +%s.%N)
 elapsed_time=$(echo "$end_time - $start_time" | bc)
-echo "$dataset $compression ${elapsed_time}s" >> time_and_compression.txt
+elapsed_time=$(printf "%.2f" "$elapsed_time")
+
+
+compression="$(sh compression.sh $dataset | tail -n 1)"
+compression=$(echo "$compression" | grep -o '[0-9]*') # Extract the numeric part
+compression=$(printf "%.2f" "$(echo "$compression / 1024 / 1024" | bc -l)") # Convert to GB
+
+echo "$dataset ${elapsed_time}s ${compression}GB" >> time_and_compression.txt
+
 echo $elapsed_time
 echo "database compression"
-sh compression.sh
 
 
 

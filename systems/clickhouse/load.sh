@@ -31,13 +31,15 @@ docker exec -i clickhouse-container clickhouse-client --format_csv_delimiter=","
 
 end_time=$(date +%s.%N)
 elapsed_time="$(echo "$end_time - $start_time" | bc)"
+elapsed_time=$(printf "%.2f" "$elapsed_time")
 
 echo "computing compression"
 compression="$(sh compression.sh $dataset | tail -n 1)"
 
 echo "$dataset $compression ${elapsed_time}s"
 
-echo "$dataset $compression ${elapsed_time}s" >> time_and_compression.txt
+echo "$dataset ${elapsed_time}s ${compression}" >> time_and_compression.txt
+
 
 sleep 20
 

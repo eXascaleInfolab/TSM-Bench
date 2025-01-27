@@ -16,6 +16,7 @@ echo "loading datasets from $folder_path"
 results_dir="../../results/compression"
 mkdir -p "$results_dir"
 output_file="$results_dir/time_and_compression.txt"
+echo "### ClickHouse" >> $output_file
 
 # Function to stop and start ClickHouse container
 restart_clickhouse() {
