@@ -76,8 +76,8 @@ ___
 - To reproduce the results in Figures 3, 4, and 5, execute the following command:
 
 ```bash
-
-python3 ../tsm_eval.py --systems all --queries all --datasets d1 
+cd ..
+python3 tsm_eval.py --systems all --queries all --datasets d1 
 ```
 - The runtime results of the systems for each query will be added to: `results/offline/d1/{query}/runtime/`.
 - The runtime plots will be added to the folder `results/offline/d1/{query}/plots/`.
@@ -88,7 +88,7 @@ ___
 - To reproduce the offline workloads D-MULTI Q1-Q5 results in Figure 6, run the following command:
 
 ```bash
-python3 ../tsm_eval_d2.py --systems all --queries q1 q2 q3 q4 q5 --datasets d2
+python3 tsm_eval_d2.py --systems all --queries q1 q2 q3 q4 q5 --datasets d2
 ```
 
 - The runtime results of the systems for each query will be added to: `results/offline/d2/{query}/runtime/`.
@@ -106,6 +106,7 @@ ___
 - To reproduce the data generation performance results, execute the following command:
 
 ```bash
+cd systems/
 sh repro_generation_performance.sh 
 ```
 
