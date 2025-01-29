@@ -1,6 +1,6 @@
 color_dict = {'clickhouse': "blue",
     "druid" :  'orange',
-    "extremedb" : "darkblue" ,
+    "extremedb" : "darkgreen" ,
     "influx" : "pink" ,
     "monetdb" : "cyan",
     "questdb" : "grey" ,
