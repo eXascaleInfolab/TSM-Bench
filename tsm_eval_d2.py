@@ -18,7 +18,7 @@ scenario = {
     "n_stations": [1,5,10],
     "n_sensors": [1,5,10,25,50,75,100],
     "n_time_ranges": ["hour", "day", "month"],
-    "n_runs": 20,
+    "n_runs": 100,
     "timeout": 100,
 }
 
