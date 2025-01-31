@@ -13,13 +13,15 @@ from utils.system_modules import system_module_map
 
 datasets = ['d1', 'd2']
 
+
 scenario = {
-    "n_stations": [1, 2, 3, 8, 9, 10],
-    "n_sensors": [1, 10, 70, 90, 100],
-    "n_time_ranges": ["minute", "hour", "day"], #["hour", "day", "week", "month"], 
+    "n_stations": [1, 5, 10],
+    "n_sensors": [1, 10, 50, 100],
+    "n_time_ranges": ["hour", "day", "month"],
     "n_runs": 100,
-    "timeout": 600,
+    "timeout": 100,
 }
+
 
 args = init_main_parser(system_names, datasets  , scenario["n_runs"])
 
@@ -45,7 +47,7 @@ for dataset in datasets:
 
                     query = query.replace("<db>", dataset)
 
-                    def default_query_f(rangeUnit=args.rangeUnit, n_st=args.n_st, n_s=args.n_s):
+                    def default_query_f(rangeUnit=args.rangeUnit, n_st=args.nb_st, n_s=args.nb_s):
                         return run_query(system_module , query, rangeUnit=rangeUnit, n_st=n_st, n_s=n_s,
                                                        n_it=args.n_it, dataset=dataset, rangeL=1, host="localhost")
 

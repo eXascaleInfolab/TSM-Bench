@@ -43,7 +43,8 @@ def run_query(system_module, query_template,  rangeL, rangeUnit, n_st, n_s, n_it
 
         start = time.time()
         result = client.execute(query)
-
+        
+        #print(len(result))
         # print("done querying")
         diff = (time.time() - start) * 1000
         runtimes.append(diff)

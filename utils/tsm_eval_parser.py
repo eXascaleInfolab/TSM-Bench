@@ -11,8 +11,8 @@ def init_main_parser(system_names , datasets , defualt_iter ):
     parser.add_argument('--n_st', nargs='?', type=int, help='Number of stations in the dataset', default=10)
     parser.add_argument('--n_s', nargs='?', type=int, help='Number of sensors in the dataset', default=100)
     parser.add_argument('--nb_st', nargs='?', type=int, help='Default number of queried stations', default=1)
-    parser.add_argument('--nb_sr', nargs='?', type=int, help='Default number of queried sensors', default=3)
-    parser.add_argument('--n_it', nargs='?', type=int, help='Default number of queried sensors', default=defualt_iter)
+    parser.add_argument('--nb_s', nargs='?', type=int, help='Default number of queried sensors', default=10)
+    parser.add_argument('--n_it', nargs='?', type=int, help='Default number of iterations', default=defualt_iter)
     parser.add_argument('--range', nargs='?', type=str, help='Query range', default="1day")
     parser.add_argument('--timeout', nargs='?', type=str, help='Query execution timeout in seconds', default=200)
     parser.add_argument('--additional_arguments', nargs='?', type=str,

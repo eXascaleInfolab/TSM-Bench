@@ -110,10 +110,9 @@ def export(ts, file):
 length=10000
 num_series = 100
 outlier_percentages = [0,1,2,5,10,20] #[1,2,5,10,20]
-repeats_percentages =  [0,10,30,50,70,90]
-scarsity_percentages = [0,10,30,50,70,90]
-delta_percentages = [1,2,10] #[1,2,10]
-
+repeats_percentages =  [0,10,30,70,90] #[0,10,30,50,70,90]
+scarsity_percentages = [0,10,30,60,80]
+delta_percentages = [1,5,10,50] #[1,2,10]
 
 
 
