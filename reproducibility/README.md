@@ -106,6 +106,7 @@ ___
 - To reproduce the data generation performance results, execute the following command:
 
 ```bash
+cd systems/
 sh repro_generation_performance.sh 
 ```
 
@@ -127,7 +128,7 @@ ___
 
 ### Requirements: 
 
-- This experiment requires a second machine, which runs as a client to generate writes and queries. 
+- This experiment requires a second machine, which runs as a client, to generate writes and queries. 
 - In this machine, do the following:
     - Clone this repo
     - Install the dependencies and system libraries:
