@@ -320,6 +320,7 @@ ___
   doi          = {10.14778/3611479.3611532},
   timestamp    = {Mon, 23 Oct 2023 16:16:16 +0200},
   biburl       = {https://dblp.org/rec/journals/pvldb/KhelifatiKDDC23.bib},
+
   bibsource    = {dblp computer science bibliography, https://dblp.org}
 }
 ```
